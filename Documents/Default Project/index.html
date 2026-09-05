@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erhan Emir - Kişisel Portföy</title>
+    <!-- Favicon: Geliştirici ikonlu SVG favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236C63FF' d='M10 20h4V4h-4v16zm-6 0h4V9H4v11zm12 0h4V14h-4v6z'/%3E%3C/svg%3E" type="image/svg+xml">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0uXhBfnS2T+j3XyG/d9P0T1Z/c08o+L7Xq2Fw4p4VbM2eH4g4t4Xp5P9w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --dark-bg: #1a1a2e;
+            --dark-bg-secondary: #16213e;
+            --dark-card-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #e0e0e0;
+            --primary-color: #6c63ff;
+            --secondary-color: #a0a0a0;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --glass-blur: 10px;
+            --transition-speed: 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        a:hover {
+            color: #8a83ff;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .card {
+            background: var(--dark-card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 var(--shadow-color);
+        }
+
+        /* Header & Navbar */
+        header {
+            background: var(--dark-bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-speed);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            background: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            transition: background var(--transition-speed), border-color var(--transition-speed);
+        }
+
+        .lang-toggle > div {
+            padding: 0.5rem 1rem;
+            transition: background var(--transition-speed), color var(--transition-speed);
+        }
+
+        .lang-toggle > div.active {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        /* Language specific content hiding */
+        html:lang(en) .lang-tr { display: none; }
+        html:lang(tr) .lang-en { display: none; }
+
+        /* Hero Section */
+        #hero {
+            min-height: calc(100vh - 80px); /* Adjust for header height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: var(--dark-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(108, 99, 255, 0.1) 0%, rgba(108, 99, 255, 0) 70%);
+            animation: pulse 10s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: background-color var(--transition-speed);
+        }
+
+        .btn-primary:hover {
+            background-color: #8a83ff;
+        }
+
+        /* About Section */
+        #about {
+            padding: 6rem 0;
+            background-color: var(--dark-bg-secondary);
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .about-text {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
+        }
+
+        /* Skills Section */
+        #skills {
+            padding: 6rem 0;
+            background-color: var(--dark-bg);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem;
+            min-height: 150px;
+        }
+
+        .skill-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .skill-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        /* Projects Section */
+        #projects {
+            padding: 6rem 0;
+            background-color: var(--dark-bg-secondary);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            padding: 0; /* Remove padding from card as content has its own */
+        }
+
+        .project-card .project-image {
+            width: 100%;
+            height: 200px;
+            background-color: var(--dark-bg); /* Placeholder background */
+            border-bottom: 1px solid var(--border-color);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        .project-card .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-color);
+        }
+
+        .project-card p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .project-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            background-color: rgba(108, 99, 255, 0.2);
+            color: var(--primary-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .project-links a {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        /* Contact Section */
+        #contact {
+            padding: 6rem 0;
+            background-color: var(--dark-bg);
+        }
+
+        .contact-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form-container .card {
+            padding: 2.5rem;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--dark-bg-secondary);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color var(--transition-speed);
+        }
+
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button[type="submit"] {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        .contact-form button[type="submit"]:hover {
+            background-color: #8a83ff;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-bg-secondary);
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        /* Fade-in-up animation */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-up.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                padding: 1rem 2rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links li {
+                margin: 0.5rem 1rem;
+            }
+
+            .lang-toggle {
+                margin-top: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .about-image {
+                order: -1; /* Image above text on mobile */
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .skills-grid, .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="lang-tr">Erhan Emir</span>
+                <span class="lang-en">Erhan Emir</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero"><span class="lang-tr">Anasayfa</span><span class="lang-en">Home</span></a></li>
+                <li><a href="#about"><span class="lang-tr">Hakkımda</span><span class="lang-en">About</span></a></li>
+                <li><a href="#skills"><span class="lang-tr">Yetenekler</span><span class="lang-en">Skills</span></a></li>
+                <li><a href="#projects"><span class="lang-tr">Projeler</span><span class="lang-en">Projects</span></a></li>
+                <li><a href="#contact"><span class="lang-tr">İletişim</span><span class="lang-en">Contact</span></a></li>
+            </ul>
+            <div class="lang-toggle" id="langToggle">
+                <div id="langTr" class="active">TR</div>
+                <div id="langEn">EN</div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="fade-in-up">
+            <div class="hero-content">
+                <h1>
+                    <span class="lang-tr">Merhaba, ben Erhan Emir.</span>
+                    <span class="lang-en">Hello, I'm Erhan Emir.</span>
+                </h1>
+                <p>
+                    <span class="lang-tr">Tasarım odaklı bir Front-End Geliştirici ve UI/UX meraklısıyım.</span>
+                    <span class="lang-en">I'm a design-oriented Front-End Developer and UI/UX enthusiast.</span>
+                </p>
+                <a href="#projects" class="btn-primary">
+                    <span class="lang-tr">Projelerimi Keşfet</span>
+                    <span class="lang-en">Explore My Projects</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="about" class="fade-in-up">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="lang-tr">Hakkımda</span>
+                    <span class="lang-en">About Me</span>
+                </h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="lang-tr">Yaratıcılık ve Teknoloji Arasında Köprü Kuruyorum.</h2>
+                        <h2 class="lang-en">Bridging Creativity and Technology.</h2>
+                        <p>
+                            <span class="lang-tr">Merhaba! Ben Erhan Emir, kullanıcı dostu ve estetik dijital deneyimler oluşturmaya odaklanmış bir Front-End Geliştirici ve UI/UX Tasarımcısıyım. Yazılım dünyasına olan tutkum, beni sürekli yeni teknolojileri keşfetmeye ve öğrenmeye itiyor. Hem kod yazmayı hem de kullanıcıların ihtiyaçlarına yönelik sezgisel arayüzler tasarlamayı seviyorum.</span>
+                            <span class="lang-en">Hello! I'm Erhan Emir, a Front-End Developer and UI/UX Designer focused on creating user-friendly and aesthetic digital experiences. My passion for the software world constantly drives me to explore and learn new technologies. I enjoy both writing code and designing intuitive interfaces that cater to user needs.</span>
+                        </p>
+                        <p>
+                            <span class="lang-tr">Kariyerim boyunca çeşitli projelerde yer alarak hem teknik yetkinliklerimi geliştirdim hem de tasarım prensiplerini derinlemesine kavradım. Her zaman öğrenmeye açık, problem çözmeye hevesli ve ekip çalışmasına yatkın bir profesyonelim. Portfolyomda yer alan projeler, bu tutkumu ve yeteneklerimi sergilediğim çalışmalarımı içermektedir.</span>
+                            <span class="lang-en">Throughout my career, I've participated in various projects, enhancing my technical skills and gaining a deep understanding of design principles. I am always open to learning, eager to solve problems, and a team player. The projects in my portfolio showcase my passion and abilities.</span>
+                        </p>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://via.placeholder.com/300x400/16213e/e0e0e0?text=Erhan+Emir" alt="Erhan Emir">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="fade-in-up">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="lang-tr">Yetenekler</span>
+                    <span class="lang-en">Skills</span>
+                </h2>
+                <div class="skills-grid">
+                    <div class="skill-card card">
+                        <i class="fab fa-python"></i>
+                        <h3>Python</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fab fa-js"></i>
+                        <h3>JavaScript</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fab fa-dart"></i>
+                        <h3>Dart</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fab fa-flutter"></i>
+                        <h3>Flutter</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fa-solid fa-c"></i>
+                        <h3>C++</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fa-solid fa-microchip"></i>
+                        <h3>Arduino</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fab fa-html5"></i><i class="fab fa-css3-alt" style="margin-left: 0.5rem;"></i>
+                        <h3>HTML/CSS</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fab fa-git-alt"></i><i class="fab fa-github" style="margin-left: 0.5rem;"></i>
+                        <h3>Git/GitHub</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <h3>EasyEDA</h3>
+                    </div>
+                    <div class="skill-card card">
+                        <i class="fa-solid fa-print"></i>
+                        <h3>3D Print</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="fade-in-up">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="lang-tr">Projeler</span>
+                    <span class="lang-en">Projects</span>
+                </h2>
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="project-card card">
+                        <div class="project-image">Resim Yok</div>
+                        <div class="project-content">
+                            <h3>
+                                <span class="lang-tr">Proje Başlığı 1</span>
+                                <span class="lang-en">Project Title 1</span>
+                            </h3>
+                            <p>
+                                <span class="lang-tr">Bu proje, [kısa açıklama]. Kullanıcı arayüzü ve deneyimi odaklı geliştirilmiştir.</span>
+                                <span class="lang-en">This project is about [short description]. Developed with a focus on user interface and experience.</span>
+                            </p>
+                            <div class="project-badges">
+                                <span class="badge">HTML</span>
+                                <span class="badge">CSS</span>
+                                <span class="badge">JavaScript</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card card">
+                        <div class="project-image">Resim Yok</div>
+                        <div class="project-content">
+                            <h3>
+                                <span class="lang-tr">Proje Başlığı 2</span>
+                                <span class="lang-en">Project Title 2</span>
+                            </h3>
+                            <p>
+                                <span class="lang-tr">Bu proje, [kısa açıklama]. Mobil uyumluluk ve performans ön planda tutulmuştur.</span>
+                                <span class="lang-en">This project is about [short description]. Mobile responsiveness and performance were prioritized.</span>
+                            </p>
+                            <div class="project-badges">
+                                <span class="badge">Python</span>
+                                <span class="badge">Flask</span>
+                                <span class="badge">HTML/CSS</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card card">
+                        <div class="project-image">Resim Yok</div>
+                        <div class="project-content">
+                            <h3>
+                                <span class="lang-tr">Proje Başlığı 3</span>
+                                <span class="lang-en">Project Title 3</span>
+                            </h3>
+                            <p>
+                                <span class="lang-tr">Bu proje, [kısa açıklama]. Yeni bir kütüphane veya çerçeve kullanılarak geliştirilmiştir.</span>
+                                <span class="lang-en">This project is about [short description]. Developed using a new library or framework.</span>
+                            </p>
+                            <div class="project-badges">
+                                <span class="badge">Dart</span>
+                                <span class="badge">Flutter</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="fade-in-up">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="lang-tr">İletişim</span>
+                    <span class="lang-en">Contact</span>
+                </h2>
+                <div class="contact-form-container">
+                    <div class="card">
+                        <form class="contact-form" action="https://formsubmit.co/your-email@example.com" method="POST">
+                            <!-- NOTE: Replace "your-email@example.com" with your actual email address for Formsubmit to work. -->
+                            <!-- Or replace the action with your Formspree endpoint -->
+                            <label for="name">
+                                <span class="lang-tr">Adınız</span>
+                                <span class="lang-en">Your Name</span>
+                            </label>
+                            <input type="text" id="name" name="name" required>
+
+                            <label for="email">
+                                <span class="lang-tr">E-posta Adresiniz</span>
+                                <span class="lang-en">Your Email</span>
+                            </label>
+                            <input type="email" id="email" name="email" required>
+
+                            <label for="message">
+                                <span class="lang-tr">Mesajınız</span>
+                                <span class="lang-en">Your Message</span>
+                            </label>
+                            <textarea id="message" name="message" required></textarea>
+
+                            <button type="submit">
+                                <span class="lang-tr">Mesaj Gönder</span>
+                                <span class="lang-en">Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            <span class="lang-tr">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</span>
+            <span class="lang-en">&copy; 2026 Erhan Emir. All rights reserved.</span>
+        </p>
+    </footer>
+
+    <script>
+        // Dil Değiştirme Mekanizması
+        document.addEventListener('DOMContentLoaded', () => {
+            const langToggle = document.getElementById('langToggle');
+            const langTr = document.getElementById('langTr');
+            const langEn = document.getElementById('langEn');
+
+            // Set initial language from localStorage or default to 'tr'
+            const savedLang = localStorage.getItem('portfolioLang') || 'tr';
+            document.documentElement.lang = savedLang;
+            updateLangToggle(savedLang);
+
+            langToggle.addEventListener('click', () => {
+                let currentLang = document.documentElement.lang;
+                let newLang = currentLang === 'tr' ? 'en' : 'tr';
+                document.documentElement.lang = newLang;
+                localStorage.setItem('portfolioLang', newLang);
+                updateLangToggle(newLang);
+            });
+
+            function updateLangToggle(lang) {
+                if (lang === 'tr') {
+                    langTr.classList.add('active');
+                    langEn.classList.remove('active');
+                } else {
+                    langEn.classList.add('active');
+                    langTr.classList.remove('active');
+                }
+            }
+
+            // Fade-in-up Animasyonu
+            const faders = document.querySelectorAll('.fade-in-up');
+
+            const appearOptions = {
+                threshold: 0.1, // Elementin %10'u görünür olduğunda tetikle
+                rootMargin: "0px 0px -50px 0px" // Ekranın altından 50px yukarıda tetikle
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('appear');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+        });
+    </script>
+</body>
+</html>
