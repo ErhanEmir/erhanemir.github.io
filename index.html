@@ -1,650 +1,357 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erhan Emir — Maker & Embedded Developer</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2300e5ff' d='M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 2h2v2h-2v-2zm2 2h2v2h-2v-2z'/%3E%3C/svg%3E" type="image/svg+xml">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        :root {
-            --bg-deep: #050510;
-            --bg-primary: #0a0a1a;
-            --bg-secondary: #0f0f2a;
-            --cyan: #00e5ff;
-            --cyan-dim: rgba(0, 229, 255, 0.15);
-            --cyan-glow: rgba(0, 229, 255, 0.4);
-            --purple: #b388ff;
-            --text-primary: #e8e8f0;
-            --text-secondary: #8888a8;
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --radius: 12px;
-            --transition: 0.3s ease;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-deep);
-            color: var(--text-primary);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        a { color: var(--cyan); text-decoration: none; transition: color var(--transition); }
-        a:hover { color: var(--purple); }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-        section { padding: 5rem 0; }
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 3rem;
-            color: var(--cyan);
-            position: relative;
-            letter-spacing: 1px;
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--cyan), var(--purple));
-            margin: 0.8rem auto 0;
-            border-radius: 2px;
-        }
-
-        /* PCB Pattern Background */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(0, 229, 255, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(179, 136, 255, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        /* Navbar */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(10, 10, 26, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem 1.5rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--cyan);
-            letter-spacing: 0.5px;
-        }
-        .nav-links { list-style: none; display: flex; gap: 1.5rem; flex-wrap: wrap; }
-        .nav-links a { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; position: relative; padding-bottom: 2px; }
-        .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
-        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--cyan); transition: width var(--transition); }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-
-        /* Language Toggle */
-        .lang-toggle {
-            display: inline-flex;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            user-select: none;
-        }
-        .lang-toggle > div { padding: 0.35rem 0.8rem; transition: all var(--transition); }
-        .lang-toggle > div.active { background: var(--cyan); color: var(--bg-deep); font-weight: 700; }
-
-        /* Hero */
-        #hero {
-            min-height: calc(100vh - 60px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            padding: 2rem;
-        }
-        #hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(135deg, transparent 40%, rgba(0, 229, 255, 0.05) 50%, transparent 60%),
-                repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0, 229, 255, 0.03) 50px),
-                repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(0, 229, 255, 0.03) 50px);
-            pointer-events: none;
-        }
-        .hero-content { position: relative; z-index: 1; max-width: 750px; }
-        .avatar-ring {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 3px solid var(--cyan);
-            box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 30px var(--cyan-dim);
-            margin: 0 auto 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-secondary);
-            animation: pulse-ring 3s infinite ease-in-out;
-        }
-        @keyframes pulse-ring {
-            0%, 100% { box-shadow: 0 0 30px var(--cyan-glow), inset 0 0 30px var(--cyan-dim); }
-            50% { box-shadow: 0 0 50px var(--cyan-glow), inset 0 0 50px var(--cyan-dim); }
-        }
-        .avatar-ring i { font-size: 3.5rem; color: var(--cyan); }
-        .hero-content h1 { font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero-content .tagline { font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
-        .hero-content .maker-label { font-size: 0.95rem; color: var(--cyan); margin-bottom: 2rem; font-family: 'Courier New', monospace; }
-        .hero-content .maker-label .cursor-blink { animation: blink 1s step-end infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        .btn {
-            display: inline-block;
-            padding: 0.7rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all var(--transition);
-            border: none;
-            cursor: pointer;
-        }
-        .btn-cyan { background: var(--cyan); color: var(--bg-deep); }
-        .btn-cyan:hover { background: var(--purple); color: var(--text-primary); }
-        .btn-outline { background: transparent; color: var(--cyan); border: 1px solid var(--cyan); margin-left: 0.8rem; }
-        .btn-outline:hover { background: var(--cyan-dim); }
-
-        /* Glass Card */
-        .glass-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            padding: 1.8rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: transform var(--transition), box-shadow var(--transition);
-        }
-        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
-
-        /* About */
-        #about { background: var(--bg-secondary); }
-        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
-        .about-text p { margin-bottom: 1rem; color: var(--text-secondary); }
-        .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .stat-card { text-align: center; padding: 1.5rem; }
-        .stat-card i { font-size: 2rem; color: var(--cyan); margin-bottom: 0.5rem; }
-        .stat-card h3 { font-size: 1.5rem; color: var(--cyan); margin-bottom: 0.3rem; }
-        .stat-card p { font-size: 0.85rem; color: var(--text-secondary); }
-
-        /* Skills */
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.2rem; }
-        .skill-card { text-align: center; padding: 1.8rem 1rem; }
-        .skill-card i { font-size: 2.5rem; color: var(--cyan); margin-bottom: 0.8rem; display: block; }
-        .skill-card i.fa-python, .skill-card i.fa-js, .skill-card i.fa-dart, .skill-card i.fa-flutter, .skill-card i.fa-git-alt, .skill-card i.fa-github { font-family: 'Font Awesome 6 Brands', 'Font Awesome 6 Free'; }
-        .skill-card h3 { font-size: 1rem; color: var(--text-primary); font-weight: 500; }
-        .skill-card .skill-type { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.3rem; }
-
-        /* Projects */
-        #projects { background: var(--bg-secondary); }
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
-        .project-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
-        .project-header {
-            padding: 1.5rem 1.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .project-header i { font-size: 2rem; color: var(--cyan); }
-        .project-header h3 { font-size: 1.2rem; color: var(--text-primary); flex: 1; }
-        .project-header .stars { font-size: 0.85rem; color: var(--text-secondary); }
-        .project-body { padding: 1rem 1.5rem; flex: 1; }
-        .project-body p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.8rem; }
-        .project-body .lang-bar { height: 4px; background: var(--bg-primary); border-radius: 2px; margin-bottom: 0.5rem; overflow: hidden; }
-        .project-body .lang-fill { height: 100%; border-radius: 2px; }
-        .project-footer { padding: 1rem 1.5rem 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .badge {
-            background: var(--cyan-dim);
-            color: var(--cyan);
-            padding: 0.3rem 0.7rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .project-links { display: flex; gap: 1rem; margin-left: auto; align-items: center; }
-        .project-links a { color: var(--text-secondary); font-size: 1.1rem; }
-        .project-links a:hover { color: var(--cyan); }
-        .loading-projects { text-align: center; color: var(--text-secondary); grid-column: 1/-1; padding: 3rem; }
-        .loading-projects i { font-size: 2rem; margin-bottom: 1rem; animation: spin 2s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* Contact */
-        .contact-wrapper { max-width: 550px; margin: 0 auto; }
-        .contact-form label { display: block; margin-bottom: 0.4rem; font-weight: 600; color: var(--text-primary); font-size: 0.9rem; }
-        .contact-form input, .contact-form textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            margin-bottom: 1.2rem;
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color var(--transition);
-        }
-        .contact-form input:focus, .contact-form textarea:focus { border-color: var(--cyan); }
-        .contact-form textarea { resize: vertical; min-height: 120px; }
-        .contact-form button { width: 100%; background: var(--cyan); color: var(--bg-deep); padding: 0.85rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background var(--transition); }
-        .contact-form button:hover { background: var(--purple); }
-
-        /* Footer */
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--glass-border);
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-        footer .socials { margin-bottom: 1rem; }
-        footer .socials a { font-size: 1.3rem; color: var(--text-secondary); margin: 0 0.8rem; transition: color var(--transition); }
-        footer .socials a:hover { color: var(--cyan); }
-
-        /* Fade-in */
-        .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 0.8rem; }
-            .nav-links { justify-content: center; gap: 1rem; }
-            .hero-content h1 { font-size: 2.2rem; }
-            .hero-content .tagline { font-size: 1.1rem; }
-            .about-grid { grid-template-columns: 1fr; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .skills-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-            .btn-outline { margin-left: 0; margin-top: 0.5rem; }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Erhan Emir — Maker &amp; Developer</title>
+<meta name="description" content="Erhan Emir — Yazılım Geliştirici ve Maker. Python, JavaScript, Dart/Flutter, Arduino, ESP32, PCB ve 3D baskı." />
+<meta property="og:title" content="Erhan Emir — Maker &amp; Developer" />
+<meta property="og:description" content="Gömülü sistemler, web ve 3D prototipleme odaklı kişisel portfolyo." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230b1224'/><rect x='18' y='18' width='28' height='28' rx='4' fill='%2322d3ee'/><rect x='54' y='18' width='28' height='28' rx='4' fill='%236366f1'/><rect x='18' y='54' width='28' height='28' rx='4' fill='%2334d399'/><rect x='58' y='62' width='12' height='12' rx='2' fill='%2322d3ee'/><rect x='74' y='74' width='10' height='10' rx='2' fill='%236366f1'/></svg>" />
+<style>
+:root{
+  --bg:#070b16; --bg2:#0c1428; --card:rgba(18,28,56,.72); --card2:#152044;
+  --text:#eef4ff; --muted:#93a0c4; --line:rgba(34,211,238,.16);
+  --accent:#22d3ee; --accent2:#6366f1; --green:#34d399;
+  --radius:18px; --max:1080px;
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+  --glow:0 0 40px rgba(34,211,238,.18);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+  color:var(--text);
+  line-height:1.65;
+  background:
+    radial-gradient(1200px 600px at 85% -10%,rgba(99,102,241,.28),transparent),
+    radial-gradient(900px 500px at 8% 8%,rgba(34,211,238,.16),transparent),
+    repeating-linear-gradient(90deg, transparent 0 47px, rgba(34,211,238,.035) 48px),
+    repeating-linear-gradient(0deg, transparent 0 47px, rgba(99,102,241,.03) 48px),
+    var(--bg);
+}
+a{color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(7,11,22,.78);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;text-decoration:none}
+.logo-mark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:900;color:#061018;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:var(--glow)}
+.links{margin-left:auto;display:flex;gap:18px;align-items:center}
+.links a{text-decoration:none;color:var(--muted);font-weight:600;font-size:.95rem}
+.links a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 16px;border-radius:999px;font-weight:700;text-decoration:none;cursor:pointer;transition:.2s}
+.btn:hover{transform:translateY(-1px);border-color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#061018;box-shadow:0 10px 30px rgba(34,211,238,.28)}
+.lang-toggle{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+.lang-toggle button{border:0;background:transparent;color:var(--muted);padding:8px 12px;cursor:pointer;font-weight:800}
+.lang-toggle button.active{background:var(--accent);color:#061018}
+.hamburger{display:none;margin-left:auto;width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.hero{padding:84px 0 30px;display:grid;grid-template-columns:1.3fr .7fr;gap:34px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;color:var(--green);background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);padding:7px 14px;border-radius:999px}
+h1{font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.08;margin:18px 0 12px;letter-spacing:-.03em}
+.grad{background:linear-gradient(90deg,var(--accent),var(--accent2),#e879f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:1.1rem;max-width:56ch}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.stats{display:flex;gap:26px;margin-top:30px;flex-wrap:wrap}
+.stat b{font-size:1.4rem;display:block}
+.stat span{color:var(--muted);font-size:.9rem}
+.card{background:linear-gradient(180deg,var(--card),rgba(12,20,40,.9));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.profile{padding:28px;text-align:center}
+.avatar{width:128px;height:128px;margin:0 auto;border-radius:32px;display:grid;place-items:center;color:#061018;background:linear-gradient(135deg,#22d3ee,#6366f1,#34d399);box-shadow:var(--glow)}
+.chip{width:54px;height:54px;display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.chip i{background:#061018;border-radius:4px;display:block}
+.profile h3{margin:16px 0 4px}
+.profile p{color:var(--muted);margin:0 0 16px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tag{font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:999px;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.35)}
+.socials{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.socials a{text-decoration:none;font-weight:700;font-size:.9rem;padding:9px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2)}
+section{padding:44px 0}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:20px}
+.sec-head h2{margin:0;font-size:1.7rem;letter-spacing:-.02em}
+.sec-head p{margin:4px 0 0;color:var(--muted)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.pad{padding:24px}
+.muted{color:var(--muted)}
+.skill{display:flex;flex-direction:column;gap:10px;min-height:140px;transition:transform .25s ease, box-shadow .25s ease}
+.skill:hover{transform:translateY(-6px);box-shadow:var(--glow)}
+.skill-ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(34,211,238,.12);border:1px solid var(--line);font-weight:900;color:var(--accent)}
+.skill b{font-size:1.02rem}
+.proj{display:flex;flex-direction:column;gap:10px;transition:transform .25s ease}
+.proj:hover{transform:translateY(-6px)}
+.proj-top{display:flex;align-items:center;gap:10px}
+.dot{width:12px;height:12px;border-radius:99px}
+.proj h3{margin:6px 0}
+.proj p{color:var(--muted);margin:0;flex:1}
+.meta{display:flex;gap:10px;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.meta span{border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+.proj-actions{display:flex;gap:10px;margin-top:8px}
+.link{font-weight:800;text-decoration:none;color:var(--accent)}
+.link:hover{text-decoration:underline}
+form{display:grid;gap:12px}
+input,textarea{background:rgba(7,11,22,.7);border:1px solid var(--line);color:var(--text);padding:13px 15px;border-radius:14px;font:inherit;width:100%}
+input:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);margin-top:20px}
+.foot{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.fade{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease}
+.fade.show{opacity:1;transform:none}
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;padding-top:48px}
+  .links{display:none;position:absolute;top:64px;left:12px;right:12px;background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:14px;flex-direction:column;align-items:stretch}
+  .links.open{display:flex}
+  .hamburger{display:grid}
+  .g2,.g3{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#top"><span class="logo-mark">E</span><span>erhanemir.dev</span></a>
+    <div class="links" id="menu">
+      <a href="#hakkimda" data-i18n="nav_about">Hakkımda</a>
+      <a href="#yetenekler" data-i18n="nav_skills">Yetenekler</a>
+      <a href="#projeler" data-i18n="nav_projects">Projeler</a>
+      <a href="#iletisim" data-i18n="nav_contact">İletişim</a>
+      <a class="btn" href="https://github.com/ErhanEmir" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <div style="display:flex;gap:8px;margin-left:auto" id="navBtns">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button id="btnTR" type="button">TR</button>
+        <button id="btnEN" type="button">EN</button>
+      </div>
+      <button class="hamburger" id="hamBtn" title="Menü">☰</button>
+    </div>
+  </div>
+</nav>
 
-    <header>
-        <nav>
-            <div class="logo">&lt;EM /&gt;</div>
-            <ul class="nav-links">
-                <li><a href="#hero" data-i18n="nav_home">Anasayfa</a></li>
-                <li><a href="#about" data-i18n="nav_about">Hakkımda</a></li>
-                <li><a href="#skills" data-i18n="nav_skills">Yetenekler</a></li>
-                <li><a href="#projects" data-i18n="nav_projects">Projeler</a></li>
-                <li><a href="#contact" data-i18n="nav_contact">İletişim</a></li>
-            </ul>
-            <div class="lang-toggle" id="langToggle">
-                <div id="btnTR" class="active">TR</div>
-                <div id="btnEN">EN</div>
-            </div>
-        </nav>
-    </header>
+<div class="wrap" id="top">
+  <header class="hero fade">
+    <div>
+      <span class="badge">● <span data-i18n="hero_badge">Maker &amp; Developer • yeni projelere açığım</span></span>
+      <h1 data-i18n-html="hero_title">Merhaba, ben <span class="grad">Erhan Emir</span><br/>Maker &amp; Developer.</h1>
+      <p class="lead" data-i18n="hero_lead">Python, JavaScript, Dart/Flutter, Arduino, ESP32, EasyEDA ve 3D baskı ile hem yazılım hem donanım prototipleri üretiyorum.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projeler" data-i18n="cta_projects">Projeleri Gör →</a>
+        <a class="btn" href="#iletisim" data-i18n="cta_contact">Bana Ulaş</a>
+        <a class="btn" href="https://github.com/ErhanEmir?tab=repositories" target="_blank" rel="noopener">★ GitHub</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="repoCount">2+</b><span data-i18n="stat_repos">Açık kaynak repo</span></div>
+        <div class="stat"><b>10+</b><span data-i18n="stat_tech">Teknoloji</span></div>
+        <div class="stat"><b>∞</b><span data-i18n="stat_learn">Öğrenme isteği</span></div>
+      </div>
+    </div>
+    <aside class="card profile">
+      <div class="avatar" aria-hidden="true"><span class="chip"><i></i><i></i><i></i><i></i></span></div>
+      <h3>Erhan Emir</h3>
+      <p data-i18n="profile_role">Maker • Embedded &amp; Software • Türkiye</p>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">Flutter</span>
+        <span class="tag">Arduino</span><span class="tag">ESP32</span><span class="tag">EasyEDA</span><span class="tag">3D Print</span>
+      </div>
+      <div class="socials">
+        <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener">GitHub</a>
+        <a href="mailto:erhanemir32@hotmail.com">E-posta</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </aside>
+  </header>
 
-    <main>
-        <!-- Hero -->
-        <section id="hero">
-            <div class="hero-content fade-up">
-                <div class="avatar-ring"><i class="fas fa-microchip"></i></div>
-                <h1>Erhan Emir</h1>
-                <p class="tagline" data-i18n="hero_tagline">Yazılım Geliştirici &amp; Maker</p>
-                <p class="maker-label"><span data-i18n="hero_code">const passion = "embedded_systems + creative_coding";</span><span class="cursor-blink">|</span></p>
-                <div>
-                    <a href="#projects" class="btn btn-cyan" data-i18n="hero_cta1">Projelerimi Keşfet</a>
-                    <a href="#contact" class="btn btn-outline" data-i18n="hero_cta2">İletişime Geç</a>
-                </div>
-            </div>
-        </section>
+  <section id="hakkimda" class="fade">
+    <div class="sec-head"><div><h2 data-i18n="nav_about">Hakkımda</h2><p data-i18n="about_sub">Kısaca ben kimim, ne yapıyorum?</p></div></div>
+    <div class="card pad">
+      <p data-i18n-html="about_p1">Merhaba! Ben <b>Erhan Emir</b>. Kod yazmayı problem çözme, devre kurmayı da ürünü gerçek dünyaya taşımak olarak görüyorum. Web/mobil uygulamalar, gömülü sistemler, PCB tasarımı ve 3D baskı ile hem yazılım hem maker tarafında çalışıyorum.</p>
+      <p class="muted" data-i18n="about_p2">Odaklandıklarım: modern JavaScript, Python otomasyonları, Flutter, Arduino/ESP32, EasyEDA ile PCB ve Creality ile 3D prototipleme.</p>
+    </div>
+  </section>
 
-        <!-- About -->
-        <section id="about">
-            <div class="container">
-                <h2 class="section-title fade-up" data-i18n="nav_about">Hakkımda</h2>
-                <div class="about-grid">
-                    <div class="about-text fade-up">
-                        <p data-i18n="about_p1">Merhaba! Ben Erhan Emir, fiziksel dünyayı dijital dünyayla birleştirmeye tutkuyla bağlı bir geliştirici ve maker'ım.</p>
-                        <p data-i18n="about_p2">Gömülü sistemler, IoT projeleri ve 3D tasarım/baskı alanlarında deneyim kazanırken, aynı zamanda web ve mobil uygulamalar geliştirmeye de devam ediyorum. Teknolojiyi sadece kullanmıyor, onu oluşturup dönüştürüyorum.</p>
-                        <p data-i18n="about_p3">Arduino ve ESP32 tabanlı projelerden PCB tasarımı (EasyEDA) ve 3D baskıya kadar geniş bir yelpazede çalışıyorum. Kod yazmak, devre kurmak ve prototip üretmek benim için bir tutku.</p>
-                    </div>
-                    <div class="about-stats fade-up">
-                        <div class="stat-card glass-card">
-                            <i class="fas fa-code"></i>
-                            <h3 data-i18n="stat_code">5+</h3>
-                            <p data-i18n="stat_code_sub">Yazılım Projesi</p>
-                        </div>
-                        <div class="stat-card glass-card">
-                            <i class="fas fa-microchip"></i>
-                            <h3 data-i18n="stat_embedded">3+</h3>
-                            <p data-i18n="stat_embedded_sub">Gömülü Proje</p>
-                        </div>
-                        <div class="stat-card glass-card">
-                            <i class="fas fa-print"></i>
-                            <h3 data-i18n="stat_3d">10+</h3>
-                            <p data-i18n="stat_3d_sub">3D Baskı Tasarımı</p>
-                        </div>
-                        <div class="stat-card glass-card">
-                            <i class="fas fa-layer-group"></i>
-                            <h3 data-i18n="stat_pcb">2+</h3>
-                            <p data-i18n="stat_pcb_sub">PCB Tasarımı</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <section id="yetenekler" class="fade">
+    <div class="sec-head"><div><h2 data-i18n="nav_skills">Yetenekler</h2><p data-i18n="skills_sub">Yazılım + gömülü + üretim</p></div></div>
+    <div class="grid g3" id="skills"></div>
+  </section>
 
-        <!-- Skills -->
-        <section id="skills">
-            <div class="container">
-                <h2 class="section-title fade-up" data-i18n="nav_skills">Yetenekler</h2>
-                <div class="skills-grid fade-up">
-                    <div class="skill-card glass-card">
-                        <i class="fab fa-python"></i>
-                        <h3>Python</h3>
-                        <p class="skill-type" data-i18n="skill_scripting">Scripting / Otomasyon</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fab fa-js"></i>
-                        <h3>JavaScript</h3>
-                        <p class="skill-type" data-i18n="skill_web">Web Geliştirme</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fab fa-dart"></i>
-                        <h3>Dart</h3>
-                        <p class="skill-type" data-i18n="skill_mobile">Mobil Geliştirme</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fab fa-flutter"></i>
-                        <h3>Flutter</h3>
-                        <p class="skill-type" data-i18n="skill_cross_platform">Cross-Platform</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fas fa-copyright"></i>
-                        <h3>C++</h3>
-                        <p class="skill-type" data-i18n="skill_lowlevel">Düşük Seviye / Gömülü</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fas fa-microchip"></i>
-                        <h3>Arduino</h3>
-                        <p class="skill-type" data-i18n="skill_mcu">Mikrokontrolör</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fas fa-wifi"></i>
-                        <h3>ESP32 / ESP8266</h3>
-                        <p class="skill-type" data-i18n="skill_iot">IoT / Wi-Fi</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fab fa-html5"></i>
-                        <h3>HTML / CSS</h3>
-                        <p class="skill-type" data-i18n="skill_frontend">Front-End</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fas fa-project-diagram"></i>
-                        <h3>EasyEDA</h3>
-                        <p class="skill-type" data-i18n="skill_pcb">PCB Tasarımı</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fas fa-print"></i>
-                        <h3>3D Print</h3>
-                        <p class="skill-type">Creality / FDM</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fab fa-git-alt"></i>
-                        <h3>Git / GitHub</h3>
-                        <p class="skill-type" data-i18n="skill_version">Sürüm Kontrol</p>
-                    </div>
-                    <div class="skill-card glass-card">
-                        <i class="fas fa-terminal"></i>
-                        <h3>Linux</h3>
-                        <p class="skill-type" data-i18n="skill_devops">DevOps / Server</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <section id="projeler" class="fade">
+    <div class="sec-head">
+      <div><h2 data-i18n="nav_projects">Projeler</h2><p data-i18n="projects_sub">GitHub’daki gerçek repolar, canlı API ile</p></div>
+      <a class="link" href="https://github.com/ErhanEmir?tab=repositories" target="_blank" rel="noopener" data-i18n="projects_all">Tümü →</a>
+    </div>
+    <div class="grid g3" id="ghRepos"></div>
+  </section>
 
-        <!-- Projects -->
-        <section id="projects">
-            <div class="container">
-                <h2 class="section-title fade-up" data-i18n="nav_projects">Projeler</h2>
-                <div class="projects-grid fade-up" id="projectsGrid">
-                    <div class="loading-projects"><i class="fas fa-spinner"></i><p data-i18n="projects_loading">GitHub projeleri yükleniyor...</p></div>
-                </div>
-            </div>
-        </section>
+  <section id="iletisim" class="fade">
+    <div class="sec-head"><div><h2 data-i18n="nav_contact">İletişim</h2><p data-i18n="contact_sub">Proje, staj veya sadece merhaba için yazın</p></div></div>
+    <div class="grid g2">
+      <div class="card pad">
+        <h3 style="margin-top:0" data-i18n="contact_direct">Doğrudan ulaş</h3>
+        <p>✉ <a class="link" href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a></p>
+        <p>⌘ <a class="link" href="https://github.com/ErhanEmir" target="_blank" rel="noopener">github.com/ErhanEmir</a></p>
+        <p>in <a class="link" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></p>
+        <p class="muted" data-i18n="contact_reply">Genelde 1-2 gün içinde dönüş yaparım.</p>
+      </div>
+      <div class="card pad">
+        <h3 style="margin-top:0" data-i18n="contact_quick">Hızlı mesaj</h3>
+        <form id="contactForm">
+          <input id="fName" name="name" required data-i18n-placeholder="ph_name" placeholder="Adın" />
+          <input id="fMail" name="email" type="email" required data-i18n-placeholder="ph_email" placeholder="E-posta" />
+          <textarea id="fMsg" name="message" rows="4" required data-i18n-placeholder="ph_msg" placeholder="Mesajın"></textarea>
+          <button class="btn primary" type="submit" id="sendBtn" data-i18n="form_send">Gönder →</button>
+          <p class="muted" id="formStatus" style="margin:0;min-height:1.4em"></p>
+        </form>
+      </div>
+    </div>
+  </section>
 
-        <!-- Contact -->
-        <section id="contact">
-            <div class="container">
-                <h2 class="section-title fade-up" data-i18n="nav_contact">İletişim</h2>
-                <div class="contact-wrapper fade-up">
-                    <div class="glass-card">
-                        <form class="contact-form" action="https://formsubmit.co/erhanemir.dev@gmail.com" method="POST">
-                            <input type="hidden" name="_captcha" value="false">
-                            <input type="hidden" name="_template" value="table">
-                            <label for="name" data-i18n="form_name">Adınız</label>
-                            <input type="text" id="name" name="name" required>
-                            <label for="email" data-i18n="form_email">E-posta</label>
-                            <input type="email" id="email" name="email" required>
-                            <label for="message" data-i18n="form_message">Mesajınız</label>
-                            <textarea id="message" name="message" required></textarea>
-                            <button type="submit" data-i18n="form_submit">Mesaj Gönder</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+  <footer>
+    <div class="foot">
+      <span>© <span id="year"></span> Erhan Emir • <span data-i18n="footer">GitHub Pages ile yayında</span></span>
+      <a class="link" href="#top">↑ <span data-i18n="back_top">Başa dön</span></a>
+    </div>
+  </footer>
+</div>
 
-    <footer>
-        <div class="socials">
-            <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://linkedin.com/in/erhanemir" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+<script>
+const T = {
+  tr: {
+    nav_about:"Hakkımda", nav_skills:"Yetenekler", nav_projects:"Projeler", nav_contact:"İletişim",
+    hero_badge:"Maker & Developer • yeni projelere açığım",
+    hero_title:'Merhaba, ben <span class="grad">Erhan Emir</span><br/>Maker &amp; Developer.',
+    hero_lead:"Python, JavaScript, Dart/Flutter, Arduino, ESP32, EasyEDA ve 3D baskı ile hem yazılım hem donanım prototipleri üretiyorum.",
+    cta_projects:"Projeleri Gör →", cta_contact:"Bana Ulaş",
+    stat_repos:"Açık kaynak repo", stat_tech:"Teknoloji", stat_learn:"Öğrenme isteği",
+    profile_role:"Maker • Embedded & Software • Türkiye",
+    about_sub:"Kısaca ben kimim, ne yapıyorum?",
+    about_p1:'Merhaba! Ben <b>Erhan Emir</b>. Kod yazmayı problem çözme, devre kurmayı da ürünü gerçek dünyaya taşımak olarak görüyorum. Web/mobil uygulamalar, gömülü sistemler, PCB tasarımı ve 3D baskı ile hem yazılım hem maker tarafında çalışıyorum.',
+    about_p2:"Odaklandıklarım: modern JavaScript, Python otomasyonları, Flutter, Arduino/ESP32, EasyEDA ile PCB ve Creality ile 3D prototipleme.",
+    skills_sub:"Yazılım + gömülü + üretim",
+    projects_sub:"GitHub’daki gerçek repolar, canlı API ile", projects_all:"Tümü →",
+    contact_sub:"Proje, staj veya sadece merhaba için yazın",
+    contact_direct:"Doğrudan ulaş", contact_quick:"Hızlı mesaj",
+    contact_reply:"Genelde 1-2 gün içinde dönüş yaparım.",
+    ph_name:"Adın", ph_email:"E-posta", ph_msg:"Mesajın", form_send:"Gönder →",
+    footer:"GitHub Pages ile yayında", back_top:"Başa dön",
+    loading:"Yükleniyor…", empty:"Henüz public repo yok.", gh_err:"GitHub API yüklenemedi.",
+    sending:"Gönderiliyor…", sent:"✓ Mesaj gönderildi! 1-2 gün içinde döneceğim.",
+    send_fail:'Gönderilemedi. <a class="link" href="mailto:erhanemir32@hotmail.com">Mail uygulamasıyla gönder</a>meyi dene.',
+    nodesc:"Açıklama yok"
+  },
+  en: {
+    nav_about:"About", nav_skills:"Skills", nav_projects:"Projects", nav_contact:"Contact",
+    hero_badge:"Maker & Developer • open to new projects",
+    hero_title:'Hi, I\'m <span class="grad">Erhan Emir</span><br/>Maker &amp; Developer.',
+    hero_lead:"I build software and hardware prototypes with Python, JavaScript, Dart/Flutter, Arduino, ESP32, EasyEDA and 3D printing.",
+    cta_projects:"View Projects →", cta_contact:"Contact Me",
+    stat_repos:"Open-source repos", stat_tech:"Technologies", stat_learn:"Eagerness to learn",
+    profile_role:"Maker • Embedded & Software • Türkiye",
+    about_sub:"Who I am and what I build",
+    about_p1:'Hello! I\'m <b>Erhan Emir</b>. I treat coding as problem-solving and electronics as bringing products into the real world. I work across web/mobile, embedded systems, PCB design and 3D printing.',
+    about_p2:"Currently focused on modern JavaScript, Python automation, Flutter, Arduino/ESP32, EasyEDA PCB design and Creality 3D prototyping.",
+    skills_sub:"Software + embedded + fabrication",
+    projects_sub:"Real GitHub repos, loaded live from the API", projects_all:"All →",
+    contact_sub:"Write for projects, internships or just to say hi",
+    contact_direct:"Reach directly", contact_quick:"Quick message",
+    contact_reply:"I usually reply within 1–2 days.",
+    ph_name:"Your name", ph_email:"Email", ph_msg:"Your message", form_send:"Send →",
+    footer:"Hosted on GitHub Pages", back_top:"Back to top",
+    loading:"Loading…", empty:"No public repos yet.", gh_err:"Could not load GitHub API.",
+    sending:"Sending…", sent:"✓ Message sent! I’ll reply in 1–2 days.",
+    send_fail:'Could not send. <a class="link" href="mailto:erhanemir32@hotmail.com">Send via email app</a> instead.',
+    nodesc:"No description"
+  }
+};
+
+let lang = localStorage.getItem("lang") || ((navigator.language||"tr").startsWith("en") ? "en" : "tr");
+const skills = [
+  {n:"Python", t:{tr:"Scripting / otomasyon", en:"Scripting / automation"}, ico:"Py"},
+  {n:"JavaScript", t:{tr:"Web geliştirme", en:"Web development"}, ico:"JS"},
+  {n:"Dart", t:{tr:"Mobil geliştirme", en:"Mobile development"}, ico:"Dt"},
+  {n:"Flutter", t:{tr:"Cross-platform", en:"Cross-platform"}, ico:"Fl"},
+  {n:"C++", t:{tr:"Düşük seviye / gömülü", en:"Low-level / embedded"}, ico:"C+"},
+  {n:"Arduino", t:{tr:"Mikrokontrolör", en:"Microcontroller"}, ico:"Ar"},
+  {n:"ESP32 / ESP8266", t:{tr:"IoT / Wi-Fi", en:"IoT / Wi-Fi"}, ico:"ES"},
+  {n:"HTML / CSS", t:{tr:"Front-end", en:"Front-end"}, ico:"//"},
+  {n:"EasyEDA", t:{tr:"PCB tasarımı", en:"PCB design"}, ico:"PCB"},
+  {n:"3D Print", t:{tr:"Creality / FDM", en:"Creality / FDM"}, ico:"3D"},
+  {n:"Git / GitHub", t:{tr:"Sürüm kontrol", en:"Version control"}, ico:"Git"}
+];
+
+function applyLang(l){
+  lang = l;
+  document.documentElement.lang = l;
+  localStorage.setItem("lang", l);
+  document.getElementById("btnTR").classList.toggle("active", l==="tr");
+  document.getElementById("btnEN").classList.toggle("active", l==="en");
+  document.querySelectorAll("[data-i18n]").forEach(el => { if(T[l][el.dataset.i18n]) el.textContent = T[l][el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { if(T[l][el.dataset.i18nHtml]) el.innerHTML = T[l][el.dataset.i18nHtml]; });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { if(T[l][el.dataset.i18nPlaceholder]) el.placeholder = T[l][el.dataset.i18nPlaceholder]; });
+  document.getElementById("skills").innerHTML = skills.map(s =>
+    `<div class="card pad skill"><div class="skill-ico">${s.ico}</div><b>${s.n}</b><span class="muted">${s.t[l]}</span></div>`
+  ).join("");
+}
+document.getElementById("btnTR").onclick = () => applyLang("tr");
+document.getElementById("btnEN").onclick = () => applyLang("en");
+applyLang(lang);
+
+document.getElementById("hamBtn").onclick = () => document.getElementById("menu").classList.toggle("open");
+document.querySelectorAll("#menu a").forEach(a => a.onclick = () => document.getElementById("menu").classList.remove("open"));
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const colors = {JavaScript:"#f1e05a",Python:"#3572A5",Dart:"#00B4AB",HTML:"#e34c26",CSS:"#563d7c","C++":"#f34b7d",C:"#555555"};
+const box = document.getElementById("ghRepos");
+box.innerHTML = `<div class="card pad muted">${T[lang].loading}</div>`;
+fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100")
+  .then(r => r.json())
+  .then(data => {
+    if(!Array.isArray(data)) throw new Error("bad");
+    const repos = data.filter(r => !r.fork && !r.archived);
+    document.getElementById("repoCount").textContent = repos.length + "+";
+    if(!repos.length){ box.innerHTML = `<div class="card pad muted">${T[lang].empty}</div>`; return; }
+    box.innerHTML = repos.map(r => `
+      <div class="card pad proj">
+        <div class="proj-top"><span class="dot" style="background:${colors[r.language]||"#22d3ee"}"></span><b>${r.language||"Repo"}</b></div>
+        <h3>${r.name}</h3>
+        <p>${r.description || T[lang].nodesc}</p>
+        <div class="meta"><span>${r.language||"—"}</span><span>★ ${r.stargazers_count}</span></div>
+        <div class="proj-actions">
+          ${r.homepage ? `<a class="btn" href="${r.homepage}" target="_blank" rel="noopener">Live ↗</a>` : ""}
+          <a class="btn" href="${r.html_url}" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
-        <p data-i18n="footer_copy">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</p>
-    </footer>
+      </div>`).join("");
+  })
+  .catch(() => { box.innerHTML = `<div class="card pad muted">${T[lang].gh_err}</div>`; });
 
-    <script>
-        // ===================== i18n =====================
-        const translations = {
-            tr: {
-                nav_home: "Anasayfa",
-                nav_about: "Hakkımda",
-                nav_skills: "Yetenekler",
-                nav_projects: "Projeler",
-                nav_contact: "İletişim",
-                hero_tagline: "Yazılım Geliştirici & Maker",
-                hero_code: 'const passion = "embedded_systems + creative_coding";',
-                hero_cta1: "Projelerimi Keşfet",
-                hero_cta2: "İletişime Geç",
-                about_p1: "Merhaba! Ben Erhan Emir, fiziksel dünyayı dijital dünyayla birleştirmeye tutkuyla bağlı bir geliştirici ve maker'ım.",
-                about_p2: "Gömülü sistemler, IoT projeleri ve 3D tasarım/baskı alanlarında deneyim kazanırken, aynı zamanda web ve mobil uygulamalar geliştirmeye de devam ediyorum. Teknolojiyi sadece kullanmıyor, onu oluşturup dönüştürüyorum.",
-                about_p3: "Arduino ve ESP32 tabanlı projelerden PCB tasarımı (EasyEDA) ve 3D baskıya kadar geniş bir yelpazede çalışıyorum. Kod yazmak, devre kurmak ve prototip üretmek benim için bir tutku.",
-                stat_code: "5+",
-                stat_code_sub: "Yazılım Projesi",
-                stat_embedded: "3+",
-                stat_embedded_sub: "Gömülü Proje",
-                stat_3d: "10+",
-                stat_3d_sub: "3D Baskı Tasarımı",
-                stat_pcb: "2+",
-                stat_pcb_sub: "PCB Tasarımı",
-                skill_scripting: "Scripting / Otomasyon",
-                skill_web: "Web Geliştirme",
-                skill_mobile: "Mobil Geliştirme",
-                skill_cross_platform: "Cross-Platform",
-                skill_lowlevel: "Düşük Seviye / Gömülü",
-                skill_mcu: "Mikrokontrolör",
-                skill_iot: "IoT / Wi-Fi",
-                skill_frontend: "Front-End",
-                skill_pcb: "PCB Tasarımı",
-                skill_version: "Sürüm Kontrol",
-                skill_devops: "DevOps / Server",
-                projects_loading: "GitHub projeleri yükleniyor...",
-                project_forks: "fork",
-                project_stars: "star",
-                project_updated: "güncellendi",
-                form_name: "Adınız",
-                form_email: "E-posta",
-                form_message: "Mesajınız",
-                form_submit: "Mesaj Gönder",
-                footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
-            },
-            en: {
-                nav_home: "Home",
-                nav_about: "About",
-                nav_skills: "Skills",
-                nav_projects: "Projects",
-                nav_contact: "Contact",
-                hero_tagline: "Software Developer & Maker",
-                hero_code: 'const passion = "embedded_systems + creative_coding";',
-                hero_cta1: "Explore My Projects",
-                hero_cta2: "Get In Touch",
-                about_p1: "Hello! I'm Erhan Emir, a developer and maker passionate about bridging the physical and digital worlds.",
-                about_p2: "While gaining experience in embedded systems, IoT projects, and 3D design/printing, I also continue developing web and mobile applications. I don't just use technology—I create and transform it.",
-                about_p3: "I work across a wide range of areas, from Arduino and ESP32-based projects to PCB design (EasyEDA) and 3D printing. Coding, circuit building, and prototyping are my passion.",
-                stat_code: "5+",
-                stat_code_sub: "Software Projects",
-                stat_embedded: "3+",
-                stat_embedded_sub: "Embedded Projects",
-                stat_3d: "10+",
-                stat_3d_sub: "3D Print Designs",
-                stat_pcb: "2+",
-                stat_pcb_sub: "PCB Designs",
-                skill_scripting: "Scripting / Automation",
-                skill_web: "Web Development",
-                skill_mobile: "Mobile Development",
-                skill_cross_platform: "Cross-Platform",
-                skill_lowlevel: "Low-Level / Embedded",
-                skill_mcu: "Microcontroller",
-                skill_iot: "IoT / Wi-Fi",
-                skill_frontend: "Front-End",
-                skill_pcb: "PCB Design",
-                skill_version: "Version Control",
-                skill_devops: "DevOps / Server",
-                projects_loading: "Loading GitHub projects...",
-                project_forks: "forks",
-                project_stars: "stars",
-                project_updated: "updated",
-                form_name: "Your Name",
-                form_email: "Your Email",
-                form_message: "Your Message",
-                form_submit: "Send Message",
-                footer_copy: "© 2026 Erhan Emir. All rights reserved."
-            }
-        };
+document.getElementById("contactForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const status = document.getElementById("formStatus"), btn = document.getElementById("sendBtn");
+  status.textContent = T[lang].sending; btn.disabled = true;
+  try{
+    const res = await fetch("https://formsubmit.co/ajax/erhanemir32@hotmail.com", {
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify({
+        name: document.getElementById("fName").value,
+        email: document.getElementById("fMail").value,
+        message: document.getElementById("fMsg").value,
+        _subject: "erhanemir.github.io — yeni mesaj",
+        _template: "table"
+      })
+    });
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    status.textContent = T[lang].sent;
+    e.target.reset();
+  }catch(err){
+    status.innerHTML = T[lang].send_fail;
+  }finally{ btn.disabled = false; }
+});
 
-        let currentLang = localStorage.getItem("portfolioLang") || "tr";
-
-        function applyLang(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            localStorage.setItem("portfolioLang", lang);
-            document.getElementById("btnTR").classList.toggle("active", lang === "tr");
-            document.getElementById("btnEN").classList.toggle("active", lang === "en");
-            document.querySelectorAll("[data-i18n]").forEach(el => {
-                const key = el.getAttribute("data-i18n");
-                if (translations[lang][key]) el.innerHTML = translations[lang][key];
-            });
-        }
-
-        document.getElementById("langToggle").addEventListener("click", () => {
-            applyLang(currentLang === "tr" ? "en" : "tr");
-        });
-
-        applyLang(currentLang);
-
-        // ===================== GitHub API =====================
-        const langColors = {
-            JavaScript: "#f1e05a", Python: "#3572A5", C: "#555555", "C++": "#f34b7d",
-            Dart: "#00B4AB", HTML: "#e34c26", CSS: "#563d7c", Shell: "#89e051",
-            Jupyter: "#DA5B0B", TypeScript: "#2b7489", Rust: "#dea584"
-        };
-
-        async function loadProjects() {
-            const grid = document.getElementById("projectsGrid");
-            try {
-                const res = await fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100");
-                const repos = await res.json();
-                if (!Array.isArray(repos) || repos.length === 0) {
-                    grid.innerHTML = `<p class="loading-projects" data-i18n="projects_empty">Henüz proje bulunamadı.</p>`;
-                    return;
-                }
-                const filtered = repos.filter(r => !r.fork && !r.archived).sort((a, b) => b.stargazers_count - a.stargazers_count);
-                if (filtered.length === 0) {
-                    grid.innerHTML = `<p class="loading-projects" data-i18n="projects_empty">Henüz proje bulunamadı.</p>`;
-                    return;
-                }
-                grid.innerHTML = filtered.map(r => {
-                    const lang = r.language || "N/A";
-                    const color = langColors[lang] || "#888";
-                    const updated = new Date(r.pushed_at || r.updated_at).toLocaleDateString(currentLang === "tr" ? "tr-TR" : "en-US", { year: "numeric", month: "short", day: "numeric" });
-                    return `
-                    <div class="project-card glass-card">
-                        <div class="project-header">
-                            <i class="fas fa-folder${r.private ? '' : ''}"></i>
-                            <h3>${r.name}</h3>
-                            <span class="stars"><i class="fas fa-star"></i> ${r.stargazers_count}</span>
-                        </div>
-                        <div class="project-body">
-                            <p>${r.description || (currentLang === "tr" ? "Açıklama yok" : "No description")}</p>
-                            <div class="lang-bar"><div class="lang-fill" style="width:100%;background:${color}"></div></div>
-                            <small style="color:var(--text-secondary)">${lang} · ${updated}</small>
-                        </div>
-                        <div class="project-footer">
-                            ${r.topics ? r.topics.map(t => `<span class="badge">${t}</span>`).join('') : ''}
-                            <div class="project-links">
-                                ${r.homepage ? `<a href="${r.homepage}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i></a>` : ''}
-                                <a href="${r.html_url}" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                    </div>`;
-                }).join('');
-            } catch (e) {
-                grid.innerHTML = `<p class="loading-projects" style="color:var(--text-secondary)">GitHub API hatası. <a href="https://github.com/ErhanEmir?tab=repositories" target="_blank">GitHub'da gör</a></p>`;
-            }
-        }
-
-        loadProjects();
-
-        // ===================== Fade-in Observer =====================
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } });
-        }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-        document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
-
-        // ===================== Active nav on scroll =====================
-        const sections = document.querySelectorAll("section[id]");
-        window.addEventListener("scroll", () => {
-            let current = "";
-            sections.forEach(s => {
-                if (window.scrollY >= s.offsetTop - 100) current = s.id;
-            });
-            document.querySelectorAll(".nav-links a").forEach(a => {
-                a.classList.toggle("active", a.getAttribute("href") === "#" + current);
-            });
-        });
-    </script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add("show"); io.unobserve(en.target); } });
+}, {threshold:0.08});
+document.querySelectorAll(".fade").forEach(el => io.observe(el));
+</script>
 </body>
 </html>
