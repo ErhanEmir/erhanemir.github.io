@@ -1,13 +1,13 @@
-# Erhan Emir — Kişisel Site (ErhaEmir.github.io)
+# Erhan Emir — Kişisel Site (ErhanEmir.github.io)
 
 Modern koyu temalı, TR/EN dilli, tek dosyalık (`index.html`) kişisel portfolyo.
 Hakkımda • Yetenekler • Projeler (GitHub API'den canlı) • Yazılar • İletişim.
 
 ## Yayınlama (GitHub Pages)
 
-Bu klasördeki siteyi `https://ErhaEmir.github.io` adresinde yayınlamak için:
+Bu klasördeki siteyi `https://ErhanEmir.github.io` adresinde yayınlamak için:
 
-1. GitHub'da **yeni repo** aç, adı tam olarak: `ErhaEmir.github.io` (Public)
+1. GitHub'da **yeni repo** aç, adı tam olarak: `ErhanEmir.github.io` (Public)
 2. Bu klasörü o repoya push'la:
 ```powershell
 cd C:\Users\eminb\Desktop\projeler\githubio
@@ -15,7 +15,7 @@ git init
 git add .
 git commit -m "Kisisel site ilk surum"
 git branch -M main
-git remote add origin https://github.com/ErhaEmir/ErhaEmir.github.io.git
+git remote add origin https://github.com/ErhanEmir/ErhanEmir.github.io.git
 git push -u origin main
 ```
 3. Repo → **Settings → Pages** → Deploy from branch → `main` / `/ (root)` seç. 1-2 dk sonra yayında.
