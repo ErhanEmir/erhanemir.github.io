@@ -260,11 +260,14 @@ html[data-lang="en"] .only-en-inline{display:inline}
       </div>
       <div class="card pad">
         <h3 style="margin-top:0">📝 <span lang="tr">Hızlı mesaj</span><span lang="en">Quick message</span></h3>
-        <form onsubmit="return sendMail(event)">
-          <input id="fName" required placeholder="Adın / Your name" />
-          <input id="fMail" type="email" required placeholder="E-posta / Email" />
-          <textarea id="fMsg" rows="4" required placeholder="Mesajın / Your message"></textarea>
-          <button class="btn primary" type="submit"><span lang="tr">Mail Uygulamasında Aç</span><span lang="en">Open in Mail App</span></button>
+        <form id="contactForm">
+          <input id="fName" name="name" required placeholder="Adın / Your name" />
+          <input id="fMail" name="email" type="email" required placeholder="E-posta / Email" />
+          <textarea id="fMsg" name="message" rows="4" required placeholder="Mesajın / Your message"></textarea>
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+          <button class="btn primary" type="submit" id="sendBtn"><span lang="tr">Gönder →</span><span lang="en">Send →</span></button>
+          <p class="muted" id="formStatus" style="margin:0;min-height:1.4em"></p>
+          <small class="muted"><span lang="tr">Not: ilk mesajdan sonra e-postana gelen FormSubmit aktivasyon linkine bir kez tıklaman gerekir.</span><span lang="en">Note: after the first message, click the FormSubmit activation link in your inbox once.</span></small>
         </form>
       </div>
     </div>
@@ -307,13 +310,30 @@ document.getElementById('skills').innerHTML=skills.map(s=>
 // Yıl
 document.getElementById('year').textContent=new Date().getFullYear();
 
-// Mail formu
-function sendMail(e){
+// Doğrudan mail gönderimi (FormSubmit AJAX — backendsiz, GitHub Pages uyumlu)
+document.getElementById('contactForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-  const n=document.getElementById('fName').value, m=document.getElementById('fMail').value, b=document.getElementById('fMsg').value;
-  location.href=`mailto:erhanemir32@hotmail.com?subject=${encodeURIComponent('Site mesajı: '+n+' ('+m+')')}&body=${encodeURIComponent(b)}`;
-  return false;
-}
+  const status=document.getElementById('formStatus'), btn=document.getElementById('sendBtn');
+  const isEN=root.dataset.lang==='en';
+  status.textContent=isEN?'Sending…':'Gönderiliyor…'; btn.disabled=true;
+  try{
+    const res=await fetch('https://formsubmit.co/ajax/erhanemir32@hotmail.com',{
+      method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        name:document.getElementById('fName').value,
+        email:document.getElementById('fMail').value,
+        message:document.getElementById('fMsg').value,
+        _subject:'erhaemir.github.io — yeni mesaj',
+        _template:'table'
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    status.textContent=isEN?'✓ Message sent! I’ll reply in 1–2 days.':'✓ Mesaj gönderildi! 1-2 gün içinde döneceğim.';
+    e.target.reset();
+  }catch(err){
+    status.innerHTML=(isEN?'Could not send. <a class="link" href="mailto:erhanemir32@hotmail.com">Send via email app</a> instead.':'Gönderilemedi. <a class="link" href="mailto:erhanemir32@hotmail.com">Mail uygulamasıyla gönder</a>meyi dene.');
+  }finally{btn.disabled=false;}
+});
 
 // GitHub canlı repolar + sayaç
 fetch('https://api.github.com/users/ErhaEmir/repos?sort=updated&per_page=6')
