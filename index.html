@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Erhan Emir — Developer</title>
+<meta name="description" content="Erhan Emir — Developer. Python, JavaScript, Dart/Flutter, Arduino ve web teknolojileriyle projeler geliştiriyorum." />
+<meta property="og:title" content="Erhan Emir — Developer" />
+<meta property="og:description" content="Kişisel portfolyo: hakkımda, yetenekler, projeler, yazılar ve iletişim." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236366f1'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>E</text></svg>" />
+<style>
+:root{
+  --bg:#0b1020; --bg2:#111832; --card:#151d3a; --card2:#1a2450;
+  --text:#eef2ff; --muted:#9aa6c7; --line:rgba(255,255,255,.1);
+  --accent:#6366f1; --accent2:#22d3ee; --green:#34d399;
+  --radius:18px; --max:1080px;
+  --shadow:0 20px 60px rgba(0,0,0,.4);
+}
+[data-theme="light"]{
+  --bg:#f6f7fb; --bg2:#ffffff; --card:#ffffff; --card2:#eef2ff;
+  --text:#0f172a; --muted:#53607a; --line:rgba(15,23,42,.12);
+  --shadow:0 16px 40px rgba(15,23,42,.1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:ui-sans-system,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 80% -10%,rgba(99,102,241,.35),transparent),
+             radial-gradient(900px 500px at 10% 0%,rgba(34,211,238,.22),transparent),var(--bg);
+  color:var(--text); line-height:1.65;
+}
+a{color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+/* NAV */
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;text-decoration:none}
+.logo-mark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.links{margin-left:auto;display:flex;gap:18px;align-items:center}
+.links a{text-decoration:none;color:var(--muted);font-weight:600;font-size:.95rem}
+.links a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 16px;border-radius:999px;font-weight:700;text-decoration:none;cursor:pointer;transition:.2s}
+.btn:hover{transform:translateY(-1px);border-color:var(--accent)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),#8b5cf6);border:none;color:#fff;box-shadow:0 10px 30px rgba(99,102,241,.4)}
+.icon-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:999px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:1rem}
+.hamburger{display:none;margin-left:auto}
+/* HERO */
+.hero{padding:84px 0 30px;display:grid;grid-template-columns:1.3fr .7fr;gap:34px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;color:var(--green);background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.3);padding:7px 14px;border-radius:999px}
+h1{font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.08;margin:18px 0 12px;letter-spacing:-.03em}
+.grad{background:linear-gradient(90deg,var(--accent2),var(--accent),#e879f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:1.1rem;max-width:56ch}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.stats{display:flex;gap:26px;margin-top:30px;flex-wrap:wrap}
+.stat b{font-size:1.4rem;display:block}
+.stat span{color:var(--muted);font-size:.9rem}
+.card{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.profile{padding:28px;text-align:center}
+.avatar{width:128px;height:128px;margin:0 auto;border-radius:32px;display:grid;place-items:center;font-size:3rem;font-weight:900;color:#fff;background:linear-gradient(135deg,#6366f1,#22d3ee,#34d399)}
+.profile h3{margin:16px 0 4px}
+.profile p{color:var(--muted);margin:0 0 16px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tag{font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:999px;background:rgba(99,102,241,.14);border:1px solid rgba(99,102,241,.35)}
+.socials{display:flex;gap:10px;justify-content:center;margin-top:18px}
+.socials a{text-decoration:none;font-weight:700;font-size:.9rem;padding:9px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card2)}
+/* SECTIONS */
+section{padding:44px 0}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:20px}
+.sec-head h2{margin:0;font-size:1.7rem;letter-spacing:-.02em}
+.sec-head p{margin:4px 0 0;color:var(--muted)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+.pad{padding:24px}
+.muted{color:var(--muted)}
+.skill-bar{height:8px;background:rgba(127,140,180,.25);border-radius:999px;overflow:hidden;margin-top:10px}
+.skill-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}
+.proj{display:flex;flex-direction:column;gap:10px}
+.proj-top{display:flex;align-items:center;gap:10px}
+.dot{width:12px;height:12px;border-radius:99px}
+.proj h3{margin:6px 0}
+.proj p{color:var(--muted);margin:0;flex:1}
+.meta{display:flex;gap:10px;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.meta span{border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+.proj-actions{display:flex;gap:10px;margin-top:8px}
+.link{font-weight:800;text-decoration:none}
+.link:hover{text-decoration:underline}
+.post small{color:var(--muted)}
+form{display:grid;gap:12px}
+input,textarea{background:var(--bg);border:1px solid var(--line);color:var(--text);padding:13px 15px;border-radius:14px;font:inherit;width:100%}
+input:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);margin-top:20px}
+.foot{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+/* LANG: varsayılan TR göster, EN gizle */
+[lang="en"]{display:none}
+html[data-lang="en"] [lang="en"]{display:revert}
+html[data-lang="en"] [lang="tr"]{display:none}
+html[data-lang="en"] .only-en-inline{display:inline}
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;padding-top:48px}
+  .links{display:none;position:absolute;top:64px;left:12px;right:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;flex-direction:column;align-items:stretch}
+  .links.open{display:flex}
+  .hamburger{display:grid}
+  .g2,.g3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#top"><span class="logo-mark">E</span><span>erhanemir.dev</span></a>
+    <div class="links" id="menu">
+      <a href="#hakkimda"><span lang="tr">Hakkımda</span><span lang="en">About</span></a>
+      <a href="#yetenekler"><span lang="tr">Yetenekler</span><span lang="en">Skills</span></a>
+      <a href="#projeler"><span lang="tr">Projeler</span><span lang="en">Projects</span></a>
+      <a href="#yazilar"><span lang="tr">Yazılar</span><span lang="en">Blog</span></a>
+      <a href="#iletisim"><span lang="tr">İletişim</span><span lang="en">Contact</span></a>
+      <a class="btn" href="https://github.com/ErhaEmir" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <div style="display:flex;gap:8px;margin-left:auto" id="navBtns">
+      <button class="icon-btn" id="langBtn" title="TR/EN">TR</button>
+      <button class="icon-btn" id="themeBtn" title="Tema">◐</button>
+      <button class="icon-btn hamburger" id="hamBtn" title="Menü">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <span class="badge">● <span lang="tr">Yeni projelere açığım</span><span lang="en">Open to new projects</span></span>
+      <h1><span lang="tr">Merhaba, ben <span class="grad">Erhan Emir</span><br/>Developer.</span><span lang="en">Hi, I'm <span class="grad">Erhan Emir</span><br/>Developer.</span></h1>
+      <p class="lead">
+        <span lang="tr">Python, JavaScript, Dart/Flutter ve Arduino ile pratik, hızlı ve sade ürünler yapıyorum. Öğrenmeyi, denemeyi ve paylaşmayı seviyorum.</span>
+        <span lang="en">I build practical, fast and simple products with Python, JavaScript, Dart/Flutter and Arduino. I love learning, experimenting and sharing.</span>
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="#projeler"><span lang="tr">Projeleri Gör →</span><span lang="en">View Projects →</span></a>
+        <a class="btn" href="#iletisim"><span lang="tr">Bana Ulaş</span><span lang="en">Contact Me</span></a>
+        <a class="btn" href="https://github.com/ErhaEmir?tab=repositories" target="_blank" rel="noopener">★ GitHub</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="repoCount">1+</b><span lang="tr">Açık kaynak repo</span><span lang="en">Open-source repos</span></div>
+        <div class="stat"><b>6+</b><span lang="tr">Teknoloji</span><span lang="en">Technologies</span></div>
+        <div class="stat"><b>∞</b><span lang="tr">Öğrenme isteği</span><span lang="en">Eagerness to learn</span></div>
+      </div>
+    </div>
+    <aside class="card profile">
+      <div class="avatar">EE</div>
+      <h3>Erhan Emir</h3>
+      <p><span lang="tr">Yazılım Geliştirici • Türkiye</span><span lang="en">Software Developer • Türkiye</span></p>
+      <div class="tags"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">Flutter</span><span class="tag">HTML/CSS</span><span class="tag">Arduino</span></div>
+      <div class="socials">
+        <a href="https://github.com/ErhaEmir" target="_blank" rel="noopener">GitHub</a>
+        <a href="mailto:erhanemir32@hotmail.com">E-posta</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </aside>
+  </header>
+
+  <!-- HAKKIMDA -->
+  <section id="hakkimda">
+    <div class="sec-head"><div><h2><span lang="tr">Hakkımda</span><span lang="en">About</span></h2><p><span lang="tr">Kısaca ben kimim, ne yapıyorum?</span><span lang="en">Who am I, what do I do?</span></p></div></div>
+    <div class="grid g2">
+      <div class="card pad">
+        <p><span lang="tr">Merhaba! Ben <b>Erhan Emir</b>. Kod yazmayı bir problem çözme oyunu gibi görüyorum. Web uygulamaları, mobil denemeler (Flutter), küçük otomasyonlar ve Arduino projeleriyle uğraşıyorum. Bu siteyi hem portfolyo hem de öğrendiklerimi paylaştığım bir alan olarak kullanıyorum.</span><span lang="en">Hello! I'm <b>Erhan Emir</b>. I see coding as a problem-solving game. I work on web apps, mobile experiments (Flutter), small automations and Arduino projects. I use this site both as a portfolio and a place to share what I learn.</span></p>
+        <p class="muted"><span lang="tr">Şu an odaklandıklarım: modern JavaScript, Python otomasyonları ve Flutter ile mobil geliştirme.</span><span lang="en">Currently focused on: modern JavaScript, Python automation, and mobile development with Flutter.</span></p>
+      </div>
+      <div class="card pad">
+        <h3 style="margin-top:0">🎯 <span lang="tr">Hedefler</span><span lang="en">Goals</span></h3>
+        <ul>
+          <li><span lang="tr">Temiz, hızlı ve erişilebilir web siteleri yapmak</span><span lang="en">Build clean, fast and accessible websites</span></li>
+          <li><span lang="tr">Açık kaynak projelere düzenli katkı sağlamak</span><span lang="en">Contribute regularly to open source</span></li>
+          <li><span lang="tr">Öğrendiklerimi Türkçe/İngilizce yazılarla paylaşmak</span><span lang="en">Share learnings in Turkish/English posts</span></li>
+        </ul>
+        <h3>📍 <span lang="tr">Konum / Durum</span><span lang="en">Location / Status</span></h3>
+        <p class="muted" style="margin:0"><span lang="tr">Türkiye • Freelance / Junior rollere açık</span><span lang="en">Türkiye • Open to freelance / junior roles</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- YETENEKLER -->
+  <section id="yetenekler">
+    <div class="sec-head"><div><h2><span lang="tr">Yetenekler</span><span lang="en">Skills</span></h2><p><span lang="tr">Kullandığım teknolojiler</span><span lang="en">Technologies I use</span></p></div></div>
+    <div class="grid g3" id="skills"></div>
+  </section>
+
+  <!-- PROJELER -->
+  <section id="projeler">
+    <div class="sec-head">
+      <div><h2><span lang="tr">Projeler</span><span lang="en">Projects</span></h2><p><span lang="tr">Öne çıkan çalışmalar + GitHub'dan canlı liste</span><span lang="en">Featured work + live list from GitHub</span></p></div>
+      <a class="link" href="https://github.com/ErhaEmir?tab=repositories" target="_blank" rel="noopener"><span lang="tr">Tümü →</span><span lang="en">All →</span></a>
+    </div>
+    <div class="grid g3">
+      <div class="card pad proj">
+        <div class="proj-top"><span class="dot" style="background:#22d3ee"></span><b>Dart / Flutter</b></div>
+        <h3>indir-gitsin</h3>
+        <p><span lang="tr">Dart ile geliştirilen açık kaynak proje. İndirme / yönetim akışları denemesi.</span><span lang="en">Open-source project built with Dart. Download / management flow experiment.</span></p>
+        <div class="meta"><span>Dart</span><span>Open Source</span></div>
+        <div class="proj-actions"><a class="btn" href="https://github.com/ErhaEmir/indir-gitsin" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+      <div class="card pad proj">
+        <div class="proj-top"><span class="dot" style="background:#6366f1"></span><b>Web</b></div>
+        <h3>erhaemir.github.io</h3>
+        <p><span lang="tr">Bu kişisel site. Sıfır build, tek dosya, TR/EN destekli, GitHub Pages ile yayında.</span><span lang="en">This personal site. Zero-build, single file, TR/EN support, hosted on GitHub Pages.</span></p>
+        <div class="meta"><span>HTML</span><span>CSS</span><span>JS</span></div>
+        <div class="proj-actions"><a class="btn" href="https://github.com/ErhaEmir" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+      <div class="card pad proj">
+        <div class="proj-top"><span class="dot" style="background:#34d399"></span><b>Arduino / IoT</b></div>
+        <h3><span lang="tr">Arduino Denemeleri</span><span lang="en">Arduino Experiments</span></h3>
+        <p><span lang="tr">Sensörler, LED kontrolü ve küçük otomasyonlar. Yakında repo olarak eklenecek.</span><span lang="en">Sensors, LED control and small automations. Coming soon as repos.</span></p>
+        <div class="meta"><span>Arduino</span><span>C++</span><span>Yakında</span></div>
+        <div class="proj-actions"><a class="btn" href="#iletisim"><span lang="tr">Bilgi Al</span><span lang="en">Ask More</span></a></div>
+      </div>
+    </div>
+    <div class="card pad" style="margin-top:16px">
+      <h3 style="margin:0 0 8px">⚡ <span lang="tr">GitHub'dan canlı</span><span lang="en">Live from GitHub</span> <small class="muted">@ErhaEmir</small></h3>
+      <div id="ghRepos" class="muted"><span lang="tr">Yükleniyor…</span><span lang="en">Loading…</span></div>
+    </div>
+  </section>
+
+  <!-- YAZILAR -->
+  <section id="yazilar">
+    <div class="sec-head"><div><h2><span lang="tr">Yazılar</span><span lang="en">Blog</span></h2><p><span lang="tr">Öğrenirken aldığım notlar</span><span lang="en">Notes while learning</span></p></div></div>
+    <div class="grid g3">
+      <article class="card pad post">
+        <small>2026-09-05 • 4 <span lang="tr">dk</span><span lang="en">min</span></small>
+        <h3><span lang="tr">GitHub Pages ile 5 dakikada kişisel site</span><span lang="en">Personal site in 5 minutes with GitHub Pages</span></h3>
+        <p class="muted"><span lang="tr">Repo adı, Pages ayarı ve özel domain olmadan yayınlama adımları.</span><span lang="en">Repo naming, Pages settings and publishing without a custom domain.</span></p>
+        <a class="link" href="#iletisim"><span lang="tr">Yakında →</span><span lang="en">Soon →</span></a>
+      </article>
+      <article class="card pad post">
+        <small>2026-08-20 • 6 <span lang="tr">dk</span><span lang="en">min</span></small>
+        <h3><span lang="tr">Flutter'a başlarken: ilk 10 kavram</span><span lang="en">Starting Flutter: first 10 concepts</span></h3>
+        <p class="muted"><span lang="tr">Widget, state, pubspec ve sıcak yeniden yükleme üzerine pratik notlar.</span><span lang="en">Practical notes on widgets, state, pubspec and hot reload.</span></p>
+        <a class="link" href="#iletisim"><span lang="tr">Yakında →</span><span lang="en">Soon →</span></a>
+      </article>
+      <article class="card pad post">
+        <small>2026-08-02 • 5 <span lang="tr">dk</span><span lang="en">min</span></small>
+        <h3><span lang="tr">Arduino ile ilk sensör projesi</span><span lang="en">First sensor project with Arduino</span></h3>
+        <p class="muted"><span lang="tr">Gerekli malzemeler, devre şeması mantığı ve örnek kod yapısı.</span><span lang="en">Parts list, circuit logic and sample code structure.</span></p>
+        <a class="link" href="#iletisim"><span lang="tr">Yakında →</span><span lang="en">Soon →</span></a>
+      </article>
+    </div>
+  </section>
+
+  <!-- İLETİŞİM -->
+  <section id="iletisim">
+    <div class="sec-head"><div><h2><span lang="tr">İletişim</span><span lang="en">Contact</span></h2><p><span lang="tr">Proje, staj veya sadece merhaba için yazın</span><span lang="en">Write for projects, internships or just to say hi</span></p></div></div>
+    <div class="grid g2">
+      <div class="card pad">
+        <h3 style="margin-top:0">✉️ <span lang="tr">Doğrudan ulaş</span><span lang="en">Reach directly</span></h3>
+        <p>📧 <a class="link" href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a></p>
+        <p>💻 <a class="link" href="https://github.com/ErhaEmir" target="_blank" rel="noopener">github.com/ErhaEmir</a></p>
+        <p>🔗 <a class="link" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn <span lang="tr">(ekle)</span><span lang="en">(add yours)</span></a></p>
+        <p class="muted"><span lang="tr">Genelde 1-2 gün içinde dönüş yaparım.</span><span lang="en">I usually reply within 1-2 days.</span></p>
+      </div>
+      <div class="card pad">
+        <h3 style="margin-top:0">📝 <span lang="tr">Hızlı mesaj</span><span lang="en">Quick message</span></h3>
+        <form onsubmit="return sendMail(event)">
+          <input id="fName" required placeholder="Adın / Your name" />
+          <input id="fMail" type="email" required placeholder="E-posta / Email" />
+          <textarea id="fMsg" rows="4" required placeholder="Mesajın / Your message"></textarea>
+          <button class="btn primary" type="submit"><span lang="tr">Mail Uygulamasında Aç</span><span lang="en">Open in Mail App</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <span>© <span id="year"></span> Erhan Emir • <span lang="tr">GitHub Pages ile yayında</span><span lang="en">Hosted on GitHub Pages</span></span>
+      <span><a class="link" href="#top">↑ <span lang="tr">Başa dön</span><span lang="en">Back to top</span></span></a>
+    </div>
+  </footer>
+</div>
+
+<script>
+// Dil + tema
+const root = document.documentElement;
+const langBtn = document.getElementById('langBtn');
+function setLang(l){ root.dataset.lang=l; langBtn.textContent=l==='tr'?'TR':'EN'; root.lang=l; try{localStorage.setItem('lang',l)}catch(e){} }
+setLang(localStorage.getItem('lang') || ((navigator.language||'tr').startsWith('en')?'en':'tr'));
+langBtn.onclick=()=>setLang(root.dataset.lang==='tr'?'en':'tr');
+
+const themeBtn=document.getElementById('themeBtn');
+function setTheme(t){root.dataset.theme=t;try{localStorage.setItem('theme',t)}catch(e){}}
+setTheme(localStorage.getItem('theme')||'dark');
+themeBtn.onclick=()=>setTheme(root.dataset.theme==='dark'?'light':'dark');
+
+// Mobil menü
+document.getElementById('hamBtn').onclick=()=>document.getElementById('menu').classList.toggle('open');
+document.querySelectorAll('#menu a').forEach(a=>a.onclick=()=>document.getElementById('menu').classList.remove('open'));
+
+// Yetenekler
+const skills=[
+  {n:'Python',d:80},{n:'JavaScript / TypeScript',d:70},{n:'HTML / CSS',d:85},
+  {n:'Dart / Flutter',d:60},{n:'Git / GitHub',d:75},{n:'Arduino / IoT',d:65},
+];
+document.getElementById('skills').innerHTML=skills.map(s=>
+  `<div class="card pad"><b>${s.n}</b><div class="skill-bar"><i style="width:${s.d}%"></i></div><small class="muted">%${s.d}</small></div>`
+).join('');
+
+// Yıl
+document.getElementById('year').textContent=new Date().getFullYear();
+
+// Mail formu
+function sendMail(e){
+  e.preventDefault();
+  const n=document.getElementById('fName').value, m=document.getElementById('fMail').value, b=document.getElementById('fMsg').value;
+  location.href=`mailto:erhanemir32@hotmail.com?subject=${encodeURIComponent('Site mesajı: '+n+' ('+m+')')}&body=${encodeURIComponent(b)}`;
+  return false;
+}
+
+// GitHub canlı repolar + sayaç
+fetch('https://api.github.com/users/ErhaEmir/repos?sort=updated&per_page=6')
+  .then(r=>r.json()).then(data=>{
+    const box=document.getElementById('ghRepos');
+    if(!Array.isArray(data)||!data.length){box.textContent='—';return;}
+    document.getElementById('repoCount').textContent=data.length+'+';
+    box.innerHTML='<div class="grid g2">'+data.map(r=>
+      `<div style="border:1px solid var(--line);border-radius:12px;padding:12px"><b><a class="link" href="${r.html_url}" target="_blank" rel="noopener">${r.name}</a></b><br/><span>${r.description||''}</span><div class="meta" style="margin-top:8px"><span>${r.language||'—'}</span><span>★ ${r.stargazers_count}</span></div></div>`
+    ).join('')+'</div>';
+  }).catch(()=>{document.getElementById('ghRepos').textContent='GitHub API yüklenemedi.';});
+</script>
+</body>
+</html>
