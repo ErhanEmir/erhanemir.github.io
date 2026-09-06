@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erhan Emir — Maker & Developer</title>
     <meta name="description" content="Erhan Emir — Maker & Developer. Python, JavaScript, Dart/Flutter, Arduino, ESP32, PCB ve 3D baskı.">
-    <meta property="og:title" content="Erhan Emir — Maker & Developer">
-    <meta property="og:description" content="Gömülü sistemler, web ve 3D prototipleme odaklı kişisel portfolyo.">
-    <meta property="og:type" content="website">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2322d3ee' d='M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 2h2v2h-2v-2zm2 2h2v2h-2v-2z'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
@@ -16,16 +13,17 @@
             --bg-primary: #0a0f1a;
             --bg-secondary: #0c1628;
             --cyan: #22d3ee;
-            --cyan-dim: rgba(34, 211, 238, 0.15);
-            --cyan-glow: rgba(34, 211, 238, 0.4);
+            --cyan-dim: rgba(34, 211, 238, 0.12);
+            --cyan-glow: rgba(34, 211, 238, 0.35);
             --green: #34d399;
-            --green-dim: rgba(52, 211, 153, 0.15);
+            --green-dim: rgba(52, 211, 153, 0.12);
             --orange: #fb923c;
+            --orange-dim: rgba(251, 146, 60, 0.12);
             --purple: #6366f1;
             --text-primary: #e8eef4;
             --text-secondary: #8890a0;
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.07);
             --radius: 14px;
             --transition: 0.3s ease;
         }
@@ -46,9 +44,9 @@
             inset: 0;
             z-index: -1;
             background:
-                radial-gradient(circle at 15% 30%, rgba(34, 211, 238, 0.04) 0%, transparent 40%),
-                radial-gradient(circle at 85% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 40%),
-                repeating-linear-gradient(90deg, transparent 0 48px, rgba(34, 211, 238, 0.025) 49px),
+                radial-gradient(circle at 15% 30%, rgba(34, 211, 238, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                repeating-linear-gradient(90deg, transparent 0 48px, rgba(34, 211, 238, 0.03) 49px),
                 repeating-linear-gradient(0deg, transparent 0 48px, rgba(99, 102, 241, 0.02) 49px);
             pointer-events: none;
         }
@@ -61,8 +59,8 @@
         /* === NAV === */
         header {
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(5, 10, 16, 0.85);
-            backdrop-filter: blur(16px);
+            background: rgba(5, 10, 16, 0.88);
+            backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--glass-border);
         }
         nav {
@@ -88,7 +86,6 @@
         }
         .nav-links a:hover::after { width: 100%; }
 
-        /* === LANG TOGGLE === */
         .lang-toggle {
             display: inline-flex; background: var(--glass-bg); border: 1px solid var(--glass-border);
             border-radius: 20px; overflow: hidden; cursor: pointer; font-size: 0.8rem;
@@ -115,41 +112,28 @@
             50% { box-shadow: 0 0 50px var(--cyan-glow); }
         }
 
-        /* Typewriter */
-        .typing-text {
+        .typing-area { min-height: 6.5rem; margin-bottom: 2rem; }
+        .typing-area h1 {
             font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 0.5rem;
-            border-right: 3px solid var(--cyan);
-            white-space: nowrap; overflow: hidden;
-            animation: typing 3s steps(35) 0.5s forwards;
-            width: 0;
+            color: var(--text-primary);
         }
-        .typing-sub {
+        .typing-area p {
             font-size: clamp(1.1rem, 3vw, 1.5rem); color: var(--text-secondary);
-            margin-bottom: 2rem;
-            border-right: 2px solid var(--cyan);
-            white-space: nowrap; overflow: hidden;
-            animation: typing-sub 2s steps(20) 3.5s forwards;
-            width: 0;
         }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes typing-sub { from { width: 0 } to { width: 100% } }
-
-        .blinking-cursor {
-            display: inline-block; width: 2px; height: 1.2em; background: var(--cyan);
-            animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 2px;
-            opacity: 0;
-            animation: blink 1s step-end 5.5s infinite;
+        .cursor {
+            display: inline-block; width: 3px; height: 1.2em; background: var(--cyan);
+            animation: blink 0.7s step-end infinite; vertical-align: text-bottom; margin-left: 3px;
         }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        .hero-btns { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+        .hero-btns { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
         .btn {
             display: inline-flex; align-items: center; gap: 0.5rem;
             padding: 0.7rem 1.8rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
-            border: none; cursor: pointer; transition: all var(--transition);
+            border: none; cursor: pointer; transition: all var(--transition); text-decoration: none;
         }
         .btn-primary { background: var(--cyan); color: var(--bg-deep); }
-        .btn-primary:hover { background: var(--green); transform: translateY(-2px); }
+        .btn-primary:hover { background: var(--green); transform: translateY(-2px); color: var(--bg-deep); }
         .btn-outline { background: transparent; color: var(--cyan); border: 2px solid var(--cyan); }
         .btn-outline:hover { background: var(--cyan-dim); transform: translateY(-2px); }
 
@@ -165,7 +149,6 @@
             margin: 0.8rem auto 0; border-radius: 2px;
         }
 
-        /* Glass Card */
         .glass-card {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
             border-radius: var(--radius); padding: 2rem;
@@ -176,7 +159,6 @@
 
         /* === ABOUT === */
         #about { background: var(--bg-secondary); }
-        .about-text { max-width: 800px; margin: 0 auto; }
         .about-text p { margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 1.05rem; }
 
         /* === SKILLS === */
@@ -188,11 +170,18 @@
         .skill-card {
             text-align: center; padding: 1.5rem 1rem; min-height: 150px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
         }
-        .skill-card i { font-size: 2.5rem; color: var(--cyan); margin-bottom: 0.8rem; transition: transform 0.4s ease, color 0.4s ease; }
+        .skill-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 50% 0%, var(--cyan-glow), transparent 60%);
+            opacity: 0; transition: opacity var(--transition);
+        }
+        .skill-card:hover::before { opacity: 0.15; }
+        .skill-card i { font-size: 2.5rem; color: var(--cyan); margin-bottom: 0.8rem; transition: transform 0.4s ease, color 0.4s ease; position: relative; z-index: 1; }
         .skill-card:hover i { transform: rotateY(360deg) scale(1.2); color: var(--orange); }
-        .skill-card h3 { font-size: 1rem; margin-bottom: 0.4rem; }
-        .skill-card .skill-type { font-size: 0.78rem; color: var(--text-secondary); }
+        .skill-card h3 { font-size: 1rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+        .skill-card .skill-type { font-size: 0.78rem; color: var(--text-secondary); position: relative; z-index: 1; }
 
         /* === PROJECTS === */
         #projects { background: var(--bg-secondary); }
@@ -216,18 +205,20 @@
         .project-links a:hover { color: var(--cyan); }
 
         /* === CONTACT === */
-        .contact-wrapper { max-width: 600px; margin: 0 auto; }
-        .contact-info-list { margin-bottom: 1.5rem; }
-        .contact-info-list p { margin-bottom: 0.8rem; color: var(--text-secondary); }
+        .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
+        .contact-info-list p { margin-bottom: 1rem; color: var(--text-secondary); font-size: 1rem; }
+        .contact-info-list i { color: var(--cyan); width: 22px; margin-right: 0.6rem; }
+
         .contact-form label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.9rem; }
         .contact-form input, .contact-form textarea {
             width: 100%; padding: 0.75rem 1rem; margin-bottom: 1.2rem;
             border: 1px solid var(--glass-border); border-radius: 8px;
             background: var(--bg-secondary); color: var(--text-primary);
             font-size: 0.95rem; outline: none; transition: border-color var(--transition);
+            font-family: inherit;
         }
         .contact-form input:focus, .contact-form textarea:focus { border-color: var(--cyan); }
-        .contact-form textarea { resize: vertical; min-height: 110px; }
+        .contact-form textarea { resize: vertical; min-height: 120px; }
         .contact-form button {
             width: 100%; padding: 0.85rem; border: none; border-radius: 8px;
             background: var(--cyan); color: var(--bg-deep); font-size: 1rem; font-weight: 700;
@@ -250,11 +241,12 @@
 
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            nav { flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
+            nav { flex-direction: column; gap: 0.8rem; }
             .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
             .hero-content h1 { font-size: 2.2rem; }
             .skills-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
             .projects-grid { grid-template-columns: 1fr; }
+            .contact-layout { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -281,11 +273,13 @@
         <section id="hero">
             <div class="hero-content fade-up">
                 <div class="avatar-ring"><i class="fas fa-microchip"></i></div>
-                <h1 class="typing-text" id="typingTitle">Merhaba, ben Erhan Emir</h1>
-                <p class="typing-sub" id="typingSub">Maker & Developer.<span class="blinking-cursor"></span></p>
+                <div class="typing-area">
+                    <h1 id="typingTitle"></h1>
+                    <p id="typingSub"></p>
+                </div>
                 <div class="hero-btns">
-                    <a href="#projects" class="btn btn-primary" data-i18n="cta_projects">Projeleri Gör</a>
-                    <a href="#contact" class="btn btn-outline" data-i18n="cta_contact">İletişim</a>
+                    <a href="#projects" class="btn btn-primary" data-i18n="cta_projects"><i class="fas fa-folder-open"></i> Projeleri Gör</a>
+                    <a href="#contact" class="btn btn-outline" data-i18n="cta_contact"><i class="fas fa-paper-plane"></i> İletişim</a>
                 </div>
             </div>
         </section>
@@ -318,17 +312,17 @@
                         <span class="skill-type" data-i18n="skill_web">Web Geliştirme</span>
                     </div>
                     <div class="skill-card glass-card">
-                        <i class="fab fa-dart"></i>
+                        <i class="fab fa-dart-lang"></i>
                         <h3>Dart</h3>
                         <span class="skill-type" data-i18n="skill_mobile">Mobil Geliştirme</span>
                     </div>
                     <div class="skill-card glass-card">
-                        <i class="fab fa-flutter"></i>
+                        <i class="fas fa-mobile-screen-button"></i>
                         <h3>Flutter</h3>
                         <span class="skill-type" data-i18n="skill_cross">Cross-Platform</span>
                     </div>
                     <div class="skill-card glass-card">
-                        <i class="fas fa-copyright"></i>
+                        <i class="fas fa-code"></i>
                         <h3>C++</h3>
                         <span class="skill-type" data-i18n="skill_embedded">Gömülü Sistemler</span>
                     </div>
@@ -388,12 +382,15 @@
         <section id="contact">
             <div class="container">
                 <h2 class="section-title fade-up" data-i18n="nav_contact">İletişim</h2>
-                <div class="contact-wrapper fade-up">
+                <div class="contact-layout fade-up">
                     <div class="glass-card">
                         <div class="contact-info-list">
-                            <p><i class="fas fa-envelope" style="color:var(--cyan);width:20px;margin-right:0.5rem"></i> <a href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a></p>
-                            <p><i class="fab fa-github" style="color:var(--cyan);width:20px;margin-right:0.5rem"></i> <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener">github.com/ErhanEmir</a></p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a></p>
+                            <p><i class="fab fa-github"></i> <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener">github.com/ErhanEmir</a></p>
+                            <p><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/" target="_blank" rel="noopener">linkedin.com/in/erhanemir</a></p>
                         </div>
+                    </div>
+                    <div class="glass-card">
                         <form class="contact-form" action="https://formsubmit.co/erhanemir32@hotmail.com" method="POST">
                             <input type="hidden" name="_captcha" value="false">
                             <input type="hidden" name="_template" value="table">
@@ -470,28 +467,92 @@
 
             document.querySelectorAll("[data-i18n]").forEach(el => {
                 const k = el.getAttribute("data-i18n");
-                if (T[l][k]) el.textContent = T[l][k];
+                if (T[l][k]) el.innerHTML = T[l][k];
             });
 
-            // Update typing text
-            const titleEl = document.getElementById("typingTitle");
-            const subEl = document.getElementById("typingSub");
-            titleEl.textContent = T[l].typing_title;
-            subEl.innerHTML = T[l].typing_sub + '<span class="blinking-cursor"></span>';
+            typeWriter(T[l].typing_title, T[l].typing_sub);
 
-            // Re-render projects to update descriptions
-            if (window._reposLoaded) loadProjects();
+            if (window._reposLoaded) renderRepos(window._reposData);
         }
 
         document.getElementById("langToggle").addEventListener("click", () => applyLang(lang === "tr" ? "en" : "tr"));
-        applyLang(lang);
 
-        // ========== GitHub API ==========
+        // ========== TYPEWRITER ==========
+        let typeInterval;
+        function typeWriter(titleText, subText) {
+            const titleEl = document.getElementById("typingTitle");
+            const subEl = document.getElementById("typingSub");
+            titleEl.innerHTML = '';
+            subEl.innerHTML = '';
+            clearInterval(typeInterval);
+
+            let ti = 0, si = 0;
+            const titleArr = titleText.split('');
+            const subArr = subText.split('');
+
+            function typeTitle() {
+                if (ti < titleArr.length) {
+                    titleEl.textContent += titleArr[ti];
+                    ti++;
+                    typeInterval = setTimeout(typeTitle, 55);
+                } else {
+                    typeInterval = setTimeout(typeSub, 300);
+                }
+            }
+
+            function typeSub() {
+                if (si < subArr.length) {
+                    subEl.textContent += subArr[si];
+                    si++;
+                    typeInterval = setTimeout(typeSub, 55);
+                } else {
+                    const cursor = document.createElement('span');
+                    cursor.className = 'cursor';
+                    subEl.appendChild(cursor);
+                }
+            }
+
+            typeTitle();
+        }
+
+        // ========== GITHUB API ==========
         const langColors = {
             JavaScript: "#f1e05a", Python: "#3572A5", Dart: "#00B4AB", HTML: "#e34c26",
             CSS: "#563d7c", "C++": "#f34b7d", C: "#555555", Shell: "#89e051",
-            TypeScript: "#2b7489", Vue: "#41B883", Rust: "#dea584"
+            TypeScript: "#2b7489", Vue: "#41B883", Rust: "#dea584", Java: "#b07219"
         };
+
+        function renderRepos(repos) {
+            const grid = document.getElementById("projectsGrid");
+            if (!repos.length) {
+                grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].empty}</div>`;
+                return;
+            }
+
+            grid.innerHTML = repos.map(r => {
+                const ln = r.language || "N/A";
+                const color = langColors[ln] || "#888";
+                return `
+                    <div class="project-card glass-card">
+                        <div class="project-top">
+                            <i class="fas fa-folder"></i>
+                            <h3>${r.name}</h3>
+                            <span class="stars"><i class="fas fa-star"></i> ${r.stargazers_count}</span>
+                        </div>
+                        <div class="project-body">
+                            <p>${r.description || T[lang].no_desc}</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="badge" style="background:${color}22;color:${color}">${ln}</span>
+                            ${r.topics ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join('') : ''}
+                            <div class="project-links">
+                                ${r.homepage ? `<a href="${r.homepage}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                                <a href="${r.html_url}" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
 
         async function loadProjects() {
             const grid = document.getElementById("projectsGrid");
@@ -503,35 +564,9 @@
                 const repos = data.filter(r => !r.fork && !r.archived && !r.private)
                     .sort((a, b) => b.stargazers_count - a.stargazers_count);
 
-                if (!repos.length) {
-                    grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].empty}</div>`;
-                    return;
-                }
-
-                grid.innerHTML = repos.map(r => {
-                    const ln = r.language || "N/A";
-                    const color = langColors[ln] || "#888";
-                    return `
-                        <div class="project-card glass-card">
-                            <div class="project-top">
-                                <i class="fas fa-folder${r.isTemplate ? ' open' : ''}"></i>
-                                <h3>${r.name}</h3>
-                                <span class="stars"><i class="fas fa-star"></i> ${r.stargazers_count}</span>
-                            </div>
-                            <div class="project-body">
-                                <p>${r.description || T[lang].no_desc}</p>
-                            </div>
-                            <div class="project-footer">
-                                <span class="badge" style="background:${color}22;color:${color}">${ln}</span>
-                                ${r.topics ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join('') : ''}
-                                <div class="project-links">
-                                    ${r.homepage ? `<a href="${r.homepage}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i></a>` : ''}
-                                    <a href="${r.html_url}" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-                                </div>
-                            </div>
-                        </div>`;
-                }).join('');
                 window._reposLoaded = true;
+                window._reposData = repos;
+                renderRepos(repos);
             } catch (e) {
                 grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].gh_err}</div>`;
             }
@@ -539,13 +574,16 @@
 
         loadProjects();
 
-        // ========== Fade-in Observer ==========
+        // ========== FADE-IN ==========
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
         document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
+
+        // ========== INIT ==========
+        applyLang(lang);
     </script>
 </body>
 </html>
