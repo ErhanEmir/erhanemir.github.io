@@ -695,13 +695,16 @@
         function typeWriter(titleText, subText) {
             const titleEl = document.getElementById("typingTitle");
             const subEl = document.getElementById("typingSub");
+            if (!titleEl || !subEl) return; // Null check for elements
+
             titleEl.innerHTML = '';
             subEl.innerHTML = '';
             clearInterval(typeInterval);
 
             let ti = 0, si = 0;
-            const titleArr = titleText.split('');
-            const subArr = subText.split('');
+            // Handle potential HTML entities within the text for typing animation
+            const titleArr = Array.from(titleText.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+            const subArr = Array.from(subText.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
 
             function typeTitle() {
                 if (ti < titleArr.length) {
@@ -753,7 +756,7 @@
                         resLine.textContent = "Core Skills: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, 3D Print (Creality)";
                     } else if (cmd === "projects") {
                         resLine.textContent = "Jumping to projects section...";
-                        document.getElementById("projects").scrollIntoView({ behavior: "smooth" });
+                        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); // Null check for projects element
                     } else if (cmd === "whoami") {
                         resLine.textContent = "Erhan Emir — Maker & Developer (Embedded systems, IoT, Full-Stack & 3D prototyping)";
                     } else if (cmd === "clear") {
@@ -779,6 +782,8 @@
 
         function renderRepos(repos) {
             const grid = document.getElementById("projectsGrid");
+            if (!grid) return; // Null check for grid element
+
             if (!repos.length) {
                 grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].empty}</div>`;
                 return;
@@ -812,12 +817,13 @@
 
         async function loadProjects() {
             const grid = document.getElementById("projectsGrid");
+            if (!grid) return; // Null check for grid element
             try {
                 const res = await fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100");
                 const data = await res.json();
                 if (!Array.isArray(data)) throw new Error("bad");
 
-                const repos = data.filter(r => !r.fork && !r.archived && !r.private)
+                const repos = data.filter(r => !r.fork && !r.archived && !r.private && r.name !== 'erhanemir.github.io' && r.name !== 'indir-gitsin')
                     .sort((a, b) => b.stargazers_count - a.stargazers_count);
 
                 window._reposLoaded = true;
@@ -833,7 +839,7 @@
         // ========== CONTACT FORM AJAX / FEEDBACK ==========
         const contactForm = document.getElementById("contactForm");
         const formSuccess = document.getElementById("formSuccess");
-        if (contactForm) {
+        if (contactForm && formSuccess) {
             contactForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
                 const formData = new FormData(contactForm);
@@ -855,12 +861,36 @@
                 }
             });
         }
+
+        // ========== SCROLL SPY FOR ACTIVE NAV LINKS ==========
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-links a");
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href") === `#${entry.target.id}`) {
+                            link.classList.add("active");
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.3, rootMargin: "-50% 0% -50% 0%" }); // Adjust threshold and rootMargin for better active state
+
+        sections.forEach(section => {
+            scrollObserver.observe(section);
+        });
+
+        // ========== FADE-IN ==========
+        const fadeUpElements = document.querySelectorAll(".fade-up");
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-        document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
+        fadeUpElements.forEach(el => observer.observe(el));
 
         // ========== INIT ==========
         applyLang(lang);
