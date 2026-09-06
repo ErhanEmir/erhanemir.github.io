@@ -615,6 +615,214 @@
                 </div>
                 <a class="link" href="https://github.com/ErhanEmir?tab=repositories" target="_blank" rel="noopener">Tümü →</a>
             </div>
+
+        <script>
+            // GitHub API for projects
+            const colors = {
+                JavaScript: "#f1e05a",
+                Python: "#3572A5",
+                Dart: "#00B4AB",
+                HTML: "#e34c26",
+                CSS: "#563d7c",
+                "C++": "#f34b7d",
+                C: "#555555"
+            };
+
+            const box = document.getElementById("ghRepos");
+            box.innerHTML = `<div class="card pad muted">Yükleniyor…</div>`;
+
+            fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100")
+                .then(r => r.json())
+                .then(data => {
+                    if (!Array.isArray(data)) throw new Error("bad");
+                    const repos = data.filter(r => !r.fork && !r.archived);
+                    if (!repos.length) {
+                        box.innerHTML = `<div class="card pad muted">Henüz public repo yok.</div>`;
+                        return;
+                    }
+                    box.innerHTML = repos.map(r => {
+                        const lang = r.language || "Repo";
+                        const color = colors[lang] || "#22d3ee";
+                        return `
+                            <div class="card project-card fade-in">
+                                <div class="project-image" style="background: linear-gradient(135deg, ${color}1A, ${color}1A)">
+                                    <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">${r.name}</h3>
+                                    <p class="project-desc">${r.description || "Açıklama yok"}</p>
+                                    <div class="project-tags">
+                                        <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                        <span class="tag">★ ${r.stargazers_count}</span>
+                                    </div>
+                                    <div class="project-links">
+                                        ${r.homepage ? `<a class="btn" href="${r.homepage}" target="_blank" rel="noopener">Live ↗</a>` : ""}
+                                        <a class="btn" href="${r.html_url}" target="_blank" rel="noopener">GitHub ↗</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }).join("");
+                })
+                .catch(() => {
+                    box.innerHTML = `<div class="card pad muted">GitHub API yüklenemedi.</div>`;
+                });
+        </script>
+
+        <script>
+            // GitHub API for projects
+            const colors = {
+                JavaScript: "#f1e05a",
+                Python: "#3572A5",
+                Dart: "#00B4AB",
+                HTML: "#e34c26",
+                CSS: "#563d7c",
+                "C++": "#f34b7d",
+                C: "#555555"
+            };
+
+            const box = document.getElementById("ghRepos");
+            box.innerHTML = `<div class="card pad muted">Yükleniyor…</div>`;
+
+            fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100")
+                .then(r => r.json())
+                .then(data => {
+                    if (!Array.isArray(data)) throw new Error("bad");
+                    const repos = data.filter(r => !r.fork && !r.archived);
+                    if (!repos.length) {
+                        box.innerHTML = `<div class="card pad muted">Henüz public repo yok.</div>`;
+                        return;
+                    }
+                    box.innerHTML = repos.map(r => {
+                        const lang = r.language || "Repo";
+                        const color = colors[lang] || "#22d3ee";
+                        return `
+                            <div class="card project-card fade-in">
+                                <div class="project-image" style="background: linear-gradient(135deg, ${color}1A, ${color}1A)">
+                                    <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">${r.name}</h3>
+                                    <p class="project-desc">${r.description || "Açıklama yok"}</p>
+                                    <div class="project-tags">
+                                        <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                        <span class="tag">★ ${r.stargazers_count}</span>
+                                    </div>
+                                    <div class="project-links">
+                                        ${r.homepage ? `<a class="btn" href="${r.homepage}" target="_blank" rel="noopener">Live ↗</a>` : ""}
+                                        <a class="btn" href="${r.html_url}" target="_blank" rel="noopener">GitHub ↗</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }).join("");
+                })
+                .catch(() => {
+                    box.innerHTML = `<div class="card pad muted">GitHub API yüklenemedi.</div>`;
+                });
+        </script>
+
+        <script>
+            // GitHub API for projects
+            const colors = {
+                JavaScript: "#f1e05a",
+                Python: "#3572A5",
+                Dart: "#00B4AB",
+                HTML: "#e34c26",
+                CSS: "#563d7c",
+                "C++": "#f34b7d",
+                C: "#555555"
+            };
+
+            const box = document.getElementById("ghRepos");
+            box.innerHTML = `<div class="card pad muted">Yükleniyor…</div>`;
+
+            fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100")
+                .then(r => r.json())
+                .then(data => {
+                    if (!Array.isArray(data)) throw new Error("bad");
+                    const repos = data.filter(r => !r.fork && !r.archived);
+                    if (!repos.length) {
+                        box.innerHTML = `<div class="card pad muted">Henüz public repo yok.</div>`;
+                        return;
+                    }
+                    box.innerHTML = repos.map(r => {
+                        const lang = r.language || "Repo";
+                        const color = colors[lang] || "#22d3ee";
+                        return `
+                            <div class="card project-card fade-in">
+                                <div class="project-image" style="background: linear-gradient(135deg, ${color}1A, ${color}1A)">
+                                    <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">${r.name}</h3>
+                                    <p class="project-desc">${r.description || "Açıklama yok"}</p>
+                                    <div class="project-tags">
+                                        <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                        <span class="tag">★ ${r.stargazers_count}</span>
+                                    </div>
+                                    <div class="project-links">
+                                        ${r.homepage ? `<a class="btn" href="${r.homepage}" target="_blank" rel="noopener">Live ↗</a>` : ""}
+                                        <a class="btn" href="${r.html_url}" target="_blank" rel="noopener">GitHub ↗</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }).join("");
+                })
+                .catch(() => {
+                    box.innerHTML = `<div class="card pad muted">GitHub API yüklenemedi.</div>`;
+                });
+        </script>
+
+        <script>
+            // GitHub API for projects
+            const colors = {
+                JavaScript: "#f1e05a",
+                Python: "#3572A5",
+                Dart: "#00B4AB",
+                HTML: "#e34c26",
+                CSS: "#563d7c",
+                "C++": "#f34b7d",
+                C: "#555555"
+            };
+
+            const box = document.getElementById("ghRepos");
+            box.innerHTML = `<div class="card pad muted">Yükleniyor…</div>`;
+
+            fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100")
+                .then(r => r.json())
+                .then(data => {
+                    if (!Array.isArray(data)) throw new Error("bad");
+                    const repos = data.filter(r => !r.fork && !r.archived);
+                    if (!repos.length) {
+                        box.innerHTML = `<div class="card pad muted">Henüz public repo yok.</div>`;
+                        return;
+                    }
+                    box.innerHTML = repos.map(r => {
+                        const lang = r.language || "Repo";
+                        const color = colors[lang] || "#22d3ee";
+                        return `
+                            <div class="card project-card fade-in">
+                                <div class="project-image" style="background: linear-gradient(135deg, ${color}1A, ${color}1A)">
+                                    <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">${r.name}</h3>
+                                    <p class="project-desc">${r.description || "Açıklama yok"}</p>
+                                    <div class="project-tags">
+                                        <span class="tag" style="background: ${color}33; border-color: ${color}66;">${lang}</span>
+                                        <span class="tag">★ ${r.stargazers_count}</span>
+                                    </div>
+                                    <div class="project-links">
+                                        ${r.homepage ? `<a class="btn" href="${r.homepage}" target="_blank" rel="noopener">Live ↗</a>` : ""}
+                                        <a class="btn" href="${r.html_url}" target="_blank" rel="noopener">GitHub ↗</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }).join("");
+                })
+                .catch(() => {
+                    box.innerHTML = `<div class="card pad muted">GitHub API yüklenemedi.</div>`;
+                });
+        </script>
             <div class="projects-grid" id="ghRepos">
                 <div class="card project-card fade-in">
                     <div class="project-image">Resim Yok</div>
@@ -679,6 +887,7 @@
                     <div class="contact-info">
                         <p>✉ <a class="link" href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a></p>
                         <p>⌘ <a class="link" href="https://github.com/ErhanEmir" target="_blank" rel="noopener">github.com/ErhanEmir</a></p>
+                        <p>📸 <a class="link" href="https://www.instagram.com/erhanemir.32/" target="_blank" rel="noopener">@erhanemir.32</a></p>
                         <p class="muted">Genelde 1-2 gün içinde dönüş yaparım.</p>
                     </div>
                 </div>
