@@ -445,12 +445,12 @@
                     <div class="glass-card">
                         <div class="contact-info-list">
                             <p><i class="fas fa-envelope"></i> <a href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a></p>
-                            <p><i class="fab fa-github"></i> <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener">github.com/ErhanEmir</a></p>
-                            <p><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/erhanemir.32/" target="_blank" rel="noopener">instagram.com/erhanemir.32</a></p>
+                            <p><i class="fab fa-github"></i> <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener noreferrer">github.com/ErhanEmir</a></p>
+                            <p><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/erhanemir.32/" target="_blank" rel="noopener noreferrer">instagram.com/erhanemir.32</a></p>
                         </div>
                     </div>
                     <div class="glass-card">
-                        <form class="contact-form" action="https://formsubmit.co/erhanemir32@hotmail.com" method="POST">
+                        <form class="contact-form" id="contactForm" action="https://formsubmit.co/erhanemir32@hotmail.com" method="POST">
                             <input type="hidden" name="_captcha" value="false">
                             <input type="hidden" name="_template" value="table">
                             <label for="name" data-i18n="form_name">Adınız</label>
@@ -460,6 +460,7 @@
                             <label for="message" data-i18n="form_msg">Mesajınız</label>
                             <textarea id="message" name="message" required></textarea>
                             <button type="submit" data-i18n="form_send">Mesaj Gönder</button>
+                            <div id="formSuccess" style="display:none; margin-top:1rem; padding:0.75rem; border-radius:8px; background:var(--green-dim); color:var(--green); font-weight:600; text-align:center;" data-i18n="form_success">Mesajınız başarıyla gönderildi!</div>
                         </form>
                     </div>
                 </div>
@@ -469,8 +470,8 @@
 
     <footer>
         <div class="socials">
-            <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
-            <a href="https://www.instagram.com/erhanemir.32/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+            <a href="https://www.instagram.com/erhanemir.32/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
             <a href="mailto:erhanemir32@hotmail.com"><i class="fas fa-envelope"></i></a>
         </div>
         <p data-i18n="footer_copy">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</p>
@@ -493,7 +494,7 @@
                 skill_vcs: "Sürüm Kontrol", skill_server: "DevOps / Sunucu",
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
-                form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder",
+                form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız başarıyla gönderildi!",
                 footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
             },
             en: {
@@ -510,7 +511,7 @@
                 skill_vcs: "Version Control", skill_server: "DevOps / Server",
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
-                form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message",
+                form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message sent successfully!",
                 footer_copy: "© 2026 Erhan Emir. All rights reserved."
             }
         };
@@ -645,7 +646,31 @@
 
         loadProjects();
 
-        // ========== FADE-IN ==========
+        // ========== CONTACT FORM AJAX / FEEDBACK ==========
+        const contactForm = document.getElementById("contactForm");
+        const formSuccess = document.getElementById("formSuccess");
+        if (contactForm) {
+            contactForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (response.ok) {
+                        formSuccess.style.display = "block";
+                        contactForm.reset();
+                        setTimeout(() => { formSuccess.style.display = "none"; }, 5000);
+                    } else {
+                        contactForm.submit();
+                    }
+                } catch (err) {
+                    contactForm.submit();
+                }
+            });
+        }
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
