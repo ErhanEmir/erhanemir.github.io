@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erhan Emir — Maker & Developer</title>
+    <meta name="description" content="Erhan Emir — Maker & Developer. Python, JavaScript, Dart/Flutter, Arduino, ESP32, PCB ve 3D baskı.">
+    <meta property="og:title" content="Erhan Emir — Maker & Developer">
+    <meta property="og:description" content="Gömülü sistemler, web ve 3D prototipleme odaklı kişisel portfolyo.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2322d3ee' d='M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 2h2v2h-2v-2zm2 2h2v2h-2v-2z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        :root {
+            --bg-deep: #050a10;
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #0c1628;
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.15);
+            --cyan-glow: rgba(34, 211, 238, 0.4);
+            --green: #34d399;
+            --green-dim: rgba(52, 211, 153, 0.15);
+            --orange: #fb923c;
+            --purple: #6366f1;
+            --text-primary: #e8eef4;
+            --text-secondary: #8890a0;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --radius: 14px;
+            --transition: 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 15% 30%, rgba(34, 211, 238, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 40%),
+                repeating-linear-gradient(90deg, transparent 0 48px, rgba(34, 211, 238, 0.025) 49px),
+                repeating-linear-gradient(0deg, transparent 0 48px, rgba(99, 102, 241, 0.02) 49px);
+            pointer-events: none;
+        }
+
+        a { color: var(--cyan); text-decoration: none; transition: color var(--transition); }
+        a:hover { color: var(--green); }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* === NAV === */
+        header {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(5, 10, 16, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.8rem 1.5rem; max-width: 1100px; margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.4rem; font-weight: 800; color: var(--cyan);
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .logo-mark {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            display: grid; place-items: center;
+            color: var(--bg-deep); font-weight: 900; font-size: 0.9rem;
+        }
+        .nav-links { list-style: none; display: flex; gap: 1.5rem; }
+        .nav-links a { color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; position: relative; padding-bottom: 4px; }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a::after {
+            content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px;
+            background: var(--cyan); transition: width var(--transition);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* === LANG TOGGLE === */
+        .lang-toggle {
+            display: inline-flex; background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; overflow: hidden; cursor: pointer; font-size: 0.8rem;
+            color: var(--text-secondary); user-select: none;
+        }
+        .lang-toggle > div { padding: 0.3rem 0.7rem; transition: all var(--transition); }
+        .lang-toggle > div.active { background: var(--cyan); color: var(--bg-deep); font-weight: 700; }
+
+        /* === HERO === */
+        #hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 4rem 2rem; position: relative;
+        }
+        .hero-content { max-width: 750px; position: relative; z-index: 1; }
+        .avatar-ring {
+            width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--cyan);
+            box-shadow: 0 0 30px var(--cyan-glow); margin: 0 auto 2rem;
+            display: grid; place-items: center; background: var(--bg-secondary);
+            font-size: 2.5rem; color: var(--cyan);
+            animation: pulse-ring 3s infinite ease-in-out;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { box-shadow: 0 0 30px var(--cyan-glow); }
+            50% { box-shadow: 0 0 50px var(--cyan-glow); }
+        }
+
+        /* Typewriter */
+        .typing-text {
+            font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 0.5rem;
+            border-right: 3px solid var(--cyan);
+            white-space: nowrap; overflow: hidden;
+            animation: typing 3s steps(35) 0.5s forwards;
+            width: 0;
+        }
+        .typing-sub {
+            font-size: clamp(1.1rem, 3vw, 1.5rem); color: var(--text-secondary);
+            margin-bottom: 2rem;
+            border-right: 2px solid var(--cyan);
+            white-space: nowrap; overflow: hidden;
+            animation: typing-sub 2s steps(20) 3.5s forwards;
+            width: 0;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes typing-sub { from { width: 0 } to { width: 100% } }
+
+        .blinking-cursor {
+            display: inline-block; width: 2px; height: 1.2em; background: var(--cyan);
+            animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 2px;
+            opacity: 0;
+            animation: blink 1s step-end 5.5s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .hero-btns { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.7rem 1.8rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+            border: none; cursor: pointer; transition: all var(--transition);
+        }
+        .btn-primary { background: var(--cyan); color: var(--bg-deep); }
+        .btn-primary:hover { background: var(--green); transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: var(--cyan); border: 2px solid var(--cyan); }
+        .btn-outline:hover { background: var(--cyan-dim); transform: translateY(-2px); }
+
+        /* === SECTIONS === */
+        section { padding: 5rem 0; }
+        .section-title {
+            text-align: center; font-size: 2rem; margin-bottom: 3rem;
+            color: var(--cyan); position: relative;
+        }
+        .section-title::after {
+            content: ''; display: block; width: 60px; height: 3px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            margin: 0.8rem auto 0; border-radius: 2px;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: var(--radius); padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+
+        /* === ABOUT === */
+        #about { background: var(--bg-secondary); }
+        .about-text { max-width: 800px; margin: 0 auto; }
+        .about-text p { margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 1.05rem; }
+
+        /* === SKILLS === */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.2rem;
+        }
+        .skill-card {
+            text-align: center; padding: 1.5rem 1rem; min-height: 150px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .skill-card i { font-size: 2.5rem; color: var(--cyan); margin-bottom: 0.8rem; transition: transform 0.4s ease, color 0.4s ease; }
+        .skill-card:hover i { transform: rotateY(360deg) scale(1.2); color: var(--orange); }
+        .skill-card h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+        .skill-card .skill-type { font-size: 0.78rem; color: var(--text-secondary); }
+
+        /* === PROJECTS === */
+        #projects { background: var(--bg-secondary); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .project-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
+        .project-top {
+            padding: 1.5rem 1.5rem 0; display: flex; align-items: center; gap: 1rem;
+        }
+        .project-top i { font-size: 2rem; color: var(--cyan); }
+        .project-top h3 { flex: 1; font-size: 1.2rem; }
+        .project-top .stars { color: var(--orange); font-size: 0.9rem; }
+        .project-body { padding: 1rem 1.5rem; flex: 1; }
+        .project-body p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0.8rem; }
+        .project-footer { padding: 1rem 1.5rem 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+        .badge {
+            background: var(--cyan-dim); color: var(--cyan); padding: 0.3rem 0.7rem;
+            border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+        }
+        .project-links { margin-left: auto; display: flex; gap: 0.8rem; }
+        .project-links a { color: var(--text-secondary); font-size: 1.1rem; }
+        .project-links a:hover { color: var(--cyan); }
+
+        /* === CONTACT === */
+        .contact-wrapper { max-width: 600px; margin: 0 auto; }
+        .contact-info-list { margin-bottom: 1.5rem; }
+        .contact-info-list p { margin-bottom: 0.8rem; color: var(--text-secondary); }
+        .contact-form label { display: block; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.9rem; }
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 0.75rem 1rem; margin-bottom: 1.2rem;
+            border: 1px solid var(--glass-border); border-radius: 8px;
+            background: var(--bg-secondary); color: var(--text-primary);
+            font-size: 0.95rem; outline: none; transition: border-color var(--transition);
+        }
+        .contact-form input:focus, .contact-form textarea:focus { border-color: var(--cyan); }
+        .contact-form textarea { resize: vertical; min-height: 110px; }
+        .contact-form button {
+            width: 100%; padding: 0.85rem; border: none; border-radius: 8px;
+            background: var(--cyan); color: var(--bg-deep); font-size: 1rem; font-weight: 700;
+            cursor: pointer; transition: background var(--transition);
+        }
+        .contact-form button:hover { background: var(--green); }
+
+        /* === FOOTER === */
+        footer {
+            text-align: center; padding: 2rem; border-top: 1px solid var(--glass-border);
+            color: var(--text-secondary); font-size: 0.85rem; background: var(--bg-secondary);
+        }
+        .socials { margin-bottom: 1rem; }
+        .socials a { font-size: 1.3rem; color: var(--text-secondary); margin: 0 0.8rem; transition: color var(--transition); }
+        .socials a:hover { color: var(--cyan); }
+
+        /* === FADE-IN === */
+        .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            nav { flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
+            .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .skills-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+            .projects-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><div class="logo-mark">EM</div> erhanemir.dev</div>
+            <ul class="nav-links">
+                <li><a href="#about" data-i18n="nav_about">Hakkımda</a></li>
+                <li><a href="#skills" data-i18n="nav_skills">Yetenekler</a></li>
+                <li><a href="#projects" data-i18n="nav_projects">Projeler</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">İletişim</a></li>
+            </ul>
+            <div class="lang-toggle" id="langToggle">
+                <div id="btnTR" class="active">TR</div>
+                <div id="btnEN">EN</div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section id="hero">
+            <div class="hero-content fade-up">
+                <div class="avatar-ring"><i class="fas fa-microchip"></i></div>
+                <h1 class="typing-text" id="typingTitle">Merhaba, ben Erhan Emir</h1>
+                <p class="typing-sub" id="typingSub">Maker & Developer.<span class="blinking-cursor"></span></p>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn btn-primary" data-i18n="cta_projects">Projeleri Gör</a>
+                    <a href="#contact" class="btn btn-outline" data-i18n="cta_contact">İletişim</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title fade-up" data-i18n="nav_about">Hakkımda</h2>
+                <div class="about-text glass-card fade-up">
+                    <p data-i18n="about_p1">Merhaba! Ben <strong>Erhan Emir</strong>, yazılım geliştirmeyi bir problem çözme oyunu olarak gören, aynı zamanda donanım dünyasında devre kuran ve 3D prototip üreten bir geliştirici ve maker'ım.</p>
+                    <p data-i18n="about_p2">Gömülü sistemler, IoT projeleri ve PCB tasarımı alanlarında deneyim kazanırken, aynı zamanda web ve mobil uygulamalar geliştiriyorum. Teknolojiyi sadece kullanmıyor, onu oluşturup dönüştürüyorum.</p>
+                    <p data-i18n="about_p3">Python, JavaScript, Dart/Flutter yazılım dünyasında; Arduino, ESP32, EasyEDA ve Creality 3D baskı maker dünyasında başlıca araçlarım.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title fade-up" data-i18n="nav_skills">Yetenekler</h2>
+                <div class="skills-grid fade-up">
+                    <div class="skill-card glass-card">
+                        <i class="fab fa-python"></i>
+                        <h3>Python</h3>
+                        <span class="skill-type" data-i18n="skill_auto">Scripting / Otomasyon</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fab fa-js"></i>
+                        <h3>JavaScript</h3>
+                        <span class="skill-type" data-i18n="skill_web">Web Geliştirme</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fab fa-dart"></i>
+                        <h3>Dart</h3>
+                        <span class="skill-type" data-i18n="skill_mobile">Mobil Geliştirme</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fab fa-flutter"></i>
+                        <h3>Flutter</h3>
+                        <span class="skill-type" data-i18n="skill_cross">Cross-Platform</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fas fa-copyright"></i>
+                        <h3>C++</h3>
+                        <span class="skill-type" data-i18n="skill_embedded">Gömülü Sistemler</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fas fa-microchip"></i>
+                        <h3>Arduino</h3>
+                        <span class="skill-type" data-i18n="skill_mcu">Mikrokontrolör</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fas fa-wifi"></i>
+                        <h3>ESP32 / ESP8266</h3>
+                        <span class="skill-type" data-i18n="skill_iot">IoT / Wi-Fi</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fab fa-html5"></i>
+                        <h3>HTML / CSS</h3>
+                        <span class="skill-type" data-i18n="skill_frontend">Front-End</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fas fa-drafting-compass"></i>
+                        <h3>EasyEDA</h3>
+                        <span class="skill-type" data-i18n="skill_pcb">PCB Tasarımı</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fas fa-cube"></i>
+                        <h3>3D Print</h3>
+                        <span class="skill-type">Creality / FDM</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fab fa-git-alt"></i>
+                        <h3>Git / GitHub</h3>
+                        <span class="skill-type" data-i18n="skill_vcs">Sürüm Kontrol</span>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class="fab fa-linux"></i>
+                        <h3>Linux</h3>
+                        <span class="skill-type" data-i18n="skill_server">DevOps / Sunucu</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title fade-up" data-i18n="nav_projects">Projeler</h2>
+                <div class="projects-grid fade-up" id="projectsGrid">
+                    <div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">
+                        <i class="fas fa-spinner fa-spin" style="font-size:2rem;margin-bottom:1rem;display:block"></i>
+                        <span data-i18n="loading">GitHub projeleri yükleniyor...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title fade-up" data-i18n="nav_contact">İletişim</h2>
+                <div class="contact-wrapper fade-up">
+                    <div class="glass-card">
+                        <div class="contact-info-list">
+                            <p><i class="fas fa-envelope" style="color:var(--cyan);width:20px;margin-right:0.5rem"></i> <a href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a></p>
+                            <p><i class="fab fa-github" style="color:var(--cyan);width:20px;margin-right:0.5rem"></i> <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener">github.com/ErhanEmir</a></p>
+                        </div>
+                        <form class="contact-form" action="https://formsubmit.co/erhanemir32@hotmail.com" method="POST">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
+                            <label for="name" data-i18n="form_name">Adınız</label>
+                            <input type="text" id="name" name="name" required>
+                            <label for="email" data-i18n="form_email">E-posta</label>
+                            <input type="email" id="email" name="email" required>
+                            <label for="message" data-i18n="form_msg">Mesajınız</label>
+                            <textarea id="message" name="message" required></textarea>
+                            <button type="submit" data-i18n="form_send">Mesaj Gönder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="socials">
+            <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:erhanemir32@hotmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p data-i18n="footer_copy">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script>
+        // ========== i18n ==========
+        const T = {
+            tr: {
+                nav_about: "Hakkımda", nav_skills: "Yetenekler", nav_projects: "Projeler", nav_contact: "İletişim",
+                cta_projects: "Projeleri Gör", cta_contact: "İletişim",
+                typing_title: "Merhaba, ben Erhan Emir",
+                typing_sub: "Maker & Developer.",
+                about_p1: 'Merhaba! Ben <strong>Erhan Emir</strong>, yazılım geliştirmeyi bir problem çözme oyunu olarak gören, aynı zamanda donanım dünyasında devre kuran ve 3D prototip üreten bir geliştirici ve maker\'ım.',
+                about_p2: "Gömülü sistemler, IoT projeleri ve PCB tasarımı alanlarında deneyim kazanırken, aynı zamanda web ve mobil uygulamalar geliştiriyorum. Teknolojiyi sadece kullanmıyor, onu oluşturup dönüştürüyorum.",
+                about_p3: "Python, JavaScript, Dart/Flutter yazılım dünyasında; Arduino, ESP32, EasyEDA ve Creality 3D baskı maker dünyasında başlıca araçlarım.",
+                skill_auto: "Scripting / Otomasyon", skill_web: "Web Geliştirme", skill_mobile: "Mobil Geliştirme",
+                skill_cross: "Cross-Platform", skill_embedded: "Gömülü Sistemler", skill_mcu: "Mikrokontrolör",
+                skill_iot: "IoT / Wi-Fi", skill_frontend: "Front-End", skill_pcb: "PCB Tasarımı",
+                skill_vcs: "Sürüm Kontrol", skill_server: "DevOps / Sunucu",
+                loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
+                no_desc: "Açıklama yok",
+                form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder",
+                footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
+            },
+            en: {
+                nav_about: "About", nav_skills: "Skills", nav_projects: "Projects", nav_contact: "Contact",
+                cta_projects: "View Projects", cta_contact: "Contact",
+                typing_title: "Hi, I'm Erhan Emir",
+                typing_sub: "Maker & Developer.",
+                about_p1: 'Hello! I\'m <strong>Erhan Emir</strong>, a developer and maker who sees coding as a problem-solving game and also builds circuits and 3D prototypes in the hardware world.',
+                about_p2: "While gaining experience in embedded systems, IoT projects and PCB design, I also develop web and mobile applications. I don't just use technology — I create and transform it.",
+                about_p3: "Python, JavaScript, Dart/Flutter in the software world; Arduino, ESP32, EasyEDA and Creality 3D printing are my main tools in the maker world.",
+                skill_auto: "Scripting / Automation", skill_web: "Web Development", skill_mobile: "Mobile Development",
+                skill_cross: "Cross-Platform", skill_embedded: "Embedded Systems", skill_mcu: "Microcontroller",
+                skill_iot: "IoT / Wi-Fi", skill_frontend: "Front-End", skill_pcb: "PCB Design",
+                skill_vcs: "Version Control", skill_server: "DevOps / Server",
+                loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
+                no_desc: "No description",
+                form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message",
+                footer_copy: "© 2026 Erhan Emir. All rights reserved."
+            }
+        };
+
+        let lang = localStorage.getItem("portfolioLang") || "tr";
+
+        function applyLang(l) {
+            lang = l;
+            document.documentElement.lang = l;
+            localStorage.setItem("portfolioLang", l);
+            document.getElementById("btnTR").classList.toggle("active", l === "tr");
+            document.getElementById("btnEN").classList.toggle("active", l === "en");
+
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const k = el.getAttribute("data-i18n");
+                if (T[l][k]) el.textContent = T[l][k];
+            });
+
+            // Update typing text
+            const titleEl = document.getElementById("typingTitle");
+            const subEl = document.getElementById("typingSub");
+            titleEl.textContent = T[l].typing_title;
+            subEl.innerHTML = T[l].typing_sub + '<span class="blinking-cursor"></span>';
+
+            // Re-render projects to update descriptions
+            if (window._reposLoaded) loadProjects();
+        }
+
+        document.getElementById("langToggle").addEventListener("click", () => applyLang(lang === "tr" ? "en" : "tr"));
+        applyLang(lang);
+
+        // ========== GitHub API ==========
+        const langColors = {
+            JavaScript: "#f1e05a", Python: "#3572A5", Dart: "#00B4AB", HTML: "#e34c26",
+            CSS: "#563d7c", "C++": "#f34b7d", C: "#555555", Shell: "#89e051",
+            TypeScript: "#2b7489", Vue: "#41B883", Rust: "#dea584"
+        };
+
+        async function loadProjects() {
+            const grid = document.getElementById("projectsGrid");
+            try {
+                const res = await fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100");
+                const data = await res.json();
+                if (!Array.isArray(data)) throw new Error("bad");
+
+                const repos = data.filter(r => !r.fork && !r.archived && !r.private)
+                    .sort((a, b) => b.stargazers_count - a.stargazers_count);
+
+                if (!repos.length) {
+                    grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].empty}</div>`;
+                    return;
+                }
+
+                grid.innerHTML = repos.map(r => {
+                    const ln = r.language || "N/A";
+                    const color = langColors[ln] || "#888";
+                    return `
+                        <div class="project-card glass-card">
+                            <div class="project-top">
+                                <i class="fas fa-folder${r.isTemplate ? ' open' : ''}"></i>
+                                <h3>${r.name}</h3>
+                                <span class="stars"><i class="fas fa-star"></i> ${r.stargazers_count}</span>
+                            </div>
+                            <div class="project-body">
+                                <p>${r.description || T[lang].no_desc}</p>
+                            </div>
+                            <div class="project-footer">
+                                <span class="badge" style="background:${color}22;color:${color}">${ln}</span>
+                                ${r.topics ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join('') : ''}
+                                <div class="project-links">
+                                    ${r.homepage ? `<a href="${r.homepage}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                                    <a href="${r.html_url}" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                        </div>`;
+                }).join('');
+                window._reposLoaded = true;
+            } catch (e) {
+                grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].gh_err}</div>`;
+            }
+        }
+
+        loadProjects();
+
+        // ========== Fade-in Observer ==========
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+        document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
