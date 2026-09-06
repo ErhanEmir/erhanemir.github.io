@@ -263,7 +263,15 @@
         .project-top .stars { color: var(--orange); font-size: 0.9rem; }
         .project-body { padding: 1rem 1.5rem; flex: 1; }
         .project-body p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0.8rem; }
-        .project-footer { padding: 1rem 1.5rem 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+        .project-footer { padding: 1rem 1.5rem 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: space-between; }
+        .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; flex: 1; }
+        .btn-repo {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.4rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600;
+            background: var(--cyan-dim); color: var(--cyan); border: 1px solid var(--cyan);
+            transition: all var(--transition); text-decoration: none; white-space: nowrap;
+        }
+        .btn-repo:hover { background: var(--cyan); color: var(--bg-deep); transform: translateY(-2px); }
         .badge {
             background: var(--cyan-dim); color: var(--cyan); padding: 0.3rem 0.7rem;
             border-radius: 6px; font-size: 0.75rem; font-weight: 600;
@@ -515,6 +523,7 @@
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
                 form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız başarıyla gönderildi!",
+                repo_btn: "Projeye Git",
                 footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
             },
             en: {
@@ -532,6 +541,7 @@
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
                 form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message sent successfully!",
+                repo_btn: "View Project",
                 footer_copy: "© 2026 Erhan Emir. All rights reserved."
             }
         };
@@ -635,11 +645,12 @@
                             <p>${r.description || T[lang].no_desc}</p>
                         </div>
                         <div class="project-footer">
-                            <span class="badge" style="background:${color}22;color:${color}">${ln}</span>
-                            ${r.topics ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join('') : ''}
+                            <div class="project-tags">
+                                <span class="badge" style="background:${color}22;color:${color}">${ln}</span>
+                                ${r.topics ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join('') : ''}
+                            </div>
                             <div class="project-links">
-                                ${r.homepage ? `<a href="${r.homepage}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i></a>` : ''}
-                                <a href="${r.html_url}" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                                <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="btn-repo"><i class="fab fa-github"></i> <span data-i18n="repo_btn">${T[lang].repo_btn}</span></a>
                             </div>
                         </div>
                     </div>`;
