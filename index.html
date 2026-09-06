@@ -112,6 +112,26 @@
             background: var(--cyan); transition: width var(--transition);
         }
         .nav-links a:hover::after { width: 100%; }
+        .nav-links a.active { color: var(--cyan); }
+        .nav-links a.active::after { width: 100%; }
+
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px; cursor: pointer;
+            background: none; border: none; padding: 4px; z-index: 1001;
+        }
+        .hamburger span {
+            width: 24px; height: 2px; background: var(--cyan); border-radius: 2px;
+            transition: all var(--transition);
+        }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mobile-backdrop {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 998; backdrop-filter: blur(2px);
+        }
+        .mobile-backdrop.open { display: block; }
 
         .lang-toggle {
             display: inline-flex; background: var(--glass-bg); border: 1px solid var(--glass-border);
