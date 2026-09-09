@@ -429,6 +429,77 @@
             .projects-grid { grid-template-columns: 1fr; }
             .contact-layout { grid-template-columns: 1fr; }
         }
+
+        .sim-overlay {
+            display: none; position: fixed; inset: 0; z-index: 9999;
+            background: #050a10; color: #e8eef4; overflow: hidden;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .sim-overlay.open { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.5rem; }
+        .sim-overlay h2 {
+            font-size: clamp(2rem, 7vw, 4rem); font-weight: 900; letter-spacing: 2px;
+            text-shadow: 0 0 18px currentColor;
+        }
+        .sim-overlay p { max-width: 520px; color: #8890a0; margin: 1rem auto 1.6rem; line-height: 1.6; }
+        .sim-close {
+            margin-top: 1.2rem; padding: .7rem 1.4rem; border-radius: 10px; cursor: pointer;
+            border: 2px solid #22d3ee; background: #22d3ee; color: #050a10; font-weight: 800;
+        }
+        #overlay500 h2 { color: #fb923c; }
+        #overlayOffline h2 { color: #22d3ee; }
+        .fuse-box {
+            width: min(280px, 80vw); height: 180px; margin: 0 auto 1rem; position: relative;
+            background: #1a1f24; border: 3px solid #fb923c; border-radius: 12px;
+            box-shadow: 0 0 30px rgba(251,146,60,.45);
+        }
+        .fuse {
+            position: absolute; left: 50%; top: 40px; width: 70px; height: 90px;
+            margin-left: -35px; background: #2a3138; border-radius: 8px;
+            border: 2px solid #8890a0;
+        }
+        .fuse::after {
+            content: ''; position: absolute; left: 50%; top: 20px; width: 4px; height: 40px;
+            margin-left: -2px; background: #ef4444;
+            box-shadow: 0 0 10px #ef4444; animation: fuseFlicker .15s infinite;
+        }
+        @keyframes fuseFlicker { 50% { opacity: .3; height: 18px; } }
+        .fuse-smoke span {
+            position: absolute; left: 50%; bottom: 110px; width: 16px; height: 16px;
+            border-radius: 50%; background: rgba(180,200,210,.4);
+            animation: fusePuff 2s ease-out infinite;
+        }
+        .fuse-smoke span:nth-child(2) { animation-delay: .6s; margin-left: -18px; }
+        .fuse-smoke span:nth-child(3) { animation-delay: 1.1s; margin-left: 12px; }
+        @keyframes fusePuff {
+            0% { transform: translate(-50%,0) scale(.4); opacity: .7; }
+            100% { transform: translate(-50%,-70px) scale(1.8); opacity: 0; }
+        }
+        .esp-wrap { width: 220px; height: 200px; margin: 0 auto 1rem; position: relative; }
+        .esp-board {
+            width: 120px; height: 70px; margin: 80px auto 0; background: #0a3d28;
+            border: 2px solid #34d399; border-radius: 8px; position: relative;
+        }
+        .esp-ant {
+            position: absolute; left: 50%; top: -54px; width: 6px; height: 50px; margin-left: -3px;
+            background: #8890a0; border-radius: 3px;
+        }
+        .esp-ant::before {
+            content: ''; position: absolute; left: 50%; top: -10px; width: 14px; height: 14px;
+            margin-left: -7px; border-radius: 50%; background: #ef4444;
+            box-shadow: 0 0 12px #ef4444; animation: antBlink .8s step-end infinite;
+        }
+        @keyframes antBlink { 50% { background: #22d3ee; box-shadow: 0 0 16px #22d3ee; } }
+        .wifi-rings span {
+            position: absolute; left: 50%; top: 8px; width: 20px; height: 20px; margin-left: -10px;
+            border: 2px solid #22d3ee; border-radius: 50%; opacity: 0;
+            animation: wifiRing 1.6s ease-out infinite;
+        }
+        .wifi-rings span:nth-child(2) { animation-delay: .4s; }
+        .wifi-rings span:nth-child(3) { animation-delay: .8s; }
+        @keyframes wifiRing {
+            0% { transform: scale(.4); opacity: .8; }
+            100% { transform: scale(3.2); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -622,7 +693,7 @@
                             <label for="message" data-i18n="form_msg">Mesajınız</label>
                             <textarea id="message" name="message" required></textarea>
                             <button type="submit" data-i18n="form_send">Mesaj Gönder</button>
-                            <div id="formSuccess" style="display:none; margin-top:1rem; padding:0.75rem; border-radius:8px; background:var(--green-dim); color:var(--green); font-weight:600; text-align:center;" data-i18n="form_success">Mesajınız başarıyla gönderildi!</div>
+                            <div id="formSuccess" style="display:none; margin-top:1rem; padding:0.75rem; border-radius:8px; background:var(--green-dim); color:var(--green); font-weight:600; text-align:center;" data-i18n="form_success">Mesajınız alındı!</div>
                         </form>
                     </div>
                 </div>
@@ -639,9 +710,30 @@
         <p data-i18n="footer_copy">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</p>
     </footer>
 
+    <div class="sim-overlay" id="overlay500">
+        <div class="fuse-box">
+            <div class="fuse"></div>
+            <div class="fuse-smoke"><span></span><span></span><span></span></div>
+        </div>
+        <h2>500 — SİGORTA ATTI</h2>
+        <p>Voltaj aşırı yüklendi. Atölyedeki sigorta kutusu duman çıkarıyor. Devreyi resetlemek için ana üsse dön.</p>
+        <button class="sim-close" type="button" data-close-sim>Ana Üsse Dön</button>
+    </div>
+    <div class="sim-overlay" id="overlayOffline">
+        <div class="esp-wrap">
+            <div class="wifi-rings"><span></span><span></span><span></span></div>
+            <div class="esp-board">
+                <div class="esp-ant"></div>
+            </div>
+        </div>
+        <h2>SİNYAL KOPUK</h2>
+        <p>ESP32 Wi-Fi anteni NACK basıyor. Access point görünmüyor. Sinyali yeniden tarayıp ana üsse dön.</p>
+        <button class="sim-close" type="button" data-close-sim>Ana Üsse Dön</button>
+    </div>
+
     <script>
         // ========== i18n ==========
-        const T = {
+        const translations = {
             tr: {
                 nav_about: "Hakkımda", nav_skills: "Yetenekler", nav_projects: "Projeler", nav_contact: "İletişim",
                 cta_projects: "Projeleri Gör", cta_contact: "İletişim",
@@ -656,7 +748,7 @@
                 skill_vcs: "Sürüm Kontrol", skill_server: "DevOps / Sunucu",
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
-                form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız başarıyla gönderildi!",
+                form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız alındı!",
                 repo_btn: "Projeye Git",
                 footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
             },
@@ -674,7 +766,7 @@
                 skill_vcs: "Version Control", skill_server: "DevOps / Server",
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
-                form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message sent successfully!",
+                form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message received!",
                 repo_btn: "View Project",
                 footer_copy: "© 2026 Erhan Emir. All rights reserved."
             }
@@ -691,10 +783,10 @@
 
             document.querySelectorAll("[data-i18n]").forEach(el => {
                 const k = el.getAttribute("data-i18n");
-                if (T[l][k]) el.innerHTML = T[l][k];
+                if (translations[l][k]) el.innerHTML = translations[l][k];
             });
 
-            typeWriter(T[l].typing_title, T[l].typing_sub);
+            typeWriter(translations[l].typing_title, translations[l].typing_sub);
 
             if (window._reposLoaded) renderRepos(window._reposData);
         }
@@ -774,20 +866,22 @@
                     resLine.className = "terminal-line";
 
                     if (cmd === "help") {
-                        resLine.textContent = "Available commands:\n  - help     : List available commands\n  - skills   : Show core languages & maker tools\n  - projects : Jump to GitHub projects section\n  - whoami   : Print user profile info\n  - clear    : Clear terminal screen";
+                        resLine.textContent = "Available commands:\n  - skills   : Show core languages & maker tools\n  - projects : Jump to GitHub projects section\n  - whoami   : Print user profile info\n  - clear    : Clear terminal screen";
                     } else if (cmd === "skills") {
                         resLine.textContent = "Core Skills: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, 3D Print (Creality)";
                     } else if (cmd === "projects") {
                         resLine.textContent = "Jumping to projects section...";
-                        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); // Null check for projects element
+                        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
                     } else if (cmd === "whoami") {
                         resLine.textContent = "Erhan Emir — Maker & Developer (Embedded systems, IoT, Full-Stack & 3D prototyping)";
                     } else if (cmd === "clear") {
                         terminalBody.innerHTML = "";
                         terminalInput.value = "";
                         return;
+                    } else if (cmd === "test") {
+                        resLine.textContent = TEST_MENU;
                     } else {
-                        resLine.textContent = `Command not found: ${cmd}. Type \'help\' for available commands.`;
+                        resLine.textContent = `Command not found: ${cmd}. Type 'help' for available commands.`;
                         resLine.style.color = "#ef4444";
                     }
 
@@ -829,14 +923,14 @@
             if (!grid) return; 
 
             if (!repos.length) {
-                grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].empty}</div>`;
+                grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${translations[lang].empty}</div>`;
                 return;
             }
 
             grid.innerHTML = repos.map(r => {
                 const langDisplayName = r.language || "Diğer";
                 const color = langColors[langDisplayName] || "#888"; 
-                const description = r.description || T[lang].no_desc;
+                const description = r.description || translations[lang].no_desc;
                 const projectTopics = r.topics && r.topics.length ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join("") : "";
 
                 return `
@@ -951,7 +1045,33 @@
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
         fadeUpElements.forEach(el => observer.observe(el));
 
-        // ========== INIT ==========
+        const TEST_MENU = "=== MAKER SYSTEM TEST CONSOLE ===\ntrigger500()     -> 500 Sigorta Attı / Voltaj Aşırı Yükleme Ekranını Açar\ntrigger404()     -> 404 Cyber-Monkey Sayfasına Yönlendirir\ntriggerOffline() -> Sinyal Kopukluğu Ekranını Tetikler";
+
+        function closeSims() {
+            document.getElementById("overlay500").classList.remove("open");
+            document.getElementById("overlayOffline").classList.remove("open");
+        }
+        window.trigger500 = function trigger500() {
+            closeSims();
+            document.getElementById("overlay500").classList.add("open");
+        };
+        window.trigger404 = function trigger404() {
+            location.href = "404.html";
+        };
+        window.triggerOffline = function triggerOffline() {
+            closeSims();
+            document.getElementById("overlayOffline").classList.add("open");
+        };
+        Object.defineProperty(window, "test", {
+            configurable: true,
+            get() {
+                console.log(TEST_MENU);
+                return TEST_MENU;
+            }
+        });
+        document.querySelectorAll("[data-close-sim]").forEach(btn => btn.addEventListener("click", closeSims));
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSims(); });
+
         applyLang(lang);
     </script>
 </body>
