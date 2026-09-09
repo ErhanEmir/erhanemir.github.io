@@ -83,7 +83,6 @@
 
         .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 
-        /* === NAV === */
         header {
             position: sticky; top: 0; z-index: 1000;
             background: var(--header-bg);
@@ -154,7 +153,6 @@
         :root:not([data-theme="light"]) .theme-toggle .fa-moon { display: none; }
         [data-theme="light"] .theme-toggle .fa-moon { display: inline-block; }
 
-        /* === HERO === */
         #hero {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
             text-align: center; padding: 4rem 2rem; position: relative;
@@ -197,7 +195,6 @@
         .btn-outline { background: transparent; color: var(--cyan); border: 2px solid var(--cyan); }
         .btn-outline:hover { background: var(--cyan-dim); transform: translateY(-2px); }
 
-        /* === SECTIONS === */
         section { padding: 5rem 0; }
         .section-title {
             text-align: center; font-size: 2rem; margin-bottom: 3rem;
@@ -223,11 +220,9 @@
         [data-theme="light"] .lang-toggle > div.active { color: #fff; }
         [data-theme="light"] .contact-form button { color: #fff; }
 
-        /* === ABOUT === */
         #about { background: var(--bg-secondary); }
         .about-text p { margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 1.05rem; }
 
-        /* === SKILLS === */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -251,7 +246,6 @@
         .skill-card h3 { font-size: 1rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
         .skill-card .skill-type { font-size: 0.78rem; color: var(--text-secondary); position: relative; z-index: 1; }
 
-        /* === PROJECTS === */
         #projects { background: var(--bg-secondary); }
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
         .project-card {
@@ -265,10 +259,10 @@
         .project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
 
         .project-card::before {
-            content: ">"; /* Using a character to denote glow */
+            content: ">"; 
             position: absolute; inset: 0;
             border-radius: var(--radius);
-            padding: 2px; /* Border thickness */
+            padding: 2px; 
             background: linear-gradient(45deg, var(--cyan), var(--green));
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
@@ -303,7 +297,6 @@
             border-radius: 6px; font-size: 0.75rem; font-weight: 600;
         }
 
-        /* === CONTACT === */
         .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
         .contact-info-list p { margin-bottom: 1rem; color: var(--text-secondary); font-size: 1rem; }
         .contact-info-list i { color: var(--cyan); width: 22px; margin-right: 0.6rem; }
@@ -325,7 +318,6 @@
         }
         .contact-form button:hover { background: var(--green); }
 
-        /* === FOOTER === */
         footer {
             text-align: center; padding: 2rem; border-top: 1px solid var(--glass-border);
             color: var(--text-secondary); font-size: 0.85rem; background: var(--bg-secondary);
@@ -334,7 +326,6 @@
         .socials a { font-size: 1.3rem; color: var(--text-secondary); margin: 0 0.8rem; transition: color var(--transition); }
         .socials a:hover { color: var(--cyan); }
 
-        /* === MAKER TERMINAL === */
         .terminal-box {
             background: #020408; border: 1px solid var(--cyan);
             border-radius: var(--radius); box-shadow: 0 0 25px var(--cyan-glow);
@@ -361,7 +352,6 @@
             font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; flex: 1;
         }
 
-        /* === 3D PRINTER BED MODULE === */
         .printer-section { margin-top: 3rem; display: flex; justify-content: center; }
         .printer-card {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
@@ -418,17 +408,6 @@
         }
         .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-        /* === RESPONSIVE === */
-            @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 0.8rem; }
-            .nav-actions { width: 100%; justify-content: center; }
-            .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
-            .hero-content h1 { font-size: 2.2rem; }
-            .skills-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
-            .projects-grid { grid-template-columns: 1fr; }
-            .contact-layout { grid-template-columns: 1fr; }
-        }
 
         .sim-overlay {
             display: none; position: fixed; inset: 0; z-index: 9999;
@@ -500,6 +479,16 @@
             0% { transform: scale(.4); opacity: .8; }
             100% { transform: scale(3.2); opacity: 0; }
         }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 0.8rem; }
+            .nav-actions { width: 100%; justify-content: center; }
+            .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .skills-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+            .projects-grid { grid-template-columns: 1fr; }
+            .contact-layout { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -527,7 +516,6 @@
     </header>
 
     <main>
-        <!-- HERO -->
         <section id="hero">
             <div class="hero-content fade-up">
                 <div class="avatar-ring"><i class="fas fa-microchip"></i></div>
@@ -539,7 +527,6 @@
                     <a href="#projects" class="btn btn-primary"><i class="fas fa-folder-open"></i> <span data-i18n="cta_projects">Projeleri Gör</span></a>
                     <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> <span data-i18n="cta_contact">İletişim</span></a>
                 </div>
-                <!-- INTERACTIVE MAKER TERMINAL -->
                 <div class="terminal-box">
                     <div class="terminal-header">
                         <div class="terminal-dots">
@@ -560,7 +547,6 @@
             </div>
         </section>
 
-        <!-- ABOUT -->
         <section id="about">
             <div class="container">
                 <h2 class="section-title fade-up" data-i18n="nav_about">Hakkımda</h2>
@@ -572,7 +558,6 @@
             </div>
         </section>
 
-        <!-- SKILLS -->
         <section id="skills">
             <div class="container">
                 <h2 class="section-title fade-up" data-i18n="nav_skills">Yetenekler</h2>
@@ -642,7 +627,6 @@
                         <span class="skill-type" data-i18n="skill_server">DevOps / Sunucu</span>
                     </div>
                 </div>
-                <!-- 3D PRINTER BED MODULE -->
                 <div class="printer-section">
                     <div class="printer-card glass-card">
                         <h3><i class="fas fa-cube"></i> Live 3D Printing Simulation</h3>
@@ -657,7 +641,6 @@
             </div>
         </section>
 
-        <!-- PROJECTS -->
         <section id="projects">
             <div class="container">
                 <h2 class="section-title fade-up" data-i18n="nav_projects">Projeler</h2>
@@ -670,7 +653,6 @@
             </div>
         </section>
 
-        <!-- CONTACT -->
         <section id="contact">
             <div class="container">
                 <h2 class="section-title fade-up" data-i18n="nav_contact">İletişim</h2>
@@ -732,7 +714,6 @@
     </div>
 
     <script>
-        // ========== i18n ==========
         const translations = {
             tr: {
                 nav_about: "Hakkımda", nav_skills: "Yetenekler", nav_projects: "Projeler", nav_contact: "İletişim",
@@ -749,7 +730,6 @@
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
                 form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız alındı!",
-                repo_btn: "Projeye Git",
                 footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
             },
             en: {
@@ -767,7 +747,6 @@
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
                 form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message received!",
-                repo_btn: "View Project",
                 footer_copy: "© 2026 Erhan Emir. All rights reserved."
             }
         };
@@ -793,7 +772,6 @@
 
         document.getElementById("langToggle").addEventListener("click", () => applyLang(lang === "tr" ? "en" : "tr"));
 
-        // ========== THEME ==========
         const themeToggle = document.getElementById("themeToggle");
         function applyTheme(t) {
             document.documentElement.setAttribute("data-theme", t);
@@ -805,19 +783,17 @@
             applyTheme(next);
         });
 
-        // ========== TYPEWRITER ==========
         let typeInterval;
         function typeWriter(titleText, subText) {
             const titleEl = document.getElementById("typingTitle");
             const subEl = document.getElementById("typingSub");
-            if (!titleEl || !subEl) return; // Null check for elements
+            if (!titleEl || !subEl) return;
 
             titleEl.innerHTML = "";
             subEl.innerHTML = "";
             clearInterval(typeInterval);
 
             let ti = 0, si = 0;
-            // Handle potential HTML entities within the text for typing animation
             const titleArr = Array.from(titleText.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"));
             const subArr = Array.from(subText.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"));
 
@@ -846,53 +822,58 @@
             typeTitle();
         }
 
-        // ========== MAKER TERMINAL LOGIC ==========
         const terminalInput = document.getElementById("terminalInput");
         const terminalBody = document.getElementById("terminalBody");
 
         if (terminalInput && terminalBody) {
             terminalInput.addEventListener("keydown", (e) => {
-                if (e.key === "Enter") {
-                    const cmd = terminalInput.value.trim().toLowerCase();
-                    if (!cmd) return;
+                if (e.key !== "Enter") return;
+                const cmd = terminalInput.value.trim().toLowerCase();
 
-                    const userLine = document.createElement("div");
-                    userLine.className = "terminal-line";
-                    userLine.style.color = "var(--text-primary)";
-                    userLine.textContent = `$ ${terminalInput.value}`;
-                    terminalBody.appendChild(userLine);
+                const userLine = document.createElement("div");
+                userLine.className = "terminal-line";
+                userLine.style.color = "#e8eef4";
+                userLine.textContent = `$ ${terminalInput.value}`;
+                terminalBody.appendChild(userLine);
 
-                    const resLine = document.createElement("div");
-                    resLine.className = "terminal-line";
+                const resLine = document.createElement("div");
+                resLine.className = "terminal-line";
 
-                    if (cmd === "help") {
-                        resLine.textContent = "Available commands:\n  - skills   : Show core languages & maker tools\n  - projects : Jump to GitHub projects section\n  - whoami   : Print user profile info\n  - clear    : Clear terminal screen";
-                    } else if (cmd === "skills") {
-                        resLine.textContent = "Core Skills: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, 3D Print (Creality)";
-                    } else if (cmd === "projects") {
-                        resLine.textContent = "Jumping to projects section...";
-                        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-                    } else if (cmd === "whoami") {
-                        resLine.textContent = "Erhan Emir — Maker & Developer (Embedded systems, IoT, Full-Stack & 3D prototyping)";
-                    } else if (cmd === "clear") {
-                        terminalBody.innerHTML = "";
-                        terminalInput.value = "";
-                        return;
-                    } else if (cmd === "test") {
-                        resLine.textContent = TEST_MENU;
-                    } else {
-                        resLine.textContent = `Command not found: ${cmd}. Type 'help' for available commands.`;
-                        resLine.style.color = "#ef4444";
-                    }
-
-                    terminalBody.appendChild(resLine);
+                if (cmd === "help") {
+                    resLine.textContent = "Available commands:\n  - skills   : Show core languages & maker tools\n  - projects : Jump to GitHub projects section\n  - whoami   : Print user profile info\n  - clear    : Clear terminal screen";
+                } else if (cmd === "skills") {
+                    resLine.textContent = "Core Skills: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, 3D Print (Creality)";
+                } else if (cmd === "projects") {
+                    resLine.textContent = "Jumping to projects section...";
+                    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                } else if (cmd === "whoami") {
+                    resLine.textContent = "Erhan Emir — Maker & Developer (Embedded systems, IoT, Full-Stack & 3D prototyping)";
+                } else if (cmd === "clear") {
+                    terminalBody.innerHTML = "";
                     terminalInput.value = "";
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                    return;
+                } else if (cmd === "test") {
+                    resLine.textContent = TEST_MENU;
+                } else if (cmd === "trigger500") {
+                    trigger500();
+                    resLine.textContent = "Triggering 500 simulation...";
+                } else if (cmd === "trigger404") {
+                    trigger404();
+                    resLine.textContent = "Triggering 404 page...";
+                } else if (cmd === "triggeroffline" || cmd === "trigger_offline") {
+                    triggerOffline();
+                    resLine.textContent = "Triggering offline simulation...";
+                } else {
+                    resLine.textContent = `Command not found: ${cmd}. Type 'help' for available commands.`;
+                    resLine.style.color = "#ef4444";
                 }
+
+                terminalBody.appendChild(resLine);
+                terminalInput.value = "";
+                terminalBody.scrollTop = terminalBody.scrollHeight;
             });
         }
 
-        // ========== GitHub API ==========
         const langColors = {
             JavaScript: "#f1e05a", Python: "#3572A5", Dart: "#00B4AB", HTML: "#e34c26",
             CSS: "#563d7c", "C++": "#f34b7d", C: "#555555", Shell: "#89e051",
@@ -920,7 +901,7 @@
 
         function renderRepos(repos) {
             const grid = document.getElementById("projectsGrid");
-            if (!grid) return; 
+            if (!grid) return;
 
             if (!repos.length) {
                 grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${translations[lang].empty}</div>`;
@@ -929,7 +910,7 @@
 
             grid.innerHTML = repos.map(r => {
                 const langDisplayName = r.language || "Diğer";
-                const color = langColors[langDisplayName] || "#888"; 
+                const color = langColors[langDisplayName] || "#888";
                 const description = r.description || translations[lang].no_desc;
                 const projectTopics = r.topics && r.topics.length ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join("") : "";
 
@@ -969,7 +950,7 @@
                     const repos = data.filter(r => !r.fork && !r.archived && !r.private)
                                 .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0));
                     window._reposLoaded = true;
-                    window._reposData = repos; // Store data for re-rendering on language change
+                    window._reposData = repos;
                     renderRepos(repos);
                     return;
                 } else if (res.status === 403) {
@@ -981,69 +962,12 @@
                 console.error("Network error or other issue fetching GitHub repos:", e);
             }
 
-            // Fallback: render static projects
             window._reposLoaded = true;
-            window._reposData = fallbackProjects; // Store fallback data too
+            window._reposData = fallbackProjects;
             renderRepos(fallbackProjects);
         }
 
         loadProjects();
-
-        // ========== CONTACT FORM AJAX / FEEDBACK ==========
-        const contactForm = document.getElementById("contactForm");
-        const formSuccess = document.getElementById("formSuccess");
-        if (contactForm && formSuccess) {
-            contactForm.addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const formData = new FormData(contactForm);
-                try {
-                    const response = await fetch(contactForm.action, {
-                        method: "POST",
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    if (response.ok) {
-                        formSuccess.style.display = "block";
-                        contactForm.reset();
-                        setTimeout(() => { formSuccess.style.display = "none"; }, 5000);
-                    } else {
-                        contactForm.submit();
-                    }
-                } catch (err) {
-                    contactForm.submit();
-                }
-            });
-        }
-
-        // ========== SCROLL SPY FOR ACTIVE NAV LINKS ==========
-        const sections = document.querySelectorAll("section");
-        const navLinks = document.querySelectorAll(".nav-links a");
-
-        const scrollObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    navLinks.forEach(link => {
-                        link.classList.remove("active");
-                        if (link.getAttribute("href") === `#${entry.target.id}`) {
-                            link.classList.add("active");
-                        }
-                    });
-                }
-            });
-        }, { threshold: 0.3, rootMargin: "-50% 0% -50% 0%" }); // Adjust threshold and rootMargin for better active state
-
-        sections.forEach(section => {
-            scrollObserver.observe(section);
-        });
-
-        // ========== FADE-IN ==========
-        const fadeUpElements = document.querySelectorAll(".fade-up");
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
-            });
-        }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-        fadeUpElements.forEach(el => observer.observe(el));
 
         const TEST_MENU = "=== MAKER SYSTEM TEST CONSOLE ===\ntrigger500()     -> 500 Sigorta Attı / Voltaj Aşırı Yükleme Ekranını Açar\ntrigger404()     -> 404 Cyber-Monkey Sayfasına Yönlendirir\ntriggerOffline() -> Sinyal Kopukluğu Ekranını Tetikler";
 
@@ -1071,6 +995,59 @@
         });
         document.querySelectorAll("[data-close-sim]").forEach(btn => btn.addEventListener("click", closeSims));
         document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSims(); });
+
+        const contactForm = document.getElementById("contactForm");
+        const formSuccess = document.getElementById("formSuccess");
+        if (contactForm && formSuccess) {
+            contactForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: "POST",
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (response.ok) {
+                        formSuccess.style.display = "block";
+                        contactForm.reset();
+                        setTimeout(() => { formSuccess.style.display = "none"; }, 5000);
+                    } else {
+                        contactForm.submit();
+                    }
+                } catch (err) {
+                    contactForm.submit();
+                }
+            });
+        }
+
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-links a");
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href") === `#${entry.target.id}`) {
+                            link.classList.add("active");
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.3, rootMargin: "-50% 0% -50% 0%" });
+
+        sections.forEach(section => {
+            scrollObserver.observe(section);
+        });
+
+        const fadeUpElements = document.querySelectorAll(".fade-up");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+        fadeUpElements.forEach(el => observer.observe(el));
 
         applyLang(lang);
     </script>
