@@ -91,15 +91,16 @@
             50% { transform: translateX(-50%) rotate(5deg) translateY(-6px); }
         }
         .wrench {
-            position: absolute; right: -8px; top: 78px;
-            width: 70px; height: 22px;
-            transform-origin: 8px 11px;
+            position: absolute; left: 118px; top: 132px;
+            width: 78px; height: 26px;
+            transform-origin: 6px 13px;
             animation: wrenchTurn .55s ease-in-out infinite;
-            z-index: 4;
+            z-index: 5;
+            pointer-events: none;
         }
         @keyframes wrenchTurn {
-            0%, 100% { transform: rotate(-28deg); }
-            50% { transform: rotate(18deg); }
+            0%, 100% { transform: rotate(12deg); }
+            50% { transform: rotate(58deg); }
         }
         .pcb {
             position: absolute; left: 52%; bottom: 18px;
@@ -166,14 +167,16 @@
             box-shadow: 0 0 40px rgba(34,211,238,.35);
             overflow: hidden;
         }
-        .terminal.open { display: block; animation: pop .25s ease-out; }
-        @keyframes pop { from { opacity: 0; transform: translate(-50%, -46%) scale(.96); } }
+        .terminal.open { display: block; }
+        .terminal.dragging { user-select: none; }
         .term-head {
             display: flex; align-items: center; gap: 8px;
             padding: .55rem 1rem; background: rgba(34,211,238,.1);
             border-bottom: 1px solid rgba(255,255,255,.08);
             font-family: 'Courier New', monospace; font-size: .8rem; color: var(--muted);
+            cursor: grab;
         }
+        .term-head:active { cursor: grabbing; }
         .dot { width: 10px; height: 10px; border-radius: 50%; }
         .term-body {
             height: 180px; overflow-y: auto; padding: .9rem 1rem;
@@ -245,7 +248,7 @@
                     <rect x="84" y="74" width="12" height="8" fill="#222"/>
                     <path d="M48 58 Q90 42 132 58" fill="none" stroke="#22d3ee" stroke-width="3" filter="url(#glow)"/>
                     <ellipse cx="48" cy="148" rx="14" ry="10" fill="#c45c26"/>
-                    <ellipse cx="132" cy="148" rx="14" ry="10" fill="#c45c26"/>
+                    <ellipse cx="128" cy="142" rx="16" ry="12" fill="#c45c26"/>
                 </svg>
                 <svg class="wrench" viewBox="0 0 70 22">
                     <path d="M8 4 h28 v4 h22 a8 8 0 0 1 0 10 h-22 v4 H8 a6 6 0 0 1 0-16z" fill="#9ca3af" stroke="#22d3ee" stroke-width="1"/>
@@ -323,6 +326,27 @@
         });
         document.getElementById("termClose").addEventListener("click", () => term.classList.remove("open"));
 
+        const termHead = term.querySelector(".term-head");
+        let drag = null;
+        termHead.addEventListener("pointerdown", (e) => {
+            if (e.target.id === "termClose") return;
+            const r = term.getBoundingClientRect();
+            term.style.left = r.left + "px";
+            term.style.top = r.top + "px";
+            term.style.transform = "none";
+            drag = { x: e.clientX - r.left, y: e.clientY - r.top };
+            term.classList.add("dragging");
+            termHead.setPointerCapture(e.pointerId);
+        });
+        termHead.addEventListener("pointermove", (e) => {
+            if (!drag) return;
+            const x = Math.max(0, Math.min(window.innerWidth - term.offsetWidth, e.clientX - drag.x));
+            const y = Math.max(0, Math.min(window.innerHeight - 40, e.clientY - drag.y));
+            term.style.left = x + "px";
+            term.style.top = y + "px";
+        });
+        termHead.addEventListener("pointerup", () => { drag = null; term.classList.remove("dragging"); });
+
         function line(t, color) {
             const d = document.createElement("div");
             d.className = "term-line";
@@ -339,7 +363,7 @@
             if (cmd === "help") line("help | solder | reboot | home | clear");
             else if (cmd === "solder") line("Lehim ısındı... hat kısmen kapandı. Maymun başını salladı. Hâlâ 404.");
             else if (cmd === "reboot") { line("Sistem yeniden başlatılıyor..."); setTimeout(() => location.reload(), 700); }
-            else if (cmd === "home") { document.getElementById("wrap").classList.add("fade-out"); setTimeout(() => { location.href = "index.html"; }, 400); }
+            else if (cmd === "home") { line("Ana üsse gidiliyor..."); setTimeout(() => { location.href = "https://erhanemir.github.io/"; }, 350); }
             else if (cmd === "clear") termBody.innerHTML = "";
             else line("Komut yok. help yaz.", "#ef4444");
         });
