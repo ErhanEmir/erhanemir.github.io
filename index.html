@@ -254,7 +254,33 @@
         /* === PROJECTS === */
         #projects { background: var(--bg-secondary); }
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-        .project-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
+        .project-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: var(--radius); padding: 0; overflow: hidden;
+            backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; height: 100%;
+            transition: transform var(--transition), box-shadow var(--transition);
+            position: relative;
+        }
+        .project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+
+        .project-card::before {
+            content: ">"; /* Using a character to denote glow */
+            position: absolute; inset: 0;
+            border-radius: var(--radius);
+            padding: 2px; /* Border thickness */
+            background: linear-gradient(45deg, var(--cyan), var(--green));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
         .project-top {
             padding: 1.5rem 1.5rem 0; display: flex; align-items: center; gap: 1rem;
         }
@@ -276,9 +302,6 @@
             background: var(--cyan-dim); color: var(--cyan); padding: 0.3rem 0.7rem;
             border-radius: 6px; font-size: 0.75rem; font-weight: 600;
         }
-        .project-links { margin-left: auto; display: flex; gap: 0.8rem; }
-        .project-links a { color: var(--text-secondary); font-size: 1.1rem; }
-        .project-links a:hover { color: var(--cyan); }
 
         /* === CONTACT === */
         .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
@@ -697,14 +720,14 @@
             const subEl = document.getElementById("typingSub");
             if (!titleEl || !subEl) return; // Null check for elements
 
-            titleEl.innerHTML = '';
-            subEl.innerHTML = '';
+            titleEl.innerHTML = "";
+            subEl.innerHTML = "";
             clearInterval(typeInterval);
 
             let ti = 0, si = 0;
             // Handle potential HTML entities within the text for typing animation
-            const titleArr = Array.from(titleText.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
-            const subArr = Array.from(subText.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+            const titleArr = Array.from(titleText.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"));
+            const subArr = Array.from(subText.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"));
 
             function typeTitle() {
                 if (ti < titleArr.length) {
@@ -722,8 +745,8 @@
                     si++;
                     typeInterval = setTimeout(typeSub, 55);
                 } else {
-                    const cursor = document.createElement('span');
-                    cursor.className = 'cursor';
+                    const cursor = document.createElement("span");
+                    cursor.className = "cursor";
                     subEl.appendChild(cursor);
                 }
             }
@@ -764,7 +787,7 @@
                         terminalInput.value = "";
                         return;
                     } else {
-                        resLine.textContent = `Command not found: ${cmd}. Type 'help' for available commands.`;
+                        resLine.textContent = `Command not found: ${cmd}. Type \'help\' for available commands.`;
                         resLine.style.color = "#ef4444";
                     }
 
@@ -774,15 +797,36 @@
                 }
             });
         }
+
+        // ========== GitHub API ==========
         const langColors = {
             JavaScript: "#f1e05a", Python: "#3572A5", Dart: "#00B4AB", HTML: "#e34c26",
             CSS: "#563d7c", "C++": "#f34b7d", C: "#555555", Shell: "#89e051",
-            TypeScript: "#2b7489", Vue: "#41B883", Rust: "#dea584", Java: "#b07219"
+            TypeScript: "#2b7489", Vue: "#41B883", Rust: "#dea584",
+            PHP: "#4F5D95", Java: "#b07219", Ruby: "#701516", Go: "#00ADD8",
+            Swift: "#ffac45", Kotlin: "#F18E33", CSharp: "#178600", TypeScript: "#3178C6"
         };
+
+        const fallbackProjects = [
+            {
+                name: "indir-gitsin",
+                description: "Birçok kaynaktan tek tıkla video ve fotoğraf indirin. TikTok, Instagram, YouTube, Pinterest ve daha fazlasını destekler!",
+                html_url: "https://github.com/ErhanEmir/indir-gitsin",
+                language: "Python",
+                topics: ["python", "downloader", "cli", "tiktok-downloader", "instagram-downloader", "youtube-downloader"]
+            },
+            {
+                name: "erhanemir.github.io",
+                description: "Kişisel web sitem ve portfolyom. Geliştirme süreçlerim ve projelerim hakkında bilgiler içerir.",
+                html_url: "https://github.com/ErhanEmir/erhanemir.github.io",
+                language: "HTML",
+                topics: ["html", "css", "javascript", "portfolio", "personal-website"]
+            }
+        ];
 
         function renderRepos(repos) {
             const grid = document.getElementById("projectsGrid");
-            if (!grid) return; // Null check for grid element
+            if (!grid) return; 
 
             if (!repos.length) {
                 grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].empty}</div>`;
@@ -790,48 +834,63 @@
             }
 
             grid.innerHTML = repos.map(r => {
-                const ln = r.language || "N/A";
-                const color = langColors[ln] || "#888";
+                const langDisplayName = r.language || "Diğer";
+                const color = langColors[langDisplayName] || "#888"; 
+                const description = r.description || T[lang].no_desc;
+                const projectTopics = r.topics && r.topics.length ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join("") : "";
+
                 return `
                     <div class="project-card glass-card">
                         <div class="project-top">
                             <i class="fas fa-folder"></i>
                             <h3>${r.name}</h3>
-                            <span class="stars"><i class="fas fa-star"></i> ${r.stargazers_count}</span>
+                            ${r.stargazers_count !== undefined ? `<span class="stars"><i class="fas fa-star"></i> ${r.stargazers_count}</span>` : ""}
                         </div>
                         <div class="project-body">
-                            <p>${r.description || T[lang].no_desc}</p>
+                            <p>${description}</p>
                         </div>
                         <div class="project-footer">
                             <div class="project-tags">
-                                <span class="badge" style="background:${color}22;color:${color}">${ln}</span>
-                                ${r.topics ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join('') : ''}
+                                <span class="badge" style="background:${color}22;color:${color}">${langDisplayName}</span>
+                                ${projectTopics}
                             </div>
                             <div class="project-links">
-                                <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="btn-repo"><i class="fab fa-github"></i> <span data-i18n="repo_btn">${T[lang].repo_btn}</span></a>
+                                <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-left:auto; text-decoration: none;">GitHub'da İncele</a>
                             </div>
                         </div>
                     </div>`;
-            }).join('');
+            }).join("");
         }
 
         async function loadProjects() {
             const grid = document.getElementById("projectsGrid");
-            if (!grid) return; // Null check for grid element
+            if (!grid) return;
+
             try {
                 const res = await fetch("https://api.github.com/users/ErhanEmir/repos?sort=updated&per_page=100");
-                const data = await res.json();
-                if (!Array.isArray(data)) throw new Error("bad");
 
-                const repos = data.filter(r => !r.fork && !r.archived && !r.private && r.name !== 'erhanemir.github.io' && r.name !== 'indir-gitsin')
-                    .sort((a, b) => b.stargazers_count - a.stargazers_count);
-
-                window._reposLoaded = true;
-                window._reposData = repos;
-                renderRepos(repos);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (!Array.isArray(data)) throw new Error("GitHub API returned unexpected data format.");
+                    const repos = data.filter(r => !r.fork && !r.archived && !r.private)
+                                .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0));
+                    window._reposLoaded = true;
+                    window._reposData = repos; // Store data for re-rendering on language change
+                    renderRepos(repos);
+                    return;
+                } else if (res.status === 403) {
+                    console.warn("GitHub API Rate Limit exceeded or forbidden. Using fallback projects.");
+                } else {
+                    console.error(`GitHub API returned an error: ${res.status} ${res.statusText}. Using fallback projects.`);
+                }
             } catch (e) {
-                grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${T[lang].gh_err}</div>`;
+                console.error("Network error or other issue fetching GitHub repos:", e);
             }
+
+            // Fallback: render static projects
+            window._reposLoaded = true;
+            window._reposData = fallbackProjects; // Store fallback data too
+            renderRepos(fallbackProjects);
         }
 
         loadProjects();
