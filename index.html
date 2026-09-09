@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erhan Emir — Maker & Developer</title>
     <meta name="description" content="Erhan Emir — Maker & Developer. Python, JavaScript, Dart/Flutter, Arduino, ESP32, PCB ve 3D baskı.">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2322d3ee' d='M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 2h2v2h-2v-2zm2 2h2v2h-2v-2z'/%3E%3C/svg%3E">
+    <meta property="og:title" content="Erhan Emir — Maker & Developer">
+    <meta property="og:description" content="Gömülü sistemler, web ve 3D prototipleme odaklı kişisel portfolyo.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%2322d3ee\' d=\'M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 2h2v2h-2v-2zm2 2h2v2h-2v-2z\'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
         :root {
@@ -352,63 +355,6 @@
             font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; flex: 1;
         }
 
-        .printer-section { margin-top: 3rem; display: flex; justify-content: center; }
-        .printer-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: var(--radius); padding: 1.5rem; max-width: 450px; width: 100%;
-            text-align: center; backdrop-filter: blur(10px);
-        }
-        .printer-card h3 { font-size: 1.1rem; color: var(--cyan); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-        .printer-bed {
-            width: 100%; height: 180px; background: #080c14; border: 2px solid var(--text-secondary);
-            border-radius: 8px; position: relative; overflow: hidden; display: grid; place-items: center;
-        }
-        .printer-grid {
-            position: absolute; inset: 0;
-            background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .print-nozzle {
-            position: absolute; top: 20px; width: 30px; height: 14px; background: var(--orange);
-            border-radius: 4px; box-shadow: 0 0 12px var(--orange);
-            animation: moveNozzle 4s infinite ease-in-out alternate;
-            z-index: 3;
-        }
-        .print-nozzle::after {
-            content: ''; position: absolute; bottom: -6px; left: 11px;
-            width: 8px; height: 8px; background: #fb923c; border-radius: 50%;
-            box-shadow: 0 0 8px #ff4500;
-        }
-        @keyframes moveNozzle {
-            0% { left: 20px; top: 30px; }
-            33% { left: 350px; top: 40px; }
-            66% { left: 60px; top: 120px; }
-            100% { left: 320px; top: 130px; }
-        }
-        .print-layer {
-            position: absolute; bottom: 15px; width: 220px; height: 0px;
-            background: linear-gradient(90deg, var(--cyan), var(--purple));
-            border-radius: 4px; animation: printLayer 4s infinite linear;
-            opacity: 0.85; z-index: 2;
-        }
-        @keyframes printLayer {
-            0% { height: 0px; }
-            80% { height: 90px; }
-            100% { height: 90px; opacity: 0; }
-        }
-        .print-text {
-            position: absolute; z-index: 4; font-weight: 900; font-size: 1.4rem;
-            letter-spacing: 2px; color: var(--text-primary); text-shadow: 0 0 10px var(--cyan);
-            animation: fadeInText 4s infinite linear;
-        }
-        @keyframes fadeInText {
-            0%, 40% { opacity: 0; }
-            70%, 100% { opacity: 1; }
-        }
-        .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-
         .sim-overlay {
             display: none; position: fixed; inset: 0; z-index: 9999;
             background: #050a10; color: #e8eef4; overflow: hidden;
@@ -426,6 +372,7 @@
         }
         #overlay500 h2 { color: #fb923c; }
         #overlayOffline h2 { color: #22d3ee; }
+        #overlay404 h2 { color: #fb923c; }
         .fuse-box {
             width: min(280px, 80vw); height: 180px; margin: 0 auto 1rem; position: relative;
             background: #1a1f24; border: 3px solid #fb923c; border-radius: 12px;
@@ -453,13 +400,16 @@
             0% { transform: translate(-50%,0) scale(.4); opacity: .7; }
             100% { transform: translate(-50%,-70px) scale(1.8); opacity: 0; }
         }
-        .esp-wrap { width: 220px; height: 200px; margin: 0 auto 1rem; position: relative; }
+        .esp-wrap {
+            width: min(220px, 80vw); height: 200px; margin: 0 auto 1rem; position: relative;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+        }
         .esp-board {
-            width: 120px; height: 70px; margin: 80px auto 0; background: #0a3d28;
-            border: 2px solid #34d399; border-radius: 8px; position: relative;
+            width: 120px; height: 70px; background: #0a3d28;
+            border: 2px solid #34d399; border-radius: 8px; position: relative; margin-bottom: 20px;
         }
         .esp-ant {
-            position: absolute; left: 50%; top: -54px; width: 6px; height: 50px; margin-left: -3px;
+            position: absolute; left: 50%; bottom: 100%; width: 6px; height: 50px; margin-left: -3px;
             background: #8890a0; border-radius: 3px;
         }
         .esp-ant::before {
@@ -469,7 +419,7 @@
         }
         @keyframes antBlink { 50% { background: #22d3ee; box-shadow: 0 0 16px #22d3ee; } }
         .wifi-rings span {
-            position: absolute; left: 50%; top: 8px; width: 20px; height: 20px; margin-left: -10px;
+            position: absolute; left: 50%; top: 0px; width: 20px; height: 20px; margin-left: -10px;
             border: 2px solid #22d3ee; border-radius: 50%; opacity: 0;
             animation: wifiRing 1.6s ease-out infinite;
         }
@@ -825,50 +775,60 @@
         const terminalInput = document.getElementById("terminalInput");
         const terminalBody = document.getElementById("terminalBody");
 
+        const TEST_MENU = `=== MAKER SYSTEM TEST CONSOLE ===\ntrigger500()     -> 500 Sigorta Attı / Voltaj Aşırı Yükleme Ekranını Açar\ntrigger404()     -> 404 Cyber-Monkey Sayfasına Yönlendirir\ntriggerOffline() -> Sinyal Kopukluğu Ekranını Tetikler`;
+
+        function handleTerminalCommand(cmd) {
+            const normalizedCmd = cmd.replace(/\s*\(\s*\)\s*/g, '').toLowerCase(); // Remove () and normalize case
+            
+            if (normalizedCmd === "help") {
+                return "Available commands:\n  - skills   : Show core languages & maker tools\n  - projects : Jump to GitHub projects section\n  - whoami   : Print user profile info\n  - clear    : Clear terminal screen";
+            } else if (normalizedCmd === "skills") {
+                return "Core Skills: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, 3D Print (Creality)";
+            } else if (normalizedCmd === "projects") {
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                return "Jumping to projects section...";
+            } else if (normalizedCmd === "whoami") {
+                return "Erhan Emir — Maker & Developer (Embedded systems, IoT, Full-Stack & 3D prototyping)";
+            } else if (normalizedCmd === "clear") {
+                terminalBody.innerHTML = "";
+                terminalInput.value = "";
+                return null; // Do not append a new line for clear
+            } else if (normalizedCmd === "test") {
+                return TEST_MENU;
+            } else if (normalizedCmd === "trigger500") {
+                window.trigger500();
+                return "Triggering 500 simulation...";
+            } else if (normalizedCmd === "trigger404") {
+                window.trigger404();
+                return "Triggering 404 page...";
+            } else if (normalizedCmd === "triggeroffline") {
+                window.triggerOffline();
+                return "Triggering offline simulation...";
+            } else {
+                return `Command not found: ${cmd}. Type 'help' for available commands.`;
+            }
+        }
+
         if (terminalInput && terminalBody) {
             terminalInput.addEventListener("keydown", (e) => {
                 if (e.key !== "Enter") return;
-                const cmd = terminalInput.value.trim().toLowerCase();
-
+                const cmd = terminalInput.value.trim();
+                
                 const userLine = document.createElement("div");
                 userLine.className = "terminal-line";
                 userLine.style.color = "#e8eef4";
-                userLine.textContent = `$ ${terminalInput.value}`;
+                userLine.textContent = `$ ${cmd}`;
                 terminalBody.appendChild(userLine);
 
-                const resLine = document.createElement("div");
-                resLine.className = "terminal-line";
-
-                if (cmd === "help") {
-                    resLine.textContent = "Available commands:\n  - skills   : Show core languages & maker tools\n  - projects : Jump to GitHub projects section\n  - whoami   : Print user profile info\n  - clear    : Clear terminal screen";
-                } else if (cmd === "skills") {
-                    resLine.textContent = "Core Skills: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, 3D Print (Creality)";
-                } else if (cmd === "projects") {
-                    resLine.textContent = "Jumping to projects section...";
-                    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-                } else if (cmd === "whoami") {
-                    resLine.textContent = "Erhan Emir — Maker & Developer (Embedded systems, IoT, Full-Stack & 3D prototyping)";
-                } else if (cmd === "clear") {
-                    terminalBody.innerHTML = "";
-                    terminalInput.value = "";
-                    return;
-                } else if (cmd === "test") {
-                    resLine.textContent = TEST_MENU;
-                } else if (cmd === "trigger500") {
-                    trigger500();
-                    resLine.textContent = "Triggering 500 simulation...";
-                } else if (cmd === "trigger404") {
-                    trigger404();
-                    resLine.textContent = "Triggering 404 page...";
-                } else if (cmd === "triggeroffline" || cmd === "trigger_offline") {
-                    triggerOffline();
-                    resLine.textContent = "Triggering offline simulation...";
-                } else {
-                    resLine.textContent = `Command not found: ${cmd}. Type 'help' for available commands.`;
-                    resLine.style.color = "#ef4444";
+                const response = handleTerminalCommand(cmd);
+                if (response !== null) {
+                    const resLine = document.createElement("div");
+                    resLine.className = "terminal-line";
+                    resLine.textContent = response;
+                    if (response.includes("Command not found")) resLine.style.color = "#ef4444";
+                    terminalBody.appendChild(resLine);
                 }
-
-                terminalBody.appendChild(resLine);
+                
                 terminalInput.value = "";
                 terminalBody.scrollTop = terminalBody.scrollHeight;
             });
@@ -879,7 +839,7 @@
             CSS: "#563d7c", "C++": "#f34b7d", C: "#555555", Shell: "#89e051",
             TypeScript: "#2b7489", Vue: "#41B883", Rust: "#dea584",
             PHP: "#4F5D95", Java: "#b07219", Ruby: "#701516", Go: "#00ADD8",
-            Swift: "#ffac45", Kotlin: "#F18E33", CSharp: "#178600", TypeScript: "#3178C6"
+            Swift: "#ffac45", Kotlin: "#F18E33", CSharp: "#178600"
         };
 
         const fallbackProjects = [
@@ -901,7 +861,7 @@
 
         function renderRepos(repos) {
             const grid = document.getElementById("projectsGrid");
-            if (!grid) return;
+            if (!grid) return; 
 
             if (!repos.length) {
                 grid.innerHTML = `<div class="glass-card" style="text-align:center;padding:2rem;color:var(--text-secondary)">${translations[lang].empty}</div>`;
@@ -910,7 +870,7 @@
 
             grid.innerHTML = repos.map(r => {
                 const langDisplayName = r.language || "Diğer";
-                const color = langColors[langDisplayName] || "#888";
+                const color = langColors[langDisplayName] || "#888"; 
                 const description = r.description || translations[lang].no_desc;
                 const projectTopics = r.topics && r.topics.length ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join("") : "";
 
@@ -969,8 +929,6 @@
 
         loadProjects();
 
-        const TEST_MENU = "=== MAKER SYSTEM TEST CONSOLE ===\ntrigger500()     -> 500 Sigorta Attı / Voltaj Aşırı Yükleme Ekranını Açar\ntrigger404()     -> 404 Cyber-Monkey Sayfasına Yönlendirir\ntriggerOffline() -> Sinyal Kopukluğu Ekranını Tetikler";
-
         function closeSims() {
             document.getElementById("overlay500").classList.remove("open");
             document.getElementById("overlayOffline").classList.remove("open");
@@ -1021,35 +979,4 @@
             });
         }
 
-        const sections = document.querySelectorAll("section");
-        const navLinks = document.querySelectorAll(".nav-links a");
-
-        const scrollObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    navLinks.forEach(link => {
-                        link.classList.remove("active");
-                        if (link.getAttribute("href") === `#${entry.target.id}`) {
-                            link.classList.add("active");
-                        }
-                    });
-                }
-            });
-        }, { threshold: 0.3, rootMargin: "-50% 0% -50% 0%" });
-
-        sections.forEach(section => {
-            scrollObserver.observe(section);
-        });
-
-        const fadeUpElements = document.querySelectorAll(".fade-up");
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
-            });
-        }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-        fadeUpElements.forEach(el => observer.observe(el));
-
-        applyLang(lang);
-    </script>
-</body>
-</html>
+        const sections = document.querySelectorAll(
