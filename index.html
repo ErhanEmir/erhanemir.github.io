@@ -212,10 +212,23 @@
         .dot-green { background: #10b981; }
         .terminal-title { font-size: 0.8rem; color: var(--text-secondary); margin-left: 0.5rem; }
         .terminal-body {
-            padding: 1rem; height: 180px; overflow-y: auto; font-size: 0.88rem;
+            padding: 1rem; height: 220px; overflow-y: auto; font-size: 0.88rem;
             color: var(--green); line-height: 1.5;
         }
         .terminal-line { margin-bottom: 0.4rem; white-space: pre-wrap; word-break: break-word; }
+        .terminal-line.matrix-line {
+            color: #22c55e;
+            text-shadow: 0 0 8px rgba(34, 197, 94, 0.85);
+            letter-spacing: 1px;
+            margin-bottom: 0.15rem;
+        }
+        .terminal-line.msg-ok {
+            color: #39ff14;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.9), 0 0 20px rgba(57, 255, 20, 0.45);
+            font-weight: 700;
+        }
+        .terminal-line a { color: var(--cyan); text-decoration: none; }
+        .terminal-line a:hover { text-decoration: underline; }
         .terminal-input-line {
             display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem;
             background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass-border);
@@ -900,36 +913,218 @@
 [5] clear             → Terminali temizle
 ========================================`;
 
-        function termPrint(text, color) {
+        function termPrint(text, color, extraClass) {
             if (!terminalBody) return;
             const line = document.createElement("div");
-            line.className = "terminal-line";
+            line.className = "terminal-line" + (extraClass ? " " + extraClass : "");
             if (color) line.style.color = color;
             line.textContent = text;
             terminalBody.appendChild(line);
             terminalBody.scrollTop = terminalBody.scrollHeight;
+            return line;
+        }
+
+        function termPrintHtml(html, color) {
+            if (!terminalBody) return;
+            const line = document.createElement("div");
+            line.className = "terminal-line";
+            if (color) line.style.color = color;
+            line.innerHTML = html;
+            terminalBody.appendChild(line);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        const promptEl = document.querySelector(".terminal-prompt");
+        let msgStep = 0;
+        let msgPayload = { name: "", email: "", message: "" };
+        let matrixRunning = false;
+
+        function setTermPrompt(symbol, placeholder) {
+            if (promptEl) promptEl.textContent = symbol;
+            if (terminalInput) terminalInput.placeholder = placeholder;
+        }
+
+        function resetMsgFlow() {
+            msgStep = 0;
+            msgPayload = { name: "", email: "", message: "" };
+            setTermPrompt("$", "Type a command...");
+        }
+
+        function helpText() {
+            if (lang === "en") {
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n  - test              : Hidden test menu";
+            }
+            return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n  - test              : Gizli test menüsü";
+        }
+
+        function startMsgFlow() {
+            msgStep = 1;
+            msgPayload = { name: "", email: "", message: "" };
+            termPrint(lang === "en" ? "Your Full Name:" : "Adınız ve Soyadınız:", "#22d3ee");
+            setTermPrompt(">", lang === "en" ? "Your full name..." : "Adınız ve Soyadınız...");
+        }
+
+        async function submitTerminalMsg() {
+            termPrint(lang === "en" ? "Sending message..." : "Mesaj gönderiliyor...", "#22d3ee");
+            const fd = new FormData();
+            fd.append("name", msgPayload.name);
+            fd.append("email", msgPayload.email);
+            fd.append("message", msgPayload.message);
+            fd.append("_captcha", "false");
+            fd.append("_template", "table");
+            fd.append("_subject", "Portfolio Terminal — " + msgPayload.name);
+            try {
+                const response = await fetch("https://formsubmit.co/ajax/erhanemir32@hotmail.com", {
+                    method: "POST",
+                    body: fd,
+                    headers: { "Accept": "application/json" }
+                });
+                if (response.ok) {
+                    termPrint("✓ Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağım.", null, "msg-ok");
+                } else {
+                    termPrint(lang === "en" ? "Send failed. Please use the contact form." : "Gönderim başarısız. Lütfen iletişim formunu deneyin.", "#ef4444");
+                }
+            } catch (err) {
+                termPrint(lang === "en" ? "Connection error. Please use the contact form." : "Bağlantı hatası. Lütfen iletişim formunu deneyin.", "#ef4444");
+            }
+            resetMsgFlow();
+        }
+
+        function printHardware() {
+            const block = [
+                "========================================",
+                "         ATELIER / HARDWARE",
+                "========================================",
+                "",
+                "[ 3D PRINTERS ]",
+                "  • Creality K1 SE     High-speed FDM",
+                "  • Hi Combo           Multi-material combo",
+                "",
+                "[ BOARDS / MODULES ]",
+                "  • ESP32              Wi-Fi + BLE MCU",
+                "  • LoRa               Long-range RF",
+                "========================================"
+            ].join("\n");
+            termPrint(block, "#22d3ee");
+        }
+
+        function printSocial() {
+            termPrint("----------------------------------------", "#22d3ee");
+            termPrintHtml('GitHub     <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener noreferrer">github.com/ErhanEmir</a>');
+            termPrintHtml('Instagram  <a href="https://www.instagram.com/erhanemir.32/" target="_blank" rel="noopener noreferrer">instagram.com/erhanemir.32</a>');
+            termPrintHtml('E-posta    <a href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a>');
+            termPrint("----------------------------------------", "#22d3ee");
+        }
+
+        function runMatrix() {
+            if (matrixRunning || !terminalBody) return;
+            matrixRunning = true;
+            if (terminalInput) terminalInput.disabled = true;
+            const chars = "01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&<>";
+            const cols = 36;
+            const rows = 8;
+            let frames = 0;
+            const maxFrames = 16;
+            const iv = setInterval(() => {
+                terminalBody.innerHTML = "";
+                for (let r = 0; r < rows; r++) {
+                    let row = "";
+                    for (let c = 0; c < cols; c++) {
+                        row += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                    termPrint(row, null, "matrix-line");
+                }
+                frames++;
+                if (frames >= maxFrames) {
+                    clearInterval(iv);
+                    terminalBody.innerHTML = "";
+                    termPrint("Wake up, Neo...", null, "matrix-line");
+                    termPrint(lang === "en" ? "Matrix sequence complete." : "Matrix dizisi tamamlandı.", "#22c55e");
+                    matrixRunning = false;
+                    if (terminalInput) {
+                        terminalInput.disabled = false;
+                        terminalInput.focus();
+                    }
+                }
+            }, 70);
         }
 
         if (terminalInput && terminalBody) {
             terminalInput.addEventListener("keydown", (e) => {
-                if (e.key !== "Enter") return;
+                if (e.key !== "Enter" || matrixRunning) return;
                 const val = terminalInput.value.trim();
-                const cmd = val.toLowerCase();
-
-                termPrint(`$ ${val}`, "#e8eef4");
                 terminalInput.value = "";
 
+                if (msgStep > 0) {
+                    const low = val.toLowerCase();
+                    if (low === "cancel" || low === "exit" || low === "iptal") {
+                        termPrint(lang === "en" ? "Message cancelled." : "Mesaj iptal edildi.", "#fb923c");
+                        resetMsgFlow();
+                        return;
+                    }
+                    if (msgStep === 1) {
+                        if (!val) {
+                            termPrint(lang === "en" ? "Name cannot be empty." : "Ad boş olamaz.", "#ef4444");
+                            termPrint(lang === "en" ? "Your Full Name:" : "Adınız ve Soyadınız:", "#22d3ee");
+                            return;
+                        }
+                        msgPayload.name = val;
+                        termPrint(`> ${val}`, "#e8eef4");
+                        termPrint(lang === "en" ? "Your Email Address:" : "E-posta Adresiniz:", "#22d3ee");
+                        setTermPrompt(">", lang === "en" ? "Your email..." : "E-posta Adresiniz...");
+                        msgStep = 2;
+                        return;
+                    }
+                    if (msgStep === 2) {
+                        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+                        if (!emailOk) {
+                            termPrint(lang === "en" ? "Enter a valid email address." : "Geçerli bir e-posta girin.", "#ef4444");
+                            termPrint(lang === "en" ? "Your Email Address:" : "E-posta Adresiniz:", "#22d3ee");
+                            return;
+                        }
+                        msgPayload.email = val;
+                        termPrint(`> ${val}`, "#e8eef4");
+                        termPrint(lang === "en" ? "Your Message:" : "Mesajınız:", "#22d3ee");
+                        setTermPrompt(">", lang === "en" ? "Your message..." : "Mesajınız...");
+                        msgStep = 3;
+                        return;
+                    }
+                    if (msgStep === 3) {
+                        if (!val) {
+                            termPrint(lang === "en" ? "Message cannot be empty." : "Mesaj boş olamaz.", "#ef4444");
+                            termPrint(lang === "en" ? "Your Message:" : "Mesajınız:", "#22d3ee");
+                            return;
+                        }
+                        msgPayload.message = val;
+                        termPrint(`> ${val}`, "#e8eef4");
+                        msgStep = 0;
+                        setTermPrompt("$", "Type a command...");
+                        submitTerminalMsg();
+                        return;
+                    }
+                }
+
+                const cmd = val.toLowerCase();
+                termPrint(`$ ${val}`, "#e8eef4");
                 if (!cmd) return;
 
                 if (cmd === "help") {
-                    termPrint("Komutlar:\n  - skills   : Temel yazılım & maker yetenekleri\n  - projects : GitHub projeleri bölümüne git\n  - whoami   : Geliştirici kimlik bilgisi\n  - clear    : Ekranı temizle\n  - test     : Gizli test menüsü");
+                    termPrint(helpText());
                 } else if (cmd === "skills") {
                     termPrint("Yetenekler: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, CAD/3D Prototip, Linux, Git");
                 } else if (cmd === "projects") {
-                    termPrint("Projeler bölümüne kaydırılıyor...");
+                    termPrint(lang === "en" ? "Scrolling to projects..." : "Projeler bölümüne kaydırılıyor...");
                     document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
                 } else if (cmd === "whoami") {
                     termPrint("Erhan Emir — Maker & Developer (Gömülü Sistemler, IoT, Web & Mobil Çözümler)");
+                } else if (cmd === "msg" || cmd === "message") {
+                    startMsgFlow();
+                } else if (cmd === "hardware") {
+                    printHardware();
+                } else if (cmd === "matrix") {
+                    runMatrix();
+                } else if (cmd === "social") {
+                    printSocial();
                 } else if (cmd === "clear") {
                     terminalBody.innerHTML = "";
                 } else if (cmd === "test") {
