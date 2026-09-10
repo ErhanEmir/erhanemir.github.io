@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 — Voltaj Aşırı Yükleme | Erhan Emir</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fb923c' d='M13 2L4 14h7l-1 8 9-12h-7l1-8z'/%3E%3C/svg%3E">
+    <style>
+        :root { --bg: #050a10; --cyan: #22d3ee; --green: #34d399; --orange: #fb923c; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg); color: #e8eef4; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 2rem 1.5rem;
+        }
+        .card {
+            max-width: 620px; width: 100%; background: #080f1a; border-radius: 14px;
+            padding: 2.5rem 2rem; border: 1px solid rgba(255,255,255,0.07);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+        h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 900; letter-spacing: 1px; color: var(--orange); text-shadow: 0 0 15px rgba(251,146,60,0.5); margin-bottom: 0.8rem; }
+        p { max-width: 520px; color: #a0aec0; margin: 0 auto 1.6rem; line-height: 1.7; }
+        .btn { display: inline-flex; align-items: center; padding: 0.75rem 1.8rem; border-radius: 8px; background: var(--cyan); color: #050a10; font-weight: 800; text-decoration: none; }
+        .btn:hover { background: var(--green); }
+        .transformer-stage { position: relative; width: 260px; height: 190px; margin: 0 auto 1.2rem; }
+        .transformer-box {
+            position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
+            width: 140px; height: 120px; background: #18202c; border: 3px solid #fb923c;
+            border-radius: 10px; box-shadow: 0 0 25px rgba(251,146,60,0.4);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .warning-light {
+            position: absolute; top: -20px; width: 24px; height: 24px; border-radius: 50%;
+            background: #ef4444; box-shadow: 0 0 20px #ef4444;
+            animation: strobeLight 0.4s infinite alternate;
+        }
+        @keyframes strobeLight { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.2); } }
+        .transformer-core { width: 80px; height: 50px; background: #2a3444; border-radius: 6px; border: 2px solid #64748b; position: relative; }
+        .transformer-core::before {
+            content: '⚡ HIGH VOLTAGE ⚡'; position: absolute; inset: 0;
+            display: grid; place-items: center; font-size: 7px; color: #fb923c; font-weight: bold;
+        }
+        .smoke-sim { position: absolute; left: 50%; bottom: 85px; margin-left: -15px; width: 30px; height: 50px; z-index: 5; pointer-events: none; }
+        .smoke-sim span {
+            position: absolute; bottom: 0; left: 50%; width: 12px; height: 12px; border-radius: 50%;
+            background: rgba(180, 200, 210, 0.4); animation: puffUp 2s ease-out infinite;
+        }
+        .smoke-sim span:nth-child(2) { animation-delay: 0.6s; left: 25%; }
+        .smoke-sim span:nth-child(3) { animation-delay: 1.2s; left: 75%; }
+        @keyframes puffUp {
+            0% { transform: translate(-50%, 0) scale(0.4); opacity: 0.7; }
+            100% { transform: translate(-50%, -60px) scale(1.8); opacity: 0; }
+        }
+        .spark-particle {
+            position: absolute; width: 4px; height: 4px; border-radius: 50%;
+            background: #fde047; box-shadow: 0 0 8px #fff, 0 0 14px #38bdf8;
+            animation: sparkFly 0.6s ease-out forwards; pointer-events: none;
+        }
+        @keyframes sparkFly {
+            0% { opacity: 1; transform: translate(0,0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); }
+        }
+        @media (max-width: 768px) { .card { padding: 2rem 1.2rem; } }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="transformer-stage" id="sparkStage500">
+            <div class="transformer-box">
+                <div class="warning-light"></div>
+                <div class="transformer-core"></div>
+                <div class="smoke-sim"><span></span><span></span><span></span></div>
+            </div>
+        </div>
+        <h1>500 — VOLTAJ AŞIRI YÜKLEME</h1>
+        <p>Eyvah! Voltaj aşırı yükseldi ve sigortalar attı. Lehim tabancasını kaptık, hattı düzeltiyoruz!</p>
+        <a href="index.html" class="btn">Ana Üsse Dön</a>
+    </div>
+    <script>
+        const sparkStage500 = document.getElementById("sparkStage500");
+        function spawnSpark() {
+            if (!sparkStage500) return;
+            const spark = document.createElement("div");
+            spark.className = "spark-particle";
+            spark.style.left = (45 + Math.random() * 10) + "%";
+            spark.style.top = (45 + Math.random() * 15) + "%";
+            spark.style.setProperty("--dx", (Math.random() * 90 - 45) + "px");
+            spark.style.setProperty("--dy", (-20 - Math.random() * 50) + "px");
+            sparkStage500.appendChild(spark);
+            setTimeout(() => spark.remove(), 600);
+        }
+        setInterval(spawnSpark, 120);
+    </script>
+</body>
+</html>

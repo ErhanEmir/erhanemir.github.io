@@ -365,129 +365,6 @@
         .socials a { font-size: 1.35rem; color: var(--text-secondary); margin: 0 0.8rem; transition: color var(--transition); }
         .socials a:hover { color: var(--cyan); }
 
-        /* === SIMULATION MODALS / OVERLAYS === */
-        .sim-overlay {
-            display: none; position: fixed; inset: 0; z-index: 9999;
-            background: rgba(5, 10, 16, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            color: #e8eef4; overflow-y: auto; font-family: 'Segoe UI', system-ui, sans-serif;
-            align-items: center; justify-content: center; text-align: center; padding: 2rem 1.5rem;
-        }
-        .sim-overlay.open { display: flex; flex-direction: column; }
-        .sim-modal-content {
-            max-width: 620px; width: 100%; background: #080f1a; border-radius: var(--radius);
-            padding: 2.5rem 2rem; border: 1px solid var(--glass-border);
-            position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
-        .sim-overlay h2 {
-            font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 900; letter-spacing: 1px;
-            margin-bottom: 0.8rem;
-        }
-        .sim-overlay p {
-            max-width: 520px; color: #a0aec0; margin: 0 auto 1.6rem;
-            line-height: 1.7; font-size: 1rem;
-        }
-        .sim-close-btn {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.75rem 1.8rem; border-radius: 8px; cursor: pointer;
-            border: 2px solid var(--cyan); background: var(--cyan); color: #050a10;
-            font-weight: 800; font-size: 0.95rem; transition: all var(--transition);
-        }
-        .sim-close-btn:hover { background: var(--green); border-color: var(--green); transform: translateY(-2px); }
-
-        /* 404 Mascot Stage in Modal */
-        #overlay404 h2 { color: var(--cyan); text-shadow: 0 0 15px var(--cyan-glow); }
-        .stage-404 { position: relative; width: min(380px, 90vw); height: 230px; margin: 0 auto 1.2rem; }
-        .monkey-wrap-404 {
-            position: absolute; left: 38%; bottom: 20px; width: 150px; height: 170px;
-            transform: translateX(-50%); animation: monkeyRock 1.2s ease-in-out infinite; z-index: 3;
-        }
-        @keyframes monkeyRock {
-            0%, 100% { transform: translateX(-50%) rotate(-3deg); }
-            50% { transform: translateX(-46%) rotate(4deg) translateY(-4px); }
-        }
-        .pcb-404 { position: absolute; right: 10px; bottom: 15px; width: 140px; height: 80px; z-index: 2; }
-        .wrench-404 {
-            position: absolute; left: 100px; top: 110px; width: 70px; height: 24px;
-            transform-origin: 10px 12px; animation: wrenchTurn 0.6s ease-in-out infinite;
-            z-index: 5; pointer-events: none;
-        }
-        @keyframes wrenchTurn {
-            0%, 100% { transform: rotate(10deg); }
-            50% { transform: rotate(50deg); }
-        }
-        .smoke-sim { position: absolute; right: 45px; bottom: 70px; width: 30px; height: 50px; z-index: 5; pointer-events: none; }
-        .smoke-sim span {
-            position: absolute; bottom: 0; left: 50%; width: 12px; height: 12px; border-radius: 50%;
-            background: rgba(180, 200, 210, 0.4); animation: puffUp 2s ease-out infinite;
-        }
-        .smoke-sim span:nth-child(2) { animation-delay: 0.6s; left: 25%; }
-        .smoke-sim span:nth-child(3) { animation-delay: 1.2s; left: 75%; }
-        @keyframes puffUp {
-            0% { transform: translate(-50%, 0) scale(0.4); opacity: 0.7; }
-            100% { transform: translate(-50%, -60px) scale(1.8); opacity: 0; }
-        }
-
-        /* 500 Transformer & Sparks */
-        #overlay500 h2 { color: #fb923c; text-shadow: 0 0 15px rgba(251,146,60,0.5); }
-        .transformer-stage { position: relative; width: 260px; height: 190px; margin: 0 auto 1.2rem; }
-        .transformer-box {
-            position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
-            width: 140px; height: 120px; background: #18202c; border: 3px solid #fb923c;
-            border-radius: 10px; box-shadow: 0 0 25px rgba(251,146,60,0.4);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .warning-light {
-            position: absolute; top: -20px; width: 24px; height: 24px; border-radius: 50%;
-            background: #ef4444; box-shadow: 0 0 20px #ef4444;
-            animation: strobeLight 0.4s infinite alternate;
-        }
-        @keyframes strobeLight { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.2); } }
-        .transformer-core { width: 80px; height: 50px; background: #2a3444; border-radius: 6px; border: 2px solid #64748b; position: relative; }
-        .transformer-core::before {
-            content: '⚡ HIGH VOLTAGE ⚡'; position: absolute; inset: 0;
-            display: grid; place-items: center; font-size: 7px; color: #fb923c; font-weight: bold;
-        }
-        .spark-particle {
-            position: absolute; width: 4px; height: 4px; border-radius: 50%;
-            background: #fde047; box-shadow: 0 0 8px #fff, 0 0 14px #38bdf8;
-            animation: sparkFly 0.6s ease-out infinite; pointer-events: none;
-        }
-        @keyframes sparkFly {
-            0% { opacity: 1; transform: translate(0,0) scale(1); }
-            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); }
-        }
-
-        /* Offline ESP32 & Waves */
-        #overlayOffline h2 { color: #ef4444; text-shadow: 0 0 15px rgba(239,68,68,0.5); }
-        .esp-stage { position: relative; width: 240px; height: 190px; margin: 0 auto 1.2rem; }
-        .esp-mcu {
-            position: absolute; left: 50%; bottom: 25px; transform: translateX(-50%);
-            width: 120px; height: 75px; background: #064e3b; border: 2px solid #34d399;
-            border-radius: 8px; box-shadow: 0 0 20px rgba(52,211,153,0.3);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .esp-chip { width: 45px; height: 45px; background: #1e293b; border: 1px solid #94a3b8; border-radius: 4px; display: grid; place-items: center; font-size: 8px; color: #34d399; font-weight: bold; }
-        .esp-led {
-            position: absolute; top: 8px; right: 10px; width: 10px; height: 10px; border-radius: 50%;
-            background: #ef4444; box-shadow: 0 0 12px #ef4444; animation: rapidBlink 0.25s infinite alternate;
-        }
-        @keyframes rapidBlink { 0% { opacity: 0.2; } 100% { opacity: 1; } }
-        .lora-ant {
-            position: absolute; left: 15px; top: -35px; width: 6px; height: 40px;
-            background: #475569; border-radius: 3px; border-top: 3px solid #ef4444;
-        }
-        .wave-ring {
-            position: absolute; left: 15px; top: -35px; width: 20px; height: 20px; margin-left: -7px; margin-top: -7px;
-            border: 2px solid #ef4444; border-radius: 50%; opacity: 0;
-            animation: waveExpand 1.5s ease-out infinite; pointer-events: none;
-        }
-        .wave-ring:nth-child(2) { animation-delay: 0.5s; }
-        .wave-ring:nth-child(3) { animation-delay: 1s; }
-        @keyframes waveExpand {
-            0% { transform: scale(0.3); opacity: 0.9; }
-            100% { transform: scale(4.5); opacity: 0; }
-        }
-
         .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
 
@@ -499,7 +376,6 @@
             .skills-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
             .projects-grid { grid-template-columns: 1fr; }
             .contact-layout { grid-template-columns: 1fr; }
-            .sim-modal-content { padding: 2rem 1.2rem; }
         }
     </style>
 </head>
@@ -702,90 +578,6 @@
         <p data-i18n="footer_copy">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</p>
     </footer>
 
-    <!-- 404 SIMULATION OVERLAY (Cyber-Monkey) -->
-    <div class="sim-overlay" id="overlay404">
-        <div class="sim-modal-content">
-            <div class="stage-404">
-                <svg class="pcb-404" viewBox="0 0 168 92" aria-hidden="true">
-                    <rect x="2" y="8" width="164" height="80" rx="8" fill="#0a3d28" stroke="#34d399" stroke-width="1.5"/>
-                    <path d="M12 28h40v4H28v20h-4V32H12z M60 22h50 M110 22v28h18 M70 50h30v16h-8" fill="none" stroke="#22d3ee" stroke-width="2" opacity=".85"/>
-                    <circle cx="28" cy="28" r="4" fill="#fb923c"/>
-                    <circle cx="110" cy="22" r="4" fill="#22d3ee"/>
-                    <circle cx="128" cy="50" r="5" fill="#34d399"/>
-                    <circle cx="92" cy="66" r="4" fill="#fb923c"/>
-                    <rect x="118" y="58" width="28" height="16" rx="2" fill="#122" stroke="#22d3ee"/>
-                    <text x="122" y="70" fill="#22d3ee" font-size="8" font-family="monospace">ERR</text>
-                </svg>
-                <div class="smoke-sim"><span></span><span></span><span></span></div>
-                <div class="monkey-wrap-404">
-                    <svg viewBox="0 0 180 200" width="100%" height="100%">
-                        <ellipse cx="90" cy="188" rx="38" ry="8" fill="#000" opacity=".35"/>
-                        <ellipse cx="62" cy="168" rx="16" ry="22" fill="#6b3f24"/>
-                        <ellipse cx="118" cy="168" rx="16" ry="22" fill="#6b3f24"/>
-                        <ellipse cx="90" cy="150" rx="42" ry="36" fill="#7a4a2b"/>
-                        <circle cx="90" cy="78" r="48" fill="#8b542f"/>
-                        <ellipse cx="38" cy="78" rx="16" ry="22" fill="#6b3f24"/>
-                        <ellipse cx="142" cy="78" rx="16" ry="22" fill="#6b3f24"/>
-                        <ellipse cx="90" cy="98" rx="32" ry="26" fill="#e8b896"/>
-                        <ellipse cx="78" cy="92" rx="8" ry="6" fill="#3a2214"/>
-                        <ellipse cx="102" cy="92" rx="8" ry="6" fill="#3a2214"/>
-                        <rect x="54" y="68" width="72" height="22" rx="11" fill="#111" stroke="#22d3ee" stroke-width="2"/>
-                        <rect x="60" y="72" width="26" height="14" rx="4" fill="#22d3ee" opacity=".85"/>
-                        <rect x="94" y="72" width="26" height="14" rx="4" fill="#22d3ee" opacity=".85"/>
-                        <ellipse cx="48" cy="148" rx="14" ry="10" fill="#c45c26"/>
-                        <ellipse cx="128" cy="142" rx="16" ry="12" fill="#c45c26"/>
-                    </svg>
-                    <!-- Wrench head pointed right towards smoking PCB -->
-                    <svg class="wrench-404" viewBox="0 0 70 24">
-                        <path d="M4 8 h32 v-3 l22 0 a7 7 0 0 1 0 14 l-22 0 v-3 H4 a4 4 0 0 1 0-8z" fill="#9ca3af" stroke="#22d3ee" stroke-width="1.2"/>
-                        <circle cx="8" cy="12" r="4" fill="none" stroke="#34d399" stroke-width="2"/>
-                        <path d="M58 8 L48 12 L58 16" fill="#080f1a" stroke="#22d3ee" stroke-width="1.5"/>
-                    </svg>
-                </div>
-            </div>
-            <h2>404 — HAT KOPUK!</h2>
-            <p>Hayda! Bu bağlantı yanlış lehimlenmiş veya yol koptu. Maymun mühendisimiz elindeki anahtarla hattı tamir etmeye çalışıyor!</p>
-            <button class="sim-close-btn" type="button" data-close-sim>Ana Üsse Dön</button>
-        </div>
-    </div>
-
-    <!-- 500 SIMULATION OVERLAY (Voltaj Aşırı Yükleme) -->
-    <div class="sim-overlay" id="overlay500">
-        <div class="sim-modal-content">
-            <div class="transformer-stage" id="sparkStage500">
-                <div class="transformer-box">
-                    <div class="warning-light"></div>
-                    <div class="transformer-core"></div>
-                    <div class="smoke-sim" style="right: auto; left: 50%; bottom: 85px; margin-left:-15px;">
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-            </div>
-            <h2>500 — VOLTAJ AŞIRI YÜKLEME</h2>
-            <p>Eyvah! Voltaj aşırı yükseldi ve sigortalar attı. Lehim tabancasını kaptık, hattı düzeltiyoruz!</p>
-            <button class="sim-close-btn" type="button" data-close-sim>Ana Üsse Dön</button>
-        </div>
-    </div>
-
-    <!-- OFFLINE SIMULATION OVERLAY (Sinyal Koptu) -->
-    <div class="sim-overlay" id="overlayOffline">
-        <div class="sim-modal-content">
-            <div class="esp-stage">
-                <div class="lora-ant"></div>
-                <div class="wave-ring"></div>
-                <div class="wave-ring"></div>
-                <div class="wave-ring"></div>
-                <div class="esp-mcu">
-                    <div class="esp-led"></div>
-                    <div class="esp-chip">ESP32</div>
-                </div>
-            </div>
-            <h2>SİNYAL KOPTU</h2>
-            <p>Sinyal koptu! Wi-Fi / LoRa modülü bağlantıyı kaybetti. Bağlantı gelince sistem otomatik senkronize olacak.</p>
-            <button class="sim-close-btn" type="button" data-close-sim>Ana Üsse Dön</button>
-        </div>
-    </div>
-
     <script>
         const translations = {
             tr: {
@@ -952,9 +744,9 @@
 
         function helpText() {
             if (lang === "en") {
-                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n  - test              : Hidden test menu";
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen";
             }
-            return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n  - test              : Gizli test menüsü";
+            return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle";
         }
 
         function startMsgFlow() {
@@ -1144,38 +936,17 @@
             });
         }
 
-        // Modals / Simulations Logic
-        const overlay404 = document.getElementById("overlay404");
-        const overlay500 = document.getElementById("overlay500");
-        const overlayOffline = document.getElementById("overlayOffline");
-
-        function closeAllSims() {
-            if (overlay404) overlay404.classList.remove("open");
-            if (overlay500) overlay500.classList.remove("open");
-            if (overlayOffline) overlayOffline.classList.remove("open");
-            document.body.style.overflow = "";
-        }
-
-        function openSimModal(overlay) {
-            closeAllSims();
-            if (overlay) {
-                overlay.classList.add("open");
-                document.body.style.overflow = "hidden";
-            }
-        }
-
-        // Global functions & Console getters
         function trigger404Fn() {
-            openSimModal(overlay404);
-            return "404 Cyber-Monkey Simülasyonu tetiklendi.";
+            window.location.href = "404.html";
+            return "404 Cyber-Monkey sayfasına yönlendiriliyor.";
         }
         function trigger500Fn() {
-            openSimModal(overlay500);
-            return "500 Voltaj Aşırı Yükleme Simülasyonu tetiklendi.";
+            window.location.href = "500.html";
+            return "500 Voltaj Aşırı Yükleme sayfasına yönlendiriliyor.";
         }
         function triggerOfflineFn() {
-            openSimModal(overlayOffline);
-            return "Offline Sinyal Koptu Simülasyonu tetiklendi.";
+            window.location.href = "offline.html";
+            return "Offline Sinyal Koptu sayfasına yönlendiriliyor.";
         }
 
         window.trigger404 = trigger404Fn;
@@ -1206,24 +977,6 @@
             },
             configurable: true
         });
-
-        document.querySelectorAll("[data-close-sim]").forEach(btn => btn.addEventListener("click", closeAllSims));
-        document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAllSims(); });
-
-        // Sparks generator for 500 modal
-        const sparkStage500 = document.getElementById("sparkStage500");
-        function spawnSpark() {
-            if (!overlay500.classList.contains("open") || !sparkStage500) return;
-            const spark = document.createElement("div");
-            spark.className = "spark-particle";
-            spark.style.left = (45 + Math.random() * 10) + "%";
-            spark.style.top = (45 + Math.random() * 15) + "%";
-            spark.style.setProperty("--dx", (Math.random() * 90 - 45) + "px");
-            spark.style.setProperty("--dy", (-20 - Math.random() * 50) + "px");
-            sparkStage500.appendChild(spark);
-            setTimeout(() => spark.remove(), 600);
-        }
-        setInterval(spawnSpark, 120);
 
         // GitHub Projects Integration
         const langColors = {
