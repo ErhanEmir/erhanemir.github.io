@@ -761,6 +761,25 @@
     </div>
 
     <script>
+        (function(){
+            var REDIR = "500.html";
+            var _busy = false;
+            function go500(){ if(!_busy){ _busy = true; window.location.href = REDIR; } }
+            window.addEventListener("offline", go500);
+            window.addEventListener("error", function(e){
+                if(e.message && (e.message.includes("fetch") || e.message.includes("Network"))){
+                    go500();
+                }
+            }, true);
+            window._netErr = function(err){
+                if(!navigator.onLine || (err && (err.name === "TypeError" || (err.message && err.message.includes("fetch"))))){
+                    go500();
+                    return true;
+                }
+                return false;
+            };
+        })();
+
         const translations = {
             tr: {
                 nav_about: "Hakkımda", nav_skills: "Yetenekler", nav_projects: "Projeler", nav_contact: "İletişim",
@@ -1088,7 +1107,9 @@
                     termPrint(lang === "en" ? "Send failed: " + (data.hata || "Unknown error") : "Gönderim başarısız: " + (data.hata || "Bilinmeyen hata"), "#ef4444");
                 }
             } catch (err) {
-                termPrint(lang === "en" ? "Connection error." : "Bağlantı hatası.", "#ef4444");
+                if(!window._netErr || !window._netErr(err)){
+                    termPrint(lang === "en" ? "Connection error." : "Bağlantı hatası.", "#ef4444");
+                }
             }
             resetFastMsgFlow();
         }
@@ -1138,7 +1159,9 @@
                     termPrint(lang === "en" ? "Send failed. Please use the contact form." : "Gönderim başarısız. Lütfen iletişim formunu deneyin.", "#ef4444");
                 }
             } catch (err) {
-                termPrint(lang === "en" ? "Connection error. Please use the contact form." : "Bağlantı hatası. Lütfen iletişim formunu deneyin.", "#ef4444");
+                if(!window._netErr || !window._netErr(err)){
+                    termPrint(lang === "en" ? "Connection error. Please use the contact form." : "Bağlantı hatası. Lütfen iletişim formunu deneyin.", "#ef4444");
+                }
             }
             resetMsgFlow();
         }
@@ -1511,7 +1534,9 @@
                     }
                 }
             } catch (e) {
-                console.warn("GitHub API error, using fallback projects:", e);
+                if(!window._netErr || !window._netErr(e)){
+                    console.warn("GitHub API error, using fallback projects:", e);
+                }
             }
 
             window._reposLoaded = true;
@@ -1554,8 +1579,10 @@
                         contactForm.submit();
                     }
                 } catch (err) {
-                    QE.consume("n");
-                    contactForm.submit();
+                    if(!window._netErr || !window._netErr(err)){
+                        QE.consume("n");
+                        contactForm.submit();
+                    }
                 }
             });
         }
@@ -1696,8 +1723,10 @@
                         showFeedback("error", data.hata || "Bir hata oluştu. Lütfen tekrar deneyin.");
                     }
                 })
-                .catch(function () {
-                    showFeedback("error", "Bağlantı hatası. Lütfen tekrar deneyin.");
+                .catch(function (err) {
+                    if(!window._netErr || !window._netErr(err)){
+                        showFeedback("error", "Bağlantı hatası. Lütfen tekrar deneyin.");
+                    }
                 })
                 .finally(function () {
                     sendBtn.textContent = "Gönder";
