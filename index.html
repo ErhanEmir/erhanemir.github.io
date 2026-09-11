@@ -335,7 +335,7 @@
         .btn-repo:hover { background: var(--cyan); color: var(--bg-deep); transform: translateY(-2px); }
 
         /* === CONTACT === */
-        .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 920px; margin: 0 auto; }
+        .contact-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
         .contact-info-list p { margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 1rem; display: flex; align-items: center; }
         .contact-info-list i { color: var(--cyan); width: 26px; font-size: 1.2rem; margin-right: 0.6rem; }
 
@@ -365,50 +365,78 @@
         .socials a { font-size: 1.35rem; color: var(--text-secondary); margin: 0 0.8rem; transition: color var(--transition); }
         .socials a:hover { color: var(--cyan); }
 
-        .scroll-top-wrap {
-            position: fixed; bottom: 1.6rem; right: 1.6rem;
-            z-index: 999;
-            width: 52px; height: 52px;
-        }
-        .scroll-top-wrap.hidden { display: none; }
-        .scroll-to-top-btn {
-            width: 52px; height: 52px;
+        /* === SCROLL-TO-TOP BUTTON (JS ile dinamik) === */
+        #scrollToTopBtn {
+            position: fixed; bottom: 24px; right: 24px;
+            width: 48px; height: 48px;
             border-radius: 50%;
-            background: #22d3ee;
+            background: #00cfff;
             color: #050a10;
             border: none;
             cursor: pointer;
-            font-size: 1.45rem;
+            font-size: 1.5rem;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 18px rgba(34, 211, 238, 0.45);
-            transition: transform 0.25s ease, background 0.25s ease;
+            box-shadow: 0 4px 20px rgba(0, 207, 255, 0.35);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px);
+            transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease, background 0.25s ease;
+            z-index: 9999;
         }
-        .scroll-to-top-btn:hover {
-            background: #34d399;
-            transform: translateY(-3px);
+        #scrollToTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
-        .scroll-top-close {
-            position: absolute; top: -6px; right: -6px;
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: #ef4444;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 800;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            z-index: 2;
+        #scrollToTopBtn:hover {
+            transform: translateY(-3px) scale(1.08);
+            background: #37e5a0;
         }
-        .scroll-top-close:hover { background: #dc2626; }
-        [data-theme="light"] .scroll-to-top-btn { color: #0f172a; }
+
+        /* === HIZLI MESAJ (3. SÜTUN) === */
+        .quick-msg-form label {
+            display: block; margin-bottom: 0.35rem;
+            font-weight: 600; font-size: 0.9rem; color: var(--text-primary);
+        }
+        .quick-msg-form input,
+        .quick-msg-form textarea {
+            width: 100%; padding: 0.7rem 0.9rem; margin-bottom: 1rem;
+            border: 1px solid var(--glass-border); border-radius: 8px;
+            background: var(--bg-secondary); color: var(--text-primary);
+            font-size: 0.92rem; outline: none; transition: border-color var(--transition);
+            font-family: inherit; resize: none;
+        }
+        .quick-msg-form input:focus,
+        .quick-msg-form textarea:focus { border-color: #00cfff; }
+        .quick-msg-form textarea { min-height: 80px; max-height: 80px; }
+        .quick-msg-charcount {
+            text-align: right; font-size: 0.78rem; color: var(--text-secondary);
+            margin-top: -0.6rem; margin-bottom: 1rem; transition: color 0.2s;
+        }
+        .quick-msg-charcount.over { color: #ff5c5c; font-weight: 700; }
+        .quick-msg-btn {
+            width: 100%; padding: 0.8rem; border: none; border-radius: 8px;
+            background: #00cfff; color: #050a10; font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; transition: background 0.25s, transform 0.2s;
+        }
+        .quick-msg-btn:hover { background: #37e5a0; transform: translateY(-1px); }
+        .quick-msg-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+        .quick-msg-feedback {
+            margin-top: 0.8rem; padding: 0.65rem 0.8rem;
+            border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            text-align: center; display: none;
+        }
+        .quick-msg-feedback.success {
+            display: block; background: rgba(55, 229, 160, 0.12);
+            color: #37e5a0; border: 1px solid rgba(55, 229, 160, 0.25);
+        }
+        .quick-msg-feedback.error {
+            display: block; background: rgba(255, 92, 92, 0.12);
+            color: #ff5c5c; border: 1px solid rgba(255, 92, 92, 0.25);
+        }
 
         .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
@@ -421,6 +449,9 @@
             .skills-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
             .projects-grid { grid-template-columns: 1fr; }
             .contact-layout { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .contact-layout { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -608,6 +639,21 @@
                             <div id="formSuccess" style="display:none; margin-top:1rem; padding:0.75rem; border-radius:8px; background:var(--green-dim); color:var(--green); font-weight:600; text-align:center;" data-i18n="form_success">Mesajınız alındı!</div>
                         </form>
                     </div>
+                    <!-- GÖREV 3: HIZLI MESAJ -->
+                    <div class="glass-card">
+                        <h3 style="margin-bottom:1.2rem; color:#00cfff; font-size:1.1rem;">&#9889; H&#305;z&#305;l&#305; Mesaj</h3>
+                        <form class="quick-msg-form" id="quickMsgForm" novalidate>
+                            <label for="qName">Ad&#305;n&#305;z</label>
+                            <input type="text" id="qName" name="isim" placeholder="Ad&#305;n&#305;z" required>
+                            <label for="qEmail">E-posta</label>
+                            <input type="email" id="qEmail" name="mail" placeholder="ornek@mail.com" required>
+                            <label for="qMsg">K&#305;sa Mesaj</label>
+                            <textarea id="qMsg" name="mesaj" placeholder="En fazla 100 karakter..." maxlength="110" required></textarea>
+                            <div class="quick-msg-charcount" id="qCharCount">0 / 100</div>
+                            <button type="submit" class="quick-msg-btn" id="qSendBtn">Gönder</button>
+                            <div class="quick-msg-feedback" id="qFeedback"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
@@ -622,10 +668,6 @@
         </div>
         <p data-i18n="footer_copy">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</p>
     </footer>
-    <div class="scroll-top-wrap" id="scrollTopWrap">
-        <button class="scroll-top-close" id="scrollTopClose" type="button" aria-label="Kapat">×</button>
-        <button class="scroll-to-top-btn" id="scrollToTopBtn" type="button" title="Yukarı Çık" aria-label="Yukarı Çık">↑</button>
-    </div>
 
     <script>
         const translations = {
@@ -793,9 +835,9 @@
 
         function helpText() {
             if (lang === "en") {
-                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen";
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
             }
-                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle";
+                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
         }
 
         function startMsgFlow() {
@@ -891,10 +933,35 @@
         }
 
         if (terminalInput && terminalBody) {
+            const cmdHistory = [];
+            let historyIndex = -1;
+
             terminalInput.addEventListener("keydown", (e) => {
+                if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    if (cmdHistory.length > 0 && historyIndex < cmdHistory.length - 1) {
+                        historyIndex++;
+                        terminalInput.value = cmdHistory[cmdHistory.length - 1 - historyIndex];
+                    }
+                    return;
+                }
+                if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    if (historyIndex > 0) {
+                        historyIndex--;
+                        terminalInput.value = cmdHistory[cmdHistory.length - 1 - historyIndex];
+                    } else {
+                        historyIndex = -1;
+                        terminalInput.value = "";
+                    }
+                    return;
+                }
                 if (e.key !== "Enter" || matrixRunning) return;
                 const val = terminalInput.value.trim();
                 terminalInput.value = "";
+                historyIndex = -1;
+
+                if (val) cmdHistory.push(val);
 
                 if (msgStep > 0) {
                     const low = val.toLowerCase();
@@ -949,7 +1016,7 @@
                 termPrint(`$ ${val}`, "#e8eef4");
                 if (!cmd) return;
 
-                if (cmd === "help") {
+                if (cmd === "help" || cmd === "yardim") {
                     termPrint(helpText());
                 } else if (cmd === "skills") {
                     termPrint("Yetenekler: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, CAD/3D Prototip, Linux, Git");
@@ -973,7 +1040,7 @@
                     window.open("https://github.com/ErhanEmir", "_blank");
                     termPrint(lang === "en" ? "Opening GitHub profile..." : "GitHub profili açılıyor...", "#22d3ee");
                 } else if (cmd === "mail") {
-                    window.location.href = "mailto:erhanemir32@hotmail.com";
+                    window.open("mailto:erhanemir32@hotmail.com", "_blank");
                     termPrint(lang === "en" ? "Opening email client..." : "E-posta uygulaması açılıyor...", "#22d3ee");
                 } else if (cmd === "clear") {
                     terminalBody.innerHTML = "";
@@ -1182,22 +1249,118 @@
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
         document.querySelectorAll(".fade-up").forEach(el => fadeObserver.observe(el));
 
-        const scrollTopWrap = document.getElementById("scrollTopWrap");
-        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
-        const scrollTopClose = document.getElementById("scrollTopClose");
-        if (scrollTopWrap && scrollToTopBtn && scrollTopClose) {
-            if (sessionStorage.getItem("scrollTopDismissed") === "1") {
-                scrollTopWrap.classList.add("hidden");
-            }
-            scrollToTopBtn.addEventListener("click", () => {
+        /* ===== GÖREV 2: YUKARI ÇIK BUTONU (JS ile dinamik) ===== */
+        (function () {
+            var btn = document.createElement("button");
+            btn.id = "scrollToTopBtn";
+            btn.type = "button";
+            btn.title = "Yukarı Çık";
+            btn.setAttribute("aria-label", "Yukarı Çık");
+            btn.innerHTML = "&#8593;";
+            document.body.appendChild(btn);
+
+            var ticking = false;
+            window.addEventListener("scroll", function () {
+                if (!ticking) {
+                    window.requestAnimationFrame(function () {
+                        if (window.scrollY > 300) {
+                            btn.classList.add("show");
+                        } else {
+                            btn.classList.remove("show");
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            btn.addEventListener("click", function () {
                 window.scrollTo({ top: 0, behavior: "smooth" });
             });
-            scrollTopClose.addEventListener("click", (e) => {
-                e.stopPropagation();
-                scrollTopWrap.classList.add("hidden");
-                sessionStorage.setItem("scrollTopDismissed", "1");
+        })();
+
+        /* ===== GÖREV 3: HIZLI MESAJ FORMU ===== */
+        (function () {
+            var form = document.getElementById("quickMsgForm");
+            var nameInput = document.getElementById("qName");
+            var emailInput = document.getElementById("qEmail");
+            var msgInput = document.getElementById("qMsg");
+            var charCount = document.getElementById("qCharCount");
+            var sendBtn = document.getElementById("qSendBtn");
+            var feedback = document.getElementById("qFeedback");
+            if (!form) return;
+
+            var MAX_CHARS = 100;
+
+            msgInput.addEventListener("input", function () {
+                var len = msgInput.value.length;
+                charCount.textContent = len + " / " + MAX_CHARS;
+                if (len > MAX_CHARS) {
+                    charCount.classList.add("over");
+                } else {
+                    charCount.classList.remove("over");
+                }
             });
-        }
+
+            function showFeedback(type, msg) {
+                feedback.className = "quick-msg-feedback " + type;
+                feedback.textContent = msg;
+            }
+
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                feedback.className = "quick-msg-feedback";
+                feedback.textContent = "";
+
+                var isim = nameInput.value.trim();
+                var mail = emailInput.value.trim();
+                var mesaj = msgInput.value.trim();
+
+                if (!isim || !mail || !mesaj) {
+                    showFeedback("error", "Lütfen tüm alanları doldurun.");
+                    return;
+                }
+                if (!isValidEmail(mail)) {
+                    showFeedback("error", "Geçerli bir e-posta adresi girin.");
+                    return;
+                }
+                if (mesaj.length > MAX_CHARS) {
+                    showFeedback("error", "100 karakter üzeri mesajlarınız için lütfen Mesaj kısmını kullanın.");
+                    return;
+                }
+
+                sendBtn.disabled = true;
+                sendBtn.textContent = "Gönderiliyor...";
+
+                fetch("https://hizli-mesaj-bot.erhanemir32.workers.dev/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ isim: isim, mail: mail, mesaj: mesaj })
+                })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.ok) {
+                        showFeedback("success", "Mesajınız iletildi. En kısa sürede dönüş yapacağım.");
+                        form.reset();
+                        charCount.textContent = "0 / " + MAX_CHARS;
+                        charCount.classList.remove("over");
+                    } else {
+                        showFeedback("error", data.hata || "Bir hata oluştu. Lütfen tekrar deneyin.");
+                    }
+                })
+                .catch(function () {
+                    showFeedback("error", "Bağlantı hatası. Lütfen tekrar deneyin.");
+                })
+                .finally(function () {
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = "Gönder";
+                });
+            });
+        })();
 
         applyLang(lang);
     </script>
