@@ -7,94 +7,575 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2322d3ee' d='M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 2h2v2h-2v-2zm2 2h2v2h-2v-2z'/%3E%3C/svg%3E">
     <style>
-        :root { --bg: #050a10; --cyan: #22d3ee; --green: #34d399; --muted: #8890a0; }
+        :root {
+            --bg: #050a10;
+            --bg-card: #080f1a;
+            --cyan: #22d3ee;
+            --cyan-glow: rgba(34,211,238,0.35);
+            --green: #34d399;
+            --orange: #fb923c;
+            --red: #ef4444;
+            --text: #e8eef4;
+            --muted: #8890a0;
+            --glass-border: rgba(255,255,255,0.07);
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg); color: #e8eef4; min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 2rem 1.5rem;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            overflow: hidden;
+            position: relative;
         }
+
+        #matrixCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        .scanline {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.08) 2px,
+                rgba(0, 0, 0, 0.08) 4px
+            );
+            animation: scanShift 8s linear infinite;
+        }
+        @keyframes scanShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 40px; }
+        }
+        .crt-flicker {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            background: rgba(34,211,238,0.03);
+            animation: flicker 4s ease-in-out infinite;
+        }
+        @keyframes flicker {
+            0%, 92%, 100% { opacity: 0; }
+            93% { opacity: 1; }
+            94% { opacity: 0; }
+            96% { opacity: 0.6; }
+            97% { opacity: 0; }
+        }
+
         .card {
-            max-width: 620px; width: 100%; background: #080f1a; border-radius: 14px;
-            padding: 2.5rem 2rem; border: 1px solid rgba(255,255,255,0.07);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 2.5rem 2rem 2rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 80px rgba(0,0,0,0.7), 0 0 30px rgba(34,211,238,0.05);
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            animation: cardIn 0.8s 0.3s ease forwards;
         }
-        h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 900; letter-spacing: 1px; color: var(--cyan); text-shadow: 0 0 15px rgba(34,211,238,0.35); margin-bottom: 0.8rem; }
-        p { max-width: 520px; color: #a0aec0; margin: 0 auto 1.6rem; line-height: 1.7; }
-        .btn { display: inline-flex; align-items: center; padding: 0.75rem 1.8rem; border-radius: 8px; background: var(--cyan); color: #050a10; font-weight: 800; text-decoration: none; }
-        .btn:hover { background: var(--green); }
-        .stage-404 { position: relative; width: min(380px, 90vw); height: 230px; margin: 0 auto 1.2rem; }
-        .monkey-wrap-404 {
-            position: absolute; left: 38%; bottom: 20px; width: 150px; height: 170px;
-            transform: translateX(-50%); animation: monkeyRock 1.2s ease-in-out infinite; z-index: 3;
+        @keyframes cardIn {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .stage {
+            position: relative;
+            width: min(420px, 88vw);
+            height: 260px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* --- Matrix background columns --- */
+        .matrix-col {
+            position: absolute;
+            bottom: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: var(--cyan);
+            opacity: 0;
+            writing-mode: vertical-rl;
+            line-height: 1.2;
+            animation: matrixFall linear infinite;
+            pointer-events: none;
+        }
+        @keyframes matrixFall {
+            0% { opacity: 0; transform: translateY(-100%); }
+            10% { opacity: 0.5; }
+            85% { opacity: 0.3; }
+            100% { opacity: 0; transform: translateY(260px); }
+        }
+
+        /* --- PCB board --- */
+        .pcb-wrap {
+            position: absolute;
+            right: 5%;
+            bottom: 28px;
+            width: 150px;
+            height: 95px;
+            z-index: 3;
+            animation: pcbSway 3s ease-in-out infinite;
+        }
+        @keyframes pcbSway {
+            0%, 100% { transform: rotate(-1deg) translateY(0); }
+            50% { transform: rotate(1deg) translateY(-3px); }
+        }
+        .pcb-break {
+            position: absolute;
+            left: 48%;
+            top: 38%;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #fde047;
+            box-shadow: 0 0 8px #fde047, 0 0 18px var(--orange), 0 0 30px var(--red);
+            animation: sparkPulse 0.8s ease-in-out infinite alternate;
+            z-index: 5;
+        }
+        @keyframes sparkPulse {
+            0% { opacity: 0.4; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1.6); }
+        }
+        .pcb-spark {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 6px var(--cyan), 0 0 10px var(--orange);
+            pointer-events: none;
+            animation: sparkFly 0.5s ease-out forwards;
+        }
+        @keyframes sparkFly {
+            0% { opacity: 1; transform: translate(0,0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0.1); }
+        }
+
+        /* --- Monkey engineer --- */
+        .monkey-wrap {
+            position: absolute;
+            left: 12%;
+            bottom: 18px;
+            width: 160px;
+            height: 190px;
+            z-index: 4;
+            animation: monkeyRock 2s ease-in-out infinite;
+            transform-origin: bottom center;
         }
         @keyframes monkeyRock {
-            0%, 100% { transform: translateX(-50%) rotate(-3deg); }
-            50% { transform: translateX(-46%) rotate(4deg) translateY(-4px); }
+            0%, 100% { transform: rotate(-2deg); }
+            30% { transform: rotate(3deg) translateY(-4px); }
+            60% { transform: rotate(-1deg) translateY(-2px); }
         }
-        .pcb-404 { position: absolute; right: 10px; bottom: 15px; width: 140px; height: 80px; z-index: 2; }
-        .wrench-404 {
-            position: absolute; left: 100px; top: 110px; width: 70px; height: 24px;
-            transform-origin: 10px 12px; animation: wrenchTurn 0.6s ease-in-out infinite; z-index: 5;
+        .monkey-angry {
+            animation: monkeyThink 2s ease-in-out infinite, monkeyRock 2s ease-in-out infinite;
         }
-        @keyframes wrenchTurn { 0%, 100% { transform: rotate(10deg); } 50% { transform: rotate(50deg); } }
-        .smoke-sim { position: absolute; right: 45px; bottom: 70px; width: 30px; height: 50px; z-index: 5; pointer-events: none; }
-        .smoke-sim span {
-            position: absolute; bottom: 0; left: 50%; width: 12px; height: 12px; border-radius: 50%;
-            background: rgba(180, 200, 210, 0.4); animation: puffUp 2s ease-out infinite;
+        @keyframes monkeyThink {
+            0%, 70%, 100% { filter: none; }
+            80%, 90% { filter: hue-rotate(-20deg) saturate(1.3) brightness(1.1); }
         }
-        .smoke-sim span:nth-child(2) { animation-delay: 0.6s; left: 25%; }
-        .smoke-sim span:nth-child(3) { animation-delay: 1.2s; left: 75%; }
+
+        /* --- Wrench --- */
+        .wrench {
+            position: absolute;
+            left: 36%;
+            top: 55%;
+            width: 65px;
+            height: 22px;
+            z-index: 6;
+            transform-origin: 8px 11px;
+            animation: wrenchSwing 1s ease-in-out infinite;
+        }
+        @keyframes wrenchSwing {
+            0%, 100% { transform: rotate(10deg); }
+            50% { transform: rotate(55deg); }
+        }
+
+        /* --- Smoke --- */
+        .smoke-group {
+            position: absolute;
+            right: 18%;
+            bottom: 80px;
+            width: 40px;
+            height: 60px;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .smoke-puff {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(160,180,200,0.35);
+            animation: puffUp 2.5s ease-out infinite;
+        }
+        .smoke-puff:nth-child(2) { animation-delay: 0.8s; left: 30%; }
+        .smoke-puff:nth-child(3) { animation-delay: 1.6s; left: 70%; }
         @keyframes puffUp {
-            0% { transform: translate(-50%, 0) scale(0.4); opacity: 0.7; }
-            100% { transform: translate(-50%, -60px) scale(1.8); opacity: 0; }
+            0% { transform: translate(-50%, 0) scale(0.3); opacity: 0.6; }
+            100% { transform: translate(-50%, -65px) scale(2.2); opacity: 0; }
         }
-        @media (max-width: 768px) { .card { padding: 2rem 1.2rem; } }
+
+        /* --- Text content --- */
+        .error-code {
+            font-size: clamp(3.5rem, 10vw, 5.5rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            text-shadow: 0 0 20px var(--cyan-glow), 0 0 40px rgba(34,211,238,0.15);
+            margin-bottom: 0.3rem;
+            font-family: 'Courier New', monospace;
+            animation: glitchTitle 3s ease-in-out infinite;
+        }
+        @keyframes glitchTitle {
+            0%, 88%, 100% { transform: none; text-shadow: 0 0 20px var(--cyan-glow); }
+            89% { transform: translate(-2px, 1px) skewX(-1deg); text-shadow: 2px 0 var(--red), -2px 0 var(--cyan); }
+            90% { transform: translate(2px, -1px) skewX(1deg); text-shadow: -2px 0 var(--orange), 2px 0 var(--cyan); }
+            91% { transform: none; text-shadow: 0 0 20px var(--cyan-glow); }
+        }
+        .error-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            font-weight: 700;
+            color: var(--red);
+            text-shadow: 0 0 10px rgba(239,68,68,0.4);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: subtitlePulse 2s ease-in-out infinite;
+        }
+        @keyframes subtitlePulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        .error-desc {
+            max-width: 520px;
+            color: var(--muted);
+            margin: 0 auto 1.8rem;
+            line-height: 1.75;
+            font-size: 0.95rem;
+        }
+
+        /* --- Home button --- */
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 2.2rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--cyan), #0ea5c7);
+            color: var(--bg);
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 20px rgba(34,211,238,0.25);
+        }
+        .btn-home::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        .btn-home:hover::before { transform: translateX(100%); }
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(34,211,238,0.4);
+            background: linear-gradient(135deg, var(--green), #059669);
+        }
+        .btn-home i { font-size: 1.1rem; }
+        .btn-home .arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .btn-home:hover .arrow { transform: translateX(3px); }
+
+        /* --- Status bar --- */
+        .status-bar {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            opacity: 0.6;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--red);
+            animation: statusBlink 1.2s ease-in-out infinite;
+        }
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--red); }
+            50% { opacity: 0.3; box-shadow: none; }
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 2rem 1.2rem; }
+            .stage { height: 210px; }
+            .monkey-wrap { width: 120px; height: 150px; left: 8%; }
+            .pcb-wrap { width: 115px; height: 75px; right: 3%; }
+            .wrench { width: 50px; }
+        }
     </style>
 </head>
 <body>
+    <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+    <div class="scanline" aria-hidden="true"></div>
+    <div class="crt-flicker" aria-hidden="true"></div>
+
     <div class="card">
-        <div class="stage-404">
-            <svg class="pcb-404" viewBox="0 0 168 92" aria-hidden="true">
-                <rect x="2" y="8" width="164" height="80" rx="8" fill="#0a3d28" stroke="#34d399" stroke-width="1.5"/>
-                <path d="M12 28h40v4H28v20h-4V32H12z M60 22h50 M110 22v28h18 M70 50h30v16h-8" fill="none" stroke="#22d3ee" stroke-width="2" opacity=".85"/>
-                <circle cx="28" cy="28" r="4" fill="#fb923c"/>
-                <circle cx="110" cy="22" r="4" fill="#22d3ee"/>
-                <circle cx="128" cy="50" r="5" fill="#34d399"/>
-                <circle cx="92" cy="66" r="4" fill="#fb923c"/>
-                <rect x="118" y="58" width="28" height="16" rx="2" fill="#122" stroke="#22d3ee"/>
-                <text x="122" y="70" fill="#22d3ee" font-size="8" font-family="monospace">ERR</text>
-            </svg>
-            <div class="smoke-sim"><span></span><span></span><span></span></div>
-            <div class="monkey-wrap-404">
-                <svg viewBox="0 0 180 200" width="100%" height="100%">
-                    <ellipse cx="90" cy="188" rx="38" ry="8" fill="#000" opacity=".35"/>
-                    <ellipse cx="62" cy="168" rx="16" ry="22" fill="#6b3f24"/>
-                    <ellipse cx="118" cy="168" rx="16" ry="22" fill="#6b3f24"/>
-                    <ellipse cx="90" cy="150" rx="42" ry="36" fill="#7a4a2b"/>
-                    <circle cx="90" cy="78" r="48" fill="#8b542f"/>
-                    <ellipse cx="38" cy="78" rx="16" ry="22" fill="#6b3f24"/>
-                    <ellipse cx="142" cy="78" rx="16" ry="22" fill="#6b3f24"/>
-                    <ellipse cx="90" cy="98" rx="32" ry="26" fill="#e8b896"/>
-                    <ellipse cx="78" cy="92" rx="8" ry="6" fill="#3a2214"/>
-                    <ellipse cx="102" cy="92" rx="8" ry="6" fill="#3a2214"/>
-                    <rect x="54" y="68" width="72" height="22" rx="11" fill="#111" stroke="#22d3ee" stroke-width="2"/>
-                    <rect x="60" y="72" width="26" height="14" rx="4" fill="#22d3ee" opacity=".85"/>
-                    <rect x="94" y="72" width="26" height="14" rx="4" fill="#22d3ee" opacity=".85"/>
-                    <ellipse cx="48" cy="148" rx="14" ry="10" fill="#c45c26"/>
-                    <ellipse cx="128" cy="142" rx="16" ry="12" fill="#c45c26"/>
+        <div class="stage" id="stage404">
+            <!-- Matrix rain columns (generated by JS) -->
+
+            <!-- PCB Board SVG -->
+            <div class="pcb-wrap">
+                <div class="pcb-break" id="pcbBreak"></div>
+                <svg viewBox="0 0 168 105" width="100%" height="100%" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="pcbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0d4a30"/>
+                            <stop offset="100%" stop-color="#063020"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Board -->
+                    <rect x="2" y="8" width="164" height="90" rx="8" fill="url(#pcbGrad)" stroke="#34d399" stroke-width="1.5"/>
+                    <!-- Traces -->
+                    <path d="M12 30 h42 v4 H28 v22 h-4 V34 H12z" fill="none" stroke="#22d3ee" stroke-width="2" opacity=".75"/>
+                    <path d="M62 24 h38 v18 h12 v16" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity=".5" stroke-dasharray="4 3"/>
+                    <path d="M62 58 h24 v12 h16" fill="none" stroke="#fb923c" stroke-width="1.5" opacity=".6"/>
+                    <line x1="120" y1="24" x2="120" y2="70" stroke="#22d3ee" stroke-width="1.5" opacity=".5"/>
+                    <line x1="130" y1="30" x2="130" y2="65" stroke="#22d3ee" stroke-width="1" opacity=".4"/>
+                    <!-- Break line -->
+                    <line x1="74" y1="10" x2="82" y2="96" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="6 4" opacity=".9"/>
+                    <circle cx="78" cy="50" r="12" fill="none" stroke="#ef4444" stroke-width="1" opacity=".4" stroke-dasharray="3 3">
+                        <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.4;0.15;0.4" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <!-- Components -->
+                    <circle cx="28" cy="30" r="4" fill="#fb923c"/>
+                    <circle cx="28" cy="30" r="2" fill="#fde047"/>
+                    <circle cx="120" cy="24" r="4" fill="#22d3ee"/>
+                    <circle cx="145" cy="55" r="5" fill="#34d399"/>
+                    <circle cx="92" cy="74" r="4" fill="#fb923c"/>
+                    <rect x="108" y="68" width="30" height="18" rx="3" fill="#0c1628" stroke="#22d3ee" stroke-width="1"/>
+                    <text x="113" y="80" fill="#22d3ee" font-size="8" font-family="'Courier New', monospace" font-weight="bold">ERR</text>
+                    <text x="113" y="74" fill="#ef4444" font-size="5" font-family="'Courier New', monospace">404</text>
+                    <!-- Solder pads -->
+                    <circle cx="12" cy="30" r="3" fill="none" stroke="#34d399" stroke-width="1" opacity=".6"/>
+                    <circle cx="54" cy="30" r="3" fill="none" stroke="#34d399" stroke-width="1" opacity=".6"/>
+                    <circle cx="62" cy="58" r="3" fill="none" stroke="#fb923c" stroke-width="1" opacity=".6"/>
                 </svg>
-                <svg class="wrench-404" viewBox="0 0 70 24">
-                    <path d="M4 8 h32 v-3 l22 0 a7 7 0 0 1 0 14 l-22 0 v-3 H4 a4 4 0 0 1 0-8z" fill="#9ca3af" stroke="#22d3ee" stroke-width="1.2"/>
-                    <circle cx="8" cy="12" r="4" fill="none" stroke="#34d399" stroke-width="2"/>
-                    <path d="M58 8 L48 12 L58 16" fill="#080f1a" stroke="#22d3ee" stroke-width="1.5"/>
+            </div>
+
+            <!-- Smoke -->
+            <div class="smoke-group">
+                <div class="smoke-puff"></div>
+                <div class="smoke-puff"></div>
+                <div class="smoke-puff"></div>
+            </div>
+
+            <!-- Cyber Monkey Engineer -->
+            <div class="monkey-wrap" id="monkeyWrap">
+                <svg viewBox="0 0 200 220" width="100%" height="100%" aria-hidden="true">
+                    <!-- Shadow -->
+                    <ellipse cx="100" cy="210" rx="42" ry="8" fill="#000" opacity=".3"/>
+                    <!-- Legs -->
+                    <ellipse cx="70" cy="182" rx="16" ry="24" fill="#6b3f24"/>
+                    <ellipse cx="130" cy="182" rx="16" ry="24" fill="#6b3f24"/>
+                    <!-- Feet -->
+                    <ellipse cx="70" cy="205" rx="18" ry="8" fill="#5a3520"/>
+                    <ellipse cx="130" cy="205" rx="18" ry="8" fill="#5a3520"/>
+                    <!-- Body -->
+                    <ellipse cx="100" cy="155" rx="44" ry="38" fill="#7a4a2b"/>
+                    <!-- Belly -->
+                    <ellipse cx="100" cy="158" rx="28" ry="26" fill="#e8b896" opacity=".6"/>
+                    <!-- Arms -->
+                    <ellipse cx="52" cy="148" rx="14" ry="12" fill="#6b3f24" transform="rotate(-20 52 148)"/>
+                    <ellipse cx="148" cy="148" rx="14" ry="12" fill="#6b3f24" transform="rotate(20 148 148)"/>
+                    <!-- Hands -->
+                    <circle cx="42" cy="158" r="8" fill="#e8b896"/>
+                    <circle cx="158" cy="158" r="8" fill="#e8b896"/>
+                    <!-- Tail -->
+                    <path d="M100 190 Q140 200 145 175 Q148 155 160 160" fill="none" stroke="#6b3f24" stroke-width="6" stroke-linecap="round"/>
+                    <!-- Head -->
+                    <circle cx="100" cy="88" r="52" fill="#8b542f"/>
+                    <!-- Ears -->
+                    <ellipse cx="48" cy="82" rx="18" ry="24" fill="#6b3f24"/>
+                    <ellipse cx="48" cy="82" rx="11" ry="16" fill="#e8b896" opacity=".5"/>
+                    <ellipse cx="152" cy="82" rx="18" ry="24" fill="#6b3f24"/>
+                    <ellipse cx="152" cy="82" rx="11" ry="16" fill="#e8b896" opacity=".5"/>
+                    <!-- Face -->
+                    <ellipse cx="100" cy="100" rx="34" ry="28" fill="#e8b896"/>
+                    <!-- Goggles strap -->
+                    <path d="M48 78 Q100 70 152 78" fill="none" stroke="#333" stroke-width="5" opacity=".8"/>
+                    <!-- Goggles -->
+                    <rect x="60" y="68" width="34" height="24" rx="12" fill="#111" stroke="#22d3ee" stroke-width="2.5"/>
+                    <rect x="106" y="68" width="34" height="24" rx="12" fill="#111" stroke="#22d3ee" stroke-width="2.5"/>
+                    <!-- Goggle lenses -->
+                    <rect x="65" y="72" width="24" height="16" rx="6" fill="#22d3ee" opacity=".85"/>
+                    <rect x="111" y="72" width="24" height="16" rx="6" fill="#22d3ee" opacity=".85"/>
+                    <!-- Goggle reflections -->
+                    <rect x="67" y="74" width="8" height="5" rx="2" fill="#fff" opacity=".35"/>
+                    <rect x="113" y="74" width="8" height="5" rx="2" fill="#fff" opacity=".35"/>
+                    <!-- Nose -->
+                    <ellipse cx="100" cy="98" rx="6" ry="4" fill="#5a3520"/>
+                    <!-- Mouth -->
+                    <path d="M88 108 Q100 116 112 108" fill="none" stroke="#5a3520" stroke-width="2" stroke-linecap="round" id="monkeyMouth"/>
+                    <!-- Eyebrows -->
+                    <line x1="66" y1="64" x2="82" y2="62" stroke="#5a3520" stroke-width="2.5" stroke-linecap="round" id="browL"/>
+                    <line x1="118" y1="62" x2="134" y2="64" stroke="#5a3520" stroke-width="2.5" stroke-linecap="round" id="browR"/>
+                </svg>
+            </div>
+
+            <!-- Wrench -->
+            <div class="wrench">
+                <svg viewBox="0 0 70 22" width="100%" height="100%" aria-hidden="true">
+                    <path d="M4 7 h34 v-4 l20 0 a7 7 0 0 1 0 14 l-20 0 v-4 H4 a4 4 0 0 1 0-8z" fill="#9ca3af" stroke="#22d3ee" stroke-width="1.2"/>
+                    <circle cx="8" cy="11" r="4" fill="none" stroke="#34d399" stroke-width="2"/>
+                    <path d="M58 7 L48 11 L58 15" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
                 </svg>
             </div>
         </div>
-        <h1>404 — HAT KOPUK!</h1>
-        <p>Hayda! Bu bağlantı yanlış lehimlenmiş veya yol koptu. Maymun mühendisimiz elindeki anahtarla hattı tamir etmeye çalışıyor!</p>
-        <a href="index.html" class="btn">Ana Üsse Dön</a>
+
+        <div class="error-code">404</div>
+        <div class="error-subtitle">HAT KOPUK!</div>
+        <p class="error-desc">Hayda! Bu bağlantı yanlış lehimlenmiş veya yol koptu. Maymun mühendisimiz hattı tamir etmeye çalışıyor!</p>
+        <a href="index.html" class="btn-home">
+            <i class="fas fa-home"></i> Ana Üsse Dön <span class="arrow">&rarr;</span>
+        </a>
+        <div class="status-bar">
+            <span class="status-dot"></span>
+            <span id="statusText">SYS_ERR: PATH_NOT_FOUND</span>
+        </div>
     </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <script>
+    (function(){
+        /* === Matrix Canvas === */
+        var canvas = document.getElementById('matrixCanvas');
+        if(canvas && canvas.getContext){
+            var ctx = canvas.getContext('2d');
+            var W, H, cols, drops;
+            var chars = "01アイウエオカキクケコサシスセソ{}[]<>!@#$%^&*ERROR404NULLVOID";
+            function resize(){
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+                cols = Math.floor(W / 16);
+                drops = [];
+                for(var i=0;i<cols;i++) drops[i] = Math.random() * H / 16;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            function drawMatrix(){
+                ctx.fillStyle = 'rgba(5,10,16,0.08)';
+                ctx.fillRect(0, 0, W, H);
+                ctx.fillStyle = '#22d3ee';
+                ctx.font = '13px Courier New';
+                for(var i=0;i<cols;i++){
+                    var ch = chars[Math.floor(Math.random()*chars.length)];
+                    ctx.fillText(ch, i*16, drops[i]*16);
+                    if(drops[i]*16 > H && Math.random() > 0.975) drops[i] = 0;
+                    drops[i] += 0.5;
+                }
+            }
+            setInterval(drawMatrix, 55);
+        }
+
+        /* === Matrix rain columns === */
+        var stage = document.getElementById('stage404');
+        if(stage){
+            for(var c=0;c<8;c++){
+                var col = document.createElement('div');
+                col.className = 'matrix-col';
+                col.style.left = (8 + Math.random()*84) + '%';
+                col.style.animationDuration = (3 + Math.random()*4) + 's';
+                col.style.animationDelay = (Math.random()*3) + 's';
+                var txt = '';
+                for(var r=0;r<8;r++) txt += chars[Math.floor(Math.random()*chars.length)] + '\n';
+                col.textContent = txt;
+                stage.appendChild(col);
+            }
+        }
+
+        /* === PCB sparks === */
+        var pcbBreak = document.getElementById('pcbBreak');
+        if(pcbBreak){
+            setInterval(function(){
+                for(var i=0;i<3;i++){
+                    var sp = document.createElement('div');
+                    sp.className = 'pcb-spark';
+                    sp.style.left = (48 + Math.random()*4) + '%';
+                    sp.style.top = (38 + Math.random()*4) + '%';
+                    sp.style.setProperty('--sx', (Math.random()*50-25) + 'px');
+                    sp.style.setProperty('--sy', (-10 - Math.random()*40) + 'px');
+                    stage.appendChild(sp);
+                    (function(el){ setTimeout(function(){ el.remove(); }, 500); })(sp);
+                }
+            }, 400);
+        }
+
+        /* === Monkey mood toggle === */
+        var monkey = document.getElementById('monkeyWrap');
+        var mouth = document.getElementById('monkeyMouth');
+        var browL = document.getElementById('browL');
+        var browR = document.getElementById('browR');
+        function toggleMood(){
+            if(!monkey) return;
+            monkey.classList.toggle('monkey-angry');
+            if(mouth) mouth.setAttribute('d', monkey.classList.contains('monkey-angry')
+                ? 'M88 106 Q100 100 112 106' : 'M88 108 Q100 116 112 108');
+            if(browL) browL.setAttribute('y1', monkey.classList.contains('monkey-angry') ? '60' : '64');
+            if(browL) browL.setAttribute('y2', monkey.classList.contains('monkey-angry') ? '64' : '62');
+            if(browR) browR.setAttribute('y1', monkey.classList.contains('monkey-angry') ? '64' : '62');
+            if(browR) browR.setAttribute('y2', monkey.classList.contains('monkey-angry') ? '60' : '64');
+        }
+        setInterval(toggleMood, 3500);
+
+        /* === Status text cycle === */
+        var stEl = document.getElementById('statusText');
+        var statusTexts = [
+            'SYS_ERR: PATH_NOT_FOUND',
+            'TRACE: BROKEN_SOLDER_JOINT',
+            'DIAG: REPAIR_IN_PROGRESS',
+            'WARN: SIGNAL_LOST@PCB_78',
+            'LOG: MONKEY_ENGINEER_IDLE'
+        ];
+        var si = 0;
+        if(stEl){
+            setInterval(function(){
+                si = (si + 1) % statusTexts.length;
+                stEl.textContent = statusTexts[si];
+            }, 2200);
+        }
+    })();
+    </script>
 </body>
 </html>

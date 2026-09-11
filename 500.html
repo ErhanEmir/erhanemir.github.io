@@ -7,91 +7,544 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fb923c' d='M13 2L4 14h7l-1 8 9-12h-7l1-8z'/%3E%3C/svg%3E">
     <style>
-        :root { --bg: #050a10; --cyan: #22d3ee; --green: #34d399; --orange: #fb923c; }
+        :root {
+            --bg: #050a10;
+            --bg-card: #080f1a;
+            --cyan: #22d3ee;
+            --green: #34d399;
+            --orange: #fb923c;
+            --red: #ef4444;
+            --yellow: #fde047;
+            --text: #e8eef4;
+            --muted: #8890a0;
+            --glass-border: rgba(255,255,255,0.07);
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg); color: #e8eef4; min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 2rem 1.5rem;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            overflow: hidden;
+            position: relative;
         }
+
+        /* Background heat glow */
+        .heat-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 50% 70%, rgba(239,68,68,0.08) 0%, rgba(251,146,60,0.04) 30%, transparent 65%);
+            animation: heatPulse 2s ease-in-out infinite alternate;
+        }
+        @keyframes heatPulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .scanline {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+            animation: scanShift 10s linear infinite;
+        }
+        @keyframes scanShift { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
+
         .card {
-            max-width: 620px; width: 100%; background: #080f1a; border-radius: 14px;
-            padding: 2.5rem 2rem; border: 1px solid rgba(255,255,255,0.07);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 2.5rem 2rem 2rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 80px rgba(0,0,0,0.7), 0 0 30px rgba(251,146,60,0.08);
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            animation: cardIn 0.8s 0.3s ease forwards;
         }
-        h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 900; letter-spacing: 1px; color: var(--orange); text-shadow: 0 0 15px rgba(251,146,60,0.5); margin-bottom: 0.8rem; }
-        p { max-width: 520px; color: #a0aec0; margin: 0 auto 1.6rem; line-height: 1.7; }
-        .btn { display: inline-flex; align-items: center; padding: 0.75rem 1.8rem; border-radius: 8px; background: var(--cyan); color: #050a10; font-weight: 800; text-decoration: none; }
-        .btn:hover { background: var(--green); }
-        .transformer-stage { position: relative; width: 260px; height: 190px; margin: 0 auto 1.2rem; }
-        .transformer-box {
-            position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
-            width: 140px; height: 120px; background: #18202c; border: 3px solid #fb923c;
-            border-radius: 10px; box-shadow: 0 0 25px rgba(251,146,60,0.4);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        .stage {
+            position: relative;
+            width: min(400px, 88vw);
+            height: 280px;
+            margin: 0 auto 1.5rem;
         }
-        .warning-light {
-            position: absolute; top: -20px; width: 24px; height: 24px; border-radius: 50%;
-            background: #ef4444; box-shadow: 0 0 20px #ef4444;
-            animation: strobeLight 0.4s infinite alternate;
+
+        /* === Transformer === */
+        .transformer {
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 170px;
         }
-        @keyframes strobeLight { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.2); } }
-        .transformer-core { width: 80px; height: 50px; background: #2a3444; border-radius: 6px; border: 2px solid #64748b; position: relative; }
-        .transformer-core::before {
-            content: '⚡ HIGH VOLTAGE ⚡'; position: absolute; inset: 0;
-            display: grid; place-items: center; font-size: 7px; color: #fb923c; font-weight: bold;
+
+        /* === Warning light === */
+        .warn-light {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 20px var(--red), 0 0 40px rgba(239,68,68,0.5);
+            animation: strobe 0.35s ease-in-out infinite alternate;
+            z-index: 5;
         }
-        .smoke-sim { position: absolute; left: 50%; bottom: 85px; margin-left: -15px; width: 30px; height: 50px; z-index: 5; pointer-events: none; }
-        .smoke-sim span {
-            position: absolute; bottom: 0; left: 50%; width: 12px; height: 12px; border-radius: 50%;
-            background: rgba(180, 200, 210, 0.4); animation: puffUp 2s ease-out infinite;
+        @keyframes strobe {
+            0% { opacity: 0.2; transform: translateX(-50%) scale(0.85); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.15); }
         }
-        .smoke-sim span:nth-child(2) { animation-delay: 0.6s; left: 25%; }
-        .smoke-sim span:nth-child(3) { animation-delay: 1.2s; left: 75%; }
-        @keyframes puffUp {
-            0% { transform: translate(-50%, 0) scale(0.4); opacity: 0.7; }
-            100% { transform: translate(-50%, -60px) scale(1.8); opacity: 0; }
+        .warn-ring {
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            width: 38px;
+            height: 38px;
+            margin-left: -19px;
+            border: 2px solid var(--red);
+            border-radius: 50%;
+            opacity: 0;
+            animation: ringExpand 1.2s ease-out infinite;
+            pointer-events: none;
         }
-        .spark-particle {
-            position: absolute; width: 4px; height: 4px; border-radius: 50%;
-            background: #fde047; box-shadow: 0 0 8px #fff, 0 0 14px #38bdf8;
-            animation: sparkFly 0.6s ease-out forwards; pointer-events: none;
+        .warn-ring:nth-child(2) { animation-delay: 0.4s; }
+        @keyframes ringExpand {
+            0% { transform: scale(0.5); opacity: 0.7; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* === Voltage gauge === */
+        .gauge {
+            position: absolute;
+            top: 20px;
+            right: -20px;
+            width: 70px;
+            height: 70px;
+        }
+        .gauge-bg {
+            fill: none;
+            stroke: #1e293b;
+            stroke-width: 6;
+        }
+        .gauge-fill {
+            fill: none;
+            stroke: var(--red);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 157;
+            stroke-dashoffset: 157;
+            animation: gaugeRise 3s ease-in forwards, gaugeFlash 0.8s 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 4px var(--red));
+        }
+        @keyframes gaugeRise {
+            0% { stroke-dashoffset: 157; stroke: var(--green); }
+            40% { stroke: var(--orange); }
+            100% { stroke-dashoffset: 15; stroke: var(--red); }
+        }
+        @keyframes gaugeFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .gauge-text {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            fill: var(--red);
+            text-anchor: middle;
+        }
+        .gauge-label {
+            font-family: 'Courier New', monospace;
+            font-size: 6px;
+            fill: var(--muted);
+            text-anchor: middle;
+        }
+
+        /* === Smoke === */
+        .smoke-group {
+            position: absolute;
+            left: 50%;
+            bottom: 120px;
+            margin-left: -20px;
+            width: 40px;
+            height: 70px;
+            z-index: 6;
+            pointer-events: none;
+        }
+        .smoke-puff {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(180,200,210,0.35);
+            animation: smokeRise 2.2s ease-out infinite;
+        }
+        .smoke-puff:nth-child(2) { animation-delay: 0.7s; left: 30%; }
+        .smoke-puff:nth-child(3) { animation-delay: 1.4s; left: 70%; }
+        .smoke-puff:nth-child(4) { animation-delay: 0.3s; left: 45%; width: 8px; height: 8px; }
+        @keyframes smokeRise {
+            0% { transform: translate(-50%, 0) scale(0.3); opacity: 0.55; }
+            100% { transform: translate(-50%, -80px) scale(2.5); opacity: 0; }
+        }
+
+        /* === Sparks === */
+        .spark {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--yellow);
+            box-shadow: 0 0 6px #fff, 0 0 10px var(--cyan);
+            pointer-events: none;
+            animation: sparkFly 0.5s ease-out forwards;
         }
         @keyframes sparkFly {
             0% { opacity: 1; transform: translate(0,0) scale(1); }
-            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); }
+            100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0.1); }
         }
-        @media (max-width: 768px) { .card { padding: 2rem 1.2rem; } }
+
+        /* === Electric arc === */
+        .arc-container {
+            position: absolute;
+            left: 50%;
+            bottom: 100px;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 6;
+        }
+        .arc-line {
+            fill: none;
+            stroke: var(--cyan);
+            stroke-width: 2;
+            opacity: 0;
+            filter: drop-shadow(0 0 3px var(--cyan));
+            animation: arcFlash 0.15s ease-in-out infinite alternate;
+        }
+        .arc-line:nth-child(2) { animation-delay: 0.08s; stroke: var(--yellow); filter: drop-shadow(0 0 3px var(--yellow)); }
+        @keyframes arcFlash {
+            0% { opacity: 0; }
+            100% { opacity: 0.9; }
+        }
+
+        /* === OVERLOAD text === */
+        .overload-text {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--red);
+            text-shadow: 0 0 8px var(--red);
+            animation: overloadGlitch 1.5s ease-in-out infinite;
+            white-space: nowrap;
+            z-index: 7;
+        }
+        @keyframes overloadGlitch {
+            0%, 80%, 100% { opacity: 1; transform: translateX(-50%); }
+            82% { opacity: 0.4; transform: translateX(calc(-50% + 2px)); }
+            84% { opacity: 0.9; transform: translateX(calc(-50% - 2px)); }
+            86% { opacity: 1; transform: translateX(-50%); }
+            88% { opacity: 0.3; transform: translateX(calc(-50% + 1px)) skewX(5deg); }
+            90% { opacity: 1; transform: translateX(-50%); }
+        }
+
+        /* === Text content === */
+        .error-code {
+            font-size: clamp(3.5rem, 10vw, 5.5rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--orange);
+            text-shadow: 0 0 20px rgba(251,146,60,0.5), 0 0 40px rgba(251,146,60,0.15);
+            margin-bottom: 0.3rem;
+            font-family: 'Courier New', monospace;
+            animation: codeFlicker 3s ease-in-out infinite;
+        }
+        @keyframes codeFlicker {
+            0%, 87%, 100% { opacity: 1; }
+            88% { opacity: 0.7; }
+            90% { opacity: 1; }
+            92% { opacity: 0.5; text-shadow: 2px 0 var(--red), -2px 0 var(--cyan); }
+            94% { opacity: 1; text-shadow: 0 0 20px rgba(251,146,60,0.5); }
+        }
+        .error-subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            font-weight: 700;
+            color: var(--red);
+            text-shadow: 0 0 12px rgba(239,68,68,0.5);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: subtitlePulse 1.5s ease-in-out infinite;
+        }
+        @keyframes subtitlePulse {
+            0%, 100% { opacity: 0.75; }
+            50% { opacity: 1; }
+        }
+        .error-desc {
+            max-width: 520px;
+            color: var(--muted);
+            margin: 0 auto 1.8rem;
+            line-height: 1.75;
+            font-size: 0.95rem;
+        }
+
+        /* --- Home button --- */
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 2.2rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--cyan), #0ea5c7);
+            color: var(--bg);
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 20px rgba(34,211,238,0.25);
+        }
+        .btn-home::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        .btn-home:hover::before { transform: translateX(100%); }
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(34,211,238,0.4);
+            background: linear-gradient(135deg, var(--green), #059669);
+        }
+        .btn-home .arrow { display: inline-block; transition: transform 0.3s ease; }
+        .btn-home:hover .arrow { transform: translateX(3px); }
+
+        /* --- Status bar --- */
+        .status-bar {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            opacity: 0.6;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--orange);
+            animation: statusBlink 1s ease-in-out infinite;
+        }
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--orange); }
+            50% { opacity: 0.3; box-shadow: none; }
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 2rem 1.2rem; }
+            .stage { height: 220px; }
+            .transformer { width: 160px; height: 140px; }
+            .gauge { width: 55px; height: 55px; right: -10px; }
+        }
     </style>
 </head>
 <body>
+    <div class="heat-bg" aria-hidden="true"></div>
+    <div class="scanline" aria-hidden="true"></div>
+
     <div class="card">
-        <div class="transformer-stage" id="sparkStage500">
-            <div class="transformer-box">
-                <div class="warning-light"></div>
-                <div class="transformer-core"></div>
-                <div class="smoke-sim"><span></span><span></span><span></span></div>
+        <div class="stage" id="sparkStage500">
+            <div class="transformer">
+                <div class="overload-text">OVERLOAD</div>
+                <div class="warn-light"></div>
+                <div class="warn-ring"></div>
+                <div class="warn-ring"></div>
+
+                <svg viewBox="0 0 200 170" width="100%" height="100%" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="heatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#1a1208">
+                                <animate attributeName="stop-color" values="#1a1208;#2a1a0c;#1a1208" dur="2s" repeatCount="indefinite"/>
+                            </stop>
+                            <stop offset="100%" stop-color="#0f1923"/>
+                        </linearGradient>
+                        <filter id="heatBlur">
+                            <feGaussianBlur stdDeviation="1.5">
+                                <animate attributeName="stdDeviation" values="1.5;2.5;1.5" dur="3s" repeatCount="indefinite"/>
+                            </feGaussianBlur>
+                        </filter>
+                    </defs>
+                    <!-- Base platform -->
+                    <rect x="30" y="140" width="140" height="22" rx="4" fill="#1a2332" stroke="#334155" stroke-width="1.5"/>
+                    <!-- Main body -->
+                    <rect x="50" y="40" width="100" height="105" rx="6" fill="url(#heatGrad)" stroke="#fb923c" stroke-width="2">
+                        <animate attributeName="stroke-opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+                    </rect>
+                    <!-- Heat glow on body -->
+                    <rect x="52" y="42" width="96" height="101" rx="5" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.3" filter="url(#heatBlur)"/>
+                    <!-- Core window -->
+                    <rect x="65" y="55" width="70" height="45" rx="4" fill="#0a0f18" stroke="#64748b" stroke-width="1.5"/>
+                    <!-- Core content -->
+                    <text x="100" y="73" fill="#fb923c" font-size="7" font-family="'Courier New', monospace" font-weight="bold" text-anchor="middle">⚡ HIGH VOLTAGE ⚡</text>
+                    <text x="100" y="85" fill="#ef4444" font-size="9" font-family="'Courier New', monospace" font-weight="bold" text-anchor="middle">
+                        <animate attributeName="opacity" values="1;0.3;1" dur="0.6s" repeatCount="indefinite"/>
+                        CAUTION
+                    </text>
+                    <line x1="70" y1="92" x2="130" y2="92" stroke="#fb923c" stroke-width="0.5" opacity="0.4"/>
+                    <!-- Cooling fins -->
+                    <rect x="52" y="48" width="3" height="90" rx="1" fill="#2a3444"/>
+                    <rect x="58" y="48" width="3" height="90" rx="1" fill="#2a3444"/>
+                    <rect x="139" y="48" width="3" height="90" rx="1" fill="#2a3444"/>
+                    <rect x="145" y="48" width="3" height="90" rx="1" fill="#2a3444"/>
+                    <!-- Terminals -->
+                    <circle cx="75" cy="118" r="7" fill="#1e293b" stroke="#fb923c" stroke-width="2"/>
+                    <circle cx="75" cy="118" r="3" fill="#fb923c">
+                        <animate attributeName="fill" values="#fb923c;#ef4444;#fb923c" dur="0.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="125" cy="118" r="7" fill="#1e293b" stroke="#fb923c" stroke-width="2"/>
+                    <circle cx="125" cy="118" r="3" fill="#fb923c">
+                        <animate attributeName="fill" values="#fb923c;#ef4444;#fb923c" dur="0.5s" repeatCount="indefinite" begin="0.25s"/>
+                    </circle>
+                    <!-- Bottom vents -->
+                    <rect x="60" y="130" width="15" height="4" rx="2" fill="#0a0f18" stroke="#334155" stroke-width="0.5"/>
+                    <rect x="80" y="130" width="15" height="4" rx="2" fill="#0a0f18" stroke="#334155" stroke-width="0.5"/>
+                    <rect x="105" y="130" width="15" height="4" rx="2" fill="#0a0f18" stroke="#334155" stroke-width="0.5"/>
+                    <rect x="125" y="130" width="15" height="4" rx="2" fill="#0a0f18" stroke="#334155" stroke-width="0.5"/>
+                    <!-- Heat haze waves -->
+                    <path d="M55 38 Q65 28 75 38 Q85 48 95 38 Q105 28 115 38 Q125 48 135 38 Q145 28 155 38" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.25">
+                        <animate attributeName="opacity" values="0.25;0.1;0.25" dur="1.8s" repeatCount="indefinite"/>
+                        <animate attributeName="d" values="M55 38 Q65 28 75 38 Q85 48 95 38 Q105 28 115 38 Q125 48 135 38 Q145 28 155 38;M55 36 Q65 46 75 36 Q85 26 95 36 Q105 46 115 36 Q125 26 135 36 Q145 46 155 36;M55 38 Q65 28 75 38 Q85 48 95 38 Q105 28 115 38 Q125 48 135 38 Q145 28 155 38" dur="3s" repeatCount="indefinite"/>
+                    </path>
+                </svg>
+
+                <!-- Voltage gauge SVG overlay -->
+                <svg class="gauge" viewBox="0 0 70 70">
+                    <circle class="gauge-bg" cx="35" cy="35" r="25"/>
+                    <circle class="gauge-fill" cx="35" cy="35" r="25" transform="rotate(-90 35 35)"/>
+                    <text class="gauge-text" x="35" y="34" id="voltageText">0V</text>
+                    <text class="gauge-label" x="35" y="42">VOLTS</text>
+                </svg>
+            </div>
+
+            <!-- Smoke -->
+            <div class="smoke-group">
+                <div class="smoke-puff"></div>
+                <div class="smoke-puff"></div>
+                <div class="smoke-puff"></div>
+                <div class="smoke-puff"></div>
+            </div>
+
+            <!-- Electric arc -->
+            <div class="arc-container" id="arcContainer">
+                <svg viewBox="0 0 60 40" width="100%" height="100%">
+                    <polyline class="arc-line" points="5,20 15,12 25,22 35,10 45,20 55,16"/>
+                    <polyline class="arc-line" points="5,22 18,30 28,18 38,28 55,22"/>
+                </svg>
             </div>
         </div>
-        <h1>500 — VOLTAJ AŞIRI YÜKLEME</h1>
-        <p>Eyvah! Voltaj aşırı yükseldi ve sigortalar attı. Lehim tabancasını kaptık, hattı düzeltiyoruz!</p>
-        <a href="index.html" class="btn">Ana Üsse Dön</a>
+
+        <div class="error-code">500</div>
+        <div class="error-subtitle">VOLTAJ AŞIRI YÜKLEME</div>
+        <p class="error-desc">Eyvah! Voltaj aşırı yükseldi ve sigortalar attı. Lehim tabancasını kaptık, hattı düzeltiyoruz!</p>
+        <a href="index.html" class="btn-home">
+            <i class="fas fa-home"></i> Ana Üsse Dön <span class="arrow">&rarr;</span>
+        </a>
+        <div class="status-bar">
+            <span class="status-dot"></span>
+            <span id="statusText">VOLT: 0.0V / 5.0V</span>
+        </div>
     </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <script>
-        const sparkStage500 = document.getElementById("sparkStage500");
-        function spawnSpark() {
-            if (!sparkStage500) return;
-            const spark = document.createElement("div");
-            spark.className = "spark-particle";
-            spark.style.left = (45 + Math.random() * 10) + "%";
-            spark.style.top = (45 + Math.random() * 15) + "%";
-            spark.style.setProperty("--dx", (Math.random() * 90 - 45) + "px");
-            spark.style.setProperty("--dy", (-20 - Math.random() * 50) + "px");
-            sparkStage500.appendChild(spark);
-            setTimeout(() => spark.remove(), 600);
+    (function(){
+        /* === Voltage counter === */
+        var vEl = document.getElementById('voltageText');
+        var voltage = 0;
+        var targetVoltage = 24;
+        var statusEl = document.getElementById('statusText');
+        var statusTexts = [
+            'VOLT: 0.0V / 5.0V',
+            'VOLT: 3.3V / 5.0V — OK',
+            'VOLT: 4.8V / 5.0V — WARN',
+            'VOLT: 7.2V / 5.0V — CRIT',
+            'VOLT: 12.0V / 5.0V — OVERLOAD',
+            'VOLT: ERR — FUSE_BLOWN',
+            'VOLT: RECOVERY...'
+        ];
+        var si = 0;
+
+        function updateVoltage(){
+            if(voltage < targetVoltage){
+                voltage += 0.4 + Math.random() * 0.6;
+                if(voltage > targetVoltage) voltage = targetVoltage;
+            } else {
+                targetVoltage = targetVoltage === 24 ? 0 : 24;
+                if(voltage <= 0) { voltage = 0; targetVoltage = 24; }
+            }
+            if(vEl) vEl.textContent = Math.round(voltage) + 'V';
         }
-        setInterval(spawnSpark, 120);
+        setInterval(updateVoltage, 120);
+
+        function cycleStatus(){
+            si = (si + 1) % statusTexts.length;
+            if(statusEl) statusEl.textContent = statusTexts[si];
+        }
+        setInterval(cycleStatus, 1800);
+
+        /* === Sparks === */
+        var stage = document.getElementById('sparkStage500');
+        function spawnSpark(){
+            if(!stage) return;
+            for(var i=0;i<2;i++){
+                var sp = document.createElement('div');
+                sp.className = 'spark';
+                sp.style.left = (42 + Math.random()*16) + '%';
+                sp.style.top = (48 + Math.random()*18) + '%';
+                sp.style.setProperty('--sx', (Math.random()*80-40) + 'px');
+                sp.style.setProperty('--sy', (-15 - Math.random()*55) + 'px');
+                stage.appendChild(sp);
+                (function(el){ setTimeout(function(){ el.remove(); }, 500); })(sp);
+            }
+        }
+        setInterval(spawnSpark, 100);
+
+        /* === Arc toggle === */
+        var arc = document.getElementById('arcContainer');
+        if(arc){
+            setInterval(function(){
+                arc.style.opacity = arc.style.opacity === '0' ? '1' : '0';
+            }, 150);
+            setTimeout(function(){ arc.style.opacity = '1'; }, 500);
+        }
+    })();
     </script>
 </body>
 </html>

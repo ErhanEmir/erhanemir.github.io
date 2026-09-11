@@ -7,69 +7,525 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ef4444' d='M12 18a2 2 0 100 4 2 2 0 000-4zm-7.07-2.93l1.41 1.41A8 8 0 0112 14a8 8 0 015.66 2.34l1.41-1.41A10 10 0 0012 12a10 10 0 00-7.07 2.93zM4.93 7.93l1.41 1.41A12 12 0 0112 6a12 12 0 018.49 3.51l1.41-1.41A14 14 0 0012 4 14 14 0 004.93 7.93z'/%3E%3C/svg%3E">
     <style>
-        :root { --bg: #050a10; --cyan: #22d3ee; --green: #34d399; --red: #ef4444; }
+        :root {
+            --bg: #050a10;
+            --bg-card: #080f1a;
+            --cyan: #22d3ee;
+            --green: #34d399;
+            --red: #ef4444;
+            --orange: #fb923c;
+            --text: #e8eef4;
+            --muted: #8890a0;
+            --glass-border: rgba(255,255,255,0.07);
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg); color: #e8eef4; min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 2rem 1.5rem;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            overflow: hidden;
+            position: relative;
         }
+
+        /* === Signal bars background === */
+        .signal-bars-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            padding-bottom: 0;
+            opacity: 0.04;
+        }
+        .sbar {
+            flex: 1;
+            max-width: 8px;
+            background: var(--red);
+            border-radius: 2px 2px 0 0;
+            animation: barGrow ease-in-out infinite;
+        }
+        @keyframes barGrow {
+            0%, 100% { height: 5%; }
+            50% { height: 60%; }
+        }
+
+        .scanline {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+            animation: scanShift 12s linear infinite;
+        }
+        @keyframes scanShift { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
+
+        /* === Dark vignette === */
+        .vignette {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(5,10,16,0.6) 100%);
+        }
+
         .card {
-            max-width: 620px; width: 100%; background: #080f1a; border-radius: 14px;
-            padding: 2.5rem 2rem; border: 1px solid rgba(255,255,255,0.07);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 2.5rem 2rem 2rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 0 80px rgba(0,0,0,0.7), 0 0 20px rgba(239,68,68,0.05);
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            animation: cardIn 0.8s 0.3s ease forwards;
         }
-        h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 900; letter-spacing: 1px; color: var(--red); text-shadow: 0 0 15px rgba(239,68,68,0.5); margin-bottom: 0.8rem; }
-        p { max-width: 520px; color: #a0aec0; margin: 0 auto 1.6rem; line-height: 1.7; }
-        .btn { display: inline-flex; align-items: center; padding: 0.75rem 1.8rem; border-radius: 8px; background: var(--cyan); color: #050a10; font-weight: 800; text-decoration: none; }
-        .btn:hover { background: var(--green); }
-        .esp-stage { position: relative; width: 240px; height: 190px; margin: 0 auto 1.2rem; }
-        .esp-mcu {
-            position: absolute; left: 50%; bottom: 25px; transform: translateX(-50%);
-            width: 120px; height: 75px; background: #064e3b; border: 2px solid #34d399;
-            border-radius: 8px; box-shadow: 0 0 20px rgba(52,211,153,0.3);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        .stage {
+            position: relative;
+            width: min(400px, 88vw);
+            height: 250px;
+            margin: 0 auto 1.5rem;
         }
-        .esp-chip { width: 45px; height: 45px; background: #1e293b; border: 1px solid #94a3b8; border-radius: 4px; display: grid; place-items: center; font-size: 8px; color: #34d399; font-weight: bold; }
-        .esp-led {
-            position: absolute; top: 8px; right: 10px; width: 10px; height: 10px; border-radius: 50%;
-            background: #ef4444; box-shadow: 0 0 12px #ef4444; animation: rapidBlink 0.25s infinite alternate;
+
+        /* === ESP32 board === */
+        .esp-board {
+            position: absolute;
+            left: 50%;
+            bottom: 15px;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 130px;
         }
-        @keyframes rapidBlink { 0% { opacity: 0.2; } 100% { opacity: 1; } }
-        .lora-ant {
-            position: absolute; left: 15px; top: -35px; width: 6px; height: 40px;
-            background: #475569; border-radius: 3px; border-top: 3px solid #ef4444;
+
+        /* === RED LED === */
+        .led-status {
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 10px var(--red), 0 0 20px rgba(239,68,68,0.5);
+            animation: ledBlink 0.22s ease-in-out infinite alternate;
+            z-index: 5;
         }
-        .wave-ring {
-            position: absolute; left: 15px; top: -35px; width: 20px; height: 20px; margin-left: -7px; margin-top: -7px;
-            border: 2px solid #ef4444; border-radius: 50%; opacity: 0;
-            animation: waveExpand 1.5s ease-out infinite; pointer-events: none;
+        @keyframes ledBlink {
+            0% { opacity: 0.15; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1.1); }
         }
-        .wave-ring:nth-child(2) { animation-delay: 0.5s; }
-        .wave-ring:nth-child(3) { animation-delay: 1s; }
-        @keyframes waveExpand {
-            0% { transform: scale(0.3); opacity: 0.9; }
-            100% { transform: scale(4.5); opacity: 0; }
+
+        /* === Antenna === */
+        .antenna {
+            position: absolute;
+            left: 25%;
+            top: -10px;
+            width: 6px;
+            height: 50px;
+            background: linear-gradient(to top, #475569, #94a3b8);
+            border-radius: 3px;
+            z-index: 4;
         }
-        @media (max-width: 768px) { .card { padding: 2rem 1.2rem; } }
+        .antenna::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 8px var(--red);
+            animation: ledBlink 0.22s ease-in-out infinite alternate;
+        }
+
+        /* === Failed signal waves === */
+        .wave-group {
+            position: absolute;
+            left: 25%;
+            top: -14px;
+            margin-left: -3px;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .signal-wave {
+            position: absolute;
+            border: 2px solid var(--red);
+            border-radius: 50%;
+            opacity: 0;
+            animation: waveFail 2s ease-out infinite;
+        }
+        .signal-wave:nth-child(1) { width: 24px; height: 24px; top: -12px; left: -12px; animation-delay: 0s; }
+        .signal-wave:nth-child(2) { width: 40px; height: 40px; top: -20px; left: -20px; animation-delay: 0.35s; }
+        .signal-wave:nth-child(3) { width: 56px; height: 56px; top: -28px; left: -28px; animation-delay: 0.7s; }
+        .signal-wave:nth-child(4) { width: 72px; height: 72px; top: -36px; left: -36px; animation-delay: 1.05s; }
+        @keyframes waveFail {
+            0% { transform: scale(0.5); opacity: 0.8; border-color: var(--red); }
+            40% { transform: scale(1); opacity: 0.6; border-color: var(--red); }
+            60% { transform: scale(1.2); opacity: 0.2; border-color: var(--orange); border-style: dashed; }
+            100% { transform: scale(0.4); opacity: 0; border-color: var(--muted); border-style: dotted; }
+        }
+
+        /* === Searching text === */
+        .searching-area {
+            margin-top: 1.5rem;
+            height: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .searching-label {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--red);
+            opacity: 0.8;
+        }
+        .searching-dots {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--muted);
+            min-width: 2em;
+        }
+        .searching-protocol {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--cyan);
+            min-width: 5em;
+            text-align: left;
+            transition: opacity 0.3s;
+        }
+        .searching-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--muted);
+            animation: cursorBlink 0.8s step-end infinite;
+            vertical-align: text-bottom;
+        }
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* === Signal bars (visible, on card) === */
+        .signal-bars-card {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+        .sig-bar {
+            width: 8px;
+            border-radius: 2px 2px 0 0;
+            background: var(--red);
+            opacity: 0.3;
+            animation: sigBarPulse 1.5s ease-in-out infinite;
+        }
+        .sig-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+        .sig-bar:nth-child(2) { height: 14px; animation-delay: 0.1s; }
+        .sig-bar:nth-child(3) { height: 20px; animation-delay: 0.2s; }
+        .sig-bar:nth-child(4) { height: 26px; animation-delay: 0.3s; }
+        .sig-bar:nth-child(5) { height: 32px; animation-delay: 0.4s; }
+        @keyframes sigBarPulse {
+            0%, 100% { opacity: 0.2; }
+            30% { opacity: 0.6; }
+            50% { opacity: 0.1; }
+            70% { opacity: 0.45; }
+        }
+
+        /* === Text content === */
+        .error-code {
+            font-size: clamp(3rem, 9vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--red);
+            text-shadow: 0 0 20px rgba(239,68,68,0.5), 0 0 40px rgba(239,68,68,0.15);
+            margin-bottom: 0.3rem;
+            font-family: 'Courier New', monospace;
+        }
+        .error-subtitle {
+            font-size: clamp(1rem, 2.8vw, 1.3rem);
+            font-weight: 700;
+            color: var(--red);
+            text-shadow: 0 0 10px rgba(239,68,68,0.4);
+            margin-bottom: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+        .error-desc {
+            max-width: 520px;
+            color: var(--muted);
+            margin: 0 auto 1.8rem;
+            line-height: 1.75;
+            font-size: 0.95rem;
+        }
+
+        /* --- Home button --- */
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 2.2rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--cyan), #0ea5c7);
+            color: var(--bg);
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 20px rgba(34,211,238,0.25);
+        }
+        .btn-home::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        .btn-home:hover::before { transform: translateX(100%); }
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(34,211,238,0.4);
+            background: linear-gradient(135deg, var(--green), #059669);
+        }
+        .btn-home .arrow { display: inline-block; transition: transform 0.3s ease; }
+        .btn-home:hover .arrow { transform: translateX(3px); }
+
+        /* --- Status bar --- */
+        .status-bar {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            opacity: 0.6;
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--red);
+            animation: statusBlink 1.5s ease-in-out infinite;
+        }
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--red); }
+            50% { opacity: 0.2; box-shadow: none; }
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 2rem 1.2rem; }
+            .stage { height: 200px; }
+            .esp-board { width: 150px; height: 110px; }
+        }
     </style>
 </head>
 <body>
+    <!-- Background signal bars -->
+    <div class="signal-bars-bg" id="bgBars" aria-hidden="true"></div>
+    <div class="scanline" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
     <div class="card">
-        <div class="esp-stage">
-            <div class="lora-ant"></div>
-            <div class="wave-ring"></div>
-            <div class="wave-ring"></div>
-            <div class="wave-ring"></div>
-            <div class="esp-mcu">
-                <div class="esp-led"></div>
-                <div class="esp-chip">ESP32</div>
+        <div class="stage">
+            <!-- ESP32 / LoRa Board SVG -->
+            <div class="esp-board">
+                <div class="antenna"></div>
+                <div class="wave-group">
+                    <div class="signal-wave"></div>
+                    <div class="signal-wave"></div>
+                    <div class="signal-wave"></div>
+                    <div class="signal-wave"></div>
+                </div>
+                <div class="led-status"></div>
+
+                <svg viewBox="0 0 180 130" width="100%" height="100%" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="boardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#0c4a30"/>
+                            <stop offset="100%" stop-color="#063a22"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Board base -->
+                    <rect x="4" y="10" width="172" height="110" rx="8" fill="url(#boardGrad)" stroke="#34d399" stroke-width="1.5"/>
+                    <!-- Copper pour areas -->
+                    <rect x="8" y="14" width="164" height="102" rx="6" fill="none" stroke="#34d399" stroke-width="0.3" opacity="0.3"/>
+                    <!-- Traces -->
+                    <path d="M12 35 h28 v4 h20 v-4 h40 v4 h32" fill="none" stroke="#22d3ee" stroke-width="1.2" opacity="0.5"/>
+                    <path d="M12 55 h16 v20 h8 v-20 h12" fill="none" stroke="#22d3ee" stroke-width="1" opacity="0.4"/>
+                    <path d="M80 70 h40 v12 h20" fill="none" stroke="#fb923c" stroke-width="1" opacity="0.4"/>
+                    <path d="M140 40 v30" fill="none" stroke="#22d3ee" stroke-width="0.8" opacity="0.3"/>
+                    <line x1="30" y1="80" x2="60" y2="80" stroke="#22d3ee" stroke-width="0.8" opacity="0.3"/>
+                    <line x1="90" y1="95" x2="140" y2="95" stroke="#fb923c" stroke-width="0.8" opacity="0.3"/>
+                    <!-- ESP32 module -->
+                    <rect x="55" y="22" width="72" height="50" rx="4" fill="#1a2332" stroke="#94a3b8" stroke-width="1"/>
+                    <!-- Metal shield -->
+                    <rect x="60" y="27" width="62" height="40" rx="3" fill="#2a3444" stroke="#64748b" stroke-width="0.8"/>
+                    <!-- Chip marking -->
+                    <text x="91" y="42" fill="#34d399" font-size="7" font-family="'Courier New', monospace" font-weight="bold" text-anchor="middle">ESP32</text>
+                    <text x="91" y="52" fill="#64748b" font-size="5" font-family="'Courier New', monospace" text-anchor="middle">SX1276 LoRa</text>
+                    <text x="91" y="60" fill="#ef4444" font-size="5" font-family="'Courier New', monospace" text-anchor="middle">
+                        <animate attributeName="opacity" values="1;0.2;1" dur="1s" repeatCount="indefinite"/>
+                        NO SIGNAL
+                    </text>
+                    <!-- Pin headers left -->
+                    <rect x="12" y="25" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="12" y="36" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="12" y="47" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="12" y="58" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="12" y="69" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="12" y="80" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="12" y="91" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <!-- Pin headers right -->
+                    <rect x="165" y="25" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="165" y="36" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="165" y="47" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="165" y="58" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="165" y="69" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="165" y="80" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <rect x="165" y="91" width="3" height="8" rx="1" fill="#94a3b8"/>
+                    <!-- Antenna pad -->
+                    <circle cx="36" cy="18" r="4" fill="#94a3b8" stroke="#64748b" stroke-width="1"/>
+                    <circle cx="36" cy="18" r="1.5" fill="#ef4444">
+                        <animate attributeName="fill" values="#ef4444;#475569;#ef4444" dur="0.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <!-- Decoupling caps -->
+                    <rect x="130" y="30" width="8" height="4" rx="1" fill="#1e293b" stroke="#64748b" stroke-width="0.5"/>
+                    <rect x="130" y="38" width="8" height="4" rx="1" fill="#1e293b" stroke="#64748b" stroke-width="0.5"/>
+                    <!-- Crystal -->
+                    <rect x="70" y="80" width="14" height="7" rx="2" fill="#c0c0c0" stroke="#94a3b8" stroke-width="0.5"/>
+                    <text x="77" y="86" fill="#333" font-size="4" font-family="monospace" text-anchor="middle">32K</text>
+                    <!-- USB connector -->
+                    <rect x="60" y="100" width="36" height="14" rx="3" fill="#94a3b8" stroke="#64748b" stroke-width="1"/>
+                    <rect x="64" y="103" width="28" height="8" rx="2" fill="#1e293b"/>
+                    <text x="78" y="110" fill="#64748b" font-size="5" font-family="monospace" text-anchor="middle">USB</text>
+                    <!-- LEDs -->
+                    <circle cx="140" cy="108" r="3" fill="#34d399" opacity="0.3"/>
+                    <circle cx="150" cy="108" r="3" fill="#ef4444">
+                        <animate attributeName="opacity" values="0.1;1;0.1" dur="0.22s" repeatCount="indefinite"/>
+                    </circle>
+                    <!-- Via holes -->
+                    <circle cx="45" cy="40" r="1.5" fill="#94a3b8" opacity="0.4"/>
+                    <circle cx="148" cy="45" r="1.5" fill="#94a3b8" opacity="0.4"/>
+                    <circle cx="45" cy="75" r="1.5" fill="#94a3b8" opacity="0.4"/>
+                    <circle cx="110" cy="85" r="1.5" fill="#94a3b8" opacity="0.4"/>
+                    <circle cx="55" cy="95" r="1.5" fill="#94a3b8" opacity="0.4"/>
+                </svg>
             </div>
         </div>
-        <h1>SİNYAL KOPTU</h1>
-        <p>Sinyal koptu! Wi-Fi / LoRa modülü bağlantıyı kaybetti. Bağlantı gelince sistem otomatik senkronize olacak.</p>
-        <a href="index.html" class="btn">Ana Üsse Dön</a>
+
+        <!-- Signal bars -->
+        <div class="signal-bars-card">
+            <div class="sig-bar"></div>
+            <div class="sig-bar"></div>
+            <div class="sig-bar"></div>
+            <div class="sig-bar"></div>
+            <div class="sig-bar"></div>
+        </div>
+
+        <div class="error-code">SİNYAL KOPTU</div>
+        <div class="error-subtitle">CONNECTION LOST</div>
+
+        <div class="searching-area">
+            <span class="searching-label">Searching:</span>
+            <span class="searching-protocol" id="protoText">Wi-Fi</span>
+            <span class="searching-dots" id="dotsText">...</span>
+            <span class="searching-cursor"></span>
+        </div>
+
+        <p class="error-desc">Sinyal koptu! Wi-Fi / LoRa modülü bağlantıyı kaybetti. Bağlantı gelince sistem otomatik senkronize olacak.</p>
+        <a href="index.html" class="btn-home">
+            <i class="fas fa-home"></i> Ana Üsse Dön <span class="arrow">&rarr;</span>
+        </a>
+        <div class="status-bar">
+            <span class="status-dot"></span>
+            <span id="statusText">RSSI: -- dBm | SNR: -- dB</span>
+        </div>
     </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <script>
+    (function(){
+        /* === Background signal bars === */
+        var bgBars = document.getElementById('bgBars');
+        if(bgBars){
+            for(var i=0;i<40;i++){
+                var b = document.createElement('div');
+                b.className = 'sbar';
+                b.style.animationDuration = (2 + Math.random()*3) + 's';
+                b.style.animationDelay = (Math.random()*2) + 's';
+                bgBars.appendChild(b);
+            }
+        }
+
+        /* === Protocol cycle === */
+        var protoEl = document.getElementById('protoText');
+        var dotsEl = document.getElementById('dotsText');
+        var protocols = ['Wi-Fi', 'LoRa 868MHz', '4G LTE', 'BLE 5.0', 'Zigbee', 'MQTT', 'TCP/IP'];
+        var pi = 0;
+        var dotCount = 0;
+
+        function cycleProto(){
+            if(!protoEl) return;
+            pi = (pi + 1) % protocols.length;
+            protoEl.style.opacity = '0';
+            setTimeout(function(){
+                protoEl.textContent = protocols[pi];
+                protoEl.style.opacity = '1';
+            }, 200);
+        }
+        setInterval(cycleProto, 1400);
+
+        function cycleDots(){
+            if(!dotsEl) return;
+            dotCount = (dotCount + 1) % 4;
+            dotsEl.textContent = '.'.repeat(dotCount || 1);
+        }
+        setInterval(cycleDots, 400);
+
+        /* === Status bar === */
+        var stEl = document.getElementById('statusText');
+        var stTexts = [
+            'RSSI: -- dBm | SNR: -- dB',
+            'RSSI: -120 dBm | SNR: -8.5 dB — WEAK',
+            'RSSI: -- dBm | LINK_TIMEOUT',
+            'RETRY #1 — Wi-Fi SCAN...',
+            'RETRY #2 — LoRa JOIN FAIL',
+            'RETRY #3 — 4G NO COVERAGE',
+            'RETRY #4 — ALL_CHANNELS_BUSY',
+            'SYS: AWAITING_RECONNECT'
+        ];
+        var stIdx = 0;
+        function cycleStatus(){
+            stIdx = (stIdx + 1) % stTexts.length;
+            if(stEl) stEl.textContent = stTexts[stIdx];
+        }
+        setInterval(cycleStatus, 2000);
+    })();
+    </script>
 </body>
 </html>
