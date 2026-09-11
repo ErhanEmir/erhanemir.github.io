@@ -365,6 +365,38 @@
         .socials a { font-size: 1.35rem; color: var(--text-secondary); margin: 0 0.8rem; transition: color var(--transition); }
         .socials a:hover { color: var(--cyan); }
 
+        .scroll-to-top-btn {
+            position: fixed; bottom: 2rem; right: 2rem;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--cyan);
+            color: var(--bg-deep);
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px var(--cyan-glow);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .scroll-to-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .scroll-to-top-btn:hover {
+            background: var(--green);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px var(--green-dim);
+        }
+        [data-theme="light"] .scroll-to-top-btn {
+            color: var(--bg-deep);
+        }
+
         .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
 
@@ -577,6 +609,7 @@
         </div>
         <p data-i18n="footer_copy">&copy; 2026 Erhan Emir. Tüm hakları saklıdır.</p>
     </footer>
+    <button id="scrollToTopBtn" title="Yukarı Çık" aria-label="Yukarı Çık">↑</button>
 
     <script>
         const translations = {
@@ -744,9 +777,9 @@
 
         function helpText() {
             if (lang === "en") {
-                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen";
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen";
             }
-            return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle";
+                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle";
         }
 
         function startMsgFlow() {
@@ -917,6 +950,15 @@
                     runMatrix();
                 } else if (cmd === "social") {
                     printSocial();
+                } else if (cmd === "instagram") {
+                    window.open("https://www.instagram.com/erhanemir.32/", "_blank");
+                    termPrint(lang === "en" ? "Opening Instagram profile..." : "Instagram profili açılıyor...", "#22d3ee");
+                } else if (cmd === "github") {
+                    window.open("https://github.com/ErhanEmir", "_blank");
+                    termPrint(lang === "en" ? "Opening GitHub profile..." : "GitHub profili açılıyor...", "#22d3ee");
+                } else if (cmd === "mail") {
+                    window.location.href = "mailto:erhanemir32@hotmail.com";
+                    termPrint(lang === "en" ? "Opening email client..." : "E-posta uygulaması açılıyor...", "#22d3ee");
                 } else if (cmd === "clear") {
                     terminalBody.innerHTML = "";
                 } else if (cmd === "test") {
@@ -931,7 +973,7 @@
                     window.triggerOffline();
                     termPrint("Offline Sinyal Koptu simülasyonu açılıyor...", "#ef4444");
                 } else {
-                    termPrint(`Komut bulunamadı: ${cmd}. Yardım için 'help' yazın.`, "#ef4444");
+                    termPrint(`Bilinmeyen komut: ${cmd}. Yardım için 'help' yazın.`, "#ef4444");
                 }
             });
         }
@@ -1123,6 +1165,21 @@
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
         document.querySelectorAll(".fade-up").forEach(el => fadeObserver.observe(el));
+
+        // Scroll to top button
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        if (scrollToTopBtn) {
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.classList.add("visible");
+                } else {
+                    scrollToTopBtn.classList.remove("visible");
+                }
+            });
+            scrollToTopBtn.addEventListener("click", () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        }
 
         applyLang(lang);
     </script>
