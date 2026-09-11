@@ -827,6 +827,8 @@
         const promptEl = document.querySelector(".terminal-prompt");
         let msgStep = 0;
         let msgPayload = { name: "", email: "", message: "" };
+        let fastMsgStep = 0;
+        let fastMsgPayload = { name: "", email: "", message: "" };
         let matrixRunning = false;
 
         function setTermPrompt(symbol, placeholder) {
@@ -840,11 +842,48 @@
             setTermPrompt("$", "Type a command...");
         }
 
+        function resetFastMsgFlow() {
+            fastMsgStep = 0;
+            fastMsgPayload = { name: "", email: "", message: "" };
+            setTermPrompt("$", "Type a command...");
+        }
+
+        function startFastMsgFlow() {
+            fastMsgStep = 1;
+            fastMsgPayload = { name: "", email: "", message: "" };
+            termPrint(lang === "en" ? "Name Surname:" : "İsim Soyisim:", "#22d3ee");
+            setTermPrompt(">", lang === "en" ? "Your name..." : "İsim Soyisim...");
+        }
+
+        async function submitTerminalFastMsg() {
+            termPrint(lang === "en" ? "Sending..." : "Gönderiliyor...", "#22d3ee");
+            try {
+                const response = await fetch("https://hizli-mesaj-bot.erhanemir32.workers.dev/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        isim: fastMsgPayload.name,
+                        mail: fastMsgPayload.email,
+                        mesaj: fastMsgPayload.message
+                    })
+                });
+                const data = await response.json();
+                if (data.ok) {
+                    termPrint("✓ " + (lang === "en" ? "Fast message sent successfully!" : "Hızlı mesaj başarıyla gönderildi!"), null, "msg-ok");
+                } else {
+                    termPrint(lang === "en" ? "Send failed: " + (data.hata || "Unknown error") : "Gönderim başarısız: " + (data.hata || "Bilinmeyen hata"), "#ef4444");
+                }
+            } catch (err) {
+                termPrint(lang === "en" ? "Connection error." : "Bağlantı hatası.", "#ef4444");
+            }
+            resetFastMsgFlow();
+        }
+
         function helpText() {
             if (lang === "en") {
-                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - msg / message     : Send a live message\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - msg / message     : Send a live message\n  - fast message      : Quick message (max 100 chars)\n  - fstmsg            : Quick message shortcut\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
             }
-                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - msg / message     : Canlı mesaj gönder\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
+                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - msg / message     : Canlı mesaj gönder\n  - fast message      : Hızlı mesaj gönder (max 100 karakter)\n  - fstmsg            : Hızlı mesaj kısayolu\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
         }
 
         function startMsgFlow() {
@@ -1019,6 +1058,60 @@
                     }
                 }
 
+                if (fastMsgStep > 0) {
+                    const low = val.toLowerCase();
+                    if (low === "cancel" || low === "exit" || low === "iptal") {
+                        termPrint(lang === "en" ? "Message cancelled." : "Mesaj iptal edildi.", "#fb923c");
+                        resetFastMsgFlow();
+                        return;
+                    }
+                    if (fastMsgStep === 1) {
+                        if (!val) {
+                            termPrint(lang === "en" ? "Name cannot be empty." : "Ad boş olamaz.", "#ef4444");
+                            termPrint(lang === "en" ? "Name Surname:" : "İsim Soyisim:", "#22d3ee");
+                            return;
+                        }
+                        fastMsgPayload.name = val;
+                        termPrint(`> ${val}`, "#e8eef4");
+                        termPrint(lang === "en" ? "Email:" : "E-posta:", "#22d3ee");
+                        setTermPrompt(">", lang === "en" ? "Your email..." : "E-posta...");
+                        fastMsgStep = 2;
+                        return;
+                    }
+                    if (fastMsgStep === 2) {
+                        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+                        if (!emailOk) {
+                            termPrint(lang === "en" ? "Enter a valid email address." : "Geçerli bir e-posta girin.", "#ef4444");
+                            termPrint(lang === "en" ? "Email:" : "E-posta:", "#22d3ee");
+                            return;
+                        }
+                        fastMsgPayload.email = val;
+                        termPrint(`> ${val}`, "#e8eef4");
+                        termPrint(lang === "en" ? "Your Message:" : "Mesajınız:", "#22d3ee");
+                        setTermPrompt(">", lang === "en" ? "Your message..." : "Mesajınız...");
+                        fastMsgStep = 3;
+                        return;
+                    }
+                    if (fastMsgStep === 3) {
+                        if (!val) {
+                            termPrint(lang === "en" ? "Message cannot be empty." : "Mesaj boş olamaz.", "#ef4444");
+                            termPrint(lang === "en" ? "Your Message:" : "Mesajınız:", "#22d3ee");
+                            return;
+                        }
+                        if (val.length > 100) {
+                            termPrint(lang === "en" ? "Message cannot exceed 100 characters. Please write a shorter message." : "Mesaj 100 karakterden uzun olamaz. Lütfen daha kısa bir mesaj yazın.", "#ef4444");
+                            termPrint(lang === "en" ? "Your Message:" : "Mesajınız:", "#22d3ee");
+                            return;
+                        }
+                        fastMsgPayload.message = val;
+                        termPrint(`> ${val}`, "#e8eef4");
+                        fastMsgStep = 0;
+                        setTermPrompt("$", "Type a command...");
+                        submitTerminalFastMsg();
+                        return;
+                    }
+                }
+
                 const cmd = val.toLowerCase();
                 termPrint(`$ ${val}`, "#e8eef4");
                 if (!cmd) return;
@@ -1034,6 +1127,8 @@
                     termPrint("Erhan Emir — Maker & Developer (Gömülü Sistemler, IoT, Web & Mobil Çözümler)");
                 } else if (cmd === "msg" || cmd === "message") {
                     startMsgFlow();
+                } else if (cmd === "fast message" || cmd === "fstmsg") {
+                    startFastMsgFlow();
                 } else if (cmd === "hardware") {
                     printHardware();
                 } else if (cmd === "matrix") {
