@@ -84,6 +84,43 @@
             pointer-events: none;
         }
 
+        #mouseGlow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 420px;
+            height: 420px;
+            margin-left: -210px;
+            margin-top: -210px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            will-change: transform, opacity;
+            background: radial-gradient(
+                circle,
+                hsla(var(--glow-hue, 190), 90%, 60%, 0.22) 0%,
+                hsla(var(--glow-hue, 190), 85%, 55%, 0.10) 32%,
+                transparent 70%
+            );
+            filter: blur(8px);
+            mix-blend-mode: screen;
+            transition: opacity 0.6s ease;
+        }
+        [data-theme="light"] #mouseGlow {
+            mix-blend-mode: multiply;
+            background: radial-gradient(
+                circle,
+                hsla(var(--glow-hue, 190), 80%, 50%, 0.16) 0%,
+                hsla(var(--glow-hue, 190), 75%, 48%, 0.07) 32%,
+                transparent 70%
+            );
+        }
+        header, main, footer { position: relative; z-index: 1; }
+        @media (hover: none), (pointer: coarse) {
+            #mouseGlow { display: none; }
+        }
+
         a { color: var(--cyan); text-decoration: none; transition: color var(--transition); }
         a:hover { color: var(--green); }
 
@@ -456,6 +493,7 @@
     </style>
 </head>
 <body>
+    <div id="mouseGlow" aria-hidden="true"></div>
 
     <!-- HEADER -->
     <header>
@@ -1465,6 +1503,47 @@
         })();
 
         applyLang(lang);
+
+        /* ===== MOUSE FOLLOW GLOW ===== */
+        (function () {
+            var glow = document.getElementById("mouseGlow");
+            if (!glow) return;
+            if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
+
+            var targetX = window.innerWidth / 2;
+            var targetY = window.innerHeight / 2;
+            var currentX = targetX;
+            var currentY = targetY;
+            var hue = 190;
+            var opacity = 0;
+            var idleTimer = null;
+            var LERP = 0.08;
+            var HUE_SPEED = 0.35;
+            var FADE_IDLE = 1800;
+
+            function onMove(e) {
+                targetX = e.clientX;
+                targetY = e.clientY;
+                opacity = 1;
+                glow.style.opacity = "1";
+                clearTimeout(idleTimer);
+                idleTimer = setTimeout(function () {
+                    glow.style.opacity = "0.35";
+                }, FADE_IDLE);
+            }
+
+            window.addEventListener("mousemove", onMove, { passive: true });
+
+            function tick() {
+                currentX += (targetX - currentX) * LERP;
+                currentY += (targetY - currentY) * LERP;
+                hue = (hue + HUE_SPEED) % 360;
+                glow.style.transform = "translate(" + currentX + "px," + currentY + "px)";
+                glow.style.setProperty("--glow-hue", hue);
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        })();
     </script>
 </body>
 </html>
