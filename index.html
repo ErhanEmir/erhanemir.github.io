@@ -216,6 +216,19 @@
         }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+        .hero-role {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            margin: 0 auto 0.4rem; padding: 0.45rem 1.1rem;
+            border: 1px solid var(--cyan); border-radius: 999px;
+            background: linear-gradient(90deg, var(--cyan-dim), rgba(99,102,241,0.12));
+            box-shadow: 0 0 18px var(--cyan-glow);
+            font-size: clamp(0.85rem, 2.4vw, 1.02rem); font-weight: 700; letter-spacing: 0.04em;
+            color: var(--cyan); min-height: 2.4em;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .hero-role.fade { opacity: 0; transform: translateY(6px); }
+        .hero-role i { font-size: 0.95em; }
+
         .hero-btns { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap; }
         .btn {
             display: inline-flex; align-items: center; gap: 0.5rem;
@@ -334,6 +347,22 @@
         .skill-card h3 { font-size: 1rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
         .skill-card .skill-type { font-size: 0.78rem; color: var(--text-secondary); position: relative; z-index: 1; }
 
+        /* === TEKNOLOJİ ROZETLERİ === */
+        .tech-badges {
+            display: flex; flex-wrap: wrap; gap: 0.55rem; justify-content: center;
+            margin-top: 1.8rem;
+        }
+        .tech-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.35rem 0.85rem; border-radius: 999px;
+            font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em;
+            background: var(--cyan-dim); color: var(--cyan);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+        .tech-badge:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 0 16px var(--cyan-glow); background: rgba(34,211,238,0.2); }
+        .tech-badge i { font-size: 0.85rem; }
+
         /* === PROJECTS === */
         #projects { background: var(--bg-secondary); }
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
@@ -345,11 +374,12 @@
             transition: transform var(--transition), box-shadow var(--transition);
             position: relative;
         }
-        .project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+        .project-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 24px var(--cyan-glow); border-color: var(--cyan); }
         .project-top {
             padding: 1.5rem 1.5rem 0.5rem; display: flex; align-items: center; gap: 1rem;
         }
-        .project-top i { font-size: 1.8rem; color: var(--cyan); }
+        .project-top i { font-size: 1.8rem; color: var(--cyan); transition: transform 0.35s ease, color 0.35s ease, text-shadow 0.35s ease; }
+        .project-card:hover .project-top i { transform: scale(1.25) rotate(-6deg); color: var(--green); text-shadow: 0 0 14px var(--cyan-glow); }
         .project-top h3 { flex: 1; font-size: 1.15rem; font-weight: 700; word-break: break-word; }
         .project-top .stars { color: var(--orange); font-size: 0.88rem; white-space: nowrap; }
         .project-body { padding: 0.5rem 1.5rem 1rem; flex: 1; }
@@ -588,6 +618,9 @@
                     <h1 id="typingTitle"></h1>
                     <p id="typingSub"></p>
                 </div>
+                <div class="hero-role" id="heroRole" aria-live="polite">
+                    <i class="fas fa-bolt"></i><span id="roleText">Maker, Embedded Systems &amp; Software Developer</span><span class="cursor"></span>
+                </div>
                 <div class="hero-btns">
                     <a href="#projects" class="btn btn-primary"><i class="fas fa-folder-open"></i> <span data-i18n="cta_projects">Projeleri Gör</span></a>
                     <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> <span data-i18n="cta_contact">İletişim</span></a>
@@ -619,9 +652,9 @@
             <div class="container">
                 <h2 class="section-title fade-up" data-i18n="nav_about">Hakkımda</h2>
                 <div class="about-text glass-card fade-up">
-                    <p data-i18n="about_p1"><strong>Merhaba, ben Erhan Emir.</strong></p>
+                    <p data-i18n="about_p1">Merhaba, ben Erhan Emir.</p>
                     <p data-i18n="about_p2">2019'dan beri elektronik ve yazılım dünyasının içindeyim. Bu süreçte C, C++, HTML, CSS ve Python başta olmak üzere farklı dillerle çalıştım; web geliştirme ve yazılım öğrenmeye hâlâ devam ediyorum.</p>
-                    <p data-i18n="about_p3">Yazılımın yanında mobil uygulama geliştirme, oyun geliştirme ve özellikle elektronikle ilgileniyorum. PCB tasarımı benim için sadece bir hobi değil, gerçek bir tutku. Ayrıca 3D yazıcılarım var; projelerim için parçalar üretiyor, Fusion 360 ve Tinkercad ile tasarımlar yapıyorum. Son zamanlarda vibe coding ile de uğraşıyorum. Öğrendiklerimi uygulamaya döküp yeni şeyler üretmekten keyif alıyorum.</p>
+                    <p data-i18n="about_p3">Yazılımın yanında mobil uygulama geliştirme, oyun geliştirme ve özellikle elektronikle ilgileniyorum. Kısa, orta ve yüksek irtifalara çıkabilen roketler, CubeSat'lar, kablosuz haberleşme sistemleri ve RC uçaklar gibi heyecan verici projeler geliştiriyor; geçmişte TÜBİTAK (2204-B, 4006) projelerinde yer aldım, TEKNOFEST ve MEB Robot Yarışması gibi organizasyonlarda ise yer almaya devam ediyorum. PCB tasarımı benim için sadece bir hobi değil, gerçek bir tutku. Ayrıca 3D yazıcılarım var; projelerim için özel parçalar üretiyor, Fusion 360 ve Tinkercad ile tasarımlar yapıyorum. Son zamanlarda vibe coding ile de uğraşıyorum. Öğrendiklerimi uygulamaya döküp yeni şeyler üretmekten keyif alıyorum.</p>
                     <p data-i18n="about_p4">Kısa vadede daha fazla proje geliştirmek, uzun vadede ise elektrik-elektronik mühendisi olmak istiyorum. Öğrenmeye, denemeye ve üretmeye her zaman açığım.</p>
                     <p data-i18n="about_p5">Bu site, hem kendimi tanıtmak hem de yaptıklarımı paylaşmak için hazırladığım küçük bir alan. İletişime geçmek istersen aşağıdan benimle iletişime geçebilirsin.</p>
                 </div>
@@ -697,6 +730,18 @@
                         <h3>Linux</h3>
                         <span class="skill-type" data-i18n="skill_server">DevOps / Sunucu</span>
                     </div>
+                </div>
+                <div class="tech-badges fade-up" aria-label="Tech stack">
+                    <span class="tech-badge"><i class="fas fa-code"></i>C</span>
+                    <span class="tech-badge"><i class="fas fa-code"></i>C++</span>
+                    <span class="tech-badge"><i class="fab fa-python"></i>Python</span>
+                    <span class="tech-badge"><i class="fas fa-microchip"></i>Arduino</span>
+                    <span class="tech-badge"><i class="fas fa-wifi"></i>ESP32</span>
+                    <span class="tech-badge"><i class="fas fa-cube"></i>Fusion 360</span>
+                    <span class="tech-badge"><i class="fas fa-mobile-screen-button"></i>Flutter</span>
+                    <span class="tech-badge"><i class="fas fa-drafting-compass"></i>EasyEDA</span>
+                    <span class="tech-badge"><i class="fab fa-git-alt"></i>Git</span>
+                    <span class="tech-badge"><i class="fab fa-linux"></i>Linux</span>
                 </div>
             </div>
         </section>
@@ -807,12 +852,12 @@
                 nav_about: "Hakkımda", nav_skills: "Yetenekler", nav_projects: "Projeler", nav_contact: "İletişim",
                 cta_projects: "Projeleri Gör", cta_contact: "İletişim",
                 typing_title: "Merhaba, ben Erhan Emir",
-                typing_sub: "Maker & Developer.",
+                typing_sub: "Maker, Embedded Systems & Software Developer.",
                 about_p1: "Merhaba, ben Erhan Emir.",
                 about_p2: "2019'dan beri elektronik ve yazılım dünyasının içindeyim. Bu süreçte C, C++, HTML, CSS ve Python başta olmak üzere farklı dillerle çalıştım; web geliştirme ve yazılım öğrenmeye hâlâ devam ediyorum.",
-                about_p3: "Yazılımın yanında mobil uygulama geliştirme, oyun geliştirme ve özellikle elektronikle ilgileniyorum. Kısa, orta ve yüksek irtifalara çıkabilen roketler, CubeSat'lar, kablosuz haberleşme sistemleri ve RC uçaklar gibi heyecan verici projeler geliştiriyor; geçmişte TÜBİTAK (2204-B, 4006) projelerinde yer aldım, TEKNOFEST ve MEB Robot Yarışması gibi organizasyonlarda ise yer almaya devam ediyorum. PCB tasarımı benim için sadece bir hobi değil, gerçek bir tutku. Ayrıca 3D yazıcılarım var; projelerim için özel parçalar üretiyor, Fusion 360 ve Tinkercad ile tasarımlar yapıyorum. Son zamanlarda vibe coding ile de uğraşıyorum; öğrendiklerimi hızla kodlayıp uygulamaya dökerek yeni şeyler üretmekten keyif alıyorum.",
+                about_p3: "Yazılımın yanında mobil uygulama geliştirme, oyun geliştirme ve özellikle elektronikle ilgileniyorum. Kısa, orta ve yüksek irtifalara çıkabilen roketler, CubeSat'lar, kablosuz haberleşme sistemleri ve RC uçaklar gibi heyecan verici projeler geliştiriyor; geçmişte TÜBİTAK (2204-B, 4006) projelerinde yer aldım, TEKNOFEST ve MEB Robot Yarışması gibi organizasyonlarda ise yer almaya devam ediyorum. PCB tasarımı benim için sadece bir hobi değil, gerçek bir tutku. Ayrıca 3D yazıcılarım var; projelerim için özel parçalar üretiyor, Fusion 360 ve Tinkercad ile tasarımlar yapıyorum. Son zamanlarda vibe coding ile de uğraşıyorum. Öğrendiklerimi uygulamaya döküp yeni şeyler üretmekten keyif alıyorum.",
                 about_p4: "Kısa vadede daha fazla proje geliştirmek, uzun vadede ise elektrik-elektronik mühendisi olmak istiyorum. Öğrenmeye, denemeye ve üretmeye her zaman açığım.",
-                about_p5: "Bu site, hem kendimi tanıtmak hem de yaptıklarımı paylaşmak için hazırladığım dijital alanım. İletişime geçmek istersen aşağıdan benimle iletişime geçebilirsin.",
+                about_p5: "Bu site, hem kendimi tanıtmak hem de yaptıklarımı paylaşmak için hazırladığım küçük bir alan. İletişime geçmek istersen aşağıdan benimle iletişime geçebilirsin.",
                 skill_auto: "Scripting / Otomasyon", skill_web: "Web Geliştirme", skill_mobile: "Mobil Geliştirme",
                 skill_cross: "Cross-Platform", skill_embedded: "Gömülü Sistemler", skill_mcu: "Mikrokontrolör",
                 skill_iot: "IoT / Wi-Fi", skill_frontend: "Front-End", skill_pcb: "PCB Tasarımı",
@@ -831,7 +876,7 @@
                 nav_about: "About", nav_skills: "Skills", nav_projects: "Projects", nav_contact: "Contact",
                 cta_projects: "View Projects", cta_contact: "Contact",
                 typing_title: "Hi, I'm Erhan Emir",
-                typing_sub: "Maker & Developer.",
+                typing_sub: "Maker, Embedded Systems & Software Developer.",
                 about_p1: "Hi, I'm Erhan Emir.",
                 about_p2: "I've been in the electronics and software world since 2019. During this time, I've worked with various languages including C, C++, HTML, CSS, and Python; I'm still learning web development and programming.",
                 about_p3: "Alongside software, I'm interested in mobile app development, game development, and especially electronics. I'm developing exciting projects like rockets that can reach short, medium, and high altitudes, CubeSats, wireless communication systems, and RC airplanes; I've participated in TÜBİTAK (2204-B, 4006) projects in the past and I continue to participate in organizations like TEKNOFEST and the MEB Robot Competition. PCB design isn't just a hobby for me — it's a real passion. I also have 3D printers; I produce special parts for my projects and create designs with Fusion 360 and Tinkercad. Lately, I've been doing vibe coding too. I enjoy applying what I learn quickly and creating new things.",
@@ -1090,6 +1135,38 @@
             }
 
             typeTitle();
+        }
+
+        /* ===== HERO: dönen unvan şeridi ===== */
+        const heroRoles = {
+            tr: [
+                "Maker, Embedded Systems & Software Developer",
+                "Roket • CubeSat • RC Uçak",
+                "IoT • PCB Tasarım • 3D Prototip",
+                "TEKNOFEST • TÜBİTAK • MEB Robot"
+            ],
+            en: [
+                "Maker, Embedded Systems & Software Developer",
+                "Rockets • CubeSats • RC Planes",
+                "IoT • PCB Design • 3D Prototyping",
+                "TEKNOFEST • TUBITAK • Robot Competitions"
+            ]
+        };
+        let heroRoleIdx = 0;
+        let heroRoleTimer = null;
+        function startHeroRoles() {
+            const el = document.getElementById("roleText");
+            const pill = document.getElementById("heroRole");
+            if (!el || !pill || heroRoleTimer) return;
+            heroRoleTimer = setInterval(() => {
+                const roles = heroRoles[lang] || heroRoles.tr;
+                heroRoleIdx = (heroRoleIdx + 1) % roles.length;
+                pill.classList.add("fade");
+                setTimeout(() => {
+                    el.textContent = roles[heroRoleIdx];
+                    pill.classList.remove("fade");
+                }, 350);
+            }, 2400);
         }
 
         // Terminal functionality
@@ -1579,6 +1656,20 @@
             }
         ];
 
+        function projectIcon(r) {
+            const hay = ((r.name || "") + " " + (r.description || "") + " " + ((r.topics || []).join(" ")) + " " + (r.language || "")).toLowerCase();
+            if (/rocket|roket| cubesat|satellite|uydu|space|uzay/.test(hay)) return "fas fa-rocket";
+            if (/cubesat|s satellite|sat\b/.test(hay)) return "fas fa-satellite";
+            if (/rc.*(plane|ucak|uçak)|drone|uav|iha/.test(hay)) return "fas fa-plane";
+            if (/pcb|easyeda|kicad|altium|circuit|devre/.test(hay)) return "fas fa-microchip";
+            if (/flutter|dart|mobile|mobil|android|ios|app/.test(hay)) return "fas fa-mobile-screen-button";
+            if (/arduino|esp32|esp8266|iot|embedded|gomulu|gömülü/.test(hay)) return "fas fa-microchip";
+            if (/3d|print|baski|baskı|fusion|cad/.test(hay)) return "fas fa-cube";
+            if (/python/.test(hay)) return "fab fa-python";
+            if (/javascript|typescript|web|site|portfolio/.test(hay)) return "fas fa-globe";
+            return "fas fa-folder";
+        }
+
         function renderRepos(repos) {
             const grid = document.getElementById("projectsGrid");
             if (!grid) return;
@@ -1597,7 +1688,7 @@
                 return `
                     <div class="project-card glass-card">
                         <div class="project-top">
-                            <i class="fas fa-folder"></i>
+                            <i class="${projectIcon(r)}"></i>
                             <h3>${r.name}</h3>
                             ${r.stargazers_count !== undefined ? `<span class="stars"><i class="fas fa-star"></i> ${r.stargazers_count}</span>` : ""}
                         </div>
@@ -1879,11 +1970,15 @@
             applyLang = function (l) {
                 _origApplyLang(l);
                 QE.paint();
+                heroRoleIdx = 0;
+                var roleEl = document.getElementById("roleText");
+                if (roleEl) roleEl.textContent = (heroRoles[l] || heroRoles.tr)[0];
             };
         })();
 
         applyLang(lang);
         QE.showNudge();
+        startHeroRoles();
 
         /* ===== MOUSE FOLLOW GLOW ===== */
         (function () {
