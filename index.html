@@ -429,6 +429,27 @@
         }
         #prefNudgeLater:hover { color: var(--text-primary); border-color: var(--cyan); }
         [data-theme="light"] #prefNudgeOk { color: #fff; }
+        /* === ÇEREZ ZORUNLULUĞU: Kabul Et butonu kırmızı pulse + kilitli alanlar === */
+        #prefNudgeOk.attention {
+            animation: acceptPulse 0.9s ease-in-out infinite;
+            border: 2px solid #ef4444;
+        }
+        @keyframes acceptPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0), 0 0 18px 4px rgba(239, 68, 68, 0.8); }
+        }
+        .contact-form input:disabled, .contact-form textarea:disabled,
+        .quick-msg-form input:disabled, .quick-msg-form textarea:disabled {
+            opacity: 0.55; cursor: not-allowed;
+        }
+        .msg-box.is-locked { position: relative; }
+        .consent-lock-note {
+            display: none; margin-top: 0.8rem; padding: 0.65rem 0.8rem;
+            border-radius: 8px; font-size: 0.82rem; font-weight: 600; text-align: center;
+            background: rgba(239, 68, 68, 0.1); color: #ff5c5c;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .msg-box.is-locked .consent-lock-note { display: block; }
         @media (max-width: 768px) {
             #prefNudge { left: 12px; right: 12px; bottom: 12px; max-width: none; }
         }
@@ -762,18 +783,19 @@
 
     <script>
         (function(){
-            var REDIR = "500.html";
+            var REDIR = "offline.html";
             var _busy = false;
-            function go500(){ if(!_busy){ _busy = true; window.location.href = REDIR; } }
-            window.addEventListener("offline", go500);
+            function goOffline(){ if(!_busy){ _busy = true; window.location.href = REDIR; } }
+            window.addEventListener("offline", goOffline);
+            if (!navigator.onLine) { goOffline(); }
             window.addEventListener("error", function(e){
-                if(e.message && (e.message.includes("fetch") || e.message.includes("Network"))){
-                    go500();
+                if(!navigator.onLine){
+                    goOffline();
                 }
             }, true);
             window._netErr = function(err){
-                if(!navigator.onLine || (err && (err.name === "TypeError" || (err.message && err.message.includes("fetch"))))){
-                    go500();
+                if(!navigator.onLine || (err && (err.name === "TypeError" || (err.message && err.message.indexOf("fetch") !== -1) || (err.message && err.message.indexOf("Network") !== -1) || (err.message && err.message.indexOf("Failed to fetch") !== -1)))){
+                    goOffline();
                     return true;
                 }
                 return false;
@@ -799,6 +821,8 @@
                 no_desc: "Açıklama yok",
                 form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız alındı!",
                 form_limit: "Bugünkü gönderim hakkınız doldu. Lütfen yarın tekrar deneyin.",
+                consent_required: "Mesaj gönderebilmek için önce çerezleri kabul etmelisiniz.",
+                consent_locked: "Mesaj göndermek için çerez onayı gerekli.",
                 nudge_text: "Bazı tercihleri bu tarayıcıda hatırlamak, deneyimi biraz daha akıcı tutmamıza yardımcı olur.",
                 nudge_ok: "Kabul Et", nudge_later: "Daha sonra",
                 footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
@@ -821,6 +845,8 @@
                 no_desc: "No description",
                 form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message received!",
                 form_limit: "You've reached today's sending limit. Please try again tomorrow.",
+                consent_required: "You must accept cookies before sending a message.",
+                consent_locked: "Cookie consent is required to send messages.",
                 nudge_text: "Remembering a few preferences in this browser helps keep things running a little more smoothly.",
                 nudge_ok: "Accept", nudge_later: "Later",
                 footer_copy: "© 2026 Erhan Emir. All rights reserved."
@@ -909,15 +935,15 @@
                 setC(key, enc("d=" + slot.d + "|c=" + slot.c + "|x=" + ((slot.d ^ 0xA5C3) & 0xFFFF).toString(16)), 2);
             }
             function remaining(kind) {
-                if (!hasConsent()) return MX[kind];
+                if (!hasConsent()) return 0;
                 return Math.max(0, MX[kind] - parseSlot(getC(CK[kind])).c);
             }
             function canSend(kind) {
-                if (!hasConsent()) return true;
+                if (!hasConsent()) return false;
                 return remaining(kind) > 0;
             }
             function consume(kind) {
-                if (!hasConsent()) return true;
+                if (!hasConsent()) { paint(); return false; }
                 var slot = parseSlot(getC(CK[kind]));
                 if (slot.c >= MX[kind]) { paint(); return false; }
                 slot.c += 1;
@@ -935,25 +961,58 @@
             function setConsent(ok) {
                 setC(CK.a, enc(ok ? TOK.y : TOK.n), 400);
             }
+            function consentMsg() {
+                return (translations[lang] && translations[lang].consent_required) || translations.tr.consent_required;
+            }
+            function setLockedUI(locked) {
+                var ids = ["name", "email", "message", "contactSendBtn", "qName", "qEmail", "qMsg", "qSendBtn"];
+                for (var i = 0; i < ids.length; i++) {
+                    var el = document.getElementById(ids[i]);
+                    if (el) el.disabled = locked ? true : false;
+                }
+                var boxes = document.querySelectorAll(".contact-layout .msg-box");
+                for (var j = 0; j < boxes.length; j++) {
+                    boxes[j].classList.toggle("is-locked", locked);
+                    var note = boxes[j].querySelector(".consent-lock-note");
+                    if (locked && !note) {
+                        note = document.createElement("div");
+                        note.className = "consent-lock-note";
+                        note.setAttribute("data-i18n-lock", "1");
+                        note.textContent = consentMsg();
+                        boxes[j].appendChild(note);
+                    } else if (note) {
+                        note.textContent = consentMsg();
+                    }
+                }
+            }
             function paint() {
+                var locked = !hasConsent();
                 var nEl = document.getElementById("quotaN");
                 var qEl = document.getElementById("quotaQ");
                 var nLeft = remaining("n");
                 var qLeft = remaining("q");
                 if (nEl) { nEl.textContent = nLeft + "/" + MX.n; nEl.classList.toggle("empty", nLeft === 0); }
                 if (qEl) { qEl.textContent = qLeft + "/" + MX.q; qEl.classList.toggle("empty", qLeft === 0); }
-                var cBtn = document.getElementById("contactSendBtn");
-                var qBtn = document.getElementById("qSendBtn");
-                if (cBtn) cBtn.disabled = hasConsent() && nLeft === 0;
-                if (qBtn && hasConsent() && qLeft === 0) qBtn.disabled = true;
+                setLockedUI(locked);
+                if (!locked) {
+                    var cBtn = document.getElementById("contactSendBtn");
+                    var qBtn = document.getElementById("qSendBtn");
+                    if (cBtn) cBtn.disabled = nLeft === 0;
+                    if (qBtn) qBtn.disabled = qLeft === 0;
+                    var box = document.getElementById("prefNudge");
+                    var okBtn = document.getElementById("prefNudgeOk");
+                    if (okBtn) okBtn.classList.remove("attention");
+                }
             }
-            function showNudge() {
+            function bindNudgeButtons() {
                 var box = document.getElementById("prefNudge");
-                if (decided() || !box) { paint(); return; }
-                setTimeout(function () { box.classList.add("show"); }, 900);
+                if (!box || box.getAttribute("data-bound") === "1") return;
+                box.setAttribute("data-bound", "1");
                 document.getElementById("prefNudgeOk").addEventListener("click", function () {
                     setConsent(true);
                     box.classList.remove("show");
+                    var okBtn = document.getElementById("prefNudgeOk");
+                    if (okBtn) okBtn.classList.remove("attention");
                     paint();
                 });
                 document.getElementById("prefNudgeLater").addEventListener("click", function () {
@@ -961,12 +1020,34 @@
                     box.classList.remove("show");
                     paint();
                 });
+            }
+            function showNudge() {
+                var box = document.getElementById("prefNudge");
+                bindNudgeButtons();
+                if (!box) { paint(); return; }
+                if (decided()) { paint(); return; }
+                setTimeout(function () { box.classList.add("show"); }, 900);
                 paint();
+            }
+            function demandConsent() {
+                var box = document.getElementById("prefNudge");
+                bindNudgeButtons();
+                paint();
+                if (!box) return false;
+                box.classList.add("show");
+                var okBtn = document.getElementById("prefNudgeOk");
+                if (okBtn) {
+                    okBtn.classList.remove("attention");
+                    void okBtn.offsetWidth;
+                    okBtn.classList.add("attention");
+                }
+                box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                return false;
             }
             function limitMsg() {
                 return (translations[lang] && translations[lang].form_limit) || translations.tr.form_limit;
             }
-            return { remaining: remaining, canSend: canSend, consume: consume, hasConsent: hasConsent, paint: paint, showNudge: showNudge, limitMsg: limitMsg, MX: MX };
+            return { remaining: remaining, canSend: canSend, consume: consume, hasConsent: hasConsent, paint: paint, showNudge: showNudge, demandConsent: demandConsent, consentMsg: consentMsg, limitMsg: limitMsg, MX: MX };
         })();
 
         // Typing effect
@@ -1072,6 +1153,11 @@
         }
 
         function startFastMsgFlow() {
+            if (!QE.hasConsent()) {
+                termPrint(QE.consentMsg(), "#ef4444");
+                QE.demandConsent();
+                return;
+            }
             if (!QE.canSend("q")) {
                 termPrint(QE.limitMsg(), "#ef4444");
                 return;
@@ -1083,6 +1169,12 @@
         }
 
         async function submitTerminalFastMsg() {
+            if (!QE.hasConsent()) {
+                termPrint(QE.consentMsg(), "#ef4444");
+                QE.demandConsent();
+                resetFastMsgFlow();
+                return;
+            }
             if (!QE.canSend("q")) {
                 termPrint(QE.limitMsg(), "#ef4444");
                 resetFastMsgFlow();
@@ -1122,6 +1214,11 @@
         }
 
         function startMsgFlow() {
+            if (!QE.hasConsent()) {
+                termPrint(QE.consentMsg(), "#ef4444");
+                QE.demandConsent();
+                return;
+            }
             if (!QE.canSend("n")) {
                 termPrint(QE.limitMsg(), "#ef4444");
                 return;
@@ -1133,6 +1230,12 @@
         }
 
         async function submitTerminalMsg() {
+            if (!QE.hasConsent()) {
+                termPrint(QE.consentMsg(), "#ef4444");
+                QE.demandConsent();
+                resetMsgFlow();
+                return;
+            }
             if (!QE.canSend("n")) {
                 termPrint(QE.limitMsg(), "#ef4444");
                 resetMsgFlow();
@@ -1552,6 +1655,15 @@
         if (contactForm && formSuccess) {
             contactForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
+                if (!QE.hasConsent()) {
+                    e.stopPropagation();
+                    formSuccess.style.display = "block";
+                    formSuccess.style.background = "rgba(255, 92, 92, 0.12)";
+                    formSuccess.style.color = "#ff5c5c";
+                    formSuccess.textContent = QE.consentMsg();
+                    QE.demandConsent();
+                    return;
+                }
                 if (!QE.canSend("n")) {
                     formSuccess.style.display = "block";
                     formSuccess.style.background = "rgba(255, 92, 92, 0.12)";
@@ -1698,6 +1810,11 @@
                     showFeedback("error", "100 karakter üzeri mesajlarınız için lütfen Mesaj kısmını kullanın.");
                     return;
                 }
+                if (!QE.hasConsent()) {
+                    showFeedback("error", QE.consentMsg());
+                    QE.demandConsent();
+                    return;
+                }
                 if (!QE.canSend("q")) {
                     showFeedback("error", QE.limitMsg());
                     return;
@@ -1730,9 +1847,39 @@
                 })
                 .finally(function () {
                     sendBtn.textContent = "Gönder";
-                    sendBtn.disabled = QE.hasConsent() && QE.remaining("q") === 0;
+                    sendBtn.disabled = !QE.hasConsent() || QE.remaining("q") === 0;
                 });
             });
+        })();
+
+        /* ===== ÇEREZ KİLİDİ: kilitli alana tıklama/focus denemesi banner'ı geri açar ===== */
+        (function () {
+            function attemptGuard(e) {
+                if (!QE.hasConsent()) {
+                    QE.demandConsent();
+                    var fb = document.getElementById("qFeedback");
+                    if (fb && (e.target.closest && e.target.closest("#quickMsgForm"))) {
+                        fb.className = "quick-msg-feedback error";
+                        fb.textContent = QE.consentMsg();
+                    }
+                    var fs = document.getElementById("formSuccess");
+                    if (fs && (e.target.closest && e.target.closest("#contactForm"))) {
+                        fs.style.display = "block";
+                        fs.style.background = "rgba(255, 92, 92, 0.12)";
+                        fs.style.color = "#ff5c5c";
+                        fs.textContent = QE.consentMsg();
+                    }
+                }
+            }
+            ["click", "focusin"].forEach(function (ev) {
+                document.getElementById("contactForm").addEventListener(ev, attemptGuard, true);
+                document.getElementById("quickMsgForm").addEventListener(ev, attemptGuard, true);
+            });
+            var _origApplyLang = applyLang;
+            applyLang = function (l) {
+                _origApplyLang(l);
+                QE.paint();
+            };
         })();
 
         applyLang(lang);

@@ -458,9 +458,14 @@
         </div>
 
         <p class="error-desc">Sinyal koptu! Wi-Fi / LoRa modülü bağlantıyı kaybetti. Bağlantı gelince sistem otomatik senkronize olacak.</p>
-        <a href="index.html" class="btn-home">
-            <i class="fas fa-home"></i> Ana Üsse Dön <span class="arrow">&rarr;</span>
-        </a>
+        <div style="display:flex;gap:0.7rem;justify-content:center;flex-wrap:wrap;">
+            <a href="index.html" class="btn-home">
+                <i class="fas fa-home"></i> Ana Üsse Dön <span class="arrow">&rarr;</span>
+            </a>
+            <button type="button" id="retryBtn" class="btn-home" style="background:linear-gradient(135deg,#fb923c,#ef4444);">
+                <i class="fas fa-rotate-right"></i> Tekrar Dene
+            </button>
+        </div>
         <div class="status-bar">
             <span class="status-dot"></span>
             <span id="statusText">RSSI: -- dBm | SNR: -- dB</span>
@@ -525,6 +530,18 @@
             if(stEl) stEl.textContent = stTexts[stIdx];
         }
         setInterval(cycleStatus, 2000);
+
+        /* === Offline -> Online: asla 500'e gitme, bağlantı gelince ana sayfaya dön === */
+        function tryBack(){
+            if (navigator.onLine) {
+                window.location.href = 'index.html';
+            } else if (stEl) {
+                stEl.textContent = 'SYS: STILL_OFFLINE — RETRY_LATER';
+            }
+        }
+        window.addEventListener('online', function(){ window.location.href = 'index.html'; });
+        var retryBtn = document.getElementById('retryBtn');
+        if (retryBtn) retryBtn.addEventListener('click', tryBack);
     })();
     </script>
 </body>
