@@ -401,6 +401,106 @@
         }
         .btn-repo:hover { background: var(--cyan); color: var(--bg-deep); transform: translateY(-2px); }
 
+        /* === COMPETITIONS === */
+        .competitions-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .competitions-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .competitions-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        .competition-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.7rem 1.5rem 1.5rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+        }
+        .competition-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            opacity: 0.85;
+        }
+        .competition-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, var(--cyan-glow), transparent 65%);
+            opacity: 0;
+            transition: opacity var(--transition);
+            pointer-events: none;
+        }
+        .competition-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 14px 44px rgba(0,0,0,0.5), 0 0 26px var(--cyan-glow);
+            border-color: var(--cyan);
+        }
+        .competition-card:hover::after { opacity: 0.22; }
+        .competition-org {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            align-self: flex-start;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            background: var(--cyan-dim);
+            border: 1px solid var(--glass-border);
+            padding: 0.3rem 0.75rem;
+            border-radius: 999px;
+        }
+        .competition-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            color: var(--cyan);
+            background: var(--cyan-dim);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.35s ease, color 0.35s ease, text-shadow 0.35s ease;
+        }
+        .competition-card:hover .competition-icon {
+            transform: scale(1.15) rotate(-6deg);
+            color: var(--green);
+            text-shadow: 0 0 14px var(--cyan-glow);
+        }
+        .competition-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+        .competition-card > p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.65;
+            flex: 1;
+        }
+        .competition-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
         /* === CONTACT === */
         .contact-layout { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
         .contact-info-list p { margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 1rem; display: flex; align-items: center; }
@@ -594,6 +694,7 @@
                 <li><a href="#about" data-i18n="nav_about">Hakkımda</a></li>
                 <li><a href="#skills" data-i18n="nav_skills">Yetenekler</a></li>
                 <li><a href="#projects" data-i18n="nav_projects">Projeler</a></li>
+                <li><a href="#competitions" data-i18n="nav_competitions">Yarışmalar</a></li>
                 <li><a href="#contact" data-i18n="nav_contact">İletişim</a></li>
             </ul>
             <div class="nav-actions">
@@ -759,6 +860,61 @@
             </div>
         </section>
 
+        <!-- COMPETITIONS -->
+        <section id="competitions">
+            <div class="container">
+                <h2 class="section-title fade-up" data-i18n="nav_competitions">Yarışmalar</h2>
+                <div class="competitions-grid fade-up">
+                    <div class="competition-card">
+                        <span class="competition-org"><i class="fas fa-flask"></i> TÜBİTAK 2204-B</span>
+                        <div class="competition-icon"><i class="fas fa-person-posture"></i></div>
+                        <h3 data-i18n="comp_1_title">Text-Neck Önleme &amp; Postür Takip Cihazı</h3>
+                        <p data-i18n="comp_1_desc">Kullanıcılarda duruş bozukluğu ve "Text-Neck" rahatsızlığı henüz oluşmadan önce müdahale edip bunu önleyen akıllı bir giyilebilir cihaz ve donanım sistemi tasarladık.</p>
+                        <div class="competition-tags">
+                            <span class="badge">TÜBİTAK 2204-B</span>
+                            <span class="badge">Sensörler</span>
+                            <span class="badge">Giyilebilir Teknoloji</span>
+                        </div>
+                    </div>
+                    <div class="competition-card">
+                        <span class="competition-org"><i class="fas fa-city"></i> TÜBİTAK 4006</span>
+                        <div class="competition-icon"><i class="fas fa-solar-panel"></i></div>
+                        <h3 data-i18n="comp_2_title">Benim Şehrim Gelecek — Yenilenebilir Şehir Otomasyonu</h3>
+                        <p data-i18n="comp_2_desc">Tamamen yenilenebilir enerji kaynaklarıyla çalışan, enerji verimliliğini ve şehir altyapısını otonom yöneten akıllı şehir otomasyon sistemi geliştirdik.</p>
+                        <div class="competition-tags">
+                            <span class="badge">TÜBİTAK 4006</span>
+                            <span class="badge">Yenilenebilir Enerji</span>
+                            <span class="badge">IoT</span>
+                            <span class="badge">Otomasyon</span>
+                        </div>
+                    </div>
+                    <div class="competition-card">
+                        <span class="competition-org"><i class="fas fa-robot"></i> 18. MEB Robot Yarışması</span>
+                        <div class="competition-icon"><i class="fas fa-route"></i></div>
+                        <h3 data-i18n="comp_3_title">Temel Seviye Çizgi İzleyen — KABOT</h3>
+                        <p data-i18n="comp_3_desc">Tasarlayıp kodladığımız KABOT isimli robotumuzla Temel Seviye Çizgi İzleyen kategorisi yarışma pistini 18.17 saniyede başarıyla tamamladık.</p>
+                        <div class="competition-tags">
+                            <span class="badge">18. MEB Robot</span>
+                            <span class="badge">KABOT</span>
+                            <span class="badge">18.17 sn</span>
+                            <span class="badge">Otonom Robot</span>
+                        </div>
+                    </div>
+                    <div class="competition-card">
+                        <span class="competition-org"><i class="fas fa-rocket"></i> TEKNOFEST</span>
+                        <div class="competition-icon"><i class="fas fa-plane"></i></div>
+                        <h3 data-i18n="comp_4_title">Milli Teknoloji Hamlesi &amp; Havacılık Projeleri</h3>
+                        <p data-i18n="comp_4_desc">Otonom sistemler ve elektronik tasarım alanında geliştirdiğimiz Ar-Ge projeleri ile TEKNOFEST yarışma süreçlerinde yer aldık.</p>
+                        <div class="competition-tags">
+                            <span class="badge">TEKNOFEST</span>
+                            <span class="badge">Donanım Tasarımı</span>
+                            <span class="badge">Ar-Ge</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- CONTACT -->
         <section id="contact">
             <div class="container">
@@ -849,8 +1005,16 @@
 
         const translations = {
             tr: {
-                nav_about: "Hakkımda", nav_skills: "Yetenekler", nav_projects: "Projeler", nav_contact: "İletişim",
+                nav_about: "Hakkımda", nav_skills: "Yetenekler", nav_projects: "Projeler", nav_competitions: "Yarışmalar", nav_contact: "İletişim",
                 cta_projects: "Projeleri Gör", cta_contact: "İletişim",
+                comp_1_title: "Text-Neck Önleme & Postür Takip Cihazı",
+                comp_1_desc: 'Kullanıcılarda duruş bozukluğu ve "Text-Neck" rahatsızlığı henüz oluşmadan önce müdahale edip bunu önleyen akıllı bir giyilebilir cihaz ve donanım sistemi tasarladık.',
+                comp_2_title: "Benim Şehrim Gelecek — Yenilenebilir Şehir Otomasyonu",
+                comp_2_desc: "Tamamen yenilenebilir enerji kaynaklarıyla çalışan, enerji verimliliğini ve şehir altyapısını otonom yöneten akıllı şehir otomasyon sistemi geliştirdik.",
+                comp_3_title: "Temel Seviye Çizgi İzleyen — KABOT",
+                comp_3_desc: "Tasarlayıp kodladığımız KABOT isimli robotumuzla Temel Seviye Çizgi İzleyen kategorisi yarışma pistini 18.17 saniyede başarıyla tamamladık.",
+                comp_4_title: "Milli Teknoloji Hamlesi & Havacılık Projeleri",
+                comp_4_desc: "Otonom sistemler ve elektronik tasarım alanında geliştirdiğimiz Ar-Ge projeleri ile TEKNOFEST yarışma süreçlerinde yer aldık.",
                 typing_title: "Merhaba, ben Erhan Emir",
                 typing_sub: "Maker, Embedded Systems & Software Developer.",
                 about_p1: "Merhaba, ben Erhan Emir.",
@@ -873,8 +1037,16 @@
                 footer_copy: "© 2026 Erhan Emir. Tüm hakları saklıdır."
             },
             en: {
-                nav_about: "About", nav_skills: "Skills", nav_projects: "Projects", nav_contact: "Contact",
+                nav_about: "About", nav_skills: "Skills", nav_projects: "Projects", nav_competitions: "Competitions", nav_contact: "Contact",
                 cta_projects: "View Projects", cta_contact: "Contact",
+                comp_1_title: "Text-Neck Prevention & Posture Tracking Device",
+                comp_1_desc: 'We designed a smart wearable device and hardware system that intervenes before poor posture and "Text-Neck" discomfort develop in users.',
+                comp_2_title: "My City of the Future — Renewable City Automation",
+                comp_2_desc: "We developed a smart city automation system powered entirely by renewable energy sources, autonomously managing energy efficiency and city infrastructure.",
+                comp_3_title: "Basic Line Follower — KABOT",
+                comp_3_desc: "With KABOT, the robot we designed and coded, we successfully completed the Basic Line Follower track in 18.17 seconds.",
+                comp_4_title: "National Technology Initiative & Aviation Projects",
+                comp_4_desc: "We took part in TEKNOFEST competition processes with R&D projects developed in autonomous systems and electronic design.",
                 typing_title: "Hi, I'm Erhan Emir",
                 typing_sub: "Maker, Embedded Systems & Software Developer.",
                 about_p1: "Hi, I'm Erhan Emir.",
