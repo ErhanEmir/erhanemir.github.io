@@ -1382,6 +1382,7 @@
                 term_whoami: "Erhan Emir — Maker & Developer (Gömülü Sistemler, IoT, Web & Mobil Çözümler)",
                 term_sent_ok: "✓ Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağım.",
                 term_unknown_a: "Bilinmeyen komut", term_unknown_b: "Yardım için 'help' yazın.",
+                term_collab: "İş birliği formu açılıyor... 🤝",
                 term_trig500: "500 Voltaj Aşırı Yükleme simülasyonu açılıyor...",
                 term_trig404: "404 Cyber-Monkey simülasyonu açılıyor...",
                 term_trigoff: "Offline Sinyal Koptu simülasyonu açılıyor...",
@@ -1472,6 +1473,7 @@
                 term_whoami: "Erhan Emir — Maker & Developer (Embedded Systems, IoT, Web & Mobile Solutions)",
                 term_sent_ok: "✓ Message delivered! I will get back to you soon.",
                 term_unknown_a: "Unknown command", term_unknown_b: "Type 'help' for help.",
+                term_collab: "Opening collaboration form... 🤝",
                 term_trig500: "Opening 500 Voltage Overload simulation...",
                 term_trig404: "Opening 404 Cyber-Monkey simulation...",
                 term_trigoff: "Opening Offline Signal Lost simulation...",
@@ -1950,9 +1952,9 @@
 
         function helpText() {
             if (lang === "en") {
-                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - message           : Send a live message\n  - fast message      : Quick message (max 100 chars)\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - message           : Send a live message\n  - fast message      : Quick message (max 100 chars)\n  - collab            : Open collaboration form\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
             }
-                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - message           : Canlı mesaj gönder\n  - fast message      : Hızlı mesaj gönder (max 100 karakter)\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
+                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - message           : Canlı mesaj gönder\n  - fast message      : Hızlı mesaj gönder (max 100 karakter)\n  - collab            : İş birliği formunu aç\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
         }
 
         function startMsgFlow() {
@@ -2227,6 +2229,9 @@
                     runMatrix();
                 } else if (cmd === "social") {
                     printSocial();
+                } else if (cmd === "collab" || cmd === "isbirligi" || cmd === "işbirliği") {
+                    if (window.openCollab) window.openCollab();
+                    termPrint(translations[lang].term_collab, "#22d3ee");
                 } else if (cmd === "instagram") {
                     window.open("https://www.instagram.com/erhanemir.32/", "_blank");
                     termPrint(lang === "en" ? "Opening Instagram profile..." : "Instagram profili açılıyor...", "#22d3ee");
@@ -2904,6 +2909,7 @@
             });
 
             fab.addEventListener("click", open);
+            window.openCollab = open;
             $("collabClose").addEventListener("click", close);
             $("collabDone").addEventListener("click", close);
             overlay.addEventListener("click", function (e) { if (e.target === overlay) close(); });
