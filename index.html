@@ -702,6 +702,137 @@
             #rocketTopBtn:hover .rocket-icon i { animation: none; }
         }
 
+        /* === İŞ BİRLİĞİ (COLLAB FAB + MODAL) === */
+        #collabFab {
+            position: fixed; bottom: 104px; right: 30px;
+            display: inline-flex; align-items: center; gap: 8px;
+            height: 48px; padding: 0 18px;
+            border-radius: 999px;
+            background: var(--glass-bg);
+            border: 1px solid var(--cyan);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: var(--text-primary);
+            font-size: 0.85rem; font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+            z-index: 9998;
+        }
+        #collabFab:hover {
+            box-shadow: 0 0 22px var(--cyan-glow), 0 0 44px var(--cyan-glow);
+            border-color: var(--green);
+            transform: translateY(-2px);
+        }
+        #collabFab .collab-fab-ico { font-size: 1.1rem; }
+        #collabOverlay {
+            position: fixed; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 10000;
+        }
+        #collabOverlay.open { opacity: 1; visibility: visible; pointer-events: auto; }
+        #collabModal {
+            width: min(560px, calc(100vw - 32px));
+            max-height: 90vh; overflow-y: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            color: var(--text-primary);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transform: translateY(16px) scale(0.98);
+            transition: transform 0.3s ease;
+        }
+        #collabOverlay.open #collabModal { transform: translateY(0) scale(1); }
+        .collab-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+        .collab-head h3 { font-size: 1.25rem; font-weight: 800; color: var(--cyan); margin: 0; }
+        .collab-head p { color: var(--text-secondary); font-size: 0.85rem; margin: 6px 0 0; }
+        .collab-close {
+            border: 1px solid var(--glass-border); background: transparent;
+            color: var(--text-secondary); border-radius: 10px;
+            width: 34px; height: 34px; cursor: pointer; font-size: 1rem; flex-shrink: 0;
+            transition: color 0.25s ease, border-color 0.25s ease;
+        }
+        .collab-close:hover { color: var(--text-primary); border-color: var(--cyan); }
+        .collab-progress { display: flex; gap: 6px; margin: 14px 0 18px; }
+        .collab-progress span {
+            flex: 1; height: 4px; border-radius: 99px;
+            background: var(--glass-border);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .collab-progress span.done, .collab-progress span.current { background: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
+        .collab-step { display: none; }
+        .collab-step.active { display: block; animation: collabIn 0.35s ease; }
+        @keyframes collabIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+        .collab-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .collab-card {
+            border: 1px solid var(--glass-border); border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 14px 10px; text-align: center; cursor: pointer;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+        .collab-card:hover { transform: translateY(-2px); border-color: var(--cyan); }
+        .collab-card.selected { border-color: var(--cyan); box-shadow: 0 0 16px var(--cyan-glow); }
+        .collab-card .emo { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+        .collab-card b { display: block; font-size: 0.82rem; }
+        .collab-card small { color: var(--text-secondary); font-size: 0.7rem; display: block; margin-top: 4px; line-height: 1.35; }
+        .collab-label { display: block; margin: 14px 0 8px; font-weight: 700; font-size: 0.9rem; }
+        .collab-field input, .collab-field textarea, .collab-field select {
+            width: 100%; box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            border-radius: 12px; padding: 0.7rem 0.9rem;
+            font-size: 0.9rem; font-family: inherit;
+            outline: none; transition: border-color 0.25s ease;
+        }
+        .collab-field textarea { resize: vertical; min-height: 110px; }
+        .collab-field input:focus, .collab-field textarea:focus, .collab-field select:focus { border-color: var(--cyan); }
+        .collab-field { margin-bottom: 12px; }
+        .collab-aud { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .collab-sectors { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .collab-err {
+            display: none; margin-top: 12px; padding: 0.7rem 0.9rem;
+            border-radius: 10px; font-size: 0.82rem; font-weight: 600;
+            background: rgba(255, 92, 92, 0.12); color: #ff5c5c;
+        }
+        .collab-err.show { display: block; }
+        .collab-nav { display: flex; gap: 10px; margin-top: 16px; }
+        .collab-nav button {
+            flex: 1; border-radius: 12px; padding: 0.75rem;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.25s ease;
+        }
+        .collab-back { background: transparent; border: 1px solid var(--glass-border); color: var(--text-secondary); }
+        .collab-back:hover { color: var(--text-primary); border-color: var(--cyan); }
+        .collab-next {
+            background: var(--cyan); border: 1px solid var(--cyan);
+            color: var(--bg-deep); flex: 2 !important;
+        }
+        .collab-next:hover { box-shadow: 0 0 18px var(--cyan-glow); transform: translateY(-1px); }
+        .collab-next:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+        .collab-success { text-align: center; padding: 1.5rem 0.5rem; }
+        .collab-success .big { font-size: 3rem; }
+        .collab-success h4 { color: var(--green); margin: 12px 0 6px; font-size: 1.15rem; }
+        .collab-success p { color: var(--text-secondary); font-size: 0.9rem; }
+        @media (max-width: 640px) {
+            #collabFab { bottom: 100px; right: 16px; width: 52px; height: 52px; padding: 0; justify-content: center; }
+            #collabFab .collab-fab-txt { display: none; }
+            #collabFab .collab-fab-ico { font-size: 1.4rem; }
+            #rocketTopBtn { right: 16px; bottom: 30px; }
+            .collab-cards { grid-template-columns: 1fr; }
+            .collab-aud { grid-template-columns: 1fr; }
+            .collab-sectors { grid-template-columns: 1fr; }
+        }
+
         /* === HIZLI MESAJ (3. SÜTUN) === */
         .quick-msg-form label {
             display: block; margin-bottom: 0.35rem;
@@ -1071,6 +1202,132 @@
         <span class="rocket-flame" aria-hidden="true"></span>
     </button>
 
+    <!-- İŞ BİRLİĞİ (COLLAB FAB + MODAL) -->
+    <button id="collabFab" type="button" aria-label="İş Birliği Yap">
+        <span class="collab-fab-ico" aria-hidden="true">🤝</span>
+        <span class="collab-fab-txt" data-i18n="collab_btn">İş Birliği</span>
+    </button>
+    <div id="collabOverlay" role="dialog" aria-modal="true" aria-labelledby="collabTitle">
+        <div id="collabModal">
+            <div class="collab-head">
+                <div>
+                    <h3 id="collabTitle" data-i18n="collab_title">🤝 İş Birliği Yap</h3>
+                    <p data-i18n="collab_sub">Birlikte güzel bir şeyler yapalım — 3 kısa adımda talebini ilet.</p>
+                </div>
+                <button class="collab-close" id="collabClose" type="button" aria-label="Kapat">✕</button>
+            </div>
+            <div class="collab-progress" aria-hidden="true">
+                <span id="collabP1" class="current"></span><span id="collabP2"></span><span id="collabP3"></span>
+            </div>
+
+            <!-- ADIM 1: Kategori -->
+            <div class="collab-step active" data-step="1">
+                <div class="collab-cards">
+                    <div class="collab-card" data-cat="project" role="button" tabindex="0">
+                        <span class="emo">🏆</span><b data-i18n="collab_cat_project">Proje / Yarışma</b>
+                        <small data-i18n="collab_cat_project_d">Okul, firma veya bireysel proje teklifi</small>
+                    </div>
+                    <div class="collab-card" data-cat="sponsor" role="button" tabindex="0">
+                        <span class="emo">📢</span><b data-i18n="collab_cat_sponsor">Reklam &amp; Sponsorluk</b>
+                        <small data-i18n="collab_cat_sponsor_d">Tanıtım ve sponsorluk iş birlikleri</small>
+                    </div>
+                    <div class="collab-card" data-cat="other" role="button" tabindex="0">
+                        <span class="emo">💬</span><b data-i18n="collab_cat_other">Diğer İş Birlikleri</b>
+                        <small data-i18n="collab_cat_other_d">Aklındaki başka bir iş birliği fikri</small>
+                    </div>
+                </div>
+                <div class="collab-err" id="collabErr1"></div>
+                <div class="collab-nav">
+                    <button class="collab-next" id="collabTo2" type="button" data-i18n="collab_next">Devam Et →</button>
+                </div>
+            </div>
+
+            <!-- ADIM 2: Detaylar -->
+            <div class="collab-step" data-step="2">
+                <!-- Proje / Yarışma -->
+                <div data-catpanel="project">
+                    <label class="collab-label" data-i18n="collab_aud_label">Hedef Kitle</label>
+                    <div class="collab-aud">
+                        <div class="collab-card" data-aud="school" role="button" tabindex="0"><b data-i18n="collab_aud_school">Okul / Kurum</b></div>
+                        <div class="collab-card" data-aud="company" role="button" tabindex="0"><b data-i18n="collab_aud_company">Firma / Şirket</b></div>
+                        <div class="collab-card" data-aud="personal" role="button" tabindex="0"><b data-i18n="collab_aud_personal">Bireysel / Kişisel</b></div>
+                    </div>
+                    <div data-audpanel="school" style="display:none">
+                        <label class="collab-label" data-i18n="collab_school_name">Okul Adı *</label>
+                        <div class="collab-field"><input type="text" id="collabSchoolName" data-i18n-ph="collab_school_name_ph" placeholder="Okul adı"></div>
+                        <label class="collab-label" data-i18n="collab_school_web">Okul Web Sitesi (opsiyonel)</label>
+                        <div class="collab-field"><input type="url" id="collabSchoolWeb" placeholder="https://..."></div>
+                    </div>
+                    <div data-audpanel="company" style="display:none">
+                        <label class="collab-label" data-i18n="collab_company_name">Firma / Marka Adı *</label>
+                        <div class="collab-field"><input type="text" id="collabCompanyName" data-i18n-ph="collab_company_name_ph" placeholder="Firma / marka adı"></div>
+                        <label class="collab-label" data-i18n="collab_company_web">Web Sitesi (opsiyonel)</label>
+                        <div class="collab-field"><input type="url" id="collabCompanyWeb" placeholder="https://..."></div>
+                    </div>
+                    <div data-audpanel="personal" style="display:none">
+                        <label class="collab-label" data-i18n="collab_person_name">İsim Soyisim *</label>
+                        <div class="collab-field"><input type="text" id="collabPersonName" data-i18n-ph="collab_person_name_ph" placeholder="Adın Soyadın"></div>
+                        <label class="collab-label" data-i18n="collab_person_phone">Telefon Numarası (opsiyonel)</label>
+                        <div class="collab-field"><input type="tel" id="collabPersonPhone" placeholder="05__ ___ __ __"></div>
+                    </div>
+                </div>
+                <!-- Reklam & Sponsorluk -->
+                <div data-catpanel="sponsor" style="display:none">
+                    <label class="collab-label" data-i18n="collab_sector_label">Sektör / Alan</label>
+                    <div class="collab-sectors">
+                        <div class="collab-card" data-sector="hw" role="button" tabindex="0"><b data-i18n="collab_sector_hw">Elektronik / Donanım</b></div>
+                        <div class="collab-card" data-sector="sw" role="button" tabindex="0"><b data-i18n="collab_sector_sw">Yazılım / Web</b></div>
+                        <div class="collab-card" data-sector="robot" role="button" tabindex="0"><b data-i18n="collab_sector_robot">Robotik / 3D Baskı</b></div>
+                        <div class="collab-card" data-sector="other" role="button" tabindex="0"><b data-i18n="collab_sector_other">Diğer</b></div>
+                    </div>
+                    <div data-sectorpanel="other" style="display:none">
+                        <label class="collab-label" data-i18n="collab_sector_specify">Alanı Belirtiniz *</label>
+                        <div class="collab-field"><input type="text" id="collabSectorOther" data-i18n-ph="collab_sector_specify_ph" placeholder="Hangi alan?"></div>
+                    </div>
+                    <label class="collab-label" data-i18n="collab_company_name">Firma / Marka Adı *</label>
+                    <div class="collab-field"><input type="text" id="collabSponsorBrand" data-i18n-ph="collab_company_name_ph" placeholder="Firma / marka adı"></div>
+                </div>
+                <!-- Diğer -->
+                <div data-catpanel="other" style="display:none">
+                    <label class="collab-label" data-i18n="collab_other_subject">Konu / İş Birliği Amacı *</label>
+                    <div class="collab-field"><input type="text" id="collabOtherTopic" data-i18n-ph="collab_other_subject_ph" placeholder="Kısaca konuyu yaz"></div>
+                </div>
+                <div class="collab-err" id="collabErr2"></div>
+                <div class="collab-nav">
+                    <button class="collab-back" id="collabBack1" type="button" data-i18n="collab_back">← Geri</button>
+                    <button class="collab-next" id="collabTo3" type="button" data-i18n="collab_next">Devam Et →</button>
+                </div>
+            </div>
+
+            <!-- ADIM 3: İletişim -->
+            <div class="collab-step" data-step="3">
+                <label class="collab-label" data-i18n="collab_email">E-posta Adresin *</label>
+                <div class="collab-field"><input type="email" id="collabEmail" placeholder="ornek@mail.com"></div>
+                <label class="collab-label" data-i18n="collab_subject">Konu Başlığı *</label>
+                <div class="collab-field"><input type="text" id="collabSubject" data-i18n-ph="collab_subject_ph" placeholder="Konu başlığı"></div>
+                <label class="collab-label" data-i18n="collab_message">Detaylı Mesajın *</label>
+                <div class="collab-field"><textarea id="collabMsg" data-i18n-ph="collab_message_ph" placeholder="Detayları yaz..."></textarea></div>
+                <div class="collab-err" id="collabErr3"></div>
+                <div class="collab-nav">
+                    <button class="collab-back" id="collabBack2" type="button" data-i18n="collab_back">← Geri</button>
+                    <button class="collab-next" id="collabSend" type="button" data-i18n="collab_send">🚀 Gönder</button>
+                </div>
+            </div>
+
+            <!-- BAŞARI -->
+            <div class="collab-step" data-step="4">
+                <div class="collab-success">
+                    <div class="big">🎉</div>
+                    <h4 data-i18n="collab_success_t">Talebin alındı!</h4>
+                    <p data-i18n="collab_success_d">İş birliği talebiniz alındı, en kısa sürede dönüş yapacağım!</p>
+                    <div class="collab-nav">
+                        <button class="collab-next" id="collabDone" type="button" data-i18n="collab_close">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function(){
             var REDIR = "offline.html";
@@ -1130,6 +1387,38 @@
                 term_trigoff: "Offline Sinyal Koptu simülasyonu açılıyor...",
                 fb1_desc: "Birçok kaynaktan tek tıkla video ve fotoğraf indirin. TikTok, Instagram, YouTube, Pinterest ve daha fazlasını destekler!",
                 fb2_desc: "Kişisel web sitem ve portfolyom. Geliştirme süreçlerim ve projelerim hakkında bilgiler içerir.",
+                collab_btn: "İş Birliği", collab_title: "🤝 İş Birliği Yap",
+                collab_sub: "Birlikte güzel bir şeyler yapalım — 3 kısa adımda talebini ilet.",
+                collab_next: "Devam Et →", collab_back: "← Geri",
+                collab_send: "🚀 Gönder", collab_sending: "Gönderiliyor...",
+                collab_close: "Kapat",
+                collab_cat_project: "Proje / Yarışma", collab_cat_project_d: "Okul, firma veya bireysel proje teklifi",
+                collab_cat_sponsor: "Reklam & Sponsorluk", collab_cat_sponsor_d: "Tanıtım ve sponsorluk iş birlikleri",
+                collab_cat_other: "Diğer İş Birlikleri", collab_cat_other_d: "Aklındaki başka bir iş birliği fikri",
+                collab_aud_label: "Hedef Kitle",
+                collab_aud_school: "Okul / Kurum", collab_aud_company: "Firma / Şirket", collab_aud_personal: "Bireysel / Kişisel",
+                collab_school_name: "Okul Adı *", collab_school_name_ph: "Okul adı",
+                collab_school_web: "Okul Web Sitesi (opsiyonel)",
+                collab_company_name: "Firma / Marka Adı *", collab_company_name_ph: "Firma / marka adı",
+                collab_company_web: "Web Sitesi (opsiyonel)",
+                collab_person_name: "İsim Soyisim *", collab_person_name_ph: "Adın Soyadın",
+                collab_person_phone: "Telefon Numarası (opsiyonel)",
+                collab_sector_label: "Sektör / Alan",
+                collab_sector_hw: "Elektronik / Donanım", collab_sector_sw: "Yazılım / Web",
+                collab_sector_robot: "Robotik / 3D Baskı", collab_sector_other: "Diğer",
+                collab_sector_specify: "Alanı Belirtiniz *", collab_sector_specify_ph: "Hangi alan?",
+                collab_other_subject: "Konu / İş Birliği Amacı *", collab_other_subject_ph: "Kısaca konuyu yaz",
+                collab_email: "E-posta Adresin *", collab_subject: "Konu Başlığı *",
+                collab_subject_ph: "Konu başlığı",
+                collab_message: "Detaylı Mesajın *", collab_message_ph: "Detayları yaz...",
+                collab_success_t: "Talebin alındı! 🎉",
+                collab_success_d: "İş birliği talebiniz alındı, en kısa sürede dönüş yapacağım!",
+                collab_err_cat: "Devam etmek için bir kategori seç.",
+                collab_err_aud: "Devam etmek için bir hedef kitle seç.",
+                collab_err_sector: "Devam etmek için bir sektör seç.",
+                collab_err_req: "Lütfen zorunlu alanları doldur.",
+                collab_err_email: "Geçerli bir e-posta adresi gir.",
+                collab_err_conn: "Bağlantı hatası. Lütfen tekrar dene.",
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
                 form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız alındı!",
@@ -1188,6 +1477,38 @@
                 term_trigoff: "Opening Offline Signal Lost simulation...",
                 fb1_desc: "Download videos and photos from many sources with one click. Supports TikTok, Instagram, YouTube, Pinterest and more!",
                 fb2_desc: "My personal website and portfolio. Includes my development process and projects.",
+                collab_btn: "Collaborate", collab_title: "🤝 Collaborate",
+                collab_sub: "Let's build something great together — send your request in 3 short steps.",
+                collab_next: "Continue →", collab_back: "← Back",
+                collab_send: "🚀 Send", collab_sending: "Sending...",
+                collab_close: "Close",
+                collab_cat_project: "Project / Competition", collab_cat_project_d: "School, company or personal project proposal",
+                collab_cat_sponsor: "Ads & Sponsorship", collab_cat_sponsor_d: "Promotion and sponsorship collaborations",
+                collab_cat_other: "Other Collaborations", collab_cat_other_d: "Any other collaboration idea you have",
+                collab_aud_label: "Target Audience",
+                collab_aud_school: "School / Institution", collab_aud_company: "Company / Brand", collab_aud_personal: "Individual / Personal",
+                collab_school_name: "School Name *", collab_school_name_ph: "School name",
+                collab_school_web: "School Website (optional)",
+                collab_company_name: "Company / Brand Name *", collab_company_name_ph: "Company / brand name",
+                collab_company_web: "Website (optional)",
+                collab_person_name: "Full Name *", collab_person_name_ph: "Your full name",
+                collab_person_phone: "Phone Number (optional)",
+                collab_sector_label: "Sector / Field",
+                collab_sector_hw: "Electronics / Hardware", collab_sector_sw: "Software / Web",
+                collab_sector_robot: "Robotics / 3D Printing", collab_sector_other: "Other",
+                collab_sector_specify: "Specify the Field *", collab_sector_specify_ph: "Which field?",
+                collab_other_subject: "Topic / Collaboration Goal *", collab_other_subject_ph: "Briefly write the topic",
+                collab_email: "Your Email Address *", collab_subject: "Subject *",
+                collab_subject_ph: "Subject",
+                collab_message: "Your Detailed Message *", collab_message_ph: "Write the details...",
+                collab_success_t: "Request received! 🎉",
+                collab_success_d: "Your collaboration request has been received, I will get back to you soon!",
+                collab_err_cat: "Please select a category to continue.",
+                collab_err_aud: "Please select a target audience to continue.",
+                collab_err_sector: "Please select a sector to continue.",
+                collab_err_req: "Please fill in the required fields.",
+                collab_err_email: "Please enter a valid email address.",
+                collab_err_conn: "Connection error. Please try again.",
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
                 form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message received!",
@@ -2391,6 +2712,204 @@
                 requestAnimationFrame(tick);
             }
             requestAnimationFrame(tick);
+        })();
+
+        /* ===== İŞ BİRLİĞİ (COLLAB MULTI-STEP MODAL) ===== */
+        (function () {
+            var overlay = document.getElementById("collabOverlay");
+            var fab = document.getElementById("collabFab");
+            if (!overlay || !fab) return;
+            var state = { cat: null, aud: null, sector: null };
+            var $ = function (id) { return document.getElementById(id); };
+            var steps = overlay.querySelectorAll(".collab-step");
+            var P = [$("collabP1"), $("collabP2"), $("collabP3")];
+
+            function T(k) { return (translations[lang] && translations[lang][k]) || translations.tr[k] || k; }
+            function err(id, msg) {
+                var el = $(id);
+                if (!el) return;
+                if (msg) { el.textContent = msg; el.classList.add("show"); }
+                else { el.textContent = ""; el.classList.remove("show"); }
+            }
+            function go(n) {
+                steps.forEach(function (s) { s.classList.toggle("active", s.getAttribute("data-step") == String(n)); });
+                P.forEach(function (p, i) {
+                    if (!p) return;
+                    p.classList.toggle("done", i < n - 1);
+                    p.classList.toggle("current", i === n - 1 && n <= 3);
+                });
+                var active = overlay.querySelector('.collab-step[data-step="' + n + '"]');
+                if (active) {
+                    var f = active.querySelector("input, textarea, .collab-card");
+                    if (f && n > 1 && n < 4) { try { f.focus({ preventScroll: true }); } catch (e) { try { f.focus(); } catch (_) {} } }
+                }
+            }
+            function open() {
+                overlay.classList.add("open");
+                document.body.style.overflow = "hidden";
+                go(1);
+            }
+            function close() {
+                overlay.classList.remove("open");
+                document.body.style.overflow = "";
+            }
+            function catLabel() {
+                if (state.cat === "project") return T("collab_cat_project");
+                if (state.cat === "sponsor") return T("collab_cat_sponsor");
+                return T("collab_cat_other");
+            }
+            function selectCard(list, el) {
+                list.forEach(function (c) { c.classList.remove("selected"); });
+                if (el) el.classList.add("selected");
+            }
+            function bindCards(sel, cb) {
+                var list = Array.prototype.slice.call(overlay.querySelectorAll(sel));
+                list.forEach(function (c) {
+                    function pick() { selectCard(list, c); cb(c); }
+                    c.addEventListener("click", pick);
+                    c.addEventListener("keydown", function (e) {
+                        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); }
+                    });
+                });
+                return list;
+            }
+
+            bindCards(".collab-step[data-step='1'] .collab-card", function (c) {
+                state.cat = c.getAttribute("data-cat");
+                err("collabErr1", null);
+            });
+            var audCards = bindCards("[data-aud]", function (c) {
+                state.aud = c.getAttribute("data-aud");
+                overlay.querySelectorAll("[data-audpanel]").forEach(function (p) {
+                    p.style.display = (p.getAttribute("data-audpanel") === state.aud) ? "" : "none";
+                });
+                err("collabErr2", null);
+            });
+            var sectorCards = bindCards("[data-sector]", function (c) {
+                state.sector = c.getAttribute("data-sector");
+                overlay.querySelectorAll("[data-sectorpanel]").forEach(function (p) {
+                    p.style.display = (p.getAttribute("data-sectorpanel") === state.sector) ? "" : "none";
+                });
+                err("collabErr2", null);
+            });
+
+            function showStep2Panels() {
+                overlay.querySelectorAll("[data-catpanel]").forEach(function (p) {
+                    p.style.display = (p.getAttribute("data-catpanel") === state.cat) ? "" : "none";
+                });
+            }
+
+            $("collabTo2").addEventListener("click", function () {
+                if (!state.cat) { err("collabErr1", T("collab_err_cat")); return; }
+                err("collabErr1", null);
+                showStep2Panels();
+                go(2);
+            });
+            $("collabBack1").addEventListener("click", function () { err("collabErr2", null); go(1); });
+            $("collabTo3").addEventListener("click", function () {
+                if (state.cat === "project") {
+                    if (!state.aud) { err("collabErr2", T("collab_err_aud")); return; }
+                    var v = state.aud === "school" ? $("collabSchoolName").value.trim()
+                        : state.aud === "company" ? $("collabCompanyName").value.trim()
+                        : $("collabPersonName").value.trim();
+                    if (!v) { err("collabErr2", T("collab_err_req")); return; }
+                } else if (state.cat === "sponsor") {
+                    if (!state.sector) { err("collabErr2", T("collab_err_sector")); return; }
+                    if (state.sector === "other" && !$("collabSectorOther").value.trim()) { err("collabErr2", T("collab_err_req")); return; }
+                    if (!$("collabSponsorBrand").value.trim()) { err("collabErr2", T("collab_err_req")); return; }
+                } else {
+                    if (!$("collabOtherTopic").value.trim()) { err("collabErr2", T("collab_err_req")); return; }
+                }
+                err("collabErr2", null);
+                // Konu başlığını otomatik doldur (boşsa)
+                var subj = $("collabSubject");
+                if (subj && !subj.value.trim()) {
+                    var org = state.cat === "project"
+                        ? (state.aud === "school" ? $("collabSchoolName").value.trim()
+                            : state.aud === "company" ? $("collabCompanyName").value.trim()
+                            : $("collabPersonName").value.trim())
+                        : state.cat === "sponsor" ? $("collabSponsorBrand").value.trim()
+                        : $("collabOtherTopic").value.trim();
+                    subj.value = org ? ("[" + catLabel() + "] " + org) : ("[" + catLabel() + "]");
+                }
+                go(3);
+            });
+            $("collabBack2").addEventListener("click", function () { err("collabErr3", null); go(2); });
+
+            $("collabSend").addEventListener("click", async function () {
+                var email = $("collabEmail").value.trim();
+                var subject = $("collabSubject").value.trim();
+                var msg = $("collabMsg").value.trim();
+                var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                if (!email || !subject || !msg) { err("collabErr3", T("collab_err_req")); return; }
+                if (!emailOk) { err("collabErr3", T("collab_err_email")); return; }
+                if (!QE.hasConsent()) { err("collabErr3", QE.consentMsg()); QE.demandConsent(); return; }
+                err("collabErr3", null);
+                var btn = $("collabSend");
+                btn.disabled = true;
+                var oldTxt = btn.textContent;
+                btn.textContent = T("collab_sending");
+                var lines = ["Kategori: " + catLabel()];
+                if (state.cat === "project") {
+                    var audLbl = state.aud === "school" ? T("collab_aud_school")
+                        : state.aud === "company" ? T("collab_aud_company") : T("collab_aud_personal");
+                    lines.push("Hedef Kitle: " + audLbl);
+                    if (state.aud === "school") {
+                        lines.push("Okul: " + $("collabSchoolName").value.trim());
+                        if ($("collabSchoolWeb").value.trim()) lines.push("Okul Web: " + $("collabSchoolWeb").value.trim());
+                    } else if (state.aud === "company") {
+                        lines.push("Firma: " + $("collabCompanyName").value.trim());
+                        if ($("collabCompanyWeb").value.trim()) lines.push("Firma Web: " + $("collabCompanyWeb").value.trim());
+                    } else {
+                        lines.push("İsim: " + $("collabPersonName").value.trim());
+                        if ($("collabPersonPhone").value.trim()) lines.push("Telefon: " + $("collabPersonPhone").value.trim());
+                    }
+                } else if (state.cat === "sponsor") {
+                    var secLbl = state.sector === "hw" ? T("collab_sector_hw")
+                        : state.sector === "sw" ? T("collab_sector_sw")
+                        : state.sector === "robot" ? T("collab_sector_robot") : T("collab_sector_other");
+                    lines.push("Sektör: " + secLbl);
+                    if (state.sector === "other") lines.push("Sektör Detay: " + $("collabSectorOther").value.trim());
+                    lines.push("Marka: " + $("collabSponsorBrand").value.trim());
+                } else {
+                    lines.push("Konu: " + $("collabOtherTopic").value.trim());
+                }
+                lines.push("Gönderen: " + email);
+                lines.push("", msg);
+                var fd = new FormData();
+                fd.append("name", "İş Birliği — " + catLabel());
+                fd.append("email", email);
+                fd.append("message", lines.join("\n"));
+                fd.append("_captcha", "false");
+                fd.append("_template", "table");
+                fd.append("_subject", "🤝 İş Birliği: " + subject);
+                try {
+                    const response = await fetch("https://formsubmit.co/ajax/erhanemir32@hotmail.com", {
+                        method: "POST",
+                        body: fd,
+                        headers: { "Accept": "application/json" }
+                    });
+                    if (response.ok) {
+                        go(4);
+                        setTimeout(function () { if (overlay.classList.contains("open")) close(); }, 6000);
+                    } else {
+                        err("collabErr3", T("collab_err_conn") + " (" + response.status + ")");
+                    }
+                } catch (e) {
+                    if (!window._netErr || !window._netErr(e)) err("collabErr3", T("collab_err_conn"));
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = oldTxt;
+                }
+            });
+
+            fab.addEventListener("click", open);
+            $("collabClose").addEventListener("click", close);
+            $("collabDone").addEventListener("click", close);
+            overlay.addEventListener("click", function (e) { if (e.target === overlay) close(); });
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && overlay.classList.contains("open")) close();
+            });
         })();
     </script>
 </body>
