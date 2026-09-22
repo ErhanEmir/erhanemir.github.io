@@ -60,64 +60,6 @@
             --glow-b: rgba(79, 70, 229, 0.07);
         }
 
-        /* === ACCENT PALETTES (override both dark & light) === */
-        [data-accent="magenta"] {
-            --cyan: #f472b6;
-            --cyan-dim: rgba(244, 114, 182, 0.14);
-            --cyan-glow: rgba(244, 114, 182, 0.4);
-            --green: #a78bfa;
-            --green-dim: rgba(167, 139, 250, 0.14);
-            --orange: #fbbf24;
-            --orange-dim: rgba(251, 191, 36, 0.14);
-            --purple: #8b5cf6;
-            --grid-a: rgba(244, 114, 182, 0.04);
-            --grid-b: rgba(139, 92, 246, 0.03);
-            --glow-a: rgba(244, 114, 182, 0.07);
-            --glow-b: rgba(139, 92, 246, 0.07);
-        }
-        [data-accent="sunset"] {
-            --cyan: #fb923c;
-            --cyan-dim: rgba(251, 146, 60, 0.14);
-            --cyan-glow: rgba(251, 146, 60, 0.4);
-            --green: #f43f5e;
-            --green-dim: rgba(244, 63, 94, 0.14);
-            --orange: #fbbf24;
-            --orange-dim: rgba(251, 191, 36, 0.14);
-            --purple: #f59e0b;
-            --grid-a: rgba(251, 146, 60, 0.04);
-            --grid-b: rgba(244, 63, 94, 0.03);
-            --glow-a: rgba(251, 146, 60, 0.07);
-            --glow-b: rgba(244, 63, 94, 0.07);
-        }
-        [data-accent="lime"] {
-            --cyan: #a3e635;
-            --cyan-dim: rgba(163, 230, 53, 0.13);
-            --cyan-glow: rgba(163, 230, 53, 0.38);
-            --green: #34d399;
-            --green-dim: rgba(52, 211, 153, 0.14);
-            --orange: #facc15;
-            --orange-dim: rgba(250, 204, 21, 0.14);
-            --purple: #2dd4bf;
-            --grid-a: rgba(163, 230, 53, 0.04);
-            --grid-b: rgba(45, 212, 191, 0.03);
-            --glow-a: rgba(163, 230, 53, 0.07);
-            --glow-b: rgba(45, 212, 191, 0.07);
-        }
-        [data-accent="violet"] {
-            --cyan: #a78bfa;
-            --cyan-dim: rgba(167, 139, 250, 0.14);
-            --cyan-glow: rgba(167, 139, 250, 0.42);
-            --green: #22d3ee;
-            --green-dim: rgba(34, 211, 238, 0.14);
-            --orange: #f0abfc;
-            --orange-dim: rgba(240, 171, 252, 0.14);
-            --purple: #7c3aed;
-            --grid-a: rgba(167, 139, 250, 0.05);
-            --grid-b: rgba(34, 211, 238, 0.03);
-            --glow-a: rgba(167, 139, 250, 0.08);
-            --glow-b: rgba(34, 211, 238, 0.07);
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body {
@@ -240,12 +182,6 @@
         [data-theme="dark"] .theme-toggle .fa-moon,
         :root:not([data-theme="light"]) .theme-toggle .fa-moon { display: none; }
         [data-theme="light"] .theme-toggle .fa-moon { display: inline-block; }
-
-        .accent-picker { display: inline-flex; gap: 6px; align-items: center; padding: 4px 6px; border: 1px solid var(--glass-border); background: var(--glass-bg); border-radius: 20px; }
-        .accent-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
-        .accent-dot:hover { transform: scale(1.2); }
-        .accent-dot.active { border-color: #fff; box-shadow: 0 0 10px currentColor; transform: scale(1.15); }
-        [data-theme="light"] .accent-dot.active { border-color: #0f172a; }
 
         /* === HERO SECTION === */
         #hero {
@@ -971,13 +907,6 @@
                 <li><a href="#contact" data-i18n="nav_contact">İletişim</a></li>
             </ul>
             <div class="nav-actions">
-                <div class="accent-picker" id="accentPicker" role="group" aria-label="Accent theme">
-                    <button class="accent-dot" data-set-accent="cyan" title="Cyan" style="background:#22d3ee;color:#22d3ee" aria-label="Cyan theme"></button>
-                    <button class="accent-dot" data-set-accent="magenta" title="Magenta" style="background:#f472b6;color:#f472b6" aria-label="Magenta theme"></button>
-                    <button class="accent-dot" data-set-accent="sunset" title="Sunset" style="background:#fb923c;color:#fb923c" aria-label="Sunset theme"></button>
-                    <button class="accent-dot" data-set-accent="lime" title="Lime" style="background:#a3e635;color:#a3e635" aria-label="Lime theme"></button>
-                    <button class="accent-dot" data-set-accent="violet" title="Violet" style="background:#a78bfa;color:#a78bfa" aria-label="Violet theme"></button>
-                </div>
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
                     <i class="fas fa-sun"></i>
                     <i class="fas fa-moon"></i>
@@ -1491,9 +1420,6 @@
                 collab_err_req: "Lütfen zorunlu alanları doldur.",
                 collab_err_email: "Geçerli bir e-posta adresi gir.",
                 collab_err_conn: "Bağlantı hatası. Lütfen tekrar dene.",
-                term_theme_use: "Kullanım: theme [cyan|magenta|sunset|lime|violet]",
-                term_theme_set: "Tema değiştirildi: ",
-                term_theme_bad: "Bilinmeyen tema. ",
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
                 form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız alındı!",
@@ -1585,9 +1511,6 @@
                 collab_err_req: "Please fill in the required fields.",
                 collab_err_email: "Please enter a valid email address.",
                 collab_err_conn: "Connection error. Please try again.",
-                term_theme_use: "Usage: theme [cyan|magenta|sunset|lime|violet]",
-                term_theme_set: "Theme changed: ",
-                term_theme_bad: "Unknown theme. ",
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
                 form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message received!",
@@ -1648,27 +1571,6 @@
         themeToggle.addEventListener("click", () => {
             const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
             applyTheme(next);
-        });
-
-        // Accent palette management (cyan default)
-        const ACCENTS = ["cyan", "magenta", "sunset", "lime", "violet"];
-        const ACCENT_HEX = { cyan: "22d3ee", magenta: "f472b6", sunset: "fb923c", lime: "a3e635", violet: "a78bfa" };
-        function applyAccent(a) {
-            if (!ACCENTS.includes(a)) a = "cyan";
-            document.documentElement.setAttribute("data-accent", a);
-            localStorage.setItem("portfolioAccent", a);
-            document.querySelectorAll("#accentPicker .accent-dot").forEach(d => {
-                d.classList.toggle("active", d.getAttribute("data-set-accent") === a);
-            });
-            const fav = document.querySelector('link[rel="icon"]');
-            if (fav && ACCENT_HEX[a]) fav.href = fav.href.replace(/%23[0-9a-fA-F]{6}/, "%23" + ACCENT_HEX[a]);
-            window._accent = a;
-        }
-        applyAccent(localStorage.getItem("portfolioAccent") || "cyan");
-        window.applyAccentGlobal = applyAccent;
-        document.getElementById("accentPicker").addEventListener("click", (e) => {
-            const btn = e.target.closest("[data-set-accent]");
-            if (btn) applyAccent(btn.getAttribute("data-set-accent"));
         });
 
         const QE = (function () {
@@ -2050,11 +1952,9 @@
 
         function helpText() {
             if (lang === "en") {
-                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - message           : Send a live message\n  - fast message      : Quick message (max 100 chars)\n  - collab            : Open collaboration form
-  - theme [name]      : Switch accent theme (cyan|magenta|sunset|lime|violet)\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - message           : Send a live message\n  - fast message      : Quick message (max 100 chars)\n  - collab            : Open collaboration form\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
             }
-                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - message           : Canlı mesaj gönder\n  - fast message      : Hızlı mesaj gönder (max 100 karakter)\n  - collab            : İş birliği formunu aç
-  - theme [isim]      : Vurgu temasını değiştir (cyan|magenta|sunset|lime|violet)\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
+                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - message           : Canlı mesaj gönder\n  - fast message      : Hızlı mesaj gönder (max 100 karakter)\n  - collab            : İş birliği formunu aç\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
         }
 
         function startMsgFlow() {
@@ -2332,16 +2232,6 @@
                 } else if (cmd === "collab" || cmd === "isbirligi" || cmd === "işbirliği") {
                     if (window.openCollab) window.openCollab();
                     termPrint(translations[lang].term_collab, "#22d3ee");
-                } else if (cmd === "theme" || cmd.startsWith("theme ")) {
-                    const arg = val.slice(5).trim().toLowerCase();
-                    if (!arg) {
-                        termPrint(translations[lang].term_theme_use + (lang === "en" ? "  (current: " : "  (aktif: ") + (window._accent || "cyan") + ")", "#22d3ee");
-                    } else if (window.applyAccentGlobal && ["cyan", "magenta", "sunset", "lime", "violet"].includes(arg)) {
-                        window.applyAccentGlobal(arg);
-                        termPrint(translations[lang].term_theme_set + arg, "#22c55e");
-                    } else {
-                        termPrint(translations[lang].term_theme_bad + translations[lang].term_theme_use, "#ef4444");
-                    }
                 } else if (cmd === "instagram") {
                     window.open("https://www.instagram.com/erhanemir.32/", "_blank");
                     termPrint(lang === "en" ? "Opening Instagram profile..." : "Instagram profili açılıyor...", "#22d3ee");
