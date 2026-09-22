@@ -1008,7 +1008,7 @@
                     </div>
                     <div class="glass-card msg-box">
                         <form class="contact-form" id="contactForm" action="https://formsubmit.co/erhanemir32@hotmail.com" method="POST">
-                            <h3 style="margin-bottom:1.2rem; color:#00cfff; font-size:1.1rem;">&#9993; Mesaj</h3>
+                            <h3 style="margin-bottom:1.2rem; color:#00cfff; font-size:1.1rem;" data-i18n="contact_msg_title">&#9993; Mesaj</h3>
                             <input type="hidden" name="_captcha" value="false">
                             <input type="hidden" name="_template" value="table">
                             <label for="name" data-i18n="form_name">Adınız</label>
@@ -1024,16 +1024,16 @@
                     </div>
                     <!-- GÖREV 3: HIZLI MESAJ -->
                     <div class="glass-card msg-box">
-                        <h3 style="margin-bottom:1.2rem; color:#00cfff; font-size:1.1rem;">&#9889; H&#305;z&#305;l&#305; Mesaj</h3>
+                        <h3 style="margin-bottom:1.2rem; color:#00cfff; font-size:1.1rem;" data-i18n="q_title">&#9889; H&#305;z&#305;l&#305; Mesaj</h3>
                         <form class="quick-msg-form" id="quickMsgForm" novalidate>
-                            <label for="qName">Ad&#305;n&#305;z</label>
-                            <input type="text" id="qName" name="isim" placeholder="Ad&#305;n&#305;z" required>
-                            <label for="qEmail">E-posta</label>
-                            <input type="email" id="qEmail" name="mail" placeholder="ornek@mail.com" required>
-                            <label for="qMsg">K&#305;sa Mesaj</label>
-                            <textarea id="qMsg" name="mesaj" placeholder="En fazla 100 karakter..." maxlength="110" required></textarea>
+                            <label for="qName" data-i18n="q_name">Ad&#305;n&#305;z</label>
+                            <input type="text" id="qName" name="isim" placeholder="Ad&#305;n&#305;z" data-i18n-ph="q_ph_name" required>
+                            <label for="qEmail" data-i18n="q_email">E-posta</label>
+                            <input type="email" id="qEmail" name="mail" placeholder="ornek@mail.com" data-i18n-ph="q_ph_email" required>
+                            <label for="qMsg" data-i18n="q_short_msg">K&#305;sa Mesaj</label>
+                            <textarea id="qMsg" name="mesaj" placeholder="En fazla 100 karakter..." data-i18n-ph="q_ph_msg" maxlength="110" required></textarea>
                             <div class="quick-msg-charcount" id="qCharCount">0 / 100</div>
-                            <button type="submit" class="quick-msg-btn" id="qSendBtn">Gönder</button>
+                            <button type="submit" class="quick-msg-btn" id="qSendBtn" data-i18n="q_send">Gönder</button>
                             <div class="quick-msg-feedback" id="qFeedback"></div>
                         </form>
                         <span class="quota-hint" id="quotaQ" aria-hidden="true">5/5</span>
@@ -1118,6 +1118,17 @@
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
                 form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız alındı!",
+                contact_msg_title: "✉ Mesaj",
+                q_title: "⚡ Hızlı Mesaj",
+                q_name: "Adınız", q_email: "E-posta", q_short_msg: "Kısa Mesaj",
+                q_ph_name: "Adınız", q_ph_email: "ornek@mail.com", q_ph_msg: "En fazla 100 karakter...",
+                q_send: "Gönder", q_sending: "Gönderiliyor...",
+                q_fill_all: "Lütfen tüm alanları doldurun.",
+                q_invalid_email: "Geçerli bir e-posta adresi girin.",
+                q_too_long: "100 karakter üzeri mesajlarınız için lütfen Mesaj kısmını kullanın.",
+                q_success: "Mesajınız iletildi. En kısa sürede dönüş yapacağım.",
+                q_error: "Bir hata oluştu. Lütfen tekrar deneyin.",
+                q_conn_error: "Bağlantı hatası. Lütfen tekrar deneyin.",
                 form_limit: "Bugünkü gönderim hakkınız doldu. Lütfen yarın tekrar deneyin.",
                 consent_required: "Mesaj gönderebilmek için önce çerezleri kabul etmelisiniz.",
                 consent_locked: "Mesaj göndermek için çerez onayı gerekli.",
@@ -1150,6 +1161,17 @@
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
                 form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message received!",
+                contact_msg_title: "✉ Message",
+                q_title: "⚡ Quick Message",
+                q_name: "Your Name", q_email: "Email", q_short_msg: "Short Message",
+                q_ph_name: "Your name", q_ph_email: "example@mail.com", q_ph_msg: "Max 100 characters...",
+                q_send: "Send", q_sending: "Sending...",
+                q_fill_all: "Please fill in all fields.",
+                q_invalid_email: "Please enter a valid email address.",
+                q_too_long: "For messages over 100 characters, please use the Message section.",
+                q_success: "Your message has been delivered. I will get back to you soon.",
+                q_error: "An error occurred. Please try again.",
+                q_conn_error: "Connection error. Please try again.",
                 form_limit: "You've reached today's sending limit. Please try again tomorrow.",
                 consent_required: "You must accept cookies before sending a message.",
                 consent_locked: "Cookie consent is required to send messages.",
@@ -1172,6 +1194,13 @@
                 const k = el.getAttribute("data-i18n");
                 if (translations[l][k]) el.innerHTML = translations[l][k];
             });
+            document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+                const k = el.getAttribute("data-i18n-ph");
+                if (translations[l][k]) el.placeholder = translations[l][k];
+            });
+            // Hızlı mesaj butonu gönderim sırasında ise metnini dile göre güncelle
+            var _qSendBtn = document.getElementById("qSendBtn");
+            if (_qSendBtn && !_qSendBtn.disabled) _qSendBtn.textContent = translations[l].q_send;
 
             typeWriter(translations[l].typing_title, translations[l].typing_sub);
             if (window._reposLoaded) renderRepos(window._reposData);
@@ -2179,15 +2208,15 @@
                 var mesaj = msgInput.value.trim();
 
                 if (!isim || !mail || !mesaj) {
-                    showFeedback("error", "Lütfen tüm alanları doldurun.");
+                    showFeedback("error", translations[lang].q_fill_all);
                     return;
                 }
                 if (!isValidEmail(mail)) {
-                    showFeedback("error", "Geçerli bir e-posta adresi girin.");
+                    showFeedback("error", translations[lang].q_invalid_email);
                     return;
                 }
                 if (mesaj.length > MAX_CHARS) {
-                    showFeedback("error", "100 karakter üzeri mesajlarınız için lütfen Mesaj kısmını kullanın.");
+                    showFeedback("error", translations[lang].q_too_long);
                     return;
                 }
                 if (!QE.hasConsent()) {
@@ -2201,7 +2230,7 @@
                 }
 
                 sendBtn.disabled = true;
-                sendBtn.textContent = "Gönderiliyor...";
+                sendBtn.textContent = translations[lang].q_sending;
 
                 fetch("https://hizli-mesaj-bot.erhanemir32.workers.dev/", {
                     method: "POST",
@@ -2212,21 +2241,21 @@
                 .then(function (data) {
                     if (data.ok) {
                         QE.consume("q");
-                        showFeedback("success", "Mesajınız iletildi. En kısa sürede dönüş yapacağım.");
+                        showFeedback("success", translations[lang].q_success);
                         form.reset();
                         charCount.textContent = "0 / " + MAX_CHARS;
                         charCount.classList.remove("over");
                     } else {
-                        showFeedback("error", data.hata || "Bir hata oluştu. Lütfen tekrar deneyin.");
+                        showFeedback("error", data.hata || translations[lang].q_error);
                     }
                 })
                 .catch(function (err) {
                     if(!window._netErr || !window._netErr(err)){
-                        showFeedback("error", "Bağlantı hatası. Lütfen tekrar deneyin.");
+                        showFeedback("error", translations[lang].q_conn_error);
                     }
                 })
                 .finally(function () {
-                    sendBtn.textContent = "Gönder";
+                    sendBtn.textContent = translations[lang].q_send;
                     sendBtn.disabled = !QE.hasConsent() || QE.remaining("q") === 0;
                 });
             });
