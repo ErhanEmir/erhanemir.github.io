@@ -897,7 +897,7 @@
                     <div class="skill-card glass-card">
                         <i class="fas fa-cube"></i>
                         <h3>3D Prototip</h3>
-                        <span class="skill-type">CAD / Baskı</span>
+                        <span class="skill-type" data-i18n="skill_cad">CAD / Baskı</span>
                     </div>
                     <div class="skill-card glass-card">
                         <i class="fab fa-git-alt"></i>
@@ -950,8 +950,8 @@
                         <p data-i18n="comp_1_desc">Kullanıcılarda duruş bozukluğu ve "Text-Neck" rahatsızlığı henüz oluşmadan önce müdahale edip bunu önleyen akıllı bir giyilebilir cihaz ve donanım sistemi tasarladık.</p>
                         <div class="competition-tags">
                             <span class="badge">TÜBİTAK 2204-B</span>
-                            <span class="badge">Sensörler</span>
-                            <span class="badge">Giyilebilir Teknoloji</span>
+                            <span class="badge" data-i18n="badge_sensors">Sensörler</span>
+                            <span class="badge" data-i18n="badge_wearable">Giyilebilir Teknoloji</span>
                         </div>
                     </div>
                     <div class="competition-card">
@@ -961,9 +961,9 @@
                         <p data-i18n="comp_2_desc">Tamamen yenilenebilir enerji kaynaklarıyla çalışan, enerji verimliliğini ve şehir altyapısını otonom yöneten akıllı şehir otomasyon sistemi geliştirdik.</p>
                         <div class="competition-tags">
                             <span class="badge">TÜBİTAK 4006</span>
-                            <span class="badge">Yenilenebilir Enerji</span>
+                            <span class="badge" data-i18n="badge_renewable">Yenilenebilir Enerji</span>
                             <span class="badge">IoT</span>
-                            <span class="badge">Otomasyon</span>
+                            <span class="badge" data-i18n="badge_automation">Otomasyon</span>
                         </div>
                     </div>
                     <div class="competition-card">
@@ -975,7 +975,7 @@
                             <span class="badge">18. MEB Robot</span>
                             <span class="badge">KABOT</span>
                             <span class="badge">18.17 sn</span>
-                            <span class="badge">Otonom Robot</span>
+                            <span class="badge" data-i18n="badge_autonomous">Otonom Robot</span>
                         </div>
                     </div>
                     <div class="competition-card">
@@ -985,9 +985,9 @@
                         <p data-i18n="comp_4_desc">Scooter'ın düştüğünü algılayan ve acil durumda yan taraflardaki hava yastıklarını otomatik açarak sürücüyü düşüşten koruyan akıllı scooter güvenlik sistemi geliştirdik.</p>
                         <div class="competition-tags">
                             <span class="badge">TEKNOFEST</span>
-                            <span class="badge">Akıllı Scooter</span>
-                            <span class="badge">Hava Yastığı</span>
-                            <span class="badge">Düşme Algılama</span>
+                            <span class="badge" data-i18n="badge_smart_scooter">Akıllı Scooter</span>
+                            <span class="badge" data-i18n="badge_airbag">Hava Yastığı</span>
+                            <span class="badge" data-i18n="badge_fall">Düşme Algılama</span>
                         </div>
                     </div>
                 </div>
@@ -1115,6 +1115,21 @@
                 skill_cross: "Cross-Platform", skill_embedded: "Gömülü Sistemler", skill_mcu: "Mikrokontrolör",
                 skill_iot: "IoT / Wi-Fi", skill_frontend: "Front-End", skill_pcb: "PCB Tasarımı",
                 skill_vcs: "Sürüm Kontrol", skill_server: "DevOps / Sunucu",
+                skill_cad: "CAD / Baskı",
+                badge_sensors: "Sensörler", badge_wearable: "Giyilebilir Teknoloji",
+                badge_renewable: "Yenilenebilir Enerji", badge_automation: "Otomasyon",
+                badge_autonomous: "Otonom Robot", badge_smart_scooter: "Akıllı Scooter",
+                badge_airbag: "Hava Yastığı", badge_fall: "Düşme Algılama",
+                other: "Diğer", view_repo: "GitHub'da İncele",
+                term_skills: "Yetenekler: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, CAD/3D Prototip, Linux, Git",
+                term_whoami: "Erhan Emir — Maker & Developer (Gömülü Sistemler, IoT, Web & Mobil Çözümler)",
+                term_sent_ok: "✓ Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağım.",
+                term_unknown_a: "Bilinmeyen komut", term_unknown_b: "Yardım için 'help' yazın.",
+                term_trig500: "500 Voltaj Aşırı Yükleme simülasyonu açılıyor...",
+                term_trig404: "404 Cyber-Monkey simülasyonu açılıyor...",
+                term_trigoff: "Offline Sinyal Koptu simülasyonu açılıyor...",
+                fb1_desc: "Birçok kaynaktan tek tıkla video ve fotoğraf indirin. TikTok, Instagram, YouTube, Pinterest ve daha fazlasını destekler!",
+                fb2_desc: "Kişisel web sitem ve portfolyom. Geliştirme süreçlerim ve projelerim hakkında bilgiler içerir.",
                 loading: "GitHub projeleri yükleniyor...", empty: "Henüz public repo yok.", gh_err: "GitHub API yüklenemedi.",
                 no_desc: "Açıklama yok",
                 form_name: "Adınız", form_email: "E-posta", form_msg: "Mesajınız", form_send: "Mesaj Gönder", form_success: "Mesajınız alındı!",
@@ -1158,6 +1173,21 @@
                 skill_cross: "Cross-Platform", skill_embedded: "Embedded Systems", skill_mcu: "Microcontroller",
                 skill_iot: "IoT / Wi-Fi", skill_frontend: "Front-End", skill_pcb: "PCB Design",
                 skill_vcs: "Version Control", skill_server: "DevOps / Server",
+                skill_cad: "CAD / Printing",
+                badge_sensors: "Sensors", badge_wearable: "Wearable Tech",
+                badge_renewable: "Renewable Energy", badge_automation: "Automation",
+                badge_autonomous: "Autonomous Robot", badge_smart_scooter: "Smart Scooter",
+                badge_airbag: "Airbag", badge_fall: "Fall Detection",
+                other: "Other", view_repo: "View on GitHub",
+                term_skills: "Skills: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, CAD/3D Prototyping, Linux, Git",
+                term_whoami: "Erhan Emir — Maker & Developer (Embedded Systems, IoT, Web & Mobile Solutions)",
+                term_sent_ok: "✓ Message delivered! I will get back to you soon.",
+                term_unknown_a: "Unknown command", term_unknown_b: "Type 'help' for help.",
+                term_trig500: "Opening 500 Voltage Overload simulation...",
+                term_trig404: "Opening 404 Cyber-Monkey simulation...",
+                term_trigoff: "Opening Offline Signal Lost simulation...",
+                fb1_desc: "Download videos and photos from many sources with one click. Supports TikTok, Instagram, YouTube, Pinterest and more!",
+                fb2_desc: "My personal website and portfolio. Includes my development process and projects.",
                 loading: "Loading GitHub projects...", empty: "No public repos yet.", gh_err: "Could not load GitHub API.",
                 no_desc: "No description",
                 form_name: "Your Name", form_email: "Your Email", form_msg: "Your Message", form_send: "Send Message", form_success: "Message received!",
@@ -1463,6 +1493,30 @@
         const terminalInput = document.getElementById("terminalInput");
         const terminalBody = document.getElementById("terminalBody");
 
+        function testMenuText() {
+            if (lang === "en") {
+                return `
+========================================
+       🔧 HIDDEN TEST TOOLS 🔧
+========================================
+[1] trigger500()      → 500 Voltage Overload Simulation
+[2] trigger404()      → 404 Cyber-Monkey Simulation
+[3] triggerOffline()  → OFFLINE Signal Lost Simulation
+[4] help              → Command list
+[5] clear             → Clear terminal
+========================================`;
+            }
+            return `
+========================================
+       🔧 GİZLİ TEST ARACLARI 🔧
+========================================
+[1] trigger500()      → 500 Voltaj Aşırı Yükleme Simülasyonu
+[2] trigger404()      → 404 Cyber-Monkey Simülasyonu
+[3] triggerOffline()  → OFFLINE Sinyal Koptu Simülasyonu
+[4] help              → Komut listesi
+[5] clear             → Terminali temizle
+========================================`;
+        }
         const TEST_MENU = `
 ========================================
        🔧 GİZLİ TEST ARACLARI 🔧
@@ -1624,7 +1678,7 @@
                 });
                 if (response.ok) {
                     QE.consume("n");
-                    termPrint("✓ Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağım.", null, "msg-ok");
+                    termPrint(translations[lang].term_sent_ok, null, "msg-ok");
                 } else {
                     termPrint(lang === "en" ? "Send failed. Please use the contact form." : "Gönderim başarısız. Lütfen iletişim formunu deneyin.", "#ef4444");
                 }
@@ -1658,7 +1712,7 @@
             termPrint("----------------------------------------", "#22d3ee");
             termPrintHtml('GitHub     <a href="https://github.com/ErhanEmir" target="_blank" rel="noopener noreferrer">github.com/ErhanEmir</a>');
             termPrintHtml('Instagram  <a href="https://www.instagram.com/erhanemir.32/" target="_blank" rel="noopener noreferrer">instagram.com/erhanemir.32</a>');
-            termPrintHtml('E-posta    <a href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a>');
+            termPrintHtml((lang === "en" ? 'Email      ' : 'E-posta    ') + '<a href="mailto:erhanemir32@hotmail.com">erhanemir32@hotmail.com</a>');
             termPrint("----------------------------------------", "#22d3ee");
         }
 
@@ -1836,12 +1890,12 @@
                 if (cmd === "help" || cmd === "yardim") {
                     termPrint(helpText());
                 } else if (cmd === "skills") {
-                    termPrint("Yetenekler: Python, JavaScript, Dart, Flutter, C++, Arduino, ESP32, EasyEDA, CAD/3D Prototip, Linux, Git");
+                    termPrint(translations[lang].term_skills);
                 } else if (cmd === "projects") {
                     termPrint(lang === "en" ? "Scrolling to projects..." : "Projeler bölümüne kaydırılıyor...");
                     document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
                 } else if (cmd === "whoami") {
-                    termPrint("Erhan Emir — Maker & Developer (Gömülü Sistemler, IoT, Web & Mobil Çözümler)");
+                    termPrint(translations[lang].term_whoami);
                 } else if (cmd === "message") {
                     startMsgFlow();
                 } else if (cmd === "fast message") {
@@ -1864,18 +1918,18 @@
                 } else if (cmd === "clear") {
                     terminalBody.innerHTML = "";
                 } else if (cmd === "test") {
-                    termPrint(TEST_MENU, "#22d3ee");
+                    termPrint(testMenuText(), "#22d3ee");
                 } else if (cmd === "trigger500" || cmd === "trigger500()") {
                     window.trigger500();
-                    termPrint("500 Voltaj Aşırı Yükleme simülasyonu açılıyor...", "#fb923c");
+                    termPrint(translations[lang].term_trig500, "#fb923c");
                 } else if (cmd === "trigger404" || cmd === "trigger404()") {
                     window.trigger404();
-                    termPrint("404 Cyber-Monkey simülasyonu açılıyor...", "#22d3ee");
+                    termPrint(translations[lang].term_trig404, "#22d3ee");
                 } else if (cmd === "triggeroffline" || cmd === "triggeroffline()" || cmd === "trigger_offline") {
                     window.triggerOffline();
-                    termPrint("Offline Sinyal Koptu simülasyonu açılıyor...", "#ef4444");
+                    termPrint(translations[lang].term_trigoff, "#ef4444");
                 } else {
-                    termPrint(`Bilinmeyen komut: ${cmd}. Yardım için 'help' yazın.`, "#ef4444");
+                    termPrint(`${translations[lang].term_unknown_a}: ${cmd}. ${translations[lang].term_unknown_b}`, "#ef4444");
                 }
             });
         }
@@ -1916,8 +1970,8 @@
         });
         Object.defineProperty(window, "test", {
             get() {
-                console.log(TEST_MENU);
-                return TEST_MENU;
+                console.log(testMenuText());
+                return testMenuText();
             },
             configurable: true
         });
@@ -1932,14 +1986,14 @@
         const fallbackProjects = [
             {
                 name: "indir-gitsin",
-                description: "Birçok kaynaktan tek tıkla video ve fotoğraf indirin. TikTok, Instagram, YouTube, Pinterest ve daha fazlasını destekler!",
+                get description() { return translations[lang].fb1_desc; },
                 html_url: "https://github.com/ErhanEmir/indir-gitsin",
                 language: "Python",
                 topics: ["python", "downloader", "cli", "tiktok-downloader", "instagram-downloader", "youtube-downloader"]
             },
             {
                 name: "erhanemir.github.io",
-                description: "Kişisel web sitem ve portfolyom. Geliştirme süreçlerim ve projelerim hakkında bilgiler içerir.",
+                get description() { return translations[lang].fb2_desc; },
                 html_url: "https://github.com/ErhanEmir/erhanemir.github.io",
                 language: "HTML",
                 topics: ["html", "css", "javascript", "portfolio", "personal-website"]
@@ -1970,7 +2024,7 @@
             }
 
             grid.innerHTML = repos.map(r => {
-                const langDisplayName = r.language || "Diğer";
+                const langDisplayName = r.language || translations[lang].other;
                 const color = langColors[langDisplayName] || "#22d3ee";
                 const description = r.description || translations[lang].no_desc;
                 const projectTopics = r.topics && r.topics.length ? r.topics.slice(0, 3).map(t => `<span class="badge">${t}</span>`).join("") : "";
@@ -1992,7 +2046,7 @@
                             </div>
                             <div class="project-links">
                                 <a href="${r.html_url}" target="_blank" rel="noopener noreferrer" class="btn-repo">
-                                    <i class="fab fa-github"></i> GitHub'da İncele
+                                    <i class="fab fa-github"></i> ${translations[lang].view_repo}
                                 </a>
                             </div>
                         </div>
