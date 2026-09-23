@@ -905,6 +905,11 @@
         .collab-panel.collab-reveal { animation: collabReveal 0.25s ease; }
         @keyframes collabReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .collab-field input.invalid, .collab-field textarea.invalid, .collab-field select.invalid { border-color: #ff5c5c !important; }
+        .collab-field input[type="date"] { color: var(--text-primary); color-scheme: dark; }
+        [data-theme="light"] .collab-field input[type="date"] { color-scheme: light; }
+        .collab-note { color: var(--text-secondary); font-size: 0.8rem; margin: 0 0 12px; line-height: 1.55; }
+        .collab-count { text-align: right; font-size: 0.75rem; color: var(--text-secondary); margin-top: -8px; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
+        .collab-sub { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--glass-border); }
         .collab-err {
             display: none; margin-top: 12px; padding: 0.7rem 0.9rem;
             border-radius: 10px; font-size: 0.82rem; font-weight: 600;
@@ -1337,11 +1342,12 @@
             </div>
             <div class="collab-stepslabel" aria-hidden="true">
                 <span data-dotlabel="1" class="current"><b>01</b><em data-i18n="collab_step1">İş Birliği</em></span>
-                <span data-dotlabel="2"><b>02</b><em data-i18n="collab_step2">Bilgiler</em></span>
-                <span data-dotlabel="3"><b>03</b><em data-i18n="collab_step3">Detaylar</em></span>
+                <span data-dotlabel="2"><b>02</b><em data-i18n="collab_step2">Profil</em></span>
+                <span data-dotlabel="3"><b>03</b><em id="collabDot3" data-i18n="collab_step3">Proje</em></span>
+                <span data-dotlabel="4"><b>04</b><em data-i18n="collab_step4">İletişim</em></span>
             </div>
             <div class="collab-progress" aria-hidden="true">
-                <span id="collabP1" class="current"></span><span id="collabP2"></span><span id="collabP3"></span>
+                <span id="collabP1" class="current"></span><span id="collabP2"></span><span id="collabP3"></span><span id="collabP4"></span>
             </div>
 
             <!-- ADIM 1: Kategori -->
@@ -1366,7 +1372,7 @@
                 </div>
             </div>
 
-            <!-- ADIM 2: Detaylar -->
+            <!-- ADIM 2: Profil -->
             <div class="collab-step" data-step="2">
                 <!-- Proje / Yarışma -->
                 <div data-catpanel="project">
@@ -1381,28 +1387,101 @@
                         <div class="collab-field"><input type="text" id="collabSchoolName" data-i18n-ph="collab_school_name_ph" placeholder="Okul adı"></div>
                         <label class="collab-label" data-i18n="collab_school_web">Okul Web Sitesi (opsiyonel)</label>
                         <div class="collab-field"><input type="url" id="collabSchoolWeb" placeholder="https://..."></div>
+                        <label class="collab-label" data-i18n="collab_contact_name">İletişim Kurulacak Kişi *</label>
+                        <div class="collab-field"><input type="text" id="collabSchoolContact" data-i18n-ph="collab_contact_name_ph" placeholder="Ad Soyad"></div>
+                        <label class="collab-label" data-i18n="collab_person_phone">Telefon Numarası (opsiyonel)</label>
+                        <div class="collab-field"><input type="tel" id="collabSchoolPhone" placeholder="05__ ___ __ __"></div>
+                        <label class="collab-label" data-i18n="collab_srole_label">Kurumdaki Rolünüz</label>
+                        <div class="collab-chips" data-chips="srole" data-single="1">
+                            <button type="button" class="collab-chip" data-val="teacher">👨‍🏫 <span data-i18n="cx_sr_teach">Öğretmen</span></button>
+                            <button type="button" class="collab-chip" data-val="manager">👨‍💼 <span data-i18n="cx_sr_mgr">Yönetici</span></button>
+                            <button type="button" class="collab-chip" data-val="student">👨‍🎓 <span data-i18n="cx_sr_stu">Öğrenci</span></button>
+                            <button type="button" class="collab-chip" data-val="advisor">🧑‍🔬 <span data-i18n="cx_sr_adv">Proje danışmanı</span></button>
+                            <button type="button" class="collab-chip" data-val="other">👤 <span data-i18n="cx_sr_other">Diğer</span></button>
+                        </div>
+                        <label class="collab-label" data-i18n="collab_resp_label">Projeden Sorumlu Kişi *</label>
+                        <div class="collab-field"><input type="text" id="collabSchoolResp" data-i18n-ph="collab_contact_name_ph" placeholder="Ad Soyad"></div>
+                        <label class="collab-label" data-i18n="collab_teamsize_label">Proje Ekibi</label>
+                        <div class="collab-chips" data-chips="steamsize" data-single="1">
+                            <button type="button" class="collab-chip" data-val="1">1</button>
+                            <button type="button" class="collab-chip" data-val="2">2</button>
+                            <button type="button" class="collab-chip" data-val="3">3</button>
+                            <button type="button" class="collab-chip" data-val="4">4</button>
+                            <button type="button" class="collab-chip" data-val="5+">5+</button>
+                            <button type="button" class="collab-chip" data-val="10+">10+</button>
+                        </div>
+                        <label class="collab-label" data-i18n="collab_teamready_label">Takım Hazır mı?</label>
+                        <div class="collab-chips" data-chips="steamready" data-single="1">
+                            <button type="button" class="collab-chip" data-val="yes">✅ <span data-i18n="cx_yn_yes">Evet</span></button>
+                            <button type="button" class="collab-chip" data-val="partial">🟡 <span data-i18n="cx_tr_part">Kısmen</span></button>
+                            <button type="button" class="collab-chip" data-val="no">❌ <span data-i18n="cx_yn_no">Hayır</span></button>
+                        </div>
+                        <label class="collab-label" data-i18n="collab_advisor_label">Proje Danışmanı Var mı?</label>
+                        <div class="collab-chips" data-chips="advisor" data-single="1">
+                            <button type="button" class="collab-chip" data-val="yes">✅ <span data-i18n="cx_yn_yes2">Evet</span></button>
+                            <button type="button" class="collab-chip" data-val="no">❌ <span data-i18n="cx_yn_no2">Hayır</span></button>
+                        </div>
+                        <div data-cond="advisor=yes" style="display:none">
+                            <label class="collab-label" data-i18n="collab_advisor_name">Danışman Adı *</label>
+                            <div class="collab-field"><input type="text" id="collabAdvisorName" data-i18n-ph="collab_contact_name_ph" placeholder="Ad Soyad"></div>
+                        </div>
                     </div>
                     <div data-audpanel="company" style="display:none">
                         <label class="collab-label" data-i18n="collab_company_name">Firma / Marka Adı *</label>
                         <div class="collab-field"><input type="text" id="collabCompanyName" data-i18n-ph="collab_company_name_ph" placeholder="Firma / marka adı"></div>
                         <label class="collab-label" data-i18n="collab_company_web">Web Sitesi (opsiyonel)</label>
                         <div class="collab-field"><input type="url" id="collabCompanyWeb" placeholder="https://..."></div>
+                        <label class="collab-label" data-i18n="collab_contact_name">İletişim Kurulacak Kişi *</label>
+                        <div class="collab-field"><input type="text" id="collabCompanyContact" data-i18n-ph="collab_contact_name_ph" placeholder="Ad Soyad"></div>
+                        <label class="collab-label" data-i18n="collab_person_phone">Telefon Numarası (opsiyonel)</label>
+                        <div class="collab-field"><input type="tel" id="collabCompanyPhone" placeholder="05__ ___ __ __"></div>
+                        <label class="collab-label" data-i18n="collab_ctype_label">İş Birliği Türü</label>
+                        <div class="collab-chips" data-chips="ctype">
+                            <button type="button" class="collab-chip" data-val="sponsor">💰 <span data-i18n="cx_ct_spon">Sponsorluk</span></button>
+                            <button type="button" class="collab-chip" data-val="product">📦 <span data-i18n="cx_ct_prod">Ürün / Ekipman Desteği</span></button>
+                            <button type="button" class="collab-chip" data-val="corp">🏢 <span data-i18n="cx_ct_corp">Kurumsal İş Birliği</span></button>
+                            <button type="button" class="collab-chip" data-val="promo">📢 <span data-i18n="cx_ct_promo">Tanıtım</span></button>
+                            <button type="button" class="collab-chip" data-val="long">🤝 <span data-i18n="cx_ct_long">Uzun Dönem İş Birliği</span></button>
+                            <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_ct_other">Diğer</span></button>
+                        </div>
+                        <label class="collab-label" data-i18n="collab_stype_label">Destek Türü</label>
+                        <div class="collab-chips" data-chips="stype">
+                            <button type="button" class="collab-chip" data-val="fin">💵 <span data-i18n="cx_st_fin">Finansal</span></button>
+                            <button type="button" class="collab-chip" data-val="hw">🔧 <span data-i18n="cx_st_hw">Donanım</span></button>
+                            <button type="button" class="collab-chip" data-val="print">🖨️ <span data-i18n="cx_st_print">Üretim / 3D Baskı</span></button>
+                            <button type="button" class="collab-chip" data-val="svc">💻 <span data-i18n="cx_st_svc">Yazılım / Hizmet</span></button>
+                            <button type="button" class="collab-chip" data-val="prod">📦 <span data-i18n="cx_st_prod">Ürün</span></button>
+                            <button type="button" class="collab-chip" data-val="eq">🧰 <span data-i18n="cx_st_eq">Ekipman</span></button>
+                            <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_st_other">Diğer</span></button>
+                        </div>
+                        <label class="collab-label" data-i18n="collab_budget_label">Bütçe / Destek Miktarı (opsiyonel)</label>
+                        <div class="collab-chips" data-chips="budgethide" data-single="1" style="margin-bottom:8px">
+                            <button type="button" class="collab-chip" data-val="hide">🙈 <span data-i18n="cx_budget_hide">Kamuya açık değil / belirtmek istemiyorum</span></button>
+                        </div>
+                        <div class="collab-field"><input type="text" id="collabBudgetC" data-i18n-ph="collab_budget_ph" placeholder="Örn. 10.000 TL"></div>
                     </div>
                     <div data-audpanel="personal" style="display:none">
                         <label class="collab-label" data-i18n="collab_person_name">İsim Soyisim *</label>
                         <div class="collab-field"><input type="text" id="collabPersonName" data-i18n-ph="collab_person_name_ph" placeholder="Adın Soyadın"></div>
                         <label class="collab-label" data-i18n="collab_person_phone">Telefon Numarası (opsiyonel)</label>
                         <div class="collab-field"><input type="tel" id="collabPersonPhone" placeholder="05__ ___ __ __"></div>
-                    </div>
-                    <label class="collab-label"><span data-i18n="collab_sub_label">Proje Alanı</span> <small class="collab-opt" data-i18n="collab_optional">(opsiyonel)</small></label>
-                    <div class="collab-chips" id="collabSubChips">
-                        <button type="button" class="collab-chip" data-sub="dev">🔬 <span data-i18n="collab_sub_dev">Proje geliştirme</span></button>
-                        <button type="button" class="collab-chip" data-sub="contest">🏆 <span data-i18n="collab_sub_contest">Yarışma</span></button>
-                        <button type="button" class="collab-chip" data-sub="robot">🤖 <span data-i18n="collab_sub_robot">Robotik</span></button>
-                        <button type="button" class="collab-chip" data-sub="elec">⚡ <span data-i18n="collab_sub_elec">Elektronik</span></button>
-                        <button type="button" class="collab-chip" data-sub="sw">💻 <span data-i18n="collab_sub_sw">Yazılım</span></button>
-                        <button type="button" class="collab-chip" data-sub="edu">🎓 <span data-i18n="collab_sub_edu">Eğitim / Atölye</span></button>
-                        <button type="button" class="collab-chip" data-sub="other">💡 <span data-i18n="collab_sub_other">Diğer</span></button>
+                        <label class="collab-label" data-i18n="collab_self_label">Kendinizi Nasıl Tanımlarsınız?</label>
+                        <div class="collab-chips" data-chips="self" data-single="1">
+                            <button type="button" class="collab-chip" data-val="student">👨‍🎓 <span data-i18n="cx_self_stu">Öğrenci</span></button>
+                            <button type="button" class="collab-chip" data-val="dev">👨‍💻 <span data-i18n="cx_self_dev">Geliştirici</span></button>
+                            <button type="button" class="collab-chip" data-val="maker">🧑‍🔧 <span data-i18n="cx_self_mak">Maker</span></button>
+                            <button type="button" class="collab-chip" data-val="founder">🚀 <span data-i18n="cx_self_fou">Girişimci</span></button>
+                            <button type="button" class="collab-chip" data-val="other">👤 <span data-i18n="cx_self_other">Diğer</span></button>
+                        </div>
+                        <label class="collab-label" data-i18n="collab_intent_label">Ne Yapmak İstiyorsunuz?</label>
+                        <div class="collab-chips" data-chips="intent">
+                            <button type="button" class="collab-chip" data-val="idea">💡 <span data-i18n="cx_in_idea">Fikir paylaşmak</span></button>
+                            <button type="button" class="collab-chip" data-val="project">🤝 <span data-i18n="cx_in_proj">Proje yapmak</span></button>
+                            <button type="button" class="collab-chip" data-val="team">👥 <span data-i18n="cx_in_team">Ekip oluşturmak</span></button>
+                            <button type="button" class="collab-chip" data-val="contest">🏆 <span data-i18n="cx_in_cont">Yarışmaya hazırlanmak</span></button>
+                            <button type="button" class="collab-chip" data-val="tech">🔧 <span data-i18n="cx_in_tech">Teknik destek</span></button>
+                            <button type="button" class="collab-chip" data-val="other">💬 <span data-i18n="cx_in_other">Diğer</span></button>
+                        </div>
                     </div>
                 </div>
                 <!-- Reklam & Sponsorluk -->
@@ -1420,6 +1499,12 @@
                     </div>
                     <label class="collab-label" data-i18n="collab_company_name">Firma / Marka Adı *</label>
                     <div class="collab-field"><input type="text" id="collabSponsorBrand" data-i18n-ph="collab_company_name_ph" placeholder="Firma / marka adı"></div>
+                    <label class="collab-label" data-i18n="collab_company_web">Web Sitesi (opsiyonel)</label>
+                    <div class="collab-field"><input type="url" id="collabSponsorWeb" placeholder="https://..."></div>
+                    <label class="collab-label" data-i18n="collab_contact_name">İletişim Kurulacak Kişi *</label>
+                    <div class="collab-field"><input type="text" id="collabSponsorContact" data-i18n-ph="collab_contact_name_ph" placeholder="Ad Soyad"></div>
+                    <label class="collab-label" data-i18n="collab_person_phone">Telefon Numarası (opsiyonel)</label>
+                    <div class="collab-field"><input type="tel" id="collabSponsorPhone" placeholder="05__ ___ __ __"></div>
                 </div>
                 <!-- Diğer -->
                 <div data-catpanel="other" style="display:none">
@@ -1433,23 +1518,172 @@
                 </div>
             </div>
 
-            <!-- ADIM 3: İletişim -->
+            <!-- ADIM 3: Proje / İş Birliği Detayı -->
             <div class="collab-step" data-step="3">
+                <!-- Proje / Yarışma detayı -->
+                <div data-catpanel="project" style="display:none">
+                    <label class="collab-label" data-i18n="collab_ptype_label">Proje Türü * <small class="collab-opt" data-i18n="collab_multi_hint">(birden fazla seçebilirsin)</small></label>
+                    <div class="collab-chips" data-chips="ptype">
+                        <button type="button" class="collab-chip" data-val="sci">🔬 <span data-i18n="cx_pt_sci">Bilim / Ar-Ge</span></button>
+                        <button type="button" class="collab-chip" data-val="robot">🤖 <span data-i18n="cx_pt_rob">Robotik</span></button>
+                        <button type="button" class="collab-chip" data-val="elec">⚡ <span data-i18n="cx_pt_ele">Elektronik</span></button>
+                        <button type="button" class="collab-chip" data-val="sw">💻 <span data-i18n="cx_pt_sw">Yazılım</span></button>
+                        <button type="button" class="collab-chip" data-val="iot">🌐 <span data-i18n="cx_pt_iot">IoT</span></button>
+                        <button type="button" class="collab-chip" data-val="3d">🖨️ <span data-i18n="cx_pt_3d">3D Tasarım / Prototipleme</span></button>
+                        <button type="button" class="collab-chip" data-val="contest">🏆 <span data-i18n="cx_pt_comp">Yarışma</span></button>
+                        <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_pt_other">Diğer</span></button>
+                    </div>
+                    <label class="collab-label" data-i18n="collab_pstatus_label">Proje Durumu *</label>
+                    <div class="collab-chips" data-chips="pstatus" data-single="1">
+                        <button type="button" class="collab-chip" data-val="idea">💡 <span data-i18n="cx_ps_idea">Fikir aşamasında</span></button>
+                        <button type="button" class="collab-chip" data-val="plan">📝 <span data-i18n="cx_ps_plan">Planlama aşamasında</span></button>
+                        <button type="button" class="collab-chip" data-val="dev">🔧 <span data-i18n="cx_ps_dev">Geliştirme aşamasında</span></button>
+                        <button type="button" class="collab-chip" data-val="proto">🧪 <span data-i18n="cx_ps_proto">Prototip hazır</span></button>
+                        <button type="button" class="collab-chip" data-val="done">🚀 <span data-i18n="cx_ps_done">Tamamlandı</span></button>
+                    </div>
+                    <label class="collab-label" data-i18n="collab_pteam_label">Ekip Durumu *</label>
+                    <div class="collab-chips" data-chips="pteam" data-single="1">
+                        <button type="button" class="collab-chip" data-val="solo">👤 <span data-i18n="cx_ptm_solo">Tek kişiyim</span></button>
+                        <button type="button" class="collab-chip" data-val="has">👥 <span data-i18n="cx_ptm_has">Ekibimiz var</span></button>
+                        <button type="button" class="collab-chip" data-val="want">🤝 <span data-i18n="cx_ptm_want">Ekip oluşturmak istiyorum</span></button>
+                    </div>
+                    <div data-cond="pteam=has" style="display:none">
+                        <label class="collab-label" data-i18n="collab_pteamsize_label">Ekip Kaç Kişi? *</label>
+                        <div class="collab-chips" data-chips="pteamsize" data-single="1">
+                            <button type="button" class="collab-chip" data-val="1">1</button>
+                            <button type="button" class="collab-chip" data-val="2">2</button>
+                            <button type="button" class="collab-chip" data-val="3">3</button>
+                            <button type="button" class="collab-chip" data-val="4">4</button>
+                            <button type="button" class="collab-chip" data-val="5+">5+</button>
+                            <button type="button" class="collab-chip" data-val="10+">10+</button>
+                        </div>
+                        <label class="collab-label"><span data-i18n="collab_proles_label">Ekipte Hangi Roller Var?</span> <small class="collab-opt" data-i18n="collab_multi_hint">(birden fazla seçebilirsin)</small></label>
+                        <div class="collab-chips" data-chips="proles">
+                            <button type="button" class="collab-chip" data-val="sw">💻 <span data-i18n="cx_rl_sw">Yazılım</span></button>
+                            <button type="button" class="collab-chip" data-val="elec">⚡ <span data-i18n="cx_rl_ele">Elektronik</span></button>
+                            <button type="button" class="collab-chip" data-val="mech">🔧 <span data-i18n="cx_rl_mek">Mekanik</span></button>
+                            <button type="button" class="collab-chip" data-val="design">🎨 <span data-i18n="cx_rl_des">Tasarım</span></button>
+                            <button type="button" class="collab-chip" data-val="pm">📊 <span data-i18n="cx_rl_pm">Proje Yönetimi</span></button>
+                            <button type="button" class="collab-chip" data-val="rd">🧪 <span data-i18n="cx_rl_rd">Ar-Ge</span></button>
+                            <button type="button" class="collab-chip" data-val="mobile">📱 <span data-i18n="cx_rl_mob">Mobil</span></button>
+                            <button type="button" class="collab-chip" data-val="web">🌐 <span data-i18n="cx_rl_web">Web</span></button>
+                            <button type="button" class="collab-chip" data-val="robot">🤖 <span data-i18n="cx_rl_rob">Robotik</span></button>
+                            <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_rl_other">Diğer</span></button>
+                        </div>
+                    </div>
+                    <div data-cond="pteam=want" style="display:none">
+                        <p class="collab-note" data-i18n="collab_pwant_note">Ekip oluşturmak / takım arkadaşı aramak istiyorum — aradığın rolleri seçebilirsin:</p>
+                        <div class="collab-chips" data-chips="pwant">
+                            <button type="button" class="collab-chip" data-val="sw">💻 <span data-i18n="cx_rl_sw2">Yazılım</span></button>
+                            <button type="button" class="collab-chip" data-val="elec">⚡ <span data-i18n="cx_rl_ele2">Elektronik</span></button>
+                            <button type="button" class="collab-chip" data-val="mech">🔧 <span data-i18n="cx_rl_mek2">Mekanik</span></button>
+                            <button type="button" class="collab-chip" data-val="design">🎨 <span data-i18n="cx_rl_des2">Tasarım</span></button>
+                            <button type="button" class="collab-chip" data-val="pm">📊 <span data-i18n="cx_rl_pm2">Proje Yönetimi</span></button>
+                            <button type="button" class="collab-chip" data-val="rd">🧪 <span data-i18n="cx_rl_rd2">Ar-Ge</span></button>
+                            <button type="button" class="collab-chip" data-val="mobile">📱 <span data-i18n="cx_rl_mob2">Mobil</span></button>
+                            <button type="button" class="collab-chip" data-val="web">🌐 <span data-i18n="cx_rl_web2">Web</span></button>
+                            <button type="button" class="collab-chip" data-val="robot">🤖 <span data-i18n="cx_rl_rob2">Robotik</span></button>
+                            <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_rl_other2">Diğer</span></button>
+                        </div>
+                    </div>
+                    <div data-cond="ptype=contest" style="display:none" class="collab-sub">
+                        <label class="collab-label" data-i18n="collab_comp_name">Yarışmanın Adı *</label>
+                        <div class="collab-field"><input type="text" id="collabCompName" data-i18n-ph="collab_comp_name_ph" placeholder="Yarışma adı"></div>
+                        <label class="collab-label" data-i18n="collab_comp_date">Yarışma Tarihi</label>
+                        <div class="collab-field"><input type="date" id="collabCompDate"></div>
+                        <label class="collab-label" data-i18n="collab_comp_deadline">Son Başvuru Tarihi</label>
+                        <div class="collab-field"><input type="date" id="collabCompDeadline"></div>
+                        <label class="collab-label" data-i18n="collab_comp_cat">Kategori</label>
+                        <div class="collab-field"><input type="text" id="collabCompCat" data-i18n-ph="collab_comp_cat_ph" placeholder="Örn. Temel Seviye Çizgi İzleyen"></div>
+                        <label class="collab-label" data-i18n="collab_compready_label">Takımınız Hazır mı?</label>
+                        <div class="collab-chips" data-chips="compready" data-single="1">
+                            <button type="button" class="collab-chip" data-val="yes">✅ <span data-i18n="cx_yn_yes3">Evet</span></button>
+                            <button type="button" class="collab-chip" data-val="partial">🟡 <span data-i18n="cx_tr_part2">Kısmen</span></button>
+                            <button type="button" class="collab-chip" data-val="no">❌ <span data-i18n="cx_yn_no3">Hayır, ekip arıyorum</span></button>
+                        </div>
+                        <div data-cond="compready=no" style="display:none">
+                            <label class="collab-label"><span data-i18n="collab_compwant_label">Aradığınız Ekip Rolleri</span> <small class="collab-opt" data-i18n="collab_multi_hint">(birden fazla seçebilirsin)</small></label>
+                            <div class="collab-chips" data-chips="compwant">
+                                <button type="button" class="collab-chip" data-val="sw">💻 <span data-i18n="cx_rl_sw3">Yazılım</span></button>
+                                <button type="button" class="collab-chip" data-val="elec">⚡ <span data-i18n="cx_rl_ele3">Elektronik</span></button>
+                                <button type="button" class="collab-chip" data-val="mech">🔧 <span data-i18n="cx_rl_mek3">Mekanik</span></button>
+                                <button type="button" class="collab-chip" data-val="design">🎨 <span data-i18n="cx_rl_des3">Tasarım</span></button>
+                                <button type="button" class="collab-chip" data-val="pm">📊 <span data-i18n="cx_rl_pm3">Proje Yönetimi</span></button>
+                                <button type="button" class="collab-chip" data-val="rd">🧪 <span data-i18n="cx_rl_rd3">Ar-Ge</span></button>
+                                <button type="button" class="collab-chip" data-val="mobile">📱 <span data-i18n="cx_rl_mob3">Mobil</span></button>
+                                <button type="button" class="collab-chip" data-val="web">🌐 <span data-i18n="cx_rl_web3">Web</span></button>
+                                <button type="button" class="collab-chip" data-val="robot">🤖 <span data-i18n="cx_rl_rob3">Robotik</span></button>
+                                <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_rl_other3">Diğer</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collab-sub">
+                        <label class="collab-label" data-i18n="collab_links_label">Proje Bağlantıları (opsiyonel)</label>
+                        <div class="collab-field"><input type="url" id="collabLinkGh" data-i18n-ph="collab_link_gh_ph" placeholder="GitHub repository bağlantısı (https://...)"></div>
+                        <div class="collab-field"><input type="url" id="collabLinkWeb" data-i18n-ph="collab_link_web_ph" placeholder="Proje web sitesi (https://...)"></div>
+                        <div class="collab-field"><input type="url" id="collabLinkVideo" data-i18n-ph="collab_link_video_ph" placeholder="Proje videosu (https://...)"></div>
+                        <label class="collab-label" data-i18n="collab_desc_label">Projenizi Kısaca Anlatın *</label>
+                        <div class="collab-field"><textarea id="collabProjDesc" data-i18n-ph="collab_desc_ph" placeholder="Projeniz neyi çözmeye çalışıyor? Şu anda hangi aşamada?" maxlength="1000"></textarea></div>
+                        <div class="collab-count" id="collabDescCount">0 / 1000</div>
+                    </div>
+                </div>
+                <!-- Sponsor detayı -->
+                <div data-catpanel="sponsor" style="display:none">
+                    <label class="collab-label" data-i18n="collab_ctype_label">İş Birliği Türü * <small class="collab-opt" data-i18n="collab_multi_hint">(birden fazla seçebilirsin)</small></label>
+                    <div class="collab-chips" data-chips="sctype">
+                        <button type="button" class="collab-chip" data-val="sponsor">💰 <span data-i18n="cx_ct_spon2">Sponsorluk</span></button>
+                        <button type="button" class="collab-chip" data-val="product">📦 <span data-i18n="cx_ct_prod2">Ürün / Ekipman Desteği</span></button>
+                        <button type="button" class="collab-chip" data-val="corp">🏢 <span data-i18n="cx_ct_corp2">Kurumsal İş Birliği</span></button>
+                        <button type="button" class="collab-chip" data-val="promo">📢 <span data-i18n="cx_ct_promo2">Tanıtım</span></button>
+                        <button type="button" class="collab-chip" data-val="long">🤝 <span data-i18n="cx_ct_long2">Uzun Dönem İş Birliği</span></button>
+                        <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_ct_other2">Diğer</span></button>
+                    </div>
+                    <label class="collab-label" data-i18n="collab_stype_label">Destek Türü</label>
+                    <div class="collab-chips" data-chips="sstype">
+                        <button type="button" class="collab-chip" data-val="fin">💵 <span data-i18n="cx_st_fin2">Finansal</span></button>
+                        <button type="button" class="collab-chip" data-val="hw">🔧 <span data-i18n="cx_st_hw2">Donanım</span></button>
+                        <button type="button" class="collab-chip" data-val="print">🖨️ <span data-i18n="cx_st_print2">Üretim / 3D Baskı</span></button>
+                        <button type="button" class="collab-chip" data-val="svc">💻 <span data-i18n="cx_st_svc2">Yazılım / Hizmet</span></button>
+                        <button type="button" class="collab-chip" data-val="prod">📦 <span data-i18n="cx_st_prod2">Ürün</span></button>
+                        <button type="button" class="collab-chip" data-val="eq">🧰 <span data-i18n="cx_st_eq2">Ekipman</span></button>
+                        <button type="button" class="collab-chip" data-val="other">💡 <span data-i18n="cx_st_other2">Diğer</span></button>
+                    </div>
+                    <label class="collab-label" data-i18n="collab_budget_label">Bütçe / Destek Miktarı (opsiyonel)</label>
+                    <div class="collab-chips" data-chips="sbudgethide" data-single="1" style="margin-bottom:8px">
+                        <button type="button" class="collab-chip" data-val="hide">🙈 <span data-i18n="cx_budget_hide2">Kamuya açık değil / belirtmek istemiyorum</span></button>
+                    </div>
+                    <div class="collab-field"><input type="text" id="collabBudgetS" data-i18n-ph="collab_budget_ph" placeholder="Örn. 10.000 TL"></div>
+                </div>
+                <!-- Diğer: ek bilgi -->
+                <div data-catpanel="other" style="display:none">
+                    <p class="collab-note" data-i18n="collab_other_note">Varsa proje dosyan / dokümanın bağlantısını ekleyebilirsin (Google Drive, GitHub, OneDrive veya proje sayfası). Detayları son adımda anlatabilirsin.</p>
+                    <label class="collab-label" data-i18n="collab_doc_label">Proje Dosyası / Dokümanı Bağlantısı (opsiyonel)</label>
+                    <div class="collab-field"><input type="url" id="collabDocLink" placeholder="https://..."></div>
+                </div>
+                <div class="collab-err" id="collabErr3"></div>
+                <div class="collab-nav">
+                    <button class="collab-back" id="collabBack2" type="button" data-i18n="collab_back">← Geri</button>
+                    <button class="collab-next" id="collabTo4" type="button" data-i18n="collab_next">Devam Et →</button>
+                </div>
+            </div>
+
+            <!-- ADIM 4: İletişim -->
+            <div class="collab-step" data-step="4">
                 <label class="collab-label" data-i18n="collab_email">E-posta Adresin *</label>
                 <div class="collab-field"><input type="email" id="collabEmail" placeholder="ornek@mail.com"></div>
                 <label class="collab-label" data-i18n="collab_subject">Konu Başlığı *</label>
                 <div class="collab-field"><input type="text" id="collabSubject" data-i18n-ph="collab_subject_ph" placeholder="Konu başlığı"></div>
                 <label class="collab-label" data-i18n="collab_message">Detaylı Mesajın *</label>
                 <div class="collab-field"><textarea id="collabMsg" data-i18n-ph="collab_message_ph" placeholder="Detayları yaz..."></textarea></div>
-                <div class="collab-err" id="collabErr3"></div>
+                <div class="collab-err" id="collabErr4"></div>
                 <div class="collab-nav">
-                    <button class="collab-back" id="collabBack2" type="button" data-i18n="collab_back">← Geri</button>
+                    <button class="collab-back" id="collabBack3" type="button" data-i18n="collab_back">← Geri</button>
                     <button class="collab-next" id="collabSend" type="button" data-i18n="collab_send">🚀 Gönder</button>
                 </div>
             </div>
 
             <!-- BAŞARI -->
-            <div class="collab-step" data-step="4">
+            <div class="collab-step" data-step="5">
                 <div class="collab-success">
                     <div class="big" id="collabSuccessIco">🎉</div>
                     <h4 id="collabSuccessT" data-i18n="collab_success_t">Talebin ulaştı!</h4>
@@ -1524,7 +1758,7 @@
                 fb2_desc: "Kişisel web sitem ve portfolyom. Geliştirme süreçlerim ve projelerim hakkında bilgiler içerir.",
                 collab_btn: "İş Birliği", collab_title: "🤝 Birlikte Üretelim",
                 collab_sub: "Bir proje fikrin, yarışma teklifin veya iş birliği önerin mi var? Birkaç adımda bize anlat.",
-                collab_step1: "İş Birliği", collab_step2: "Bilgiler", collab_step3: "Detaylar",
+                collab_step1: "İş Birliği", collab_step2: "Profil", collab_step3: "Proje",
                 collab_next: "Devam Et →", collab_back: "← Geri",
                 collab_send: "🚀 Gönder", collab_sending: "Gönderiliyor...",
                 collab_close: "Kapat",
@@ -1534,9 +1768,67 @@
                 collab_aud_label: "Hedef Kitle",
                 collab_aud_school: "Okul / Kurum", collab_aud_company: "Firma / Şirket", collab_aud_personal: "Bireysel / Kişisel",
                 collab_aud_school_d: "Okul veya kurumsal proje", collab_aud_company_d: "Kurumsal iş birliği", collab_aud_personal_d: "Kişisel proje fikri",
-                collab_sub_label: "Proje Alanı", collab_optional: "(opsiyonel)",
-                collab_sub_dev: "Proje geliştirme", collab_sub_contest: "Yarışma", collab_sub_robot: "Robotik",
-                collab_sub_elec: "Elektronik", collab_sub_sw: "Yazılım", collab_sub_edu: "Eğitim / Atölye", collab_sub_other: "Diğer",
+                collab_step4: "İletişim", collab_step3x: "Ek Bilgi",
+                collab_multi_hint: "(birden fazla seçebilirsin)",
+                collab_contact_name: "İletişim Kurulacak Kişi *", collab_contact_name_ph: "Ad Soyad",
+                collab_srole_label: "Kurumdaki Rolünüz",
+                cx_sr_teach: "Öğretmen", cx_sr_mgr: "Yönetici", cx_sr_stu: "Öğrenci", cx_sr_adv: "Proje danışmanı", cx_sr_other: "Diğer",
+                collab_resp_label: "Projeden Sorumlu Kişi *",
+                collab_teamsize_label: "Proje Ekibi",
+                collab_teamready_label: "Takım Hazır mı?",
+                cx_yn_yes: "Evet", cx_tr_part: "Kısmen", cx_yn_no: "Hayır",
+                collab_advisor_label: "Proje Danışmanı Var mı?",
+                cx_yn_yes2: "Evet", cx_yn_no2: "Hayır",
+                collab_advisor_name: "Danışman Adı *",
+                collab_ctype_label: "İş Birliği Türü", collab_stype_label: "Destek Türü",
+                cx_ct_spon: "Sponsorluk", cx_ct_prod: "Ürün / Ekipman Desteği", cx_ct_corp: "Kurumsal İş Birliği",
+                cx_ct_promo: "Tanıtım", cx_ct_long: "Uzun Dönem İş Birliği", cx_ct_other: "Diğer",
+                cx_st_fin: "Finansal", cx_st_hw: "Donanım", cx_st_print: "Üretim / 3D Baskı", cx_st_svc: "Yazılım / Hizmet",
+                cx_st_prod: "Ürün", cx_st_eq: "Ekipman", cx_st_other: "Diğer",
+                collab_budget_label: "Bütçe / Destek Miktarı (opsiyonel)", collab_budget_ph: "Örn. 10.000 TL",
+                cx_budget_hide: "Kamuya açık değil / belirtmek istemiyorum",
+                collab_self_label: "Kendinizi Nasıl Tanımlarsınız?", collab_intent_label: "Ne Yapmak İstiyorsunuz?",
+                cx_self_stu: "Öğrenci", cx_self_dev: "Geliştirici", cx_self_mak: "Maker", cx_self_fou: "Girişimci", cx_self_other: "Diğer",
+                cx_in_idea: "Fikir paylaşmak", cx_in_proj: "Proje yapmak", cx_in_team: "Ekip oluşturmak",
+                cx_in_cont: "Yarışmaya hazırlanmak", cx_in_tech: "Teknik destek", cx_in_other: "Diğer",
+                collab_ptype_label: "Proje Türü *",
+                cx_pt_sci: "Bilim / Ar-Ge", cx_pt_rob: "Robotik", cx_pt_ele: "Elektronik", cx_pt_sw: "Yazılım",
+                cx_pt_iot: "IoT", cx_pt_3d: "3D Tasarım / Prototipleme", cx_pt_comp: "Yarışma", cx_pt_other: "Diğer",
+                collab_pstatus_label: "Proje Durumu *",
+                cx_ps_idea: "Fikir aşamasında", cx_ps_plan: "Planlama aşamasında", cx_ps_dev: "Geliştirme aşamasında",
+                cx_ps_proto: "Prototip hazır", cx_ps_done: "Tamamlandı",
+                collab_pteam_label: "Ekip Durumu *",
+                cx_ptm_solo: "Tek kişiyim", cx_ptm_has: "Ekibimiz var", cx_ptm_want: "Ekip oluşturmak istiyorum",
+                collab_pteamsize_label: "Ekip Kaç Kişi? *", collab_proles_label: "Ekipte Hangi Roller Var?",
+                cx_rl_sw: "Yazılım", cx_rl_ele: "Elektronik", cx_rl_mek: "Mekanik", cx_rl_des: "Tasarım", cx_rl_pm: "Proje Yönetimi",
+                cx_rl_rd: "Ar-Ge", cx_rl_mob: "Mobil", cx_rl_web: "Web", cx_rl_rob: "Robotik", cx_rl_other: "Diğer",
+                cx_rl_sw2: "Yazılım", cx_rl_ele2: "Elektronik", cx_rl_mek2: "Mekanik", cx_rl_des2: "Tasarım", cx_rl_pm2: "Proje Yönetimi",
+                cx_rl_rd2: "Ar-Ge", cx_rl_mob2: "Mobil", cx_rl_web2: "Web", cx_rl_rob2: "Robotik", cx_rl_other2: "Diğer",
+                cx_rl_sw3: "Yazılım", cx_rl_ele3: "Elektronik", cx_rl_mek3: "Mekanik", cx_rl_des3: "Tasarım", cx_rl_pm3: "Proje Yönetimi",
+                cx_rl_rd3: "Ar-Ge", cx_rl_mob3: "Mobil", cx_rl_web3: "Web", cx_rl_rob3: "Robotik", cx_rl_other3: "Diğer",
+                collab_pwant_note: "Ekip oluşturmak / takım arkadaşı aramak istiyorum — aradığın rolleri seçebilirsin:",
+                collab_comp_name: "Yarışmanın Adı *", collab_comp_name_ph: "Yarışma adı",
+                collab_comp_date: "Yarışma Tarihi", collab_comp_deadline: "Son Başvuru Tarihi",
+                collab_comp_cat: "Kategori", collab_comp_cat_ph: "Örn. Temel Seviye Çizgi İzleyen",
+                collab_compready_label: "Takımınız Hazır mı?",
+                cx_yn_yes3: "Evet", cx_tr_part2: "Kısmen", cx_yn_no3: "Hayır, ekip arıyorum",
+                collab_compwant_label: "Aradığınız Ekip Rolleri",
+                collab_links_label: "Proje Bağlantıları (opsiyonel)",
+                collab_link_gh_ph: "GitHub repository bağlantısı (https://...)", collab_link_web_ph: "Proje web sitesi (https://...)",
+                collab_link_video_ph: "Proje videosu (https://...)",
+                collab_desc_label: "Projenizi Kısaca Anlatın *", collab_desc_ph: "Projeniz neyi çözmeye çalışıyor? Şu anda hangi aşamada?",
+                cx_ct_spon2: "Sponsorluk", cx_ct_prod2: "Ürün / Ekipman Desteği", cx_ct_corp2: "Kurumsal İş Birliği",
+                cx_ct_promo2: "Tanıtım", cx_ct_long2: "Uzun Dönem İş Birliği", cx_ct_other2: "Diğer",
+                cx_st_fin2: "Finansal", cx_st_hw2: "Donanım", cx_st_print2: "Üretim / 3D Baskı", cx_st_svc2: "Yazılım / Hizmet",
+                cx_st_prod2: "Ürün", cx_st_eq2: "Ekipman", cx_st_other2: "Diğer",
+                cx_budget_hide2: "Kamuya açık değil / belirtmek istemiyorum",
+                collab_other_note: "Varsa proje dosyan / dokümanın bağlantısını ekleyebilirsin (Google Drive, GitHub, OneDrive veya proje sayfası). Detayları son adımda anlatabilirsin.",
+                collab_doc_label: "Proje Dosyası / Dokümanı Bağlantısı (opsiyonel)",
+                collab_success_contest_t: "🏆 Yarışma başvurun ulaştı!",
+                collab_success_contest_d: "Yarışma başvurunu aldım. Detaylarını inceleyip en kısa sürede dönüş yapacağım.",
+                collab_err_url: "Geçerli bir bağlantı girin (https:// ile başlamalı).",
+                collab_err_phone: "Geçerli bir telefon girin veya boş bırakın.",
+                collab_err_pick: "Devam etmek için en az bir seçim yap.",
                 collab_school_name: "Okul Adı *", collab_school_name_ph: "Okul adı",
                 collab_school_web: "Okul Web Sitesi (opsiyonel)",
                 collab_company_name: "Firma / Marka Adı *", collab_company_name_ph: "Firma / marka adı",
@@ -1626,7 +1918,7 @@
                 fb2_desc: "My personal website and portfolio. Includes my development process and projects.",
                 collab_btn: "Collaborate", collab_title: "🤝 Let's Build Together",
                 collab_sub: "Have a project idea, competition offer or collaboration proposal? Tell us in a few steps.",
-                collab_step1: "Collaboration", collab_step2: "Info", collab_step3: "Details",
+                collab_step1: "Collaboration", collab_step2: "Profile", collab_step3: "Project",
                 collab_next: "Continue →", collab_back: "← Back",
                 collab_send: "🚀 Send", collab_sending: "Sending...",
                 collab_close: "Close",
@@ -1636,9 +1928,67 @@
                 collab_aud_label: "Target Audience",
                 collab_aud_school: "School / Institution", collab_aud_company: "Company / Brand", collab_aud_personal: "Individual / Personal",
                 collab_aud_school_d: "School or institutional project", collab_aud_company_d: "Corporate collaboration", collab_aud_personal_d: "Personal project idea",
-                collab_sub_label: "Project Field", collab_optional: "(optional)",
-                collab_sub_dev: "Project development", collab_sub_contest: "Competition", collab_sub_robot: "Robotics",
-                collab_sub_elec: "Electronics", collab_sub_sw: "Software", collab_sub_edu: "Training / Workshop", collab_sub_other: "Other",
+                collab_step4: "Contact", collab_step3x: "Extra Info",
+                collab_multi_hint: "(you can select more than one)",
+                collab_contact_name: "Contact Person *", collab_contact_name_ph: "Full name",
+                collab_srole_label: "Your Role at the Institution",
+                cx_sr_teach: "Teacher", cx_sr_mgr: "Manager", cx_sr_stu: "Student", cx_sr_adv: "Project advisor", cx_sr_other: "Other",
+                collab_resp_label: "Person Responsible for the Project *",
+                collab_teamsize_label: "Project Team",
+                collab_teamready_label: "Is the Team Ready?",
+                cx_yn_yes: "Yes", cx_tr_part: "Partially", cx_yn_no: "No",
+                collab_advisor_label: "Is There a Project Advisor?",
+                cx_yn_yes2: "Yes", cx_yn_no2: "No",
+                collab_advisor_name: "Advisor Name *",
+                collab_ctype_label: "Collaboration Type", collab_stype_label: "Support Type",
+                cx_ct_spon: "Sponsorship", cx_ct_prod: "Product / Equipment Support", cx_ct_corp: "Corporate Collaboration",
+                cx_ct_promo: "Promotion", cx_ct_long: "Long-Term Collaboration", cx_ct_other: "Other",
+                cx_st_fin: "Financial", cx_st_hw: "Hardware", cx_st_print: "Manufacturing / 3D Printing", cx_st_svc: "Software / Service",
+                cx_st_prod: "Product", cx_st_eq: "Equipment", cx_st_other: "Other",
+                collab_budget_label: "Budget / Support Amount (optional)", collab_budget_ph: "E.g. 10,000 TL",
+                cx_budget_hide: "Not public / prefer not to say",
+                collab_self_label: "How Do You Describe Yourself?", collab_intent_label: "What Do You Want to Do?",
+                cx_self_stu: "Student", cx_self_dev: "Developer", cx_self_mak: "Maker", cx_self_fou: "Founder", cx_self_other: "Other",
+                cx_in_idea: "Share an idea", cx_in_proj: "Build a project", cx_in_team: "Form a team",
+                cx_in_cont: "Prepare for a competition", cx_in_tech: "Technical support", cx_in_other: "Other",
+                collab_ptype_label: "Project Type *",
+                cx_pt_sci: "Science / R&D", cx_pt_rob: "Robotics", cx_pt_ele: "Electronics", cx_pt_sw: "Software",
+                cx_pt_iot: "IoT", cx_pt_3d: "3D Design / Prototyping", cx_pt_comp: "Competition", cx_pt_other: "Other",
+                collab_pstatus_label: "Project Status *",
+                cx_ps_idea: "Idea stage", cx_ps_plan: "Planning stage", cx_ps_dev: "In development",
+                cx_ps_proto: "Prototype ready", cx_ps_done: "Completed",
+                collab_pteam_label: "Team Status *",
+                cx_ptm_solo: "Just me", cx_ptm_has: "We have a team", cx_ptm_want: "I want to form a team",
+                collab_pteamsize_label: "How Many in the Team? *", collab_proles_label: "Which Roles Are in the Team?",
+                cx_rl_sw: "Software", cx_rl_ele: "Electronics", cx_rl_mek: "Mechanical", cx_rl_des: "Design", cx_rl_pm: "Project Management",
+                cx_rl_rd: "R&D", cx_rl_mob: "Mobile", cx_rl_web: "Web", cx_rl_rob: "Robotics", cx_rl_other: "Other",
+                cx_rl_sw2: "Software", cx_rl_ele2: "Electronics", cx_rl_mek2: "Mechanical", cx_rl_des2: "Design", cx_rl_pm2: "Project Management",
+                cx_rl_rd2: "R&D", cx_rl_mob2: "Mobile", cx_rl_web2: "Web", cx_rl_rob2: "Robotics", cx_rl_other2: "Other",
+                cx_rl_sw3: "Software", cx_rl_ele3: "Electronics", cx_rl_mek3: "Mechanical", cx_rl_des3: "Design", cx_rl_pm3: "Project Management",
+                cx_rl_rd3: "R&D", cx_rl_mob3: "Mobile", cx_rl_web3: "Web", cx_rl_rob3: "Robotics", cx_rl_other3: "Other",
+                collab_pwant_note: "I want to form a team / am looking for teammates — you can select the roles you're looking for:",
+                collab_comp_name: "Competition Name *", collab_comp_name_ph: "Competition name",
+                collab_comp_date: "Competition Date", collab_comp_deadline: "Application Deadline",
+                collab_comp_cat: "Category", collab_comp_cat_ph: "E.g. Basic Line Follower",
+                collab_compready_label: "Is Your Team Ready?",
+                cx_yn_yes3: "Yes", cx_tr_part2: "Partially", cx_yn_no3: "No, looking for a team",
+                collab_compwant_label: "Team Roles You're Looking For",
+                collab_links_label: "Project Links (optional)",
+                collab_link_gh_ph: "GitHub repository link (https://...)", collab_link_web_ph: "Project website (https://...)",
+                collab_link_video_ph: "Project video (https://...)",
+                collab_desc_label: "Briefly Describe Your Project *", collab_desc_ph: "What problem does your project solve? What stage is it at?",
+                cx_ct_spon2: "Sponsorship", cx_ct_prod2: "Product / Equipment Support", cx_ct_corp2: "Corporate Collaboration",
+                cx_ct_promo2: "Promotion", cx_ct_long2: "Long-Term Collaboration", cx_ct_other2: "Other",
+                cx_st_fin2: "Financial", cx_st_hw2: "Hardware", cx_st_print2: "Manufacturing / 3D Printing", cx_st_svc2: "Software / Service",
+                cx_st_prod2: "Product", cx_st_eq2: "Equipment", cx_st_other2: "Other",
+                cx_budget_hide2: "Not public / prefer not to say",
+                collab_other_note: "If you have one, you can add your project file / document link (Google Drive, GitHub, OneDrive or project page). You can explain the details in the last step.",
+                collab_doc_label: "Project File / Document Link (optional)",
+                collab_success_contest_t: "🏆 Your competition entry is in!",
+                collab_success_contest_d: "I've received your competition entry. I'll review the details and get back to you soon.",
+                collab_err_url: "Please enter a valid link (must start with https://).",
+                collab_err_phone: "Please enter a valid phone number or leave it empty.",
+                collab_err_pick: "Please make at least one selection to continue.",
                 collab_school_name: "School Name *", collab_school_name_ph: "School name",
                 collab_school_web: "School Website (optional)",
                 collab_company_name: "Company / Brand Name *", collab_company_name_ph: "Company / brand name",
@@ -3004,10 +3354,10 @@
             var overlay = document.getElementById("collabOverlay");
             var fab = document.getElementById("collabFab");
             if (!overlay || !fab) return;
-            var state = { cat: null, aud: null, sector: null, sub: null };
+            var state = { cat: null, aud: null, sector: null };
             var $ = function (id) { return document.getElementById(id); };
             var steps = overlay.querySelectorAll(".collab-step");
-            var P = [$("collabP1"), $("collabP2"), $("collabP3")];
+            var P = [$("collabP1"), $("collabP2"), $("collabP3"), $("collabP4")];
             var dots = overlay.querySelectorAll("[data-dotlabel]");
             var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -3027,6 +3377,70 @@
                 panel.classList.remove("collab-reveal");
                 void panel.offsetWidth; // animasyonu yeniden tetikle
                 panel.classList.add("collab-reveal");
+            }
+
+            // Jenerik chip motoru: data-chips grubu; data-single="1" ise tek seçim, yoksa çoklu
+            function chipVals(group, scope) {
+                scope = scope || overlay;
+                var box = scope.querySelector('[data-chips="' + group + '"]');
+                if (!box) return [];
+                return Array.prototype.map.call(box.querySelectorAll(".collab-chip.selected"), function (c) {
+                    return c.getAttribute("data-val");
+                });
+            }
+            function chipVal(group, scope) {
+                var v = chipVals(group, scope);
+                return v.length ? v[0] : null;
+            }
+            function chipTexts(group, scope) {
+                scope = scope || overlay;
+                var box = scope.querySelector('[data-chips="' + group + '"]');
+                if (!box) return [];
+                return Array.prototype.map.call(box.querySelectorAll(".collab-chip.selected"), function (c) {
+                    return c.textContent.trim().replace(/\s+/g, " ");
+                });
+            }
+            function toggleCond(key, show) {
+                overlay.querySelectorAll('[data-cond="' + key + '"]').forEach(function (el) {
+                    var vis = el.style.display !== "none";
+                    if (show && !vis) { el.style.display = ""; reveal(el); }
+                    else if (!show && vis) { el.style.display = "none"; }
+                });
+            }
+            function refreshConds() {
+                var team = chipVal("pteam");
+                toggleCond("pteam=has", team === "has");
+                toggleCond("pteam=want", team === "want");
+                toggleCond("ptype=contest", chipVals("ptype").indexOf("contest") !== -1);
+                toggleCond("compready=no", chipVal("compready") === "no");
+                toggleCond("advisor=yes", chipVal("advisor") === "yes");
+                var b1 = $("collabBudgetC"), b2 = $("collabBudgetS");
+                var hide1 = chipVals("budgethide").length > 0, hide2 = chipVals("sbudgethide").length > 0;
+                if (b1) { b1.disabled = hide1; if (hide1) b1.value = ""; }
+                if (b2) { b2.disabled = hide2; if (hide2) b2.value = ""; }
+            }
+            overlay.addEventListener("click", function (e) {
+                var ch = e.target && e.target.closest ? e.target.closest(".collab-chip") : null;
+                if (!ch || !overlay.contains(ch)) return;
+                var box = ch.closest("[data-chips]");
+                if (box && box.getAttribute("data-single") === "1") {
+                    var was = ch.classList.contains("selected");
+                    box.querySelectorAll(".collab-chip").forEach(function (o) { o.classList.remove("selected"); });
+                    if (!was) ch.classList.add("selected");
+                } else {
+                    ch.classList.toggle("selected");
+                }
+                err("collabErr2", null); err("collabErr3", null);
+                refreshConds();
+            });
+            function urlOk(v) {
+                if (!v) return true;
+                try { var u = new URL(v); return u.protocol === "http:" || u.protocol === "https:"; }
+                catch (e) { return false; }
+            }
+            function phoneOk(v) {
+                if (!v) return true;
+                return v.replace(/\D/g, "").length >= 7;
             }
 
             function T(k) { return (translations[lang] && translations[lang][k]) || translations.tr[k] || k; }
@@ -3054,21 +3468,25 @@
                 dots.forEach(function (d) {
                     var i = parseInt(d.getAttribute("data-dotlabel"), 10) || 0;
                     d.classList.toggle("done", i < n);
-                    d.classList.toggle("current", i === n && n <= 3);
+                    d.classList.toggle("current", i === n && n <= 4);
                 });
+            }
+            function setDot3() {
+                var el = $("collabDot3");
+                if (el) el.textContent = state.cat === "other" ? T("collab_step3x") : T("collab_step3");
             }
             function swapStep(n) {
                 steps.forEach(function (s) { s.classList.toggle("active", s.getAttribute("data-step") == String(n)); });
                 P.forEach(function (p, i) {
                     if (!p) return;
                     p.classList.toggle("done", i < n - 1);
-                    p.classList.toggle("current", i === n - 1 && n <= 3);
+                    p.classList.toggle("current", i === n - 1 && n <= 4);
                 });
                 paintDots(n);
                 var active = overlay.querySelector('.collab-step[data-step="' + n + '"]');
                 if (active) {
                     var f = active.querySelector("input, textarea, .collab-card");
-                    if (f && n > 1 && n < 4) { try { f.focus({ preventScroll: true }); } catch (e) { try { f.focus(); } catch (_) {} } }
+                    if (f && n > 1 && n < 5) { try { f.focus({ preventScroll: true }); } catch (e) { try { f.focus(); } catch (_) {} } }
                 }
             }
             function go(n, instant) {
@@ -3147,28 +3565,13 @@
                 err("collabErr2", null);
             });
 
-            // Proje alt alanı chipleri (opsiyonel, tek seçim — validasyonu etkilemez)
-            var subChips = Array.prototype.slice.call(overlay.querySelectorAll("#collabSubChips .collab-chip"));
-            subChips.forEach(function (ch) {
-                ch.addEventListener("click", function () {
-                    var v = ch.getAttribute("data-sub");
-                    if (state.sub === v) { state.sub = null; ch.classList.remove("selected"); return; }
-                    state.sub = v;
-                    subChips.forEach(function (o) { o.classList.toggle("selected", o === ch); });
-                });
-            });
-            function subLabel() {
-                if (!state.sub) return null;
-                var map = { dev: "collab_sub_dev", contest: "collab_sub_contest", robot: "collab_sub_robot", elec: "collab_sub_elec", sw: "collab_sub_sw", edu: "collab_sub_edu", other: "collab_sub_other" };
-                return T(map[state.sub] || "collab_sub_other");
-            }
-
             function showStep2Panels() {
                 overlay.querySelectorAll("[data-catpanel]").forEach(function (p) {
                     var show = (p.getAttribute("data-catpanel") === state.cat);
                     p.style.display = show ? "" : "none";
                     if (show) reveal(p);
                 });
+                setDot3();
             }
 
             $("collabTo2").addEventListener("click", function () {
@@ -3179,20 +3582,34 @@
             });
             $("collabBack1").addEventListener("click", function () { err("collabErr2", null); go(1); });
             $("collabTo3").addEventListener("click", function () {
+                var bad = [];
                 if (state.cat === "project") {
                     if (!state.aud) { err("collabErr2", T("collab_err_aud")); return; }
-                    var v = state.aud === "school" ? $("collabSchoolName").value.trim()
-                        : state.aud === "company" ? $("collabCompanyName").value.trim()
-                        : $("collabPersonName").value.trim();
-                    if (!v) {
-                        err("collabErr2", T("collab_err_req"));
-                        markInvalid([state.aud === "school" ? "collabSchoolName" : state.aud === "company" ? "collabCompanyName" : "collabPersonName"]);
-                        return;
+                    if (state.aud === "school") {
+                        if (!$("collabSchoolName").value.trim()) bad.push("collabSchoolName");
+                        if (!$("collabSchoolContact").value.trim()) bad.push("collabSchoolContact");
+                        if (!$("collabSchoolResp").value.trim()) bad.push("collabSchoolResp");
+                        if (!urlOk($("collabSchoolWeb").value.trim())) { err("collabErr2", T("collab_err_url")); markInvalid(["collabSchoolWeb"]); return; }
+                        if (!phoneOk($("collabSchoolPhone").value.trim())) { err("collabErr2", T("collab_err_phone")); markInvalid(["collabSchoolPhone"]); return; }
+                        if (chipVal("advisor") === "yes" && !$("collabAdvisorName").value.trim()) bad.push("collabAdvisorName");
+                    } else if (state.aud === "company") {
+                        if (!$("collabCompanyName").value.trim()) bad.push("collabCompanyName");
+                        if (!$("collabCompanyContact").value.trim()) bad.push("collabCompanyContact");
+                        if (!urlOk($("collabCompanyWeb").value.trim())) { err("collabErr2", T("collab_err_url")); markInvalid(["collabCompanyWeb"]); return; }
+                        if (!phoneOk($("collabCompanyPhone").value.trim())) { err("collabErr2", T("collab_err_phone")); markInvalid(["collabCompanyPhone"]); return; }
+                    } else {
+                        if (!$("collabPersonName").value.trim()) bad.push("collabPersonName");
+                        if (!phoneOk($("collabPersonPhone").value.trim())) { err("collabErr2", T("collab_err_phone")); markInvalid(["collabPersonPhone"]); return; }
                     }
+                    if (bad.length) { err("collabErr2", T("collab_err_req")); markInvalid(bad); return; }
                 } else if (state.cat === "sponsor") {
                     if (!state.sector) { err("collabErr2", T("collab_err_sector")); return; }
                     if (state.sector === "other" && !$("collabSectorOther").value.trim()) { err("collabErr2", T("collab_err_req")); markInvalid(["collabSectorOther"]); return; }
-                    if (!$("collabSponsorBrand").value.trim()) { err("collabErr2", T("collab_err_req")); markInvalid(["collabSponsorBrand"]); return; }
+                    if (!$("collabSponsorBrand").value.trim()) bad.push("collabSponsorBrand");
+                    if (!$("collabSponsorContact").value.trim()) bad.push("collabSponsorContact");
+                    if (!urlOk($("collabSponsorWeb").value.trim())) { err("collabErr2", T("collab_err_url")); markInvalid(["collabSponsorWeb"]); return; }
+                    if (!phoneOk($("collabSponsorPhone").value.trim())) { err("collabErr2", T("collab_err_phone")); markInvalid(["collabSponsorPhone"]); return; }
+                    if (bad.length) { err("collabErr2", T("collab_err_req")); markInvalid(bad); return; }
                 } else {
                     if (!$("collabOtherTopic").value.trim()) { err("collabErr2", T("collab_err_req")); markInvalid(["collabOtherTopic"]); return; }
                 }
@@ -3208,9 +3625,34 @@
                         : $("collabOtherTopic").value.trim();
                     subj.value = org ? ("[" + catLabel() + "] " + org) : ("[" + catLabel() + "]");
                 }
+                setDot3();
                 go(3);
             });
             $("collabBack2").addEventListener("click", function () { err("collabErr3", null); go(2); });
+            $("collabTo4").addEventListener("click", function () {
+                if (state.cat === "project") {
+                    if (!chipVals("ptype").length) { err("collabErr3", T("collab_err_pick")); return; }
+                    if (!chipVal("pstatus")) { err("collabErr3", T("collab_err_pick")); return; }
+                    if (!chipVal("pteam")) { err("collabErr3", T("collab_err_pick")); return; }
+                    if (chipVal("pteam") === "has" && !chipVal("pteamsize")) { err("collabErr3", T("collab_err_pick")); return; }
+                    if (chipVals("ptype").indexOf("contest") !== -1 && !$("collabCompName").value.trim()) {
+                        err("collabErr3", T("collab_err_req")); markInvalid(["collabCompName"]); return;
+                    }
+                    var linkBad = [];
+                    ["collabLinkGh", "collabLinkWeb", "collabLinkVideo"].forEach(function (id) {
+                        if (!urlOk($(id).value.trim())) linkBad.push(id);
+                    });
+                    if (linkBad.length) { err("collabErr3", T("collab_err_url")); markInvalid(linkBad); return; }
+                    if (!$("collabProjDesc").value.trim()) { err("collabErr3", T("collab_err_req")); markInvalid(["collabProjDesc"]); return; }
+                } else if (state.cat === "sponsor") {
+                    if (!chipVals("sctype").length) { err("collabErr3", T("collab_err_pick")); return; }
+                } else {
+                    if (!urlOk($("collabDocLink").value.trim())) { err("collabErr3", T("collab_err_url")); markInvalid(["collabDocLink"]); return; }
+                }
+                err("collabErr3", null);
+                go(4);
+            });
+            $("collabBack3").addEventListener("click", function () { err("collabErr4", null); go(3); });
 
             $("collabSend").addEventListener("click", async function () {
                 var email = $("collabEmail").value.trim();
@@ -3218,42 +3660,92 @@
                 var msg = $("collabMsg").value.trim();
                 var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
                 if (!email || !subject || !msg) {
-                    err("collabErr3", T("collab_err_req"));
+                    err("collabErr4", T("collab_err_req"));
                     markInvalid([!email ? "collabEmail" : !subject ? "collabSubject" : "collabMsg"]);
                     return;
                 }
-                if (!emailOk) { err("collabErr3", T("collab_err_email")); markInvalid(["collabEmail"]); return; }
-                if (!QE.hasConsent()) { err("collabErr3", QE.consentMsg()); QE.demandConsent(); return; }
-                err("collabErr3", null);
+                if (!emailOk) { err("collabErr4", T("collab_err_email")); markInvalid(["collabEmail"]); return; }
+                if (!QE.hasConsent()) { err("collabErr4", QE.consentMsg()); QE.demandConsent(); return; }
+                err("collabErr4", null);
                 var btn = $("collabSend");
                 btn.disabled = true;
                 var oldTxt = btn.textContent;
                 btn.textContent = T("collab_sending");
                 var lines = ["Kategori: " + catLabel()];
+                function val(id) { var el = $(id); return el ? el.value.trim() : ""; }
+                function pushIf(lbl, v) { if (v) lines.push(lbl + ": " + v); }
+                function pushChips(lbl, group, scope) {
+                    var t = chipTexts(group, scope);
+                    if (t.length) lines.push(lbl + ": " + t.join(", "));
+                }
                 if (state.cat === "project") {
                     var audLbl = state.aud === "school" ? T("collab_aud_school")
                         : state.aud === "company" ? T("collab_aud_company") : T("collab_aud_personal");
                     lines.push("Hedef Kitle: " + audLbl);
-                    if (subLabel()) lines.push("Proje Alanı: " + subLabel());
                     if (state.aud === "school") {
-                        lines.push("Okul: " + $("collabSchoolName").value.trim());
-                        if ($("collabSchoolWeb").value.trim()) lines.push("Okul Web: " + $("collabSchoolWeb").value.trim());
+                        lines.push("Okul: " + val("collabSchoolName"));
+                        pushIf("Okul Web", val("collabSchoolWeb"));
+                        lines.push("İletişim Kişisi: " + val("collabSchoolContact"));
+                        pushIf("Telefon", val("collabSchoolPhone"));
+                        pushChips("Kurumdaki Rol", "srole");
+                        lines.push("Sorumlu: " + val("collabSchoolResp"));
+                        pushChips("Proje Ekibi", "steamsize");
+                        pushChips("Takım Hazır", "steamready");
+                        pushChips("Danışman", "advisor");
+                        pushIf("Danışman Adı", val("collabAdvisorName"));
                     } else if (state.aud === "company") {
-                        lines.push("Firma: " + $("collabCompanyName").value.trim());
-                        if ($("collabCompanyWeb").value.trim()) lines.push("Firma Web: " + $("collabCompanyWeb").value.trim());
+                        lines.push("Firma: " + val("collabCompanyName"));
+                        pushIf("Firma Web", val("collabCompanyWeb"));
+                        lines.push("İletişim Kişisi: " + val("collabCompanyContact"));
+                        pushIf("Telefon", val("collabCompanyPhone"));
+                        pushChips("İş Birliği Türü", "ctype");
+                        pushChips("Destek Türü", "stype");
+                        if (chipVals("budgethide").length) lines.push("Bütçe: belirtmek istemiyor");
+                        else pushIf("Bütçe", val("collabBudgetC"));
                     } else {
-                        lines.push("İsim: " + $("collabPersonName").value.trim());
-                        if ($("collabPersonPhone").value.trim()) lines.push("Telefon: " + $("collabPersonPhone").value.trim());
+                        lines.push("İsim: " + val("collabPersonName"));
+                        pushIf("Telefon", val("collabPersonPhone"));
+                        pushChips("Tanım", "self");
+                        pushChips("Niyet", "intent");
                     }
+                    pushChips("Proje Türü", "ptype");
+                    pushChips("Proje Durumu", "pstatus");
+                    pushChips("Ekip Durumu", "pteam");
+                    if (chipVal("pteam") === "has") {
+                        pushChips("Ekip Sayısı", "pteamsize");
+                        pushChips("Ekip Rolleri", "proles");
+                    } else if (chipVal("pteam") === "want") {
+                        pushChips("Aranan Roller", "pwant");
+                    }
+                    if (chipVals("ptype").indexOf("contest") !== -1) {
+                        lines.push("Yarışma: " + val("collabCompName"));
+                        pushIf("Yarışma Tarihi", val("collabCompDate"));
+                        pushIf("Son Başvuru", val("collabCompDeadline"));
+                        pushIf("Yarışma Kategorisi", val("collabCompCat"));
+                        pushChips("Takım Hazır", "compready");
+                        pushChips("Aranan Roller (yarışma)", "compwant");
+                    }
+                    pushIf("GitHub", val("collabLinkGh"));
+                    pushIf("Proje Web", val("collabLinkWeb"));
+                    pushIf("Proje Video", val("collabLinkVideo"));
+                    lines.push("Proje Açıklaması: " + val("collabProjDesc"));
                 } else if (state.cat === "sponsor") {
                     var secLbl = state.sector === "hw" ? T("collab_sector_hw")
                         : state.sector === "sw" ? T("collab_sector_sw")
                         : state.sector === "robot" ? T("collab_sector_robot") : T("collab_sector_other");
                     lines.push("Sektör: " + secLbl);
-                    if (state.sector === "other") lines.push("Sektör Detay: " + $("collabSectorOther").value.trim());
-                    lines.push("Marka: " + $("collabSponsorBrand").value.trim());
+                    if (state.sector === "other") lines.push("Sektör Detay: " + val("collabSectorOther"));
+                    lines.push("Marka: " + val("collabSponsorBrand"));
+                    pushIf("Marka Web", val("collabSponsorWeb"));
+                    lines.push("İletişim Kişisi: " + val("collabSponsorContact"));
+                    pushIf("Telefon", val("collabSponsorPhone"));
+                    pushChips("İş Birliği Türü", "sctype");
+                    pushChips("Destek Türü", "sstype");
+                    if (chipVals("sbudgethide").length) lines.push("Bütçe: belirtmek istemiyor");
+                    else pushIf("Bütçe", val("collabBudgetS"));
                 } else {
-                    lines.push("Konu: " + $("collabOtherTopic").value.trim());
+                    lines.push("Konu: " + val("collabOtherTopic"));
+                    pushIf("Dosya Bağlantısı", val("collabDocLink"));
                 }
                 lines.push("Gönderen: " + email);
                 lines.push("", msg);
@@ -3272,7 +3764,11 @@
                     });
                     if (response.ok) {
                         var sIco = $("collabSuccessIco"), sT = $("collabSuccessT"), sD = $("collabSuccessD");
-                        if (state.cat === "project") {
+                        if (state.cat === "project" && chipVals("ptype").indexOf("contest") !== -1) {
+                            if (sIco) sIco.textContent = "🏆";
+                            if (sT) sT.textContent = T("collab_success_contest_t");
+                            if (sD) sD.textContent = T("collab_success_contest_d");
+                        } else if (state.cat === "project") {
                             if (sIco) sIco.textContent = "🚀";
                             if (sT) sT.textContent = T("collab_success_project_t");
                             if (sD) sD.textContent = T("collab_success_project_d");
@@ -3285,18 +3781,24 @@
                             if (sT) sT.textContent = T("collab_success_other_t");
                             if (sD) sD.textContent = T("collab_success_other_d");
                         }
-                        go(4);
+                        go(5);
                         setTimeout(function () { if (overlay.classList.contains("open")) close(); }, 6000);
                     } else {
-                        err("collabErr3", T("collab_err_conn") + " (" + response.status + ")");
+                        err("collabErr4", T("collab_err_conn") + " (" + response.status + ")");
                     }
                 } catch (e) {
-                    if (!window._netErr || !window._netErr(e)) err("collabErr3", T("collab_err_conn"));
+                    if (!window._netErr || !window._netErr(e)) err("collabErr4", T("collab_err_conn"));
                 } finally {
                     btn.disabled = false;
                     btn.textContent = oldTxt;
                 }
             });
+
+            // Proje açıklaması karakter sayacı (1000)
+            (function () {
+                var d = $("collabProjDesc"), c = $("collabDescCount");
+                if (d && c) d.addEventListener("input", function () { c.textContent = d.value.length + " / 1000"; });
+            })();
 
             fab.addEventListener("click", open);
             window.openCollab = open;
