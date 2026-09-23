@@ -35,7 +35,15 @@
             --glow-b: rgba(99, 102, 241, 0.05);
             --radius: 14px;
             --transition: 0.3s ease;
+            /* RGB interactive grid */
+            --grid-cell: 68px;
+            --rgb-hue: 190;
+            --rgb-alpha: 0.22;
         }
+        @media (max-width: 1199px) { :root { --grid-cell: 60px; } }
+        @media (max-width: 1023px) { :root { --grid-cell: 52px; } }
+        @media (max-width: 768px) { :root { --grid-cell: 44px; --rgb-alpha: 0.16; } }
+        @media (max-width: 480px) { :root { --grid-cell: 38px; --rgb-alpha: 0.14; } }
         [data-theme="light"] {
             --bg-deep: #f0f4f8;
             --bg-primary: #ffffff;
@@ -58,6 +66,7 @@
             --grid-b: rgba(79, 70, 229, 0.04);
             --glow-a: rgba(8, 145, 178, 0.08);
             --glow-b: rgba(79, 70, 229, 0.07);
+            --rgb-alpha: 0.14;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -79,9 +88,43 @@
             background:
                 radial-gradient(circle at 15% 30%, var(--glow-a) 0%, transparent 40%),
                 radial-gradient(circle at 85% 70%, var(--glow-b) 0%, transparent 40%),
-                repeating-linear-gradient(90deg, transparent 0 48px, var(--grid-a) 49px),
-                repeating-linear-gradient(0deg, transparent 0 48px, var(--grid-b) 49px);
+                repeating-linear-gradient(90deg, transparent 0 calc(var(--grid-cell) - 1px), var(--grid-a) calc(var(--grid-cell) - 1px) var(--grid-cell)),
+                repeating-linear-gradient(0deg, transparent 0 calc(var(--grid-cell) - 1px), var(--grid-b) calc(var(--grid-cell) - 1px) var(--grid-cell));
             pointer-events: none;
+        }
+
+        /* === RGB INTERACTIVE GRID: tek aktif hücre katmanı (per-cell DOM yok) === */
+        #rgbActiveCell {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--grid-cell);
+            height: var(--grid-cell);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            will-change: transform, opacity;
+            transition: opacity 0.28s ease;
+            background: radial-gradient(
+                circle at 50% 50%,
+                hsla(var(--rgb-hue, 190), 90%, 60%, var(--rgb-alpha, 0.22)) 0%,
+                hsla(var(--rgb-hue, 190), 85%, 58%, calc(var(--rgb-alpha, 0.22) * 0.55)) 45%,
+                transparent 72%
+            );
+            box-shadow: inset 0 0 0 1px hsla(var(--rgb-hue, 190), 90%, 65%, 0.35);
+            border-radius: 2px;
+            mix-blend-mode: screen;
+        }
+        #rgbActiveCell.on { opacity: 1; }
+        #rgbActiveCell.fade-out { opacity: 0; transition: opacity 0.6s ease; }
+        [data-theme="light"] #rgbActiveCell {
+            mix-blend-mode: multiply;
+            box-shadow: inset 0 0 0 1px hsla(var(--rgb-hue, 190), 70%, 45%, 0.22);
+        }
+        html.rgb-degraded #rgbActiveCell { --rgb-alpha: 0.12; }
+        html.rgb-minimal #rgbActiveCell { --rgb-alpha: 0.1; }
+        @media (prefers-reduced-motion: reduce) {
+            #rgbActiveCell { display: none; }
         }
 
         #mouseGlow {
@@ -371,10 +414,11 @@
             border-radius: var(--radius); padding: 0; overflow: hidden;
             backdrop-filter: blur(10px);
             display: flex; flex-direction: column; height: 100%;
-            transition: transform var(--transition), box-shadow var(--transition);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
             position: relative;
+            will-change: transform;
         }
-        .project-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 24px var(--cyan-glow); border-color: var(--cyan); }
+        .project-card:hover { transform: translateY(-6px) scale(1.015); box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 24px var(--cyan-glow); border-color: var(--cyan); }
         .project-top {
             padding: 1.5rem 1.5rem 0.5rem; display: flex; align-items: center; gap: 1rem;
         }
@@ -893,6 +937,7 @@
     </style>
 </head>
 <body>
+    <div id="rgbActiveCell" aria-hidden="true"></div>
     <div id="mouseGlow" aria-hidden="true"></div>
 
     <!-- HEADER -->
@@ -2678,45 +2723,169 @@
         QE.showNudge();
         startHeroRoles();
 
-        /* ===== MOUSE FOLLOW GLOW ===== */
+        /* ===== RGB INTERACTIVE GRID + MOUSE GLOW (tek rAF, tek aktif hücre, GPU-friendly) =====
+           - Statik grid: saf CSS (body::before), per-cell DOM yok
+           - Aktif hücre: tek #rgbActiveCell elementi, transform + opacity + CSS var(--rgb-hue)
+           - Hue döngüsü: tek requestAnimationFrame, sadece aktifken çalışır
+           - Hücre değişmeyince DOM/render işlemi yok
+        */
         (function () {
+            var cell = document.getElementById("rgbActiveCell");
             var glow = document.getElementById("mouseGlow");
-            if (!glow) return;
-            if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
+            if (!cell && !glow) return;
 
-            var targetX = window.innerWidth / 2;
-            var targetY = window.innerHeight / 2;
-            var currentX = targetX;
-            var currentY = targetY;
+            var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            var coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+            var saveData = (navigator.connection && navigator.connection.saveData) === true;
+            var lowMem = (typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 2);
+            var lowCpu = (typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 2);
+
+            // Seviye: full | minimal | off (ağır benchmark yok, sadece hazır sinyaller)
+            var level = "full";
+            if (reducedMotion) level = "off";
+            else if (saveData || (lowMem && lowCpu)) level = "minimal";
+            else if (coarsePointer) level = "minimal";
+            if (level === "minimal") document.documentElement.classList.add("rgb-minimal");
+
+            function cellSize() {
+                var w = window.innerWidth || 1280;
+                if (w >= 1200) return 68;
+                if (w >= 1024) return 60;
+                if (w >= 769) return 52;
+                if (w >= 481) return 44;
+                return 38;
+            }
+
+            var activeCol = -1, activeRow = -1;
             var hue = 190;
-            var opacity = 0;
-            var idleTimer = null;
-            var LERP = 0.08;
-            var HUE_SPEED = 0.35;
-            var FADE_IDLE = 1800;
+            var HUE_FULL = 0.55, HUE_MIN = 0.3;
+            var glowTX = window.innerWidth / 2, glowTY = window.innerHeight / 2;
+            var glowX = glowTX, glowY = glowTY;
+            var glowOn = false, cellOn = false;
+            var rafId = 0, lastT = 0;
+            var pendingX = 0, pendingY = 0, hasPending = false, ticking = false;
+            var idleTimer = null, touchTimer = null;
+            var fpsEMA = 60, lowFrames = 0;
 
-            function onMove(e) {
-                targetX = e.clientX;
-                targetY = e.clientY;
-                opacity = 1;
-                glow.style.opacity = "1";
+            function ensureLoop() {
+                if (rafId || level === "off") return;
+                lastT = performance.now();
+                rafId = requestAnimationFrame(tick);
+            }
+            function stopLoop() {
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = 0;
+            }
+
+            function setCell(col, row) {
+                if (col === activeCol && row === activeRow) return; // gereksiz DOM yok
+                activeCol = col; activeRow = row;
+                if (!cell) return;
+                var s = cellSize();
+                cell.style.transform = "translate(" + (col * s) + "px," + (row * s) + "px)";
+                cell.classList.remove("fade-out");
+                cell.classList.add("on");
+                cellOn = true;
+                ensureLoop();
+            }
+
+            function hideCell(slow) {
+                activeCol = -1; activeRow = -1;
+                cellOn = false;
+                if (!cell) { maybeStop(); return; }
+                cell.classList.remove("on");
+                if (slow) cell.classList.add("fade-out");
+                maybeStop();
+            }
+
+            function maybeStop() {
+                if (!cellOn && !glowOn) stopLoop();
+            }
+
+            function tick(t) {
+                if (level === "off") { stopLoop(); return; }
+                var dt = t - lastT; lastT = t;
+                if (dt > 0 && dt < 250) {
+                    var fps = 1000 / dt;
+                    fpsEMA = fpsEMA * 0.95 + fps * 0.05;
+                    if (fpsEMA < 38) {
+                        lowFrames++;
+                        if (lowFrames > 120 && !document.documentElement.classList.contains("rgb-degraded")) {
+                            document.documentElement.classList.add("rgb-degraded"); // opacity düşür
+                        }
+                        if (lowFrames > 360) { // ısrarlı düşüş: RGB'yi kapat, statik grid kalsın
+                            level = "off";
+                            hideCell(true);
+                            if (glow) glow.style.opacity = "0";
+                            stopLoop();
+                            return;
+                        }
+                    } else if (fpsEMA > 50) { lowFrames = 0; }
+                }
+                var speed = (level === "minimal" || document.documentElement.classList.contains("rgb-degraded")) ? HUE_MIN : HUE_FULL;
+                hue = (hue + speed * (dt / 16.7)) % 360;
+                if (cellOn && cell) cell.style.setProperty("--rgb-hue", hue.toFixed(1));
+                if (glow && glowOn && !coarsePointer) {
+                    glowX += (glowTX - glowX) * 0.08;
+                    glowY += (glowTY - glowY) * 0.08;
+                    glow.style.transform = "translate(" + glowX + "px," + glowY + "px)";
+                    glow.style.setProperty("--glow-hue", hue.toFixed(1));
+                }
+                if (cellOn || glowOn) rafId = requestAnimationFrame(tick);
+                else rafId = 0;
+            }
+
+            function processPending() {
+                ticking = false;
+                if (!hasPending || level === "off") return;
+                hasPending = false;
+                var s = cellSize();
+                setCell(Math.floor(pendingX / s), Math.floor(pendingY / s));
+            }
+
+            function onMove(x, y) {
+                glowTX = x; glowTY = y;
+                if (level === "off") return;
+                pendingX = x; pendingY = y; hasPending = true;
+                if (!ticking) { ticking = true; requestAnimationFrame(processPending); }
+                if (glow && !coarsePointer) {
+                    glowOn = true;
+                    glow.style.opacity = "1";
+                    ensureLoop();
+                }
                 clearTimeout(idleTimer);
                 idleTimer = setTimeout(function () {
-                    glow.style.opacity = "0.35";
-                }, FADE_IDLE);
+                    hideCell(true);
+                    if (glow) glow.style.opacity = "0.35";
+                    glowOn = false;
+                    maybeStop();
+                }, 1400);
             }
 
-            window.addEventListener("mousemove", onMove, { passive: true });
-
-            function tick() {
-                currentX += (targetX - currentX) * LERP;
-                currentY += (targetY - currentY) * LERP;
-                hue = (hue + HUE_SPEED) % 360;
-                glow.style.transform = "translate(" + currentX + "px," + currentY + "px)";
-                glow.style.setProperty("--glow-hue", hue);
-                requestAnimationFrame(tick);
+            if (level !== "off" && !coarsePointer) {
+                window.addEventListener("mousemove", function (e) { onMove(e.clientX, e.clientY); }, { passive: true });
+                document.addEventListener("mouseleave", function () { hideCell(true); }, true);
             }
-            requestAnimationFrame(tick);
+            // Touch: parmağın hücresi kısa süre RGB, sonra fade-out (mobil perf öncelikli)
+            if (level !== "off") {
+                window.addEventListener("touchmove", function (e) {
+                    if (e.touches && e.touches.length) {
+                        var t = e.touches[0];
+                        pendingX = t.clientX; pendingY = t.clientY; hasPending = true;
+                        if (!ticking) { ticking = true; requestAnimationFrame(processPending); }
+                        clearTimeout(touchTimer);
+                        touchTimer = setTimeout(function () { hideCell(true); }, 600);
+                    }
+                }, { passive: true });
+                window.addEventListener("touchend", function () {
+                    clearTimeout(touchTimer);
+                    touchTimer = setTimeout(function () { hideCell(true); }, 450);
+                }, { passive: true });
+            }
+            window.addEventListener("resize", function () {
+                // Hücre boyutu değişince aktif konumu sıfırla (taşma/scrollbar önleme)
+                if (cellOn) hideCell(false);
+            }, { passive: true });
         })();
 
         /* ===== İŞ BİRLİĞİ (COLLAB MULTI-STEP MODAL) ===== */
