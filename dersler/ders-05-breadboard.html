@@ -19,7 +19,7 @@
 .bb-delik.sec{background:#0ea5e9;border-color:#0369a1}
 .bb-delik.ayni{background:#fef9c3;border-color:#eab308}
 .bb-hendek{margin:6px 0 6px 30px;background:#d8d2c0;border-top:2px solid #c9c2b2;border-bottom:2px solid #c9c2b2;text-align:center;font-size:.65rem;color:#57534e;padding:2px 0;letter-spacing:2px}
-.kontrol{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.6rem 0}button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1rem;font-weight:800}button.ikincil{background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,.12)}.sonuc{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1);line-height:1.6;min-height:52px}.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:var(--yazi);border:1px solid rgba(255,255,255,.1)}.quiz button.dogru{border-color:var(--yesil);background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:var(--kirmizi);background:rgba(248,113,113,.12)}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}</style>
+.kontrol{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.6rem 0}button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1rem;font-weight:800}button.ikincil{background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,.12)}.sonuc{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1);line-height:1.6;min-height:52px}.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:var(--yazi);border:1px solid rgba(255,255,255,.1)}.quiz button.dogru{border-color:var(--yesil);background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:var(--kirmizi);background:rgba(248,113,113,.12)}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}</style><style>@keyframes eeBlink{0%,100%{opacity:1}50%{opacity:.3}}.kilitli-kart{position:relative;}</style>
 </head><body><div class="kapsayici">
 <div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-04-buzzer.html">&larr; Önceki: Buzzer</a>
 <h1>Ders 5: Breadboard — Lehimlemeden Devre Kurma</h1>
@@ -53,7 +53,7 @@
 <div class="quiz" id="q3"><b>3. Üst + rail ile alt + rail bağlı mıdır?</b><button data-d="1">Hayır, üst ve alt rail ayrı hatlardır, kablo ile köprü gerekir.</button><button data-d="0">Evet, tüm + hatları içten bağlıdır.</button><div class="sonuc" style="display:none"></div></div>
 <p style="margin-top:.8rem">Sonraki adım: <b>Ders 6: Multimetre ile ölçüm (hazırlanıyor)</b> — ardından entegreler gelecek.</p>
 <div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır.</div></div>
-<footer>by; ERHAN EMİR</footer></div>
+<div id="kilitPerde" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(5,10,16,.93);align-items:center;justify-content:center;text-align:center;padding:2rem"><div style="max-width:520px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:2rem"><h2 style="margin-bottom:.6rem">Kilitli Ders</h2><p id="kilitMetin" style="color:#8890a0;line-height:1.7"></p><p style="margin-top:1rem"><a href="index.html" style="color:#22d3ee;font-weight:800">Ders listesine don</a></p></div></div><div class="kart" id="gecisKart" style="display:none"><h2>Degerlendirme</h2><div class="sonuc" id="ilerlemeDurum">Deney ve test durumu burada gorunecek.</div><div style="text-align:center;margin-top:1rem"><a id="gecisBtn" data-href="index.html" href="#" style="display:none;font-weight:900;padding:.9rem 2rem;border-radius:12px;background:linear-gradient(135deg,#34d399,#22d3ee);color:#050a10;text-decoration:none;animation:eeBlink 1s infinite">Ders Listesine Don</a></div><p style="margin-top:.6rem;font-size:.8rem;color:#8890a0">Kural: once deneyi tamamlayin, 3 soruyu cozumleyin. Ilk basarisizlikta sistem sifirlar ve tekrar ister; ikinci denemede sonuc ne olursa olsun gecilir. Ilerleme bu cihazdaki tanımlama bilgisine (cookie) okunmayacak bicimde kaydedilir.</p></div><footer>by; ERHAN EMİR</footer></div>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 var sonuc=document.getElementById("bagSonuc");
@@ -81,12 +81,39 @@ function tikla(id,el){if(secim.length>=2){temizleSecim();}el.classList.add("sec"
 if(secim.length===1){sonuc.textContent="İlk nokta: "+id+". Şimdi ikinci deliği seçin.";return;}
 var a=secim[0],b=secim[1];temizleVurgu();
 if(a.id===b.id){sonuc.textContent="Aynı delik seçildi ("+a.id+"). İki farklı delik deneyin.";return;}
-if(a.grup===b.grup){vurgula(a.grup);sonuc.textContent="BAĞLI: "+a.id+" ve "+b.id+". Aynı hat içindeler, tüm hat sarı yandı.";}
+if(a.grup===b.grup){vurgula(a.grup);if(window.eeDeneyOldu)window.eeDeneyOldu();sonuc.textContent="BAĞLI: "+a.id+" ve "+b.id+". Aynı hat içindeler, tüm hat sarı yandı.";}
 else{var neden="";if(a.grup.indexOf("rail")===0&&b.grup.indexOf("rail")===0)neden="Farklı rail hatları birbirine bağlı değildir (üst/alt, +/- ayrıdır).";else if((a.grup.indexOf("rail")===0)!==(b.grup.indexOf("rail")===0))neden="Biri rail hattında, diğeri orta alanda: arada kablo olmadan bağlantı yoktur.";else neden="Farklı gruplar: bağlantı yoktur (hendek veya sütun farkı).";sonuc.textContent="BAĞLI DEĞİL: "+a.id+" ve "+b.id+". "+neden;}}
 document.getElementById("temizle").addEventListener("click",function(){temizleSecim();sonuc.textContent="Temizlendi. İki delik seçin.";});
 [["q1","Evet, a–e grubu aynı sütunda birbirine bağlıdır."],["q2","Hendek iki tarafı ayırır, e ile f bağlı değildir."],["q3","Üst ve alt rail ayrı hatlardır. Köprü kablosu gerekir."]].forEach(function(q){
 var box=document.getElementById(q[0]);var btns=box.querySelectorAll("button");var out=box.querySelector(".sonuc");
 btns.forEach(function(b){b.addEventListener("click",function(){btns.forEach(function(x){x.classList.remove("dogru","yanlis");});out.style.display="block";
 if(b.dataset.d==="1"){b.classList.add("dogru");out.textContent="Doğru. "+q[1];}else{b.classList.add("yanlis");out.textContent="Yanlış. "+q[1];}});});});
+});
+</script><script>
+document.addEventListener("DOMContentLoaded", function(){
+var EE_DERS_NO=5, EE_SONRAKI="index.html";
+var K="_ee_kutup", ANA="Erhan2026";
+function gizle(o){var s=JSON.stringify(o),x="",i;for(i=0;i<s.length;i++){x+=String.fromCharCode(s.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}try{return btoa(unescape(encodeURIComponent(x))).split("").reverse().join("");}catch(e){return "";}}
+function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var s="",i;for(i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}return JSON.parse(s);}catch(e){return null;}}
+function oku(){try{var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}return {tamam:[],deneme:{}};}
+function yaz(d){try{document.cookie=K+"="+encodeURIComponent(gizle(d))+"; max-age=31536000; path=/; SameSite=Lax";}catch(e){}}
+window.eeOku=oku; window.eeYaz=yaz; window.eeDeneyOk=false;
+window.eeDeneyOldu=function(){window.eeDeneyOk=true;eeDurum();eeDegerlendir();};
+function tamamMi(n){return oku().tamam.indexOf(n)>=0;}
+var kilitli=(EE_DERS_NO>1)&&!tamamMi(EE_DERS_NO-1);
+if(kilitli){var p=document.getElementById("kilitPerde");if(p){p.style.display="flex";document.getElementById("kilitMetin").textContent="Bu ders kilitli. Once Ders "+(EE_DERS_NO-1)+" tamamlanmalidir.";}}
+function dogruSayisi(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru"))n++;});return n;}
+function cevaplanan(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru,button.yanlis"))n++;});return n;}
+function toplamQuiz(){return document.querySelectorAll(".quiz").length;}
+window.eeDurum=function(){var el=document.getElementById("ilerlemeDurum");if(!el)return;el.textContent="Deney: "+(window.eeDeneyOk?"tamam":"eksik")+" | Test: "+dogruSayisi()+"/"+toplamQuiz()+" dogru ("+cevaplanan()+" yanitlandi)";};
+window.eeDegerlendir=function(){if(kilitli)return;eeDurum();var gk=document.getElementById("gecisKart");if(gk)gk.style.display="block";if(!window.eeDeneyOk||cevaplanan()<toplamQuiz())return;var d=oku(),skor=dogruSayisi(),deneme=d.deneme[EE_DERS_NO]||0;var btn=document.getElementById("gecisBtn");
+function gec(){if(d.tamam.indexOf(EE_DERS_NO)<0){d.tamam.push(EE_DERS_NO);yaz(d);}btn.style.display="inline-block";btn.href=btn.dataset.href;eeDurum();}
+if(skor>=toplamQuiz()){gec();document.getElementById("ilerlemeDurum").textContent+=" - Basarili. Sonraki ders acildi.";}
+else if(deneme<1){d.deneme[EE_DERS_NO]=1;yaz(d);document.getElementById("ilerlemeDurum").textContent+=" - Eksik kaldi ("+skor+"/"+toplamQuiz()+"). Yanitlar ve deney sifirlandi, tekrar deneyin.";eeSifirla();}
+else{gec();document.getElementById("ilerlemeDurum").textContent+=" - Ikinci denemede gecildi. Eksikler icin dersi tekrar edebilirsiniz.";}};
+window.eeSifirla=function(){window.eeDeneyOk=false;document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
+document.addEventListener("click",function(e){if(e.target&&e.target.matches&&e.target.matches(".quiz button")){setTimeout(function(){eeDurum();eeDegerlendir();},60);}});
+var gk0=document.getElementById("gecisKart");if(gk0&&!kilitli)gk0.style.display="block";
+eeDurum();
 });
 </script></body></html>

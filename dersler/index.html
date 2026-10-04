@@ -27,7 +27,7 @@ p.aciklama{color:var(--soluk);margin-bottom:1.5rem;line-height:1.7}
 .uyari{margin-top:1.5rem;font-size:.8rem;color:var(--soluk);border-top:1px dashed var(--cerceve);padding-top:1rem;line-height:1.6}
 a.don{color:var(--cyan);text-decoration:none;font-weight:700}
 footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}
-</style>
+.ders{position:relative;overflow:hidden}.ders .kilit{position:absolute;inset:0;background:rgba(100,116,139,.82);backdrop-filter:grayscale(1);display:none;align-items:center;justify-content:center;font-weight:900;color:#0f172a;font-size:.9rem}.ders.kapali .kilit{display:flex}.ders .bitti{display:none;font-size:.7rem;background:#34d399;color:#050a10;padding:.2rem .6rem;border-radius:20px;margin-left:auto;white-space:nowrap;font-weight:800}.ders.tamam .bitti{display:inline-block}</style>
 </head>
 <body>
 <div class="kapsayici">
@@ -42,11 +42,11 @@ footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}
 <div class="asama"><b>4. Kendi projen</b><small>Öğrendiklerinizle bağımsız bir proje geliştirme.</small></div>
 </div>
 <div class="dersliste">
-<a class="ders" href="ders-01-led.html"><div class="numara d1">01</div><div><b>Ders 1: LED ve Doğru Kutuplama</b><br><small style="color:var(--soluk)">Kırmızı LED: 1.8V – 2.2V. Kutuplama ve güvenli sürme.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-02-direnc.html"><div class="numara d2">02</div><div><b>Ders 2: Direnç ve Ohm Kanunu</b><br><small style="color:var(--soluk)">4/5/6 bant okuma, akım hesabı, LED koruma.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-03-buton.html"><div class="numara d3">03</div><div><b>Ders 3: Buton ve Pull Dirençleri</b><br><small style="color:var(--soluk)">Pull-up / pull-down, temas sıçraması (bounce).</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-04-buzzer.html"><div class="numara d4">04</div><div><b>Ders 4: Aktif ve Pasif Buzzer</b><br><small style="color:var(--soluk)">Tek ton ve frekans kontrollü ses üretimi.</small></div><span class="roz">SESLİ</span></a>
-<a class="ders" href="ders-05-breadboard.html"><div class="numara" style="background:linear-gradient(135deg,#34d399,#22d3ee)">05</div><div><b>Ders 5: Breadboard — Lehimlemeden Devre Kurma</b><br><small style="color:var(--soluk)">Rail, satır, hendek. Bağlantı test cihazı ve mini sınav.</small></div><span class="roz">İNTERAKTİF</span></a>
+<a class="ders" href="ders-01-led.html" data-ders="1"><div class="numara d1">01</div><div><b>Ders 1: LED ve Doğru Kutuplama</b><br><small style="color:var(--soluk)">Kırmızı LED: 1.8V – 2.2V. Kutuplama ve güvenli sürme.</small></div><span class="roz">İNTERAKTİF</span></a>
+<a class="ders" href="ders-02-direnc.html" data-ders="2"><div class="numara d2">02</div><div><b>Ders 2: Direnç ve Ohm Kanunu</b><br><small style="color:var(--soluk)">4/5/6 bant okuma, akım hesabı, LED koruma.</small></div><span class="roz">İNTERAKTİF</span></a>
+<a class="ders" href="ders-03-buton.html" data-ders="3"><div class="numara d3">03</div><div><b>Ders 3: Buton ve Pull Dirençleri</b><br><small style="color:var(--soluk)">Pull-up / pull-down, temas sıçraması (bounce).</small></div><span class="roz">İNTERAKTİF</span></a>
+<a class="ders" href="ders-04-buzzer.html" data-ders="4"><div class="numara d4">04</div><div><b>Ders 4: Aktif ve Pasif Buzzer</b><br><small style="color:var(--soluk)">Tek ton ve frekans kontrollü ses üretimi.</small></div><span class="roz">SESLİ</span></a>
+<a class="ders" href="ders-05-breadboard.html" data-ders="5"><div class="numara" style="background:linear-gradient(135deg,#34d399,#22d3ee)">05</div><div><b>Ders 5: Breadboard — Lehimlemeden Devre Kurma</b><br><small style="color:var(--soluk)">Rail, satır, hendek. Bağlantı test cihazı ve mini sınav.</small></div><span class="roz">İNTERAKTİF</span></a>
 <div class="ders kilitli"><div class="numara" style="background:#334155;color:#94a3b8">06</div><div><b>Ders 6: Multimetre ile Ölçüm (hazırlanıyor)</b><br><small style="color:var(--soluk)">Gerilim, akım, direnç ve süreklilik ölçümü.</small></div><span class="roz">YAKINDA</span></div>
 <div class="ders kilitli"><div class="numara" style="background:#334155;color:#94a3b8">07</div><div><b>Ders 7: Entegreler (hazırlanıyor)</b><br><small style="color:var(--soluk)">Breadboard ve multimetreden sonra açılacak.</small></div><span class="roz">YAKINDA</span></div>
 </div>
@@ -54,5 +54,19 @@ footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}
 </div>
 <footer>by; ERHAN EMİR</footer>
 </div>
-</body>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var K="_ee_kutup", ANA="Erhan2026";
+function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var s="",i;for(i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}return JSON.parse(s);}catch(e){return null;}}
+function oku(){try{var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}return {tamam:[],deneme:{}};}
+var d=oku();
+document.querySelectorAll(".ders[data-ders]").forEach(function(a){
+var n=+a.dataset.ders;
+var kilit=n>1&&d.tamam.indexOf(n-1)<0;
+var bitti=d.tamam.indexOf(n)>=0;
+if(bitti){a.classList.add("tamam");var s=document.createElement("span");s.className="bitti";s.textContent="Tamamlandi";a.appendChild(s);}
+if(kilit){a.classList.add("kapali");a.setAttribute("aria-disabled","true");var k=document.createElement("span");k.className="kilit";k.textContent="Once Ders "+(n-1)+" tamamlanmalidir";a.appendChild(k);a.addEventListener("click",function(e){e.preventDefault();alert("Bu ders kilitli. Once Ders "+(n-1)+" tamamlayin.");});}
+});
+});
+</script></body>
 </html>
