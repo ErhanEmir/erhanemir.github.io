@@ -4,22 +4,24 @@
 <title>Ders 5: Breadboard | Erhan Emir</title><meta name="robots" content="noindex">
 <style>:root{--bg:#050a10;--card:#0a1220;--yesil:#34d399;--cyan:#22d3ee;--sari:#fde047;--kirmizi:#f87171;--yazi:#e8eef4;--soluk:#8890a0}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:920px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--yesil);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--cyan);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--yesil);margin-bottom:.5rem}p,li{line-height:1.8;color:#cbd5e1}ul,ol{padding-left:1.3rem;margin:.5rem 0}li{margin-bottom:.3rem}.kural{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.3);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.kural b{color:var(--yesil)}.hata{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.hata b{color:var(--kirmizi)}
 .bb-sarici{display:flex;justify-content:center;margin:1rem 0}
-.bb{background:#ece7d9;border-radius:18px;padding:22px;color:#1e293b;box-shadow:inset 0 3px 12px rgba(0,0,0,.2);display:flex;gap:18px;align-items:stretch}
-.bb-govde-baslik{text-align:center;font-size:.78rem;color:#64748b;font-weight:800;letter-spacing:2px;margin-bottom:8px}
+.bb{background:#ece7d9;border-radius:16px;padding:18px;color:#1e293b;box-shadow:inset 0 3px 12px rgba(0,0,0,.2);display:flex;gap:16px;align-items:stretch}
+.bb-govde-baslik{text-align:center;font-size:.75rem;color:#64748b;font-weight:800;letter-spacing:2px;margin-bottom:8px}
 .bb-orta{display:flex;flex-direction:column;align-items:center}
 .bb-dikey-govde{display:flex;gap:14px;align-items:stretch}
-.rail-blok{display:flex;gap:8px}
-.rail-sutun{display:flex;flex-direction:column;align-items:center;gap:5px}
-.rail-cizgi-dikey{width:5px;border-radius:3px;flex:1;min-height:100px}
+.rail-blok{display:flex;gap:10px}
+.rail-sutun{display:flex;flex-direction:column;align-items:center;gap:6px}
+.rail-govde{display:flex;gap:6px;align-items:stretch}
+.rail-cizgi-dikey{width:4px;border-radius:2px}
 .rail-kirmizi{background:#dc2626}.rail-mavi{background:#2563eb}
-.rail-etiket{font-weight:900;font-size:1rem;width:26px;height:26px;text-align:center}
-.terminal-blok{display:flex;flex-direction:column;gap:5px}
-.term-harfler{display:flex;gap:5px;margin-bottom:2px}
-.term-harfler span{width:26px;text-align:center;font-size:.72rem;font-weight:800;color:#64748b}
-.term-satir{display:flex;gap:5px;align-items:center}
-.term-satirno{width:26px;font-size:.68rem;color:#64748b;text-align:center}
-.term-bosluk{width:12px;align-self:stretch;background:#d8d2c0;border-left:2px solid #c9c2b2;border-right:2px solid #c9c2b2;border-radius:3px}
-.bb-delik{width:26px;height:26px;border-radius:5px;background:#fff;border:1px solid #a8a29e;cursor:pointer;padding:0;flex-shrink:0;box-shadow:inset 0 -2px 3px rgba(0,0,0,.18)}
+.rail-etiket{font-weight:900;font-size:.95rem;width:24px;height:24px;text-align:center;line-height:24px}
+.rail-delikler{display:flex;flex-direction:column;gap:4px}
+.terminal-blok{display:flex;flex-direction:column;gap:4px}
+.term-harfler{display:flex;gap:4px;margin-bottom:2px}
+.term-harfler span{width:20px;text-align:center;font-size:.68rem;font-weight:800;color:#64748b}
+.term-satir{display:flex;gap:4px;align-items:center}
+.term-satirno{width:24px;font-size:.65rem;color:#64748b;text-align:center}
+.term-bosluk{width:10px;align-self:stretch;background:#d8d2c0;border-left:2px solid #c9c2b2;border-right:2px solid #c9c2b2;border-radius:3px}
+.bb-delik{width:20px;height:20px;border-radius:4px;background:#fff;border:1px solid #a8a29e;cursor:pointer;padding:0;flex-shrink:0;box-shadow:inset 0 -2px 3px rgba(0,0,0,.18)}
 .bb-delik:hover{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.35)}
 .bb-delik.sec{background:#0ea5e9;border-color:#0369a1}
 .bb-delik.ayni{background:#fef9c3;border-color:#eab308}
@@ -37,9 +39,9 @@
 <p>Gerçek bir breadboard formunda, dikey ve büyük boy. İki deliğe dokunun: bağlıysa tüm hat sarı yanar ve neden açıklanır.</p>
 <div class="bb-sarici"><div class="bb">
 <div class="bb-orta"><div class="bb-govde-baslik">BÜYÜK BOY BREADBOARD — DİKEY</div><div class="bb-dikey-govde">
-<div class="rail-blok"><div class="rail-sutun"><div class="rail-etiket" style="color:#dc2626">+</div><div class="rail-cizgi-dikey rail-kirmizi"></div><div id="solArt" style="display:flex;flex-direction:column;gap:5px"></div><div class="rail-cizgi-dikey rail-kirmizi"></div></div><div class="rail-sutun"><div class="rail-etiket" style="color:#2563eb">−</div><div class="rail-cizgi-dikey rail-mavi"></div><div id="solEks" style="display:flex;flex-direction:column;gap:5px"></div><div class="rail-cizgi-dikey rail-mavi"></div></div></div>
-<div class="terminal-blok"><div class="term-harfler" id="harfUst"></div><div id="terminalAlan" style="display:flex;flex-direction:column;gap:5px"></div><div class="term-harfler" id="harfAlt" style="margin-top:2px"></div></div>
-<div class="rail-blok"><div class="rail-sutun"><div class="rail-etiket" style="color:#dc2626">+</div><div class="rail-cizgi-dikey rail-kirmizi"></div><div id="sagArt" style="display:flex;flex-direction:column;gap:5px"></div><div class="rail-cizgi-dikey rail-kirmizi"></div></div><div class="rail-sutun"><div class="rail-etiket" style="color:#2563eb">−</div><div class="rail-cizgi-dikey rail-mavi"></div><div id="sagEks" style="display:flex;flex-direction:column;gap:5px"></div><div class="rail-cizgi-dikey rail-mavi"></div></div></div>
+<div class="rail-blok"><div class="rail-sutun"><div class="rail-etiket" style="color:#dc2626">+</div><div class="rail-govde"><div class="rail-cizgi-dikey rail-kirmizi"></div><div class="rail-delikler" id="solArt"></div></div></div><div class="rail-sutun"><div class="rail-etiket" style="color:#2563eb">−</div><div class="rail-govde"><div class="rail-cizgi-dikey rail-mavi"></div><div class="rail-delikler" id="solEks"></div></div></div></div>
+<div class="terminal-blok"><div class="term-harfler" id="harfUst"></div><div id="terminalAlan" style="display:flex;flex-direction:column;gap:4px"></div><div class="term-harfler" id="harfAlt" style="margin-top:2px"></div></div>
+<div class="rail-blok"><div class="rail-sutun"><div class="rail-etiket" style="color:#dc2626">+</div><div class="rail-govde"><div class="rail-delikler" id="sagArt"></div><div class="rail-cizgi-dikey rail-kirmizi"></div></div></div><div class="rail-sutun"><div class="rail-etiket" style="color:#2563eb">−</div><div class="rail-govde"><div class="rail-delikler" id="sagEks"></div><div class="rail-cizgi-dikey rail-mavi"></div></div></div></div>
 </div></div>
 </div></div>
 <div class="kontrol"><div class="satir"><button class="ikincil" id="temizle">Seçimi Temizle</button></div><div class="sonuc" id="bagSonuc">İki delik seçin. Örnek: önce a3, sonra b3.</div></div>
