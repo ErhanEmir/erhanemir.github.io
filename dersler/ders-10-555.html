@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ders 10: 555 Zamanlayıcı | Erhan Emir</title><meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--turuncu:#fb923c;--cyan:#22d3ee;--sari:#fde047;--yesil:#34d399;--kirmizi:#f87171;--mor:#818cf8;--yazi:#e8eef4;--soluk:#8890a0}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:820px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--turuncu);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--cyan);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--turuncu);margin-bottom:.5rem}p,li{line-height:1.75;color:#cbd5e1}ul,ol{padding-left:1.2rem;margin:.5rem 0}table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.88rem}th,td{border:1px solid rgba(255,255,255,.12);padding:.45rem .6rem;text-align:left}th{background:rgba(255,255,255,.05);color:var(--sari)}.kural{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.35);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.kural b{color:var(--turuncu)}.kontrol{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.8rem 0}label{font-weight:700;font-size:.9rem;display:block;margin-bottom:.3rem}input[type=range]{width:100%;accent-color:var(--turuncu)}select{width:100%;padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:#020617;color:#fff}button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1.2rem;font-weight:800}button.birincil{background:linear-gradient(135deg,#fb923c,#f43f5e);color:#050a10}.sahne{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;justify-content:center;margin:1rem 0}.ledtop{width:64px;height:64px;border-radius:50%;background:#1a0d12;border:3px solid #7a2c2c;transition:background .05s}.kapsul{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.88rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1);line-height:1.7}.skop{background:#020617;border:1px solid rgba(255,255,255,.12);border-radius:10px;margin-top:.8rem;display:block;width:100%;height:120px}.uyari{display:none;border-radius:12px;padding:.9rem 1rem;margin-top:.8rem;border:1px solid;font-size:.9rem;line-height:1.6}.uyari.goster{display:block}.uyari.ok{background:rgba(52,211,153,.1);border-color:var(--yesil)}.uyari.bilgi{background:rgba(34,211,238,.08);border-color:var(--cyan)}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:#e8eef4;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem 1rem;font-weight:700;cursor:pointer}.quiz button.dogru{border-color:#34d399;background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:#f87171;background:rgba(248,113,113,.12)}</style>
+<style>@keyframes eeBlink{0%,100%{opacity:1}50%{opacity:.3}}.kilitli-kart{position:relative;}</style>
+<style>#cerezKapi{display:none;position:fixed;inset:0;z-index:200;background:rgba(5,10,16,.94);align-items:center;justify-content:center;padding:1.5rem}#cerezKutu{max-width:400px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.5rem;text-align:center}#cerezKutu p{color:#8890a0;font-size:.88rem;line-height:1.6;margin-bottom:1rem}.cerez-eylem{display:flex;gap:.6rem;justify-content:flex-end}.cerez-eylem button{border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:.85rem;padding:.55rem 1rem}#cerezKabul{background:#22d3ee;color:#050a10}#cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}#cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}@keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}</style>
+</head><body><div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p>Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet">Daha sonra</button><button type="button" id="cerezKabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700">Kabul edilmeden kutuphane kullanilamaz.</p></div></div><div class="kapsayici">
+<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-09-transistor.html">&larr; Önceki: Transistör</a>
+<h1>Ders 10: 555 Zamanlayıcı ile Kare Dalga</h1>
+<p>NE555, 1971'den beri üretilen efsane bir entegredir. Kararsız (astable) modda dışarıdan komut almadan sürekli açılıp kapanır ve çıkışında kare dalga üretir. Sirenler, flaşörler ve basit ses devrelerinin kalbidir.</p>
+<table>
+<tr><th>Bacak</th><th>Adı</th><th>Görevi</th></tr>
+<tr><td>1</td><td>GND</td><td>Toprak</td></tr>
+<tr><td>2</td><td>TRIG</td><td>Tetikleme, 1/3 VCC altına düşünce çıkış açılır</td></tr>
+<tr><td>3</td><td>OUT</td><td>Çıkış (200 mA kadar verebilir)</td></tr>
+<tr><td>4</td><td>RESET</td><td>Sıfırlama, kullanılmıyorsa VCC'ye bağlanır</td></tr>
+<tr><td>6</td><td>THR</td><td>Eşik, 2/3 VCC üstünde çıkış kapanır</td></tr>
+<tr><td>7</td><td>DIS</td><td>Deşarj, kondansatörü boşaltır</td></tr>
+<tr><td>8</td><td>VCC</td><td>Besleme (4.5–16 V)</td></tr>
+</table>
+<div class="kural"><b>Kararsız kip formülü (ezberle):</b> f = 1.44 / ((R1 + 2 × R2) × C). R1 şarj yolunda, R2 hem şarj hem deşarj yolundadır. Kondansatör 1/3 ile 2/3 VCC arasında salınır, çıkış bu ritimle açılıp kapanır.</div>
+</div>
+<div class="kart"><h2>Deney: Hedef frekansı tutturun</h2>
+<p>R1 sabit 1 kΩ. R2 ve C değerlerini değiştirip çıkış frekansını hedefe getirin. Deney sayılması için frekansın hedefe <b>%10 yakın</b> olması gerekir. LED ve osiloskop çıkışı canlı izler (göz için 8 Hz üstü sürekli yanık gösterilir).</p>
+<div class="kontrol">
+<div class="satir"><label>R2: <span id="r2Goster">10</span> kΩ</label><input type="range" id="r2Sec" min="1" max="100" step="1" value="10"></div>
+<div class="satir"><label>Kondansatör C</label><select id="cSec"><option value="0.000001">1 µF</option><option value="0.00001" selected>10 µF</option><option value="0.0001">100 µF</option></select></div>
+<div class="sahne"><div class="ledtop" id="skopLed"></div></div>
+<canvas class="skop" id="skop" width="600" height="120"></canvas>
+<div class="kapsul" id="frekOlcum">Hesap bekleniyor.</div>
+<div class="uyari" id="frekUyari"><b id="frekUyariBaslik"></b><p id="frekUyariMetin" style="margin-top:.3rem"></p></div>
+</div>
+</div>
+<div class="kart"><h2>Ders Sonu Testi</h2><p>Konu pekişsin diye 3 kısa soru.</p><div class="quiz" id="t1"><b>1. Kararsız kipte frekans formülü nedir?</b><button data-d="1" data-acik="R1 bir kez, R2 iki kez sayılır çünkü deşarj yalnız R2 üzerinden olur.">f = 1.44 / ((R1 + 2 × R2) × C)</button><button data-d="0" data-acik="R2 hem şarj hem deşarj yolundadır, iki kez sayılır.">f = 1.44 / ((R1 + R2) × C)</button><button data-d="0" data-acik="Frekans RC çarpımıyla ters orantılıdır.">f = (R1 + 2 × R2) × C / 1.44</button><div class="sonuc" style="display:none"></div></div><div class="quiz" id="t2"><b>2. Kararsız kipte kullanılmayan bacak hangisidir?</b><button data-d="1" data-acik="RESET kullanılmıyorsa VCC'ye bağlanıp öyle bırakılır.">RESET (VCC'ye bağlanıp bırakılır)</button><button data-d="0" data-acik="OUT olmadan sinyal alınamaz.">OUT</button><button data-d="0" data-acik="THR olmadan eşik algılanamaz.">THR</button><div class="sonuc" style="display:none"></div></div><div class="quiz" id="t3"><b>3. Frekansı düşürmek için ne yapılır?</b><button data-d="1" data-acik="R veya C büyürse salınım yavaşlar.">R2 veya C büyütülür</button><button data-d="0" data-acik="Küçültmek frekansı artırır.">R2 veya C küçültülür</button><button data-d="0" data-acik="Besleme genliği değiştirir, hızı değil.">Besleme voltajı artırılır</button><div class="sonuc" style="display:none"></div></div></div><div id="kilitPerde" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(5,10,16,.93);align-items:center;justify-content:center;text-align:center;padding:2rem"><div style="max-width:520px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:2rem"><h2 style="margin-bottom:.6rem">Kilitli Ders</h2><p id="kilitMetin" style="color:#8890a0;line-height:1.7"></p><p style="margin-top:1rem"><a href="index.html" style="color:#22d3ee;font-weight:800">Ders listesine don</a></p></div></div><div class="kart" id="gecisKart" style="display:none"><h2>Degerlendirme</h2><div class="sonuc" id="ilerlemeDurum">Deney ve test durumu burada gorunecek.</div><div style="text-align:center;margin-top:1rem"><a id="gecisBtn" data-href="index.html" href="#" style="display:none;font-weight:900;padding:.9rem 2rem;border-radius:12px;background:linear-gradient(135deg,#34d399,#22d3ee);color:#050a10;text-decoration:none;animation:eeBlink 1s infinite">Ders Listesine Don</a></div><p style="margin-top:.6rem;font-size:.8rem;color:#8890a0">Geçme kuralı: önce deney bölümündeki uygulamayı sonuna kadar tamamlayın, sonra 3 sorunun tamamını yanıtlayın. 3 soru da doğruysa sonraki dersin düğmesi aşağıda belirir. Eksik kalırsa yanıtlar sıfırlanır ve baştan denemeniz istenir; ikinci denemenin sonunda ders tamamlanır.</p></div>
+<footer>by; ERHAN EMİR</footer>
+<div class="kopya" style="font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem">© 2026 Erhan Emir — Tüm hakları saklıdır.</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var K="_ee_kutup", ANA="Erhan2026", LS_P="_ee_kutup_ls";var DEPO=null;
+function depoTuru(){if(DEPO)return DEPO;try{document.cookie="_ee_t=1; path=/; SameSite=Lax";if(document.cookie.indexOf("_ee_t=1")>=0){DEPO="cerez";try{document.cookie="_ee_t=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";}catch(e){}try{if(window.localStorage){window.localStorage.removeItem(LS_P);window.localStorage.removeItem(LS_C);}}catch(e){}return DEPO;}}catch(e){}DEPO="ls";return DEPO;}
+var CK_A="_nx.s7k", KK=[90,60,145,231,43,109,68,168], TOK_Y="k7mQ2p", LS_C="_nx_s7k_ls";
+function cxor(s){var o="",i;for(i=0;i<s.length;i++){o+=String.fromCharCode(s.charCodeAt(i)^KK[i%KK.length]);}return o;}
+function cenc(s){try{return btoa(cxor(s)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}catch(e){return "";}}
+function cdec(s){try{var b=s.replace(/-/g,"+").replace(/_/g,"/");while(b.length%4){b+="=";}return cxor(atob(b));}catch(e){return "";}}
+function getC(n){try{var m=document.cookie.match(new RegExp("(?:^|; )"+n.replace(/\./g,"\\.")+"=([^;]*)"));return m?decodeURIComponent(m[1]):"";}catch(e){return "";}}
+function setC(n,v,gun){try{var d=new Date();d.setTime(d.getTime()+gun*864e5);document.cookie=n+"="+encodeURIComponent(v)+";expires="+d.toUTCString()+";path=/;SameSite=Lax";}catch(e){}}
+function lsGet(k){try{return window.localStorage?window.localStorage.getItem(k):null;}catch(e){return null;}}
+function lsSet(k,v){try{if(window.localStorage)window.localStorage.setItem(k,v);}catch(e){}}
+function cerezOnay(){if(depoTuru()==="ls"){var l=lsGet(LS_C);return !!(l&&cdec(l)===TOK_Y);}return cdec(getC(CK_A))===TOK_Y;}
+function cerezYaz(ok){var v=cenc(ok?TOK_Y:TOK_N);if(depoTuru()==="ls"){lsSet(LS_C,v);}else{setC(CK_A,v,400);}}
+function kapiKur(){var kapi=document.getElementById("cerezKapi");if(!kapi)return true;if(cerezOnay()){kapi.style.display="none";return true;}kapi.style.display="flex";var kb=document.getElementById("cerezKabul"),rt=document.getElementById("cerezRet");if(kb){kb.classList.add("dikkat");kb.addEventListener("click",function(){cerezYaz(true);location.reload();});}if(rt){rt.addEventListener("click",function(){cerezYaz(false);var n=document.getElementById("cerezNot");if(n)n.style.display="block";setTimeout(function(){location.href="../index.html";},800);});}return false;}
+function gizle(o){var s=JSON.stringify(o),x="",i;for(i=0;i<s.length;i++){x+=String.fromCharCode(s.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}try{return btoa(unescape(encodeURIComponent(x))).split("").reverse().join("");}catch(e){return "";}}
+function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var s="",i;for(i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}return JSON.parse(s);}catch(e){return null;}}
+function oku(){if(depoTuru()==="ls"){try{var l=lsGet(LS_P);if(l){var dd=coz(l);if(dd&&dd.tamam)return dd;}}catch(e){}return {tamam:[],deneme:{}};}try{var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}return {tamam:[],deneme:{}};}
+function yaz(d){if(depoTuru()==="ls"){try{lsSet(LS_P,gizle(d));}catch(e){}return;}try{document.cookie=K+"="+encodeURIComponent(gizle(d))+"; max-age=31536000; path=/; SameSite=Lax";}catch(e){}}
+if(!kapiKur())return;
+var EE_DERS_NO=10, EE_SONRAKI="index.html";
+window.eeDeneyOk=false;
+window.eeDeneyOldu=function(){window.eeDeneyOk=true;eeDurum();eeDegerlendir();};
+function tamamMi(n){return oku().tamam.indexOf(n)>=0;}
+var kilitli=(EE_DERS_NO>1)&&!tamamMi(EE_DERS_NO-1);
+if(kilitli){var p0=document.getElementById("kilitPerde");if(p0){p0.style.display="flex";document.getElementById("kilitMetin").textContent="Bu ders kilitli. Once Ders "+(EE_DERS_NO-1)+" tamamlanmalidir.";}}
+function dogruSayisi(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru"))n++;});return n;}
+function cevaplanan(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru,button.yanlis"))n++;});return n;}
+function toplamQuiz(){return document.querySelectorAll(".quiz").length;}
+window.eeDurum=function(){var el=document.getElementById("ilerlemeDurum");if(!el)return;el.textContent="Deney: "+(window.eeDeneyOk?"tamam":"eksik")+" | Test: "+dogruSayisi()+"/"+toplamQuiz()+" dogru ("+cevaplanan()+" yanitlandi)";};
+window.eeDegerlendir=function(){if(kilitli)return;eeDurum();var gk=document.getElementById("gecisKart");if(gk)gk.style.display="block";if(!window.eeDeneyOk||cevaplanan()<toplamQuiz())return;var d=oku(),skor=dogruSayisi(),deneme=d.deneme[EE_DERS_NO]||0;var btn=document.getElementById("gecisBtn");
+function gec(){if(d.tamam.indexOf(EE_DERS_NO)<0){d.tamam.push(EE_DERS_NO);yaz(d);}btn.style.display="inline-block";btn.href=btn.dataset.href;eeDurum();}
+if(skor>=toplamQuiz()){gec();document.getElementById("ilerlemeDurum").textContent+=" - Basarili. Sonraki ders acildi.";}
+else if(deneme<1){d.deneme[EE_DERS_NO]=1;yaz(d);document.getElementById("ilerlemeDurum").textContent+=" - Eksik kaldi ("+skor+"/"+toplamQuiz()+"). Yanitlar ve deney sifirlandi, tekrar deneyin.";eeSifirla();}
+else{gec();document.getElementById("ilerlemeDurum").textContent+=" - Ikinci denemede gecildi. Eksikler icin dersi tekrar edebilirsiniz.";}};
+window.eeSifirla=function(){window.eeDeneyOk=false;try{window.dispatchEvent(new window.Event("ee-sifirla"));}catch(e){}document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
+document.addEventListener("click",function(e){if(e.target&&e.target.matches&&e.target.matches(".quiz button")){setTimeout(function(){eeDurum();eeDegerlendir();},60);}});
+var gk0=document.getElementById("gecisKart");if(gk0&&!kilitli)gk0.style.display="block";
+eeDurum();
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+function $(id){return document.getElementById(id);}
+var HEDEFLER=[0.5,1,2];
+var HEDEF=HEDEFLER[Math.floor(Math.random()*HEDEFLER.length)];
+var R1=1000;
+var tuttu=false, deneyBildirildi=false, dokunuldu=false, faz=0;
+function frekans(){
+var R2=parseFloat($("r2Sec").value)*1000, C=parseFloat($("cSec").value);
+return {f:1.44/((R1+2*R2)*C),R2:R2,C:C};
+}
+function guncelle(){
+var h=frekans();
+$("r2Goster").textContent=Math.round(h.R2/1000);
+var T=1/h.f, yuksek=T*(R1+h.R2)/(R1+2*h.R2), gorev=(1/h.f)*100;
+$("frekOlcum").textContent="f = "+h.f.toFixed(3)+" Hz (T = "+T.toFixed(2)+" s, görev oranı %"+Math.round(yuksek/T*100)+") | Hedef: "+HEDEF+" Hz (±%10).";
+var u=$("frekUyari");
+if(Math.abs(h.f-HEDEF)/HEDEF<=0.10){
+u.className="uyari goster ok";$("frekUyariBaslik").textContent="Hedef tuttu";$("frekUyariMetin").textContent="Frekans hedef aralıkta. LED ve osiloskop çıkışı izleyin.";
+if(!tuttu&&dokunuldu){tuttu=true;deneyKontrol();}
+}else{
+u.className="uyari goster bilgi";$("frekUyariBaslik").textContent="Hedef: "+HEDEF+" Hz";$("frekUyariMetin").textContent=h.f<HEDEF?"Frekans düşük, R2 veya C küçültün.":"Frekans yüksek, R2 veya C büyütün.";
+}
+}
+function deneyKontrol(){if(tuttu&&!deneyBildirildi){deneyBildirildi=true;if(window.eeDeneyOldu)window.eeDeneyOldu();}}
+window.addEventListener("ee-sifirla",function(){tuttu=false;deneyBildirildi=false;});
+$("r2Sec").addEventListener("input",function(){dokunuldu=true;guncelle();});
+$("cSec").addEventListener("change",function(){dokunuldu=true;guncelle();});
+function skopCiz(){
+var c=$("skop");if(!c)return;var x=null;try{x=c.getContext("2d");}catch(e){return;}if(!x)return;
+var W=c.width,H=c.height;
+x.fillStyle="#020617";x.fillRect(0,0,W,H);
+x.strokeStyle="rgba(255,255,255,.12)";x.beginPath();x.moveTo(0,H/2);x.lineTo(W,H/2);x.stroke();
+var h=frekans(),f=h.f;
+var t=(Date.now()/1000)*Math.min(f,8);
+var yuksek=((t%1)<((R1+h.R2)/(R1+2*h.R2)))?1:0;
+var led=$("skopLed");
+if(f>8){led.style.background="#ff6b6b";led.style.boxShadow="0 0 24px rgba(248,113,113,.9)";}
+else if(yuksek){led.style.background="#ff6b6b";led.style.boxShadow="0 0 24px rgba(248,113,113,.9)";}
+else{led.style.background="#1a0d12";led.style.boxShadow="none";}
+x.strokeStyle="#22d3ee";x.lineWidth=2;x.beginPath();
+var per=Math.max(40,W/Math.max(1,Math.min(f,8)));
+for(var px=0;px<=W;px+=2){
+var tt=(px/per)%1;
+var yuk=((tt)<((R1+h.R2)/(R1+2*h.R2)))?1:0;
+var py=yuk?20:H-20;
+if(px===0)x.moveTo(px,py);else x.lineTo(px,py);
+}
+x.stroke();
+requestAnimationFrame(skopCiz);
+}
+guncelle();
+try{skopCiz();}catch(e){}
+window.__555={hedef:function(){return HEDEF;},ayarla:function(r2k,c){dokunuldu=true;$("r2Sec").value=r2k;$("cSec").value=String(c);guncelle();},frekans:function(){return frekans().f;},durum:function(){return {tuttu:tuttu};}};
+});
+</script>
+<script>
+document.addEventListener("click",function(e){
+var q=e.target&&e.target.closest?e.target.closest(".quiz button"):null;
+if(!q)return;
+var box=q.closest(".quiz");if(!box)return;
+var btns=box.querySelectorAll("button");var out=box.querySelector(".sonuc");
+btns.forEach(function(x){x.classList.remove("dogru","yanlis");});
+out.style.display="block";
+if(q.dataset.d==="1"){q.classList.add("dogru");out.textContent="Doğru. "+(q.dataset.acik||"");}
+else{q.classList.add("yanlis");out.textContent="Yanlış. "+(q.dataset.acik||"");}
+});
+</script>
+</body></html>
