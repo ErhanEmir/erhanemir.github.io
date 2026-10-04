@@ -142,7 +142,7 @@ function gec(){if(d.tamam.indexOf(EE_DERS_NO)<0){d.tamam.push(EE_DERS_NO);yaz(d)
 if(skor>=toplamQuiz()){gec();document.getElementById("ilerlemeDurum").textContent+=" - Basarili. Sonraki ders acildi.";}
 else if(deneme<1){d.deneme[EE_DERS_NO]=1;yaz(d);document.getElementById("ilerlemeDurum").textContent+=" - Eksik kaldi ("+skor+"/"+toplamQuiz()+"). Yanitlar ve deney sifirlandi, tekrar deneyin.";eeSifirla();}
 else{gec();document.getElementById("ilerlemeDurum").textContent+=" - Ikinci denemede gecildi. Eksikler icin dersi tekrar edebilirsiniz.";}};
-window.eeSifirla=function(){window.eeDeneyOk=false;document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
+window.eeSifirla=function(){window.eeDeneyOk=false;try{window.dispatchEvent(new window.Event("ee-sifirla"));}catch(e){}document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
 document.addEventListener("click",function(e){if(e.target&&e.target.matches&&e.target.matches(".quiz button")){setTimeout(function(){eeDurum();eeDegerlendir();},60);}});
 var gk0=document.getElementById("gecisKart");if(gk0&&!kilitli)gk0.style.display="block";
 eeDurum();
@@ -290,6 +290,11 @@ function deneyKontrol(){
 var n=yapilan.psu?1:0;for(var i=0;i<RESISTORLAR.length;i++){if(yapilan.r[RESISTORLAR[i].id])n++;}
 if(n>=4&&!deneyBildirildi){deneyBildirildi=true;if(window.eeDeneyOldu)window.eeDeneyOldu();}
 }
+window.addEventListener("ee-sifirla",function(){
+yapilan={psu:false,r:{}};deneyBildirildi=false;
+RESISTORLAR.forEach(function(r){var o=$("sonuc-"+r.id);if(o){o.className="direnc-sonuc";o.textContent="";}var g=$("yaz-"+r.id);if(g)g.value="";});
+direncCiz();gorevCiz();
+});
 $("psuVolt").addEventListener("input",function(){$("voltGoster").textContent=psuVolt().toFixed(1);herDegisiklik();});
 $("psuAkim").addEventListener("input",function(){$("akimGoster").textContent=parseFloat($("psuAkim").value).toFixed(2);});
 $("gucBtn").addEventListener("click",function(){gucAcik=!gucAcik;$("gucBtn").textContent=gucAcik?"Gücü Kapat":"Gücü Aç";herDegisiklik();});

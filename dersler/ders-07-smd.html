@@ -100,7 +100,7 @@ function gec(){if(d.tamam.indexOf(EE_DERS_NO)<0){d.tamam.push(EE_DERS_NO);yaz(d)
 if(skor>=toplamQuiz()){gec();document.getElementById("ilerlemeDurum").textContent+=" - Basarili. Sonraki ders acildi.";}
 else if(deneme<1){d.deneme[EE_DERS_NO]=1;yaz(d);document.getElementById("ilerlemeDurum").textContent+=" - Eksik kaldi ("+skor+"/"+toplamQuiz()+"). Yanitlar ve deney sifirlandi, tekrar deneyin.";eeSifirla();}
 else{gec();document.getElementById("ilerlemeDurum").textContent+=" - Ikinci denemede gecildi. Eksikler icin dersi tekrar edebilirsiniz.";}};
-window.eeSifirla=function(){window.eeDeneyOk=false;document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
+window.eeSifirla=function(){window.eeDeneyOk=false;try{window.dispatchEvent(new window.Event("ee-sifirla"));}catch(e){}document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
 document.addEventListener("click",function(e){if(e.target&&e.target.matches&&e.target.matches(".quiz button")){setTimeout(function(){eeDurum();eeDegerlendir();},60);}});
 var gk0=document.getElementById("gecisKart");if(gk0&&!kilitli)gk0.style.display="block";
 eeDurum();
@@ -146,6 +146,10 @@ $("kilifBilgi").textContent=k.ad+" | "+k.boyut+" | "+k.guc+". "+k.not;
 sel.addEventListener("change",kilifCiz);kilifCiz();
 var aktifKod=null, dogruSayi=0, deneyBildirildi=false;
 function deneyKontrol(){if(dogruSayi>=3&&!deneyBildirildi){deneyBildirildi=true;if(window.eeDeneyOldu)window.eeDeneyOldu();}}
+window.addEventListener("ee-sifirla",function(){
+dogruSayi=0;deneyBildirildi=false;aktifKod=null;
+$("kodGoster").textContent="---";$("kodSkor").textContent="Doğru: 0/3";$("kodSonuc").textContent="Kod bekleniyor.";var g=$("kodGirdi");if(g)g.value="";
+});
 function degerYorumla(txt){
 if(!txt)return null;
 var s=txt.toLowerCase().replace(/,/g,".").replace(/\s+/g,"");
