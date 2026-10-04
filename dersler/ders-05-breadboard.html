@@ -2,53 +2,93 @@
 <!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
 <html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ders 5: Breadboard | Erhan Emir</title><meta name="robots" content="noindex">
-<style>:root{--bg:#050a10;--card:#0a1220;--yesil:#34d399;--cyan:#22d3ee;--sari:#fde047;--kirmizi:#f87171;--mavi:#60a5fa;--yazi:#e8eef4;--soluk:#8890a0}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:880px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--yesil);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--cyan);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--yesil);margin-bottom:.5rem}p,li{line-height:1.8;color:#cbd5e1}ul,ol{padding-left:1.3rem;margin:.5rem 0}li{margin-bottom:.3rem}.kural{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.3);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.kural b{color:var(--yesil)}.hata{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.hata b{color:var(--kirmizi)}.bb{background:#e8e4d8;border-radius:12px;padding:1rem;color:#1e293b;margin:1rem 0}.ray{display:flex;align-items:center;gap:4px;margin:4px 0}.ray .etiket{width:22px;font-weight:900;font-size:.85rem}.delik{width:22px;height:22px;border-radius:4px;background:#fff;border:1px solid #b8b2a0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#94a3b8;padding:0}.delik:hover{border-color:var(--cyan)}.delik.sec{background:#0ea5e9;color:#fff;border-color:#0ea5e9}.delik.hat{background:#f8fafc}.bbgrid{display:grid;grid-template-columns:26px repeat(5,24px) 14px repeat(5,24px);gap:3px;align-items:center;justify-content:center;margin:.6rem 0}.satirno{font-size:.72rem;color:#64748b;text-align:center}.orta-bosluk{grid-column:1/-1;text-align:center;font-size:.72rem;color:#64748b;border-top:2px dashed #b8b2a0;border-bottom:2px dashed #b8b2a0;padding:2px 0;margin:2px 0}.kontrol{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.6rem 0}button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1rem;font-weight:800}button.birincil{background:linear-gradient(135deg,#34d399,#22d3ee);color:#050a10}button.ikincil{background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,.12)}.sonuc{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1);line-height:1.6;min-height:52px}.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:var(--yazi);border:1px solid rgba(255,255,255,.1)}.quiz button.dogru{border-color:var(--yesil);background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:var(--kirmizi);background:rgba(248,113,113,.12)}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}</style>
+<style>:root{--bg:#050a10;--card:#0a1220;--yesil:#34d399;--cyan:#22d3ee;--sari:#fde047;--kirmizi:#f87171;--yazi:#e8eef4;--soluk:#8890a0}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:920px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--yesil);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--cyan);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--yesil);margin-bottom:.5rem}p,li{line-height:1.8;color:#cbd5e1}ul,ol{padding-left:1.3rem;margin:.5rem 0}li{margin-bottom:.3rem}.kural{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.3);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.kural b{color:var(--yesil)}.hata{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.hata b{color:var(--kirmizi)}
+.bb-sarici{overflow-x:auto;margin:1rem 0;border-radius:14px}
+.bb{background:#ece7d9;border-radius:14px;padding:14px 16px;color:#1e293b;min-width:760px;box-shadow:inset 0 2px 8px rgba(0,0,0,.15)}
+.bb-baslik{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:#64748b;font-weight:700;margin-bottom:6px}
+.rail-cizgi{height:4px;border-radius:2px;margin:2px 0 2px 34px}
+.rail-kirmizi{background:#dc2626}.rail-mavi{background:#2563eb}
+.rail-satir{display:flex;align-items:center;gap:4px;margin:3px 0}
+.rail-etiket{width:30px;font-weight:900;font-size:.8rem;text-align:center}
+.bb-delik{width:20px;height:20px;border-radius:4px;background:#fff;border:1px solid #a8a29e;cursor:pointer;padding:0;flex-shrink:0}
+.bb-delik:hover{border-color:#0ea5e9;box-shadow:0 0 0 2px rgba(14,165,233,.35)}
+.bb-delik.sec{background:#0ea5e9;border-color:#0369a1}
+.bb-delik.ayni{background:#fef9c3;border-color:#eab308}
+.bb-delik.hat{background:#f8fafc}
+.bb-harfler{display:flex;gap:4px;margin:6px 0 2px 34px}
+.bb-harfler span{width:20px;text-align:center;font-size:.68rem;font-weight:800;color:#64748b}
+.bb-satir{display:flex;align-items:center;gap:4px;margin:3px 0}
+.bb-satirno{width:30px;font-size:.7rem;color:#64748b;text-align:center}
+.bb-bosluk{width:10px}
+.bb-hendek{margin:8px 0 8px 34px;border-top:3px solid #c9c2b2;border-bottom:3px solid #c9c2b2;background:#d8d2c0;text-align:center;font-size:.7rem;color:#57534e;padding:3px 0;letter-spacing:1px}
+.kontrol{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.6rem 0}button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1rem;font-weight:800}button.ikincil{background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,.12)}.sonuc{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1);line-height:1.6;min-height:52px}.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:var(--yazi);border:1px solid rgba(255,255,255,.1)}.quiz button.dogru{border-color:var(--yesil);background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:var(--kirmizi);background:rgba(248,113,113,.12)}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}</style>
 </head><body><div class="kapsayici">
 <div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-04-buzzer.html">&larr; Önceki: Buzzer</a>
 <h1>Ders 5: Breadboard — Lehimlemeden Devre Kurma</h1>
 <p>Breadboard, lehim yapmadan devre kurmayı sağlayan delikli bir tabladır. Deliklerin altında metal bağlantılar vardır. Kuralı bir kez anladığınızda tüm devreler kolaylaşır.</p>
-<div class="kural"><b>3 temel bölge:</b><br>1. <b>Enerji yolları (rail):</b> üstte ve altta boydan boya uzanan iki uzun hat. Kırmızı çizgi +, mavi çizgi − içindir. Aynı çizgideki tüm delikler birbirine bağlıdır.<br>2. <b>Orta alan (terminal):</b> her satırda 5 + 5 delik vardır. Soldaki 5 delik (a–e) kendi içinde bağlıdır, sağdaki 5 delik (f–j) kendi içinde bağlıdır.<br>3. <b>Orta boşluk (hendek):</b> ortadaki boş kanal iki tarafı ayırır. a–e ile f–j birbirine <b>bağlı değildir</b>. Entegreler bu hendeğe binerek takılır.</div>
-<div class="hata"><b>En sık yapılan 3 hata:</b><br>1. Hendeğin iki yanını aynı hat sanmak (a3 ile f3 bağlı değildir).<br>2. Enerji yolunun ortadan ikiye bölündüğünü fark etmemek (bazı büyük boardlarda rail ortada kesiktir, tel ile köprü gerekir).<br>3. Bacakları yarım takmak: metal klipse tam oturmayan bacak temas etmez.</div>
-<ol><li><b>Adım 1:</b> Güç kaynağının + ucunu kırmızı rail hattına, − ucunu mavi rail hattına bağlayın.</li><li><b>Adım 2:</b> LED + direnç gibi elemanları orta alana takın. Akım rail hattından kablo ile ilgili satıra taşınır.</li><li><b>Adım 3:</b> Her bağlantıdan sonra bacağı hafifçe çekerek oturduğunu kontrol edin.</li></ol>
+<div class="kural"><b>3 temel bölge:</b><br>1. <b>Enerji yolları (rail):</b> üstte ve altta boydan boya uzanan iki uzun hat. Kırmızı çizgi +, mavi çizgi − içindir. Aynı çizgideki tüm delikler birbirine bağlıdır. Not: üst ve alt rail birbirine bağlı değildir, gerekirse kablo ile köprülenir.<br>2. <b>Orta alan (terminal):</b> her satırda 5 + 5 delik vardır. Soldaki 5 delik (a–e) kendi içinde bağlıdır, sağdaki 5 delik (f–j) kendi içinde bağlıdır. Farklı satırlar birbirine bağlı değildir.<br>3. <b>Orta boşluk (hendek):</b> ortadaki kanal iki tarafı ayırır. a–e ile f–j birbirine <b>bağlı değildir</b>. Entegreler bu hendeğe binerek takılır.</div>
+<div class="hata"><b>En sık yapılan 3 hata:</b><br>1. Hendeğin iki yanını aynı hat sanmak (a3 ile f3 bağlı değildir).<br>2. Üst rail ile alt raili aynı sanmak (ayrı hatlardır).<br>3. Bacakları yarım takmak: metal klipse tam oturmayan bacak temas etmez.</div>
+<ol><li><b>Adım 1:</b> Güç kaynağının + ucunu kırmızı rail hattına, − ucunu mavi rail hattına bağlayın.</li><li><b>Adım 2:</b> Elemanları orta alana takın. Akım rail hattından kablo ile ilgili satıra taşınır.</li><li><b>Adım 3:</b> Her bağlantıdan sonra bacağı hafifçe çekerek oturduğunu kontrol edin.</li></ol>
 </div>
-<div class="kart"><h2>Deney 1: Bağlantı test cihazı</h2>
-<p>Aşağıdaki minyatür board gerçek bir breadboard gibi davranır. İki deliğe tıklayın: sistem bağlı olup olmadıklarını ve nedenini açıklar. Önce tahmin edin, sonra tıklayın.</p>
-<div class="bb">
-<div class="ray"><span class="etiket" style="color:#dc2626">+</span><span id="railArt"></span></div>
-<div class="ray"><span class="etiket" style="color:#2563eb">−</span><span id="railEks"></span></div>
-<div class="bbgrid" id="bbgrid"></div>
-</div>
+<div class="kart"><h2>Deney 1: Tam boy breadboard — bağlantı test cihazı</h2>
+<p>Aşağıdaki board gerçek ölçüdeki gibi 30 satırlıdır (kaydırarak tamamını görebilirsiniz). İki deliğe tıklayın: bağlıysa tüm hat sarı renkle aydınlanır ve neden açıklanır. Önce tahmin edin, sonra tıklayın.</p>
+<div class="bb-sarici"><div class="bb">
+<div class="bb-baslik"><span>TAM BOY BREADBOARD — 30 SATIR</span><span>+ kırmızı &nbsp; − mavi</span></div>
+<div class="rail-cizgi rail-kirmizi"></div>
+<div class="rail-satir"><span class="rail-etiket" style="color:#dc2626">+</span><span id="railUstArt" style="display:flex;gap:4px"></span></div>
+<div class="rail-satir"><span class="rail-etiket" style="color:#2563eb">−</span><span id="railUstEks" style="display:flex;gap:4px"></span></div>
+<div class="rail-cizgi rail-mavi"></div>
+<div class="bb-harfler" id="harfUst"></div>
+<div id="terminalAlan"></div>
+<div class="bb-hendek">H E N D E K — üst grup (a–e) ile alt grup (f–j) bağlı değil</div>
+<div id="terminalAlanAlt"></div>
+<div class="bb-harfler" id="harfAlt"></div>
+<div class="rail-cizgi rail-kirmizi"></div>
+<div class="rail-satir"><span class="rail-etiket" style="color:#dc2626">+</span><span id="railAltArt" style="display:flex;gap:4px"></span></div>
+<div class="rail-satir"><span class="rail-etiket" style="color:#2563eb">−</span><span id="railAltEks" style="display:flex;gap:4px"></span></div>
+<div class="rail-cizgi rail-mavi"></div>
+</div></div>
 <div class="kontrol"><div class="satir"><button class="ikincil" id="temizle">Seçimi Temizle</button></div><div class="sonuc" id="bagSonuc">İki delik seçin. Örnek: önce a3, sonra b3.</div></div>
 </div>
 <div class="kart"><h2>Deney 2: Kısa sınav (3 soru)</h2>
 <div class="quiz" id="q1"><b>1. a3 ile c3 bağlı mıdır?</b><button data-d="1">Evet, aynı satırın sol grubundalar (a–e).</button><button data-d="0">Hayır, farklı sütunlar bağlı değildir.</button><div class="sonuc" style="display:none"></div></div>
 <div class="quiz" id="q2"><b>2. e5 ile f5 bağlı mıdır?</b><button data-d="0">Hayır, orta hendek iki tarafı ayırır.</button><button data-d="1">Evet, aynı satır numarası bağlar.</button><div class="sonuc" style="display:none"></div></div>
-<div class="quiz" id="q3"><b>3. Üst kırmızı rail hattında delik 4 ile delik 27 bağlı mıdır?</b><button data-d="1">Evet, rail hattı boydan boya bağlıdır (bölünmüş tip değilse).</button><button data-d="0">Hayır, rail hatları da 5li gruplara ayrılır.</button><div class="sonuc" style="display:none"></div></div>
+<div class="quiz" id="q3"><b>3. Üst kırmızı rail hattı ile alt kırmızı rail hattı bağlı mıdır?</b><button data-d="0">Hayır, üst ve alt rail ayrı hatlardır, kablo ile köprü gerekir.</button><button data-d="1">Evet, tüm + hatları içten bağlıdır.</button><div class="sonuc" style="display:none"></div></div>
 <p style="margin-top:.8rem">Sonraki adım: <b>Ders 6: Multimetre ile ölçüm (hazırlanıyor)</b> — ardından entegreler gelecek.</p>
 <div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır.</div></div>
 <footer>by; ERHAN EMİR</footer></div>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
-var railArt=document.getElementById("railArt"),railEks=document.getElementById("railEks"),bbgrid=document.getElementById("bbgrid"),sonuc=document.getElementById("bagSonuc");
+var sonuc=document.getElementById("bagSonuc");
 var secim=[];
-function delikYap(id,etiket){var b=document.createElement("button");b.className="delik";b.type="button";b.dataset.id=id;b.title=id;b.textContent="";b.addEventListener("click",function(){tikla(id,b);});return b;}
-for(var i=0;i<10;i++){var a=document.createElement("button");a.className="delik hat";a.type="button";a.dataset.id="rail+:"+i;a.title="rail+:"+i;a.addEventListener("click",function(){tikla(this.dataset.id,this);});railArt.appendChild(a);}
-for(var j=0;j<10;j++){var e=document.createElement("button");e.className="delik hat";e.type="button";e.dataset.id="rail-:"+j;e.title="rail-:"+j;e.addEventListener("click",function(){tikla(this.dataset.id,this);});railEks.appendChild(e);}
+var SUTUN=30;
+function delik(id,grup){var b=document.createElement("button");b.className="bb-delik";b.type="button";b.dataset.id=id;b.dataset.grup=grup;b.title=id+" ("+grup+")";b.setAttribute("aria-label",id);b.addEventListener("click",function(){tikla(id,b);});return b;}
+function railDoldur(elId,prefix,grupAd){var el=document.getElementById(elId);for(var i=1;i<=SUTUN;i++){el.appendChild(delik(prefix+i,grupAd));}}
+railDoldur("railUstArt","R+","rail-ust-art");
+railDoldur("railUstEks","R-","rail-ust-eks");
+railDoldur("railAltArt","r+","rail-alt-art");
+railDoldur("railAltEks","r-","rail-alt-eks");
 var harfler=["a","b","c","d","e","f","g","h","i","j"];
-for(var r=1;r<=6;r++){var no=document.createElement("div");no.className="satirno";no.textContent=r;bbgrid.appendChild(no);
-for(var c=0;c<10;c++){if(c===5){var bos=document.createElement("div");bos.style.width="8px";bbgrid.appendChild(bos);}
-var id=harfler[c]+r;bbgrid.appendChild(delikYap(id));}
-if(r===3){var h=document.createElement("div");h.className="orta-bosluk";h.textContent="— HENDEK: üst grup (a–e) ile alt grup (f–j) bağlı değil —";bbgrid.appendChild(h);}}
-function grup(id){if(id.indexOf("rail+:")===0)return "rail+";if(id.indexOf("rail-:")===0)return "rail-";var h=id.charAt(0),satr=id.slice(1);var taraf=(h<="e")?"sol":"sag";return "satir"+satr+taraf;}
-function tikla(id,el){if(secim.length>=2){temizleSecim();}el.classList.add("sec");secim.push({id:id,el:el});
+function harfDoldur(elId){var el=document.getElementById(elId);harfler.forEach(function(h){var s=document.createElement("span");s.textContent=h;el.appendChild(s);if(h==="e"){var b=document.createElement("span");b.style.width="10px";el.appendChild(b);}});}
+harfDoldur("harfUst");harfDoldur("harfAlt");
+function terminalDoldur(elId,satirlar){var alan=document.getElementById(elId);satirlar.forEach(function(r){var sat=document.createElement("div");sat.className="bb-satir";var no=document.createElement("span");no.className="bb-satirno";no.textContent=r;sat.appendChild(no);
+for(var c=0;c<10;c++){if(c===5){var bos=document.createElement("span");bos.className="bb-bosluk";sat.appendChild(bos);}var h=harfler[c];var taraf=(c<5)?"sol":"sag";sat.appendChild(delik(h+r,"satir"+r+"-"+taraf));}
+alan.appendChild(sat);});}
+var ust=[];for(var r1=1;r1<=15;r1++)ust.push(r1);
+var alt=[];for(var r2=16;r2<=30;r2++)alt.push(r2);
+terminalDoldur("terminalAlan",ust);
+terminalDoldur("terminalAlanAlt",alt);
+function temizleVurgu(){document.querySelectorAll(".bb-delik.ayni").forEach(function(x){x.classList.remove("ayni");});}
+function temizleSecim(){secim.forEach(function(s){s.el.classList.remove("sec");});secim=[];temizleVurgu();}
+function vurgula(grupAd){document.querySelectorAll('.bb-delik[data-grup="'+grupAd+'"]').forEach(function(x){x.classList.add("ayni");});}
+function tikla(id,el){if(secim.length>=2){temizleSecim();}el.classList.add("sec");secim.push({id:id,el:el,grup:el.dataset.grup});
 if(secim.length===1){sonuc.textContent="İlk nokta: "+id+". Şimdi ikinci deliği seçin.";return;}
-var a=secim[0].id,b=secim[1].id,ga=grup(a),gb=grup(b);
-if(a===b){sonuc.textContent="Aynı delik seçildi ("+a+"). Elbette bağlı, ama iki farklı delik deneyin.";return;}
-if(ga===gb){var aciklama="";if(ga==="rail+")aciklama="İkisi de üst kırmızı rail hattında: boydan boya bağlıdır.";else if(ga==="rail-")aciklama="İkisi de alt mavi rail hattında: boydan boya bağlıdır.";else aciklama="İkisi de "+ga.replace("satir","satır ").replace("sol","sol grup (a–e)").replace("sag","sağ grup (f–j)")+" içinde: bağlıdır.";sonuc.textContent="BAĞLI: "+a+" ↔ "+b+". "+aciklama;}
-else{var neden="";if(a.charAt(0)==="e"&&b.charAt(0)==="f"&&a.slice(1)===b.slice(1))neden="Hendek kuralı: e"+a.slice(1)+" ile f"+b.slice(1)+" aynı satırda görünür ama orta boşluk bağlantıyı keser.";else if((ga.indexOf("rail")===0)!==(gb.indexOf("rail")===0))neden="Biri rail hattında, diğeri orta alanda: arada kablo olmadan bağlantı yoktur.";else neden="Farklı gruplar ("+ga+" ≠ "+gb+"): bağlantı yoktur.";sonuc.textContent="BAĞLI DEĞİL: "+a+" ✕ "+b+". "+neden;}}
-function temizleSecim(){secim.forEach(function(s){s.el.classList.remove("sec");});secim=[];}
+var a=secim[0],b=secim[1];temizleVurgu();
+if(a.id===b.id){sonuc.textContent="Aynı delik seçildi ("+a.id+"). İki farklı delik deneyin.";return;}
+if(a.grup===b.grup){vurgula(a.grup);var aciklama="";if(a.grup==="rail-ust-art")aciklama="İkisi de üst + rail hattında: boydan boya bağlıdır (sarı yandı).";else if(a.grup==="rail-ust-eks")aciklama="İkisi de üst − rail hattında: boydan boya bağlıdır.";else if(a.grup==="rail-alt-art")aciklama="İkisi de alt + rail hattında: boydan boya bağlıdır.";else if(a.grup==="rail-alt-eks")aciklama="İkisi de alt − rail hattında: boydan boya bağlıdır.";else aciklama="Aynı satır grubundalar: bağlıdır. Tüm satır sarı yandı.";sonuc.textContent="BAĞLI: "+a.id+" ve "+b.id+". "+aciklama;}
+else{var neden="";if(a.grup.indexOf("satir5-sol")===0&&b.grup.indexOf("satir5-sag")===0||b.grup.indexOf("satir5-sol")===0&&a.grup.indexOf("satir5-sag")===0)neden="Hendek kuralı: aynı satırda görünse de orta boşluk bağlantıyı keser.";else if(a.grup.indexOf("rail")===0&&b.grup.indexOf("rail")===0)neden="Farklı rail hatları birbirine bağlı değildir (üst/alt, +/− ayrıdır).";else if((a.grup.indexOf("rail")===0)!==(b.grup.indexOf("rail")===0))neden="Biri rail hattında, diğeri orta alanda: arada kablo olmadan bağlantı yoktur.";else neden="Farklı gruplar: bağlantı yoktur.";sonuc.textContent="BAĞLI DEĞİL: "+a.id+" ve "+b.id+". "+neden;}}
 document.getElementById("temizle").addEventListener("click",function(){temizleSecim();sonuc.textContent="Temizlendi. İki delik seçin.";});
-[["q1","Evet, a–e grubu aynı satırda birbirine bağlıdır."],["q2","Hendek iki tarafı ayırır, e ile f bağlı değildir."],["q3","Standart boardda rail hattı süreklidir. (Bölünmüş tipte ortada köprü gerekir.)"]].forEach(function(q){
+[["q1","Evet, a–e grubu aynı satırda birbirine bağlıdır."],["q2","Hendek iki tarafı ayırır, e ile f bağlı değildir."],["q3","Üst ve alt rail ayrı hatlardır. Köprü kablosu gerekir."]].forEach(function(q){
 var box=document.getElementById(q[0]);var btns=box.querySelectorAll("button");var out=box.querySelector(".sonuc");
 btns.forEach(function(b){b.addEventListener("click",function(){btns.forEach(function(x){x.classList.remove("dogru","yanlis");});out.style.display="block";
 if(b.dataset.d==="1"){b.classList.add("dogru");out.textContent="Doğru. "+q[1];}else{b.classList.add("yanlis");out.textContent="Yanlış. "+q[1];}});});});
