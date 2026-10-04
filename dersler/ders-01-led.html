@@ -19,11 +19,8 @@ table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
 th,td{border:1px solid rgba(255,255,255,.12);padding:.5rem .6rem;text-align:left}
 th{background:rgba(255,255,255,.05);color:var(--sari)}
 .sahne{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start;justify-content:center;margin:1rem 0}
-.ledkutusu{text-align:center;min-width:200px}
-.ledgovde{width:72px;height:72px;margin:0 auto;border-radius:50%;background:#1a0d12;border:3px solid #7a2c2c;transition:.2s}
-.bacaklar{display:flex;justify-content:center;gap:18px;margin-top:4px}
-.bacak{width:9px;height:46px;background:#94a3b8;border-radius:2px}
-.bacak.etiket{position:relative}.bacakisim{font-size:.72rem;color:var(--soluk);margin-top:2px}
+.ledkutusu{text-align:center;min-width:220px}
+.ledsvg{width:150px;height:170px;margin:0 auto;display:block}
 .kontrol{flex:1;min-width:280px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem}
 .satir{margin:.8rem 0}label{font-weight:700;display:block;margin-bottom:.3rem;font-size:.9rem}
 input[type=range]{width:100%;accent-color:var(--turuncu)}
@@ -74,8 +71,15 @@ footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem 0}
 <p>Sol bacak uzun bacak (anot), sağ bacak kısa bacaktır (katot). Bağlantıyı seçin, gerilimi ayarlayın, <b>Güç Ver</b> ile devreyi enerjilendirin. Devreyi istediğiniz zaman <b>Gücü Kes</b> ile kapatabilirsiniz.</p>
 <div class="sahne">
 <div class="ledkutusu">
-<div class="ledgovde" id="ledGovde"></div>
-<div class="bacaklar"><div><div class="bacak" id="bacakSol"></div><div class="bacakisim">Sol: uzun (+ olmalı)</div></div><div><div class="bacak" id="bacakSag"></div><div class="bacakisim">Sağ: kısa (- olmalı)</div></div></div>
+<svg class="ledsvg" viewBox="0 0 150 170" id="ledSvg" aria-label="LED çizimi">
+<line x1="60" y1="95" x2="60" y2="160" stroke="#94a3b8" stroke-width="7" stroke-linecap="round" id="bacakSolCizgi"/>
+<line x1="90" y1="95" x2="90" y2="145" stroke="#94a3b8" stroke-width="7" stroke-linecap="round" id="bacakSagCizgi"/>
+<path d="M35 95 Q35 45 75 45 Q115 45 115 95 Z" fill="#1a0d12" stroke="#7a2c2c" stroke-width="3" id="ledKubbe"/>
+<rect x="35" y="90" width="80" height="10" fill="#7a2c2c" id="ledTaban"/>
+<text x="60" y="172" text-anchor="middle" font-size="10" fill="#8890a0">uzun +</text>
+<text x="90" y="157" text-anchor="middle" font-size="10" fill="#8890a0">kısa −</text>
+<circle cx="75" cy="70" r="26" fill="#f87171" opacity="0" id="ledIsik"/>
+</svg>
 <div class="duman" id="duman">💨</div>
 <div id="ledDurum" style="margin-top:.5rem;font-weight:800">Devre kapalı</div>
 </div>
@@ -102,35 +106,44 @@ footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem 0}
 <footer>by; ERHAN EMİR</footer>
 </div>
 <script>
-(function(){
+document.addEventListener("DOMContentLoaded", function(){
 var sol=null,sag=null,enerji=false;
-var volt=document.getElementById('volt'),vg=document.getElementById('voltGoster'),
-govde=document.getElementById('ledGovde'),durum=document.getElementById('ledDurum'),olcum=document.getElementById('olcum'),
-banner=document.getElementById('banner'),bBas=document.getElementById('bannerBaslik'),bMet=document.getElementById('bannerMetin'),
-duman=document.getElementById('duman'),gucVer=document.getElementById('gucVer'),gucKes=document.getElementById('gucKes');
-function sec(btn,diger){btn.classList.add('secili');diger.classList.remove('secili');}
-var sA=document.getElementById('solArti'),sE=document.getElementById('solEksi'),gA=document.getElementById('sagArti'),gE=document.getElementById('sagEksi');
-sA.onclick=function(){sol='+';sec(sA,sE);guncelle();};sE.onclick=function(){sol='-';sec(sE,sA);guncelle();};
-gA.onclick=function(){sag='+';sec(gA,gE);guncelle();};gE.onclick=function(){sag='-';sec(gE,gA);guncelle();};
-volt.oninput=function(){vg.textContent=parseFloat(volt.value).toFixed(1);if(enerji)guncelle();};
-document.getElementById('bannerKapat').onclick=function(){banner.className='uyaribanner';};
-function goster(tip,bas,met){banner.className='uyaribanner goster '+tip;bBas.textContent=bas;bMet.textContent=met;}
+var volt=document.getElementById("volt"),vg=document.getElementById("voltGoster"),
+kubbe=document.getElementById("ledKubbe"),isik=document.getElementById("ledIsik"),
+durum=document.getElementById("ledDurum"),olcum=document.getElementById("olcum"),
+banner=document.getElementById("banner"),bBas=document.getElementById("bannerBaslik"),bMet=document.getElementById("bannerMetin"),
+duman=document.getElementById("duman"),gucVer=document.getElementById("gucVer"),gucKes=document.getElementById("gucKes");
+function sec(btn,diger){btn.classList.add("secili");diger.classList.remove("secili");}
+var sA=document.getElementById("solArti"),sE=document.getElementById("solEksi"),gA=document.getElementById("sagArti"),gE=document.getElementById("sagEksi");
+function bagla(which,val,btn,other){if(which==="sol"){sol=val;sec(btn,other);}else{sag=val;sec(btn,other);}guncelle();}
+sA.addEventListener("click",function(){bagla("sol","+",sA,sE);});
+sE.addEventListener("click",function(){bagla("sol","-",sE,sA);});
+gA.addEventListener("click",function(){bagla("sag","+",gA,gE);});
+gE.addEventListener("click",function(){bagla("sag","-",gE,gA);});
+volt.addEventListener("input",function(){vg.textContent=parseFloat(volt.value).toFixed(1);if(enerji)guncelle();});
+document.getElementById("bannerKapat").addEventListener("click",function(){banner.className="uyaribanner";});
+function goster(tip,bas,met){banner.className="uyaribanner goster "+tip;bBas.textContent=bas;bMet.textContent=met;}
+function ledGorsel(mod,p){kubbe.setAttribute("fill","#1a0d12");isik.setAttribute("opacity","0");kubbe.style.filter="none";
+if(mod==="normal"){kubbe.setAttribute("fill","#ff6b6b");isik.setAttribute("opacity",(0.35+p*0.6).toFixed(2));kubbe.style.filter="drop-shadow(0 0 "+Math.round(8+p*22)+"px #f87171)";}
+else if(mod==="asiri"){kubbe.setAttribute("fill","#ff3b3b");isik.setAttribute("opacity","1");kubbe.style.filter="drop-shadow(0 0 30px #ef4444)";}
+else if(mod==="hasar"){kubbe.setAttribute("fill","#0d0505");isik.setAttribute("opacity","0");kubbe.style.filter="none";}}
 function guncelle(){
 var v=parseFloat(volt.value);
-if(!enerji){govde.style.background='#1a0d12';govde.style.boxShadow='none';duman.style.display='none';durum.textContent='Devre kapalı';olcum.textContent='Güç kapalı. Bağlantı: Sol '+(sol||'?')+', Sağ '+(sag||'?')+', Kaynak '+v.toFixed(1)+'V.';return;}
-if(!sol||!sag){olcum.textContent='Eksik bağlantı: iki bacağı da seçin.';goster('bilgi','Eksik bağlantı','Güç açık ancak iki bacak da bağlanmadı. Önce + ve − seçimini tamamlayın.');return;}
-var dogru=(sol==='+'&&sag==='-');
-olcum.textContent='Güç AÇIK | Sol:'+sol+' Sağ:'+sag+' | '+v.toFixed(1)+'V '+(dogru?'(doğru kutup)':'(ters kutup)');
-duman.style.display='none';
-if(!dogru){govde.style.background='#1a0d12';govde.style.boxShadow='none';durum.textContent='LED sönük (ters kutuplama)';goster('bilgi','Ters kutuplama','LED yanmıyor çünkü akım yönü ters. Uzun bacak + hatta, kısa bacak − hatta olmalıdır. Bağlantıyı değiştirin.');return;}
-if(v<1.8){govde.style.background='#1a0d12';govde.style.boxShadow='none';durum.textContent='LED sönük (eşik altı)';goster('bilgi','Eşik gerilime ulaşılmadı','Kırmızı LED yaklaşık 1.8V altında iletime geçmez. Gerilimi 1.8–2.2V aralığına yükseltin.');return;}
-if(v<=2.2){var p=(v-1.8)/0.4;govde.style.background='#ff6b6b';govde.style.boxShadow='0 0 '+(12+p*28)+'px rgba(248,113,113,.9)';durum.textContent='LED normal çalışıyor ('+v.toFixed(1)+'V)';if(v>2.1){goster('ok','Normal çalışma üst sınırı','2.2V üzerine çıkmayın. Bu aralık güvenli çalışmanın üst limitidir.');}else{banner.className='uyaribanner';}return;}
-if(v<=2.6){govde.style.background='#ff3b3b';govde.style.boxShadow='0 0 45px rgba(239,68,68,1)';durum.textContent='AŞIRI SÜRME ('+v.toFixed(1)+'V)';goster('risk','Aşırı sürme','Gerilim nominal aralığın üzerinde. LED çok parlak ve ısınıyor. Kısa sürede ömrü kısalır. Gerilimi düşürün ve seri direnç kullanın.');return;}
-govde.style.background='#0d0505';govde.style.boxShadow='none';duman.style.display='block';durum.textContent='LED hasar gördü';goster('hata','Kalıcı hasar','2.6V üzeri gerilim LED'in iç yapısını bozar. Gerçek devrede bu, susuz çalışan bir motora benzer: kısa sürede durur. Çözüm: gerilimi 1.8–2.2V aralığında tutmak ve seri direnç eklemektir. Gücü kesip 2.0V ile tekrar deneyin.');return;
+if(!enerji){ledGorsel("sonuk",0);duman.style.display="none";durum.textContent="Devre kapalı";olcum.textContent="Güç kapalı. Bağlantı: Sol "+(sol||"?")+", Sağ "+(sag||"?")+", Kaynak "+v.toFixed(1)+"V.";return;}
+if(!sol||!sag){olcum.textContent="Eksik bağlantı: iki bacağı da seçin.";goster("bilgi","Eksik bağlantı","Güç açık ancak iki bacak da bağlanmadı. Önce + ve - seçimini tamamlayın.");return;}
+var dogru=(sol==="+"&&sag==="-");
+olcum.textContent="Güç AÇIK | Sol:"+sol+" Sağ:"+sag+" | "+v.toFixed(1)+"V "+(dogru?"(doğru kutup)":"(ters kutup)");
+duman.style.display="none";
+if(!dogru){ledGorsel("sonuk",0);durum.textContent="LED sönük (ters kutuplama)";goster("bilgi","Ters kutuplama","LED yanmıyor çünkü akım yönü ters. Uzun bacak + hatta, kısa bacak - hatta olmalıdır. Bağlantıyı değiştirin.");return;}
+if(v<1.8){ledGorsel("sonuk",0);durum.textContent="LED sönük (eşik altı)";goster("bilgi","Eşik gerilime ulaşılmadı","Kırmızı LED yaklaşık 1.8V altında iletime geçmez. Gerilimi 1.8-2.2V aralığına yükseltin.");return;}
+if(v<=2.2){var p=(v-1.8)/0.4;ledGorsel("normal",p);durum.textContent="LED normal çalışıyor ("+v.toFixed(1)+"V)";if(v>2.1){goster("ok","Normal çalışma üst sınırı","2.2V üzerine çıkmayın. Bu aralık güvenli çalışmanın üst limitidir.");}else{banner.className="uyaribanner";}return;}
+if(v<=2.6){ledGorsel("asiri",1);durum.textContent="AŞIRI SÜRME ("+v.toFixed(1)+"V)";goster("risk","Aşırı sürme","Gerilim nominal aralığın üzerinde. LED çok parlak ve ısınıyor. Kısa sürede ömrü kısalır. Gerilimi düşürün ve seri direnç kullanın.");return;}
+ledGorsel("hasar",0);duman.style.display="block";durum.textContent="LED hasar gördü";goster("hata","Kalıcı hasar","2.6V üzeri gerilim LED yapısını bozar. Çözüm: gerilimi 1.8-2.2V aralığında tutmak ve seri direnç eklemektir. Gücü kesip 2.0V ile tekrar deneyin.");return;
 }
-gucVer.onclick=function(){enerji=true;gucVer.disabled=true;gucKes.disabled=false;guncelle();};
-gucKes.onclick=function(){enerji=false;gucVer.disabled=false;gucKes.disabled=true;guncelle();banner.className='uyaribanner';};
-})();
+gucVer.addEventListener("click",function(){enerji=true;gucVer.disabled=true;gucKes.disabled=false;guncelle();});
+gucKes.addEventListener("click",function(){enerji=false;gucVer.disabled=false;gucKes.disabled=true;guncelle();banner.className="uyaribanner";});
+guncelle();
+});
 </script>
 </body>
 </html>

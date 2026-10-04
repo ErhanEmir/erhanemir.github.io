@@ -19,14 +19,14 @@
 <div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır.</div></div>
 <footer>by; ERHAN EMİR</footer></div>
 <script>
-(function(){var tip='aktif',ctx=null,osc=null;var ciz=document.getElementById('cizim'),dur=document.getElementById('durum'),notalar=document.getElementById('notalar');
-var aB=document.getElementById('aktifBtn'),pB=document.getElementById('pasifBtn');
-aB.onclick=function(){tip='aktif';aB.classList.add('secili');pB.classList.remove('secili');notalar.style.display='none';dur.textContent='Aktif mod seçili. Başlat\u2019a basın.';durdur();};
-pB.onclick=function(){tip='pasif';pB.classList.add('secili');aB.classList.remove('secili');notalar.style.display='flex';dur.textContent='Pasif mod seçili. Notalara basarak frekans üretebilirsiniz.';durdur();};
-function ac(f){if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();durdur();osc=ctx.createOscillator();var g=ctx.createGain();osc.type=tip==='aktif'?'square':'sine';osc.frequency.value=f;g.gain.value=0.06;osc.connect(g);g.connect(ctx.destination);osc.start();ciz.textContent='♪';ciz.classList.add('titriyor');}
-function durdur(){if(osc){try{osc.stop();}catch(e){}osc=null;}ciz.textContent='—';ciz.classList.remove('titriyor');}
-document.getElementById('cal').onclick=function(){if(tip==='aktif'){ac(2000);dur.textContent='Aktif buzzer: 2000Hz sabit ton üretiliyor.';}else{var melodi=[262,294,330,392,392,330];var i=0;(function siradaki(){if(i>=melodi.length){durdur();dur.textContent='Melodi tamamlandı.';return;}ac(melodi[i]);dur.textContent='Nota '+(i+1)+'/'+melodi.length+': '+melodi[i]+'Hz';i++;setTimeout(siradaki,350);})();}};
-document.getElementById('dur').onclick=function(){durdur();dur.textContent='Ses durduruldu.';};
-var nb=document.querySelectorAll('#notalar button');nb.forEach(function(b){b.addEventListener('mousedown',function(){ac(parseFloat(b.getAttribute('data-f')));dur.textContent=b.textContent+' üretiliyor.';});b.addEventListener('mouseup',durdur);b.addEventListener('mouseleave',durdur);});
-})();
+document.addEventListener("DOMContentLoaded", function(){var tip="aktif",ctx=null,osc=null;var ciz=document.getElementById("cizim"),dur=document.getElementById("durum"),notalar=document.getElementById("notalar");
+var aB=document.getElementById("aktifBtn"),pB=document.getElementById("pasifBtn");
+aB.addEventListener("click",function(){tip="aktif";aB.classList.add("secili");pB.classList.remove("secili");notalar.style.display="none";dur.textContent="Aktif mod seçili.";durdur();});
+pB.addEventListener("click",function(){tip="pasif";pB.classList.add("secili");aB.classList.remove("secili");notalar.style.display="flex";dur.textContent="Pasif mod seçili. Notalara basarak frekans üretebilirsiniz.";durdur();});
+function ac(f){if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();durdur();osc=ctx.createOscillator();var g=ctx.createGain();osc.type=(tip==="aktif")?"square":"sine";osc.frequency.value=f;g.gain.value=0.06;osc.connect(g);g.connect(ctx.destination);osc.start();ciz.textContent="♪";ciz.classList.add("titriyor");}
+function durdur(){if(osc){try{osc.stop();}catch(e){}osc=null;}ciz.textContent="—";ciz.classList.remove("titriyor");}
+document.getElementById("cal").addEventListener("click",function(){if(ctx&&ctx.state==="suspended"){ctx.resume();}if(tip==="aktif"){ac(2000);dur.textContent="Aktif buzzer: 2000Hz sabit ton üretiliyor.";}else{var melodi=[262,294,330,392,392,330];var i=0;(function siradaki(){if(i>=melodi.length){durdur();dur.textContent="Melodi tamamlandı.";return;}ac(melodi[i]);dur.textContent="Nota "+(i+1)+"/"+melodi.length+": "+melodi[i]+"Hz";i++;setTimeout(siradaki,350);})();}});
+document.getElementById("dur").addEventListener("click",function(){durdur();dur.textContent="Ses durduruldu.";});
+var nb=document.querySelectorAll("#notalar button");nb.forEach(function(b){function notaBas(e){if(e)e.preventDefault();if(ctx&&ctx.state==="suspended"){ctx.resume();}ac(parseFloat(b.getAttribute("data-f")));dur.textContent=b.textContent+" üretiliyor.";}b.addEventListener("pointerdown",notaBas);b.addEventListener("pointerup",durdur);b.addEventListener("pointerleave",durdur);});
+});
 </script></body></html>

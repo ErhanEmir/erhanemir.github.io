@@ -17,11 +17,15 @@
 <div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır.</div></div>
 <footer>by; ERHAN EMİR</footer></div>
 <script>
-(function(){var s=0;var bas=document.getElementById('bas'),l=document.getElementById('lamba'),d=document.getElementById('durum'),log=document.getElementById('log'),mod=document.getElementById('mod');
-function yaz(t){log.innerHTML+=t+'<br>';log.scrollTop=log.scrollHeight;}
-function yak(){l.style.background='#fde047';l.style.boxShadow='0 0 28px #fde047';d.textContent='Lamba yanıyor';}
-function sondur(){l.style.background='#111c28';l.style.boxShadow='none';d.textContent='Lamba sönük';}
-bas.addEventListener('mousedown',function(){s++;document.getElementById('sayac').textContent='Basılma: '+s;if(mod.value==='dogru'){yak();yaz('Basış '+s+': temiz sinyal, lamba yandı.');}else{if(Math.random()<0.5){yak();yaz('Basış '+s+': parazitli sinyal, lamba yandı.');}else{sondur();yaz('Basış '+s+': temas algılanamadı, lamba yanmadı.');}}});
-bas.addEventListener('mouseup',function(){if(mod.value==='dogru'){sondur();yaz('Bırakıldı: giriş 0, lamba söndü.');}else{if(Math.random()<0.4){yaz('Bırakıldı: giriş kararsız, dalgalanma sürüyor.');}else{sondur();yaz('Bırakıldı: lamba söndü.');}}});
-})();
+document.addEventListener("DOMContentLoaded", function(){var s=0;var bas=document.getElementById("bas"),l=document.getElementById("lamba"),d=document.getElementById("durum"),log=document.getElementById("log"),mod=document.getElementById("mod");
+function yaz(t){log.innerHTML+=t+"<br>";log.scrollTop=log.scrollHeight;}
+function yak(){l.style.background="#fde047";l.style.boxShadow="0 0 28px #fde047";d.textContent="Lamba yanıyor";}
+function sondur(){l.style.background="#111c28";l.style.boxShadow="none";d.textContent="Lamba sönük";}
+function basildi(){s++;document.getElementById("sayac").textContent="Basılma: "+s;if(mod.value==="dogru"){yak();yaz("Basış "+s+": temiz sinyal, lamba yandı.");}else{if(Math.random()<0.5){yak();yaz("Basış "+s+": parazitli sinyal, lamba yandı.");}else{sondur();yaz("Basış "+s+": temas algılanamadı, lamba yanmadı.");}}}
+function birakildi(){if(mod.value==="dogru"){sondur();yaz("Bırakıldı: giriş 0, lamba söndü.");}else{if(Math.random()<0.4){yaz("Bırakıldı: giriş kararsız, dalgalanma sürüyor.");}else{sondur();yaz("Bırakıldı: lamba söndü.");}}}
+bas.addEventListener("pointerdown",function(e){e.preventDefault();basildi();});
+bas.addEventListener("pointerup",function(){birakildi();});
+bas.addEventListener("pointerleave",function(){if(mod.value==="dogru")sondur();});
+bas.addEventListener("click",function(){});
+});
 </script></body></html>
