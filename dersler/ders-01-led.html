@@ -43,7 +43,7 @@ button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1rem;font-wei
 .duman{font-size:2.4rem;display:none;text-align:center}
 footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem 0}
 .kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}
-</style>
+.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:#e8eef4;border:1px solid rgba(255,255,255,.1);cursor:pointer;border-radius:10px;padding:.7rem 1rem;font-weight:700}.quiz button.dogru{border-color:#34d399;background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:#f87171;background:rgba(248,113,113,.12)}</style>
 </head>
 <body>
 <div class="kapsayici">
@@ -103,7 +103,7 @@ footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem 0}
 <p style="margin-top:.6rem">Sonraki adım: <a class="link" href="ders-02-direnc.html">Ders 2: Direnç ve Ohm Kanunu →</a></p>
 <div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır. İzinsiz kopyalanamaz. (Bkz: ../LICENSE)</div>
 </div>
-<footer>by; ERHAN EMİR</footer>
+<div class="kart"><h2>Ders Sonu Testi</h2><p>Konu pekişsin diye 3 kısa soru. Yanlış yaparsanız açıklamayı okuyup deneye dönün.</p><div class="quiz" id="t1"><b>1. 1. Kırmızı LED hangi aralıkta normal çalışır?</b><button data-d="1" data-acik="Eşik ile nominal üst sınır arası güvenli bölgedir.">1.8V – 2.2V</button><button data-d="0" data-acik="Bu aralık eşiğin altıdır, LED yanmaz.">0V – 1.8V</button><button data-d="0" data-acik="Bu aralık kalıcı hasar bölgesidir.">2.6V üzeri</button><div class="sonuc" style="display:none"></div></div><div class="quiz" id="t2"><b>2. 2. LED bacak bağlantısı nasıl olmalıdır?</b><button data-d="1" data-acik="Doğru kutuplama budur.">Uzun bacak + hatta, kısa bacak − hatta</button><button data-d="0" data-acik="Bu ters kutuplamadır, LED yanmaz.">Kısa bacak + hatta, uzun bacak − hatta</button><button data-d="0" data-acik="LED yönlü elemandır, yön önemlidir.">Fark etmez, iki yönde de çalışır</button><div class="sonuc" style="display:none"></div></div><div class="quiz" id="t3"><b>3. 3. 2.6V üzeri gerilim uygulanırsa ne olur?</b><button data-d="1" data-acik="Aşırı akım iç yapıyı bozar.">LED kalıcı hasar görür</button><button data-d="0" data-acik="Parlaklık artar ama hasar oluşur.">Daha parlak ve sağlıklı yanar</button><button data-d="0" data-acik="Eşik çoktan aşıldı, hasar kaçınılmazdır.">Hiçbir şey olmaz</button><div class="sonuc" style="display:none"></div></div></div><footer>by; ERHAN EMİR</footer>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
@@ -144,6 +144,11 @@ gucVer.addEventListener("click",function(){enerji=true;gucVer.disabled=true;gucK
 gucKes.addEventListener("click",function(){enerji=false;gucVer.disabled=false;gucKes.disabled=true;guncelle();banner.className="uyaribanner";});
 guncelle();
 });
+
+var quizler=document.querySelectorAll(".quiz");
+quizler.forEach(function(box){var btns=box.querySelectorAll("button");var out=box.querySelector(".sonuc");
+btns.forEach(function(b){b.addEventListener("click",function(){btns.forEach(function(x){x.classList.remove("dogru","yanlis");});out.style.display="block";
+if(b.dataset.d==="1"){b.classList.add("dogru");out.textContent="Doğru. "+(b.dataset.acik||"");}else{b.classList.add("yanlis");out.textContent="Yanlış. "+(b.dataset.acik||"");}});});});
 </script>
 </body>
 </html>
