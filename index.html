@@ -197,9 +197,7 @@
         }
         .logo-mark {
             width: 32px; height: 32px; border-radius: 8px;
-            background: linear-gradient(135deg, var(--cyan), var(--purple));
-            display: grid; place-items: center;
-            color: var(--bg-deep); font-weight: 900; font-size: 0.9rem;
+            display: block;
         }
         .nav-links { list-style: none; display: flex; gap: 1.5rem; }
         .nav-links a {
@@ -245,7 +243,6 @@
             width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--cyan);
             box-shadow: 0 0 30px var(--cyan-glow); margin: 0 auto 1.8rem;
             display: grid; place-items: center; background: var(--bg-secondary);
-            font-size: 2.3rem; color: var(--cyan);
             animation: pulse-ring 3s infinite ease-in-out;
         }
         @keyframes pulse-ring {
@@ -1052,7 +1049,7 @@
     <!-- HEADER -->
     <header>
         <nav>
-            <div class="logo"><div class="logo-mark">EM</div> erhanemir.dev</div>
+            <div class="logo"><img class="logo-mark" src="/favicon.svg" alt="Erhan Emir logo"> erhanemir.dev</div>
             <ul class="nav-links">
                 <li><a href="#about" data-i18n="nav_about">Hakkımda</a></li>
                 <li><a href="#skills" data-i18n="nav_skills">Yetenekler</a></li>
@@ -1078,7 +1075,7 @@
         <!-- HERO -->
         <section id="hero">
             <div class="hero-content fade-up">
-                <div class="avatar-ring"><i class="fas fa-microchip"></i></div>
+                <div class="avatar-ring"><img src="/favicon.svg" alt="Erhan Emir logo" width="64" height="64"></div>
                 <div class="typing-area">
                     <h1 id="typingTitle"></h1>
                     <p id="typingSub"></p>
