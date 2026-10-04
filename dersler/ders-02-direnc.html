@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ders 2: Direnç | Erhan Emir</title><meta name="robots" content="noindex">
+<style>:root{--bg:#0b0710;--card:#170d20;--pink:#f472b6;--pink2:#ec4899;--mor:#a78bfa;--yazi:#fff0f6;--soluk:#d8a9c2;--sari:#fde047;--kirmizi:#ef4444;--yesil:#34d399}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:radial-gradient(circle at 80% 10%,rgba(167,139,250,.18),transparent 40%),var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:800px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(244,114,182,.25);border-radius:18px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--pink);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--pink);margin-bottom:.5rem}p,li{line-height:1.75;color:#f5d6e6}ul{padding-left:1.2rem}.kontrol{background:rgba(255,255,255,.04);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.8rem 0}input,select{width:100%;padding:.6rem;border-radius:8px;border:1px solid rgba(244,114,182,.3);background:#0a0510;color:#fff;font-size:1rem}input[type=range]{accent-color:var(--pink2);padding:0}button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1.2rem;font-weight:800;background:linear-gradient(135deg,var(--pink2),var(--mor));color:#fff;width:100%;margin-top:.5rem}.sonuc{background:#0a0510;border-radius:10px;padding:.8rem;font-family:monospace;margin-top:.8rem;border:1px solid rgba(244,114,182,.2)}.direnc-cizim{display:flex;align-items:center;justify-content:center;gap:.5rem;margin:1rem 0;font-size:1.4rem}.govde-bant{width:140px;height:44px;background:#d9a066;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px}.bant{width:12px;height:44px}.uyari{display:none;background:#3b0a1a;border:2px solid var(--kirmizi);border-radius:12px;padding:1rem;margin-top:1rem}.uyari.goster{display:block}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(244,114,182,.3);padding-top:.8rem;margin-top:1rem}</style>
+</head><body><div class="kapsayici">
+<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-01-led.html">&larr; Önceki: LED</a>
+<h1>Ders 2: Direnç — LED'in koruması 🛡️💖</h1>
+<p>Selam yine ben! Geçen derste LED patlattın mı? 😄 İşte direnç tam bunun için var: akımı frenler, LED'i korur. Musluğun ucuna taktığın küçük aparat gibi düşün, suyu kısar.</p>
+<ul><li>🔌 Birimi <b>Ohm (Ω)</b>. Ne kadar büyük, o kadar çok fren.</li><li>🌈 Üstündeki renkli çizgiler değerini söyler. Ezberleme, aşağıda hesaplayıcı var!</li><li>🧮 Altın kural: <b>V = I × R</b> (Ohm kanunu). 5V pile LED + direnç bağlayacaksan direnç şart!</li><li>💡 Pratik: 5V + kırmızı LED için genelde <b>220Ω</b> mis gibi olur.</li></ul></div>
+<div class="kart"><h2>🎮 Deney 1: Ohm kanunu oyna</h2>
+<div class="kontrol"><div class="satir"><label>Voltaj (V): <span id="vg">5</span>V</label><input type="range" id="v" min="1" max="12" step="0.5" value="5"></div>
+<div class="satir"><label>Direnç (Ω)</label><select id="r"><option>100</option><option selected>220</option><option>330</option><option>1000</option><option>10000</option></select></div>
+<button id="hesapla">Hesapla ⚡</button><div class="sonuc" id="sonuc">Akım bekleniyor...</div>
+<div class="uyari" id="b1"><b id="b1t"></b><p id="b1m"></p></div></div></div>
+<div class="kart"><h2>🎨 Deney 2: Renkleri oku</h2>
+<p>4 bantlı direnç seç, değerini görelim:</p>
+<div class="kontrol"><div class="satir"><label>Bant 1-2-3 (sayı), Bant 4 (çarpan)</label></div>
+<div style="display:flex;gap:.5rem"><select id="b1s"></select><select id="b2s"></select><select id="cm"></select></div>
+<div class="direnc-cizim">—<div class="govde-bant"><div class="bant" id="g1"></div><div class="bant" id="g2"></div><div class="bant" id="g3"></div></div>—</div>
+<div class="sonuc" id="renkSonuc">...</div></div>
+<p style="margin-top:.6rem">Süpersin! Sıradaki: <a class="link" href="ders-03-buton.html">Ders 3: Buton →</a></p>
+<div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır. Kopyalama yasaktır.</div></div>
+<footer>by; ERHAN EMİR 💖</footer></div>
+<script>
+(function(){
+var renkler=['siyah','kahverengi','kırmızı','turuncu','sarı','yeşil','mavi','mor','gri','beyaz'];
+var hex=['#000','#6b3f1d','#d00','#f60','#ff0','#0a0','#00d','#90c','#888','#fff'];
+function doldur(s){renkler.forEach(function(r,i){var o=document.createElement('option');o.value=i;o.textContent=i+' - '+r;s.appendChild(o);});}
+doldur(document.getElementById('b1s'));doldur(document.getElementById('b2s'));
+var cm=document.getElementById('cm');[['1 Ω','siyah',1,'#000'],['10 Ω','kahve',10,'#6b3f1d'],['100 Ω','kırmızı',100,'#d00'],['1k Ω','turuncu',1000,'#f60']].forEach(function(x,i){var o=document.createElement('option');o.value=x[2];o.textContent=x[0];cm.appendChild(o);});
+function guncelle(){var a=+document.getElementById('b1s').value,b=+document.getElementById('b2s').value,c=+cm.value;document.getElementById('g1').style.background=hex[a];document.getElementById('g2').style.background=hex[b];document.getElementById('g3').style.background='#d4af37';document.getElementById('renkSonuc').textContent='Değer: '+(a*10+b)*c+' Ω (~'+((a*10+b)*c/1000)+'kΩ)'; }
+['b1s','b2s','cm'].forEach(function(id){document.getElementById(id).onchange=guncelle;});
+document.getElementById('b1s').value=2;document.getElementById('b2s').value=2;guncelle();
+var v=document.getElementById('v');v.oninput=function(){document.getElementById('vg').textContent=v.value;};
+document.getElementById('hesapla').onclick=function(){var V=parseFloat(v.value),R=parseFloat(document.getElementById('r').value);var I=V/R;var mA=(I*1000).toFixed(1);var s=document.getElementById('sonuc');var u=document.getElementById('b1');s.textContent='I = V/R = '+V+'V / '+R+'Ω = '+mA+' mA';u.classList.remove('goster');if(mA>25){u.classList.add('goster');document.getElementById('b1t').textContent='💥 Çok akım!';document.getElementById('b1m').textContent='LED için 20mA üstü tehlikeli. Direnci büyüt ya da voltajı düşür canım!';}else if(mA<5){u.classList.add('goster');document.getElementById('b1t').textContent='😴 Çok sönük kalır';document.getElementById('b1m').textContent='Akım çok düşük, LED zor görünür. Direnci küçültmeyi dene!';}};
+})();
+</script></body></html>

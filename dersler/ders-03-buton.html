@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ders 3: Buton | Erhan Emir</title><meta name="robots" content="noindex">
+<style>:root{--bg:#0b0710;--card:#170d20;--pink:#f472b6;--pink2:#ec4899;--mor:#a78bfa;--yazi:#fff0f6;--soluk:#d8a9c2;--yesil:#34d399;--kirmizi:#ef4444}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:radial-gradient(circle at 15% 80%,rgba(236,72,153,.15),transparent 40%),var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:800px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(244,114,182,.25);border-radius:18px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--pink);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--pink);margin-bottom:.5rem}p,li{line-height:1.75;color:#f5d6e6}ul{padding-left:1.2rem}.buton-buyuk{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#f9a8d4,#ec4899 60%,#9d174d);border:6px solid #5b1030;font-size:1.1rem;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 6px 0 #5b1030;transition:.1s}.buton-buyuk:active{transform:translateY(5px);box-shadow:0 1px 0 #5b1030}.sahne{display:flex;gap:1.5rem;align-items:center;justify-content:center;flex-wrap:wrap;margin:1rem 0}.lamba{width:80px;height:80px;border-radius:50%;background:#3a1025;border:3px solid #7a2c4e;margin:0 auto}.kontrol{background:rgba(255,255,255,.04);border-radius:12px;padding:1rem;min-width:260px;flex:1}.satir{margin:.6rem 0}select{width:100%;padding:.6rem;border-radius:8px;background:#0a0510;color:#fff;border:1px solid rgba(244,114,182,.3)}.log{background:#0a0510;border-radius:10px;padding:.8rem;font-family:monospace;font-size:.8rem;height:120px;overflow-y:auto;margin-top:.6rem;border:1px solid rgba(244,114,182,.2)}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(244,114,182,.3);padding-top:.8rem;margin-top:1rem}</style>
+</head><body><div class="kapsayici">
+<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-02-direnc.html">&larr; Önceki</a>
+<h1>Ders 3: Buton — Basınca ne olur? 🔘💖</h1>
+<p>Buton en eğlenceli şey! Basıyorsun, ışık yanıyor. Ama içinde küçük bir sır var: basmadığın zaman kablo havada kalır, cızırdar. Biz ona <b>pull-up / pull-down</b> ile sahip çıkıyoruz. Merak etme, aşağıda basmalı oyuncak yaptım sana!</p>
+<ul><li>👆 Buton = kapı zili gibi, basınca devreyi birleştirir.</li><li>🌀 <b>Bounce (zıplama):</b> bir kez basarsın ama içinde yay 5-6 kez zıp zıp yapar. Mikrodenetleyiciler şaşırır. Çözümü sonra kodla öğreneceğiz!</li><li>🏠 Günlük hayat: kumanda, asansör düğmesi, oyun kolu... hepsi buton!</li></ul></div>
+<div class="kart"><h2>🎮 Deney: Bas bakalım!</h2>
+<div class="satir"><label>Mod seç:</label><select id="mod"><option value="dogru">Doğru bağlantı (pull-down var ✔)</option><option value="hatali">Hatalı bağlantı (direnç yok ✘ cızırtı!)</option></select></div>
+<div class="sahne"><div style="text-align:center"><button class="buton-buyuk" id="bas">BAS!</button><div style="margin-top:.5rem" id="sayac">Basılma: 0</div></div>
+<div class="kontrol"><div style="text-align:center"><div class="lamba" id="lamba"></div><div id="durum" style="font-weight:800;margin-top:.4rem">Lamba sönük</div></div><div class="log" id="log">Hazırım! Butona bas canım...<br></div></div></div>
+<p>💡 Hatalı modda lamba bazen titrer, logda <i>cüüüzz</i> yazar. Gerçek hayatta da böyledir, o yüzden hep direnç kullanırız!</p>
+<p style="margin-top:.6rem">Devam: <a class="link" href="ders-04-buzzer.html">Ders 4: Buzzer →</a></p>
+<div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır.</div></div>
+<footer>by; ERHAN EMİR 💖</footer></div>
+<script>
+(function(){var s=0;var bas=document.getElementById('bas'),l=document.getElementById('lamba'),d=document.getElementById('durum'),log=document.getElementById('log'),mod=document.getElementById('mod');
+function yaz(t){log.innerHTML+=t+'<br>';log.scrollTop=log.scrollHeight;}
+function yak(){l.style.background='#fde047';l.style.boxShadow='0 0 30px #fde047,0 0 60px #f472b6';d.textContent='Lamba YANIYOR! 🥰';}
+function sondur(){l.style.background='#3a1025';l.style.boxShadow='none';d.textContent='Lamba sönük';}
+bas.addEventListener('mousedown',function(){s++;document.getElementById('sayac').textContent='Basılma: '+s;if(mod.value==='dogru'){yak();yaz('✔ Basıldı ('+s+') → temiz sinyal, lamba yandı!');}else{if(Math.random()<0.5){yak();yaz('⚠️ Basıldı ('+s+') → cüüüzz... sinyal zıpladı ama yandı');}else{sondur();yaz('⚠️ Basıldı ('+s+') → cızırtı! temas etmedi, lamba yanmadı');}}});
+bas.addEventListener('mouseup',function(){if(mod.value==='dogru'){sondur();yaz('○ Bırakıldı → söndü');}else{if(Math.random()<0.4){yaz('○ Bırakıldı → hâlâ cızırdıyor...');}else{sondur();yaz('○ Bırakıldı → söndü');}}});
+})();
+</script></body></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ders 4: Buzzer | Erhan Emir</title><meta name="robots" content="noindex">
+<style>:root{--bg:#0b0710;--card:#170d20;--pink:#f472b6;--pink2:#ec4899;--mor:#a78bfa;--yazi:#fff0f6;--soluk:#d8a9c2;--sari:#fde047}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:radial-gradient(circle at 85% 70%,rgba(236,72,153,.16),transparent 40%),var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:800px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(244,114,182,.25);border-radius:18px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--pink);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--pink);margin-bottom:.5rem}p,li{line-height:1.75;color:#f5d6e6}ul{padding-left:1.2rem}.secim{display:flex;gap:.6rem;margin:.8rem 0}button{cursor:pointer;border:none;border-radius:10px;padding:.8rem 1rem;font-weight:800}.tip{flex:1;background:#2a1830;color:var(--yazi);border:1px solid rgba(244,114,182,.3)}.tip.secili{outline:3px solid var(--sari);background:#3a1a30}.cal{background:linear-gradient(135deg,var(--pink2),var(--mor));color:#fff;width:100%;font-size:1.05rem;margin-top:.5rem}.durdur{background:#333;color:#fff;width:100%;margin-top:.5rem}.buzzer-cizim{text-align:center;font-size:4rem;margin:.6rem 0}.titriyor{animation:titre .15s infinite}@keyframes titre{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}.nota-butonlar{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}.nota-butonlar button{flex:1;background:#2a1830;color:#fff;border:1px solid rgba(244,114,182,.3)}.sonuc{background:#0a0510;border-radius:10px;padding:.8rem;font-family:monospace;margin-top:.8rem;border:1px solid rgba(244,114,182,.2)}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(244,114,182,.3);padding-top:.8rem;margin-top:1rem}</style>
+</head><body><div class="kapsayici">
+<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-03-buton.html">&larr; Önceki</a>
+<h1>Ders 4: Buzzer — Öten minik canavar 🔊💖</h1>
+<p>Buzzer var ya, çamaşır makinesi bitince <i>biiip</i> diyen şey! İki kardeşi var, karıştırma:</p>
+<ul><li>🔊 <b>Aktif buzzer:</b> Elektrik ver, kendi öter. Tek ses: <i>biiiiip</i>. Kolay!</li><li>🎵 <b>Pasif buzzer:</b> Ona nota vermen lazım. Do-re-mi çalabilirsin! Biraz uğraştırır ama çok eğlenceli.</li><li>🏠 Günlük hayat: alarm, oyuncak, kapı zili, park sensörü...</li></ul>
+<p>⚠️ Ses açılacak, hoparlörü kısık tut canım! Kulaklarımızı seviyoruz. 💖</p></div>
+<div class="kart"><h2>🎮 Deney: Öttür bakalım!</h2>
+<div class="secim"><button class="tip secili" id="aktifBtn">🔊 Aktif (tek ses)</button><button class="tip" id="pasifBtn">🎵 Pasif (notalı)</button></div>
+<div class="buzzer-cizim" id="cizim">🔇</div>
+<button class="cal" id="cal">🎶 ÖTTÜR</button><button class="durdur" id="dur">⏹ Durdur</button>
+<div class="nota-butonlar" id="notalar" style="display:none"><button data-f="262">Do</button><button data-f="294">Re</button><button data-f="330">Mi</button><button data-f="349">Fa</button><button data-f="392">Sol</button><button data-f="440">La</button><button data-f="494">Si</button></div>
+<div class="sonuc" id="durum">Aktif mod: basınca biiip öter.</div>
+<p style="margin-top:.8rem">🎉 4 dersi bitirdin! Sıradaki aşama entegreler olacak. Az kaldı, mikrodenetleyicilere geçeceğiz!</p>
+<div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır. Ses ve içerik kopyalanamaz.</div></div>
+<footer>by; ERHAN EMİR 💖</footer></div>
+<script>
+(function(){var tip='aktif',ctx=null,osc=null;var ciz=document.getElementById('cizim'),dur=document.getElementById('durum'),notalar=document.getElementById('notalar');
+var aB=document.getElementById('aktifBtn'),pB=document.getElementById('pasifBtn');
+aB.onclick=function(){tip='aktif';aB.classList.add('secili');pB.classList.remove('secili');notalar.style.display='none';dur.textContent='Aktif mod: basınca biiip öter.';durdur();};
+pB.onclick=function(){tip='pasif';pB.classList.add('secili');aB.classList.remove('secili');notalar.style.display='flex';dur.textContent='Pasif mod: notalara bas, melodini çal! 🎵';durdur();};
+function ac(f){if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();durdur();osc=ctx.createOscillator();var g=ctx.createGain();osc.type=tip==='aktif'?'square':'sine';osc.frequency.value=f;g.gain.value=0.08;osc.connect(g);g.connect(ctx.destination);osc.start();ciz.textContent='🔊';ciz.classList.add('titriyor');}
+function durdur(){if(osc){try{osc.stop();}catch(e){}osc=null;}ciz.textContent='🔇';ciz.classList.remove('titriyor');}
+document.getElementById('cal').onclick=function(){if(tip==='aktif'){ac(2000);dur.textContent='Biiiiip! Aktif buzzer tek sesle ötüyor 🔊';}else{var melodi=[262,294,330,392,392,330];var i=0;dur.textContent='Minik melodi çalıyor... 🎵';(function siradaki(){if(i>=melodi.length){durdur();return;}ac(melodi[i]);dur.textContent='Nota: '+melodi[i]+'Hz ('+(i+1)+'/'+melodi.length+')';i++;setTimeout(siradaki,350);})();}};
+document.getElementById('dur').onclick=function(){durdur();dur.textContent='Sustu. Kulaklar teşekkür etti 😄';};
+var nb=document.querySelectorAll('#notalar button');nb.forEach(function(b){b.addEventListener('mousedown',function(){ac(parseFloat(b.getAttribute('data-f')));dur.textContent=b.textContent+' çalıyor: '+b.getAttribute('data-f')+'Hz';});b.addEventListener('mouseup',durdur);b.addEventListener('mouseleave',durdur);});
+})();
+</script></body></html>

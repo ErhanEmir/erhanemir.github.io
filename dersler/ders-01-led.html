@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. İzinsiz kopyalanamaz. Bkz: ../LICENSE -->
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ders 1: LED | Erhan Emir</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#0b0710;--card:#170d20;--pink:#f472b6;--pink2:#ec4899;--mor:#a78bfa;--yazi:#fff0f6;--soluk:#d8a9c2;--yesil:#34d399;--kirmizi:#ef4444;--sari:#fde047}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:radial-gradient(circle at 15% 15%,rgba(236,72,153,.18),transparent 40%),var(--bg);color:var(--yazi);min-height:100vh;padding:1.5rem 1rem}
+.kapsayici{max-width:800px;margin:0 auto}
+.kart{background:var(--card);border:1px solid rgba(244,114,182,.25);border-radius:18px;padding:1.8rem;margin-bottom:1.2rem;box-shadow:0 0 30px rgba(236,72,153,.1)}
+a.link{color:var(--pink);text-decoration:none;font-weight:700}
+h1{font-size:1.7rem;margin:.5rem 0}h2{color:var(--pink);margin-bottom:.6rem;font-size:1.2rem}
+p,li{line-height:1.75;color:#f5d6e6}ul{padding-left:1.2rem;margin:.5rem 0}
+.sahne{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;justify-content:center;margin:1rem 0}
+.ledkutusu{text-align:center}
+.led{width:90px;height:120px;margin:0 auto;position:relative;transition:.2s}
+.ledgovde{width:70px;height:70px;margin:0 auto;border-radius:50% 50% 45% 45%;background:#3a1025;border:3px solid #7a2c4e;position:relative;transition:.2s}
+.bacak{width:8px;height:45px;background:#999;margin:0 auto;display:inline-block}
+.kontrol{flex:1;min-width:260px;background:rgba(255,255,255,.04);border-radius:12px;padding:1rem}
+.satir{margin:.8rem 0}label{font-weight:700;display:block;margin-bottom:.3rem}
+input[type=range]{width:100%;accent-color:var(--pink2)}
+.butonlar{display:flex;gap:.5rem;flex-wrap:wrap}
+button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1.2rem;font-weight:800;font-size:.95rem;transition:.2s}
+.btn-pembe{background:linear-gradient(135deg,var(--pink2),var(--mor));color:#fff}
+.btn-gri{background:#2a1830;color:var(--yazi);border:1px solid rgba(244,114,182,.3)}
+button:hover{transform:translateY(-2px)}
+.secili{outline:3px solid var(--sari)!important}
+.guc{background:linear-gradient(135deg,#22c55e,#059669);color:#fff;width:100%;font-size:1.1rem;margin-top:.5rem}
+.olcum{background:#0a0510;border-radius:10px;padding:.8rem;font-family:monospace;margin-top:.8rem;border:1px solid rgba(244,114,182,.2)}
+.uyaribanner{display:none;background:#3b0a1a;border:2px solid var(--kirmizi);border-radius:12px;padding:1rem;margin-top:1rem;position:relative}
+.uyaribanner.goster{display:block;animation:salla .4s}
+@keyframes salla{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.kapat{position:absolute;top:.4rem;right:.7rem;background:none;color:#fff;font-size:1.3rem;padding:.2rem .5rem}
+.duman{font-size:3rem;display:none;text-align:center;animation:yuksel 1s infinite alternate}
+@keyframes yuksel{from{transform:translateY(0);opacity:.6}to{transform:translateY(-10px);opacity:1}}
+footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem 0}
+.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(244,114,182,.3);padding-top:.8rem;margin-top:1rem}
+</style>
+</head>
+<body>
+<div class="kapsayici">
+<div class="kart">
+<a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="../index.html">Ana site</a>
+<h1>Ders 1: LED — Işığa merhaba de! 💡💖</h1>
+<p>Selam canım! Ben Erhan. Bugün seninle en tatlı komponentle tanışacağız: <b>LED</b>. Hani kumandada, oyuncaklarda yanıp sönen minik ışık var ya, işte o! Günlük hayatta her yerde: trafik lambası, telefon flaşı, süs lambaları...</p>
+<ul>
+<li>🦵 <b>Uzun bacak = + (anot)</b>, pilelerin artısına gider.</li>
+<li>🦵 <b>Kısa bacak = - (katot)</b>, eksiye gider.</li>
+<li>🔋 Kırmızı LED genelde <b>1.8V - 2.2V</b> sever. Biz deneyde 1.3V altı sönük, <b>3.7V en parlak</b> kabul edeceğiz (abartılı ama eğlenceli olsun diye!).</li>
+<li>💥 3.7V üstü verirsen <b>PATLAR</b>! Gerçek hayatta da böyle, şaka değil.</li>
+</ul>
+</div>
+<div class="kart">
+<h2>🎮 Deney masası: Sen yönet!</h2>
+<p>Şimdi sen mühendissin. Bacaklara + / - ver, voltajı seç, <b>GÜÇ VER</b>'e bas. Bakalım yakabilecek misin?</p>
+<div class="sahne">
+<div class="ledkutusu">
+<div class="led"><div class="ledgovde" id="ledGovde"></div><div><span class="bacak" id="bacakSol"></span> <span class="bacak" id="bacakSag"></span></div></div>
+<div class="duman" id="duman">💨🔥</div>
+<div id="ledDurum" style="margin-top:.5rem;font-weight:800">LED sönük 😴</div>
+</div>
+<div class="kontrol">
+<div class="satir"><label>Sol bacak (uzun bacak):</label><div class="butonlar"><button class="btn-gri" id="solArtı">+ ver</button><button class="btn-gri" id="solEksi">- ver</button></div></div>
+<div class="satir"><label>Sağ bacak (kısa bacak):</label><div class="butonlar"><button class="btn-gri" id="sagArtı">+ ver</button><button class="btn-gri" id="sagEksi">- ver</button></div></div>
+<div class="satir"><label>Voltaj: <span id="voltGoster">3.0</span>V</label><input type="range" id="volt" min="0" max="5" step="0.1" value="3"></div>
+<button class="guc" id="gucBtn">⚡ GÜÇ VER</button>
+<div class="olcum" id="olcum">Bağlantı bekleniyor...</div>
+<div class="uyaribanner" id="banner"><button class="kapat" id="bannerKapat">×</button><b id="bannerBaslik">⚠️ Uyarı</b><p id="bannerMetin" style="margin-top:.4rem"></p></div>
+</div>
+</div>
+</div>
+<div class="kart">
+<h2>🧠 Neden oldu? Kısa notlarım sana:</h2>
+<ul>
+<li>Ters bağlarsan (+ yerine -) LED yanmaz ama genelde bozulmaz. Düzelt, tekrar dene!</li>
+<li>Az voltaj = sönük ışık. Çok voltaj = patlama. O yüzden gerçek devrede hep <b>direnç</b> kullanırız. O da bir sonraki ders! 😉</li>
+<li>En sağlıklı hali: doğru kutup + doğru voltaj (2V civarı) + seri direnç.</li>
+</ul>
+<p style="margin-top:.6rem">Harikasın! Bunu çözdüysen bir sonraki derse geçebilirsin: <a class="link" href="ders-02-direnc.html">Ders 2: Direnç →</a></p>
+<div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır. Kopyalama, başka sitede yayınlama yasaktır. (LICENSE dosyasına bak)</div>
+</div>
+<footer>by; ERHAN EMİR 💖</footer>
+</div>
+<script>
+(function(){
+var sol=null,sag=null,volt=document.getElementById('volt'),vg=document.getElementById('voltGoster'),
+govde=document.getElementById('ledGovde'),durum=document.getElementById('ledDurum'),olcum=document.getElementById('olcum'),
+banner=document.getElementById('banner'),bBas=document.getElementById('bannerBaslik'),bMet=document.getElementById('bannerMetin'),
+duman=document.getElementById('duman');
+function sec(btn,grup,val){grup.forEach(function(b){b.classList.remove('secili')});btn.classList.add('secili');return val;}
+var sA=document.getElementById('solArtı'),sE=document.getElementById('solEksi'),gA=document.getElementById('sagArtı'),gE=document.getElementById('sagEksi');
+sA.onclick=function(){sol='+';sec(sA,[sA,sE]);};sE.onclick=function(){sol='-';sec(sE,[sA,sE]);};
+gA.onclick=function(){sag='+';sec(gA,[gA,gE]);};gE.onclick=function(){sag='-';sec(gE,[gA,gE]);};
+volt.oninput=function(){vg.textContent=parseFloat(volt.value).toFixed(1);};
+document.getElementById('bannerKapat').onclick=function(){banner.classList.remove('goster');};
+function uyari(bas,met){bBas.textContent=bas;bMet.textContent=met;banner.classList.add('goster');}
+document.getElementById('gucBtn').onclick=function(){
+banner.classList.remove('goster');duman.style.display='none';
+var v=parseFloat(volt.value);
+if(!sol||!sag){olcum.textContent='Önce iki bacağa da + / - seç canım!';uyari('⚠️ Bağlantı eksik','İki bacağı da seçmeden güç veremeyiz. Önce butonlarla + ve - ver.');return;}
+var dogru=(sol==='+'&&sag==='-');
+olcum.textContent='Sol:'+sol+' Sağ:'+sag+' | '+v.toFixed(1)+'V '+(dogru?'(doğru kutup ✔)':'(ters kutup ✘)');
+if(!dogru){govde.style.background='#3a1025';govde.style.boxShadow='none';durum.textContent='LED yanmadı 😅 (ters bağladın!)';uyari('🙈 Ters bağladın!','Uzun bacağa + , kısa bacağa - vermelisin. Bacakları değiştirip tekrar dene, LED genelde bozulmaz merak etme!');return;}
+if(v<1.3){govde.style.background='#3a1025';govde.style.boxShadow='none';durum.textContent='LED sönük 😴 (voltaj yetmedi)';uyari('🔋 Voltaj yetmedi','1.3V altı LED’i uyandıramaz. Biraz yükselt, 2-3V arası dene!');return;}
+if(v>3.7){govde.style.background='#1a0505';govde.style.boxShadow='0 0 5px #ef4444';duman.style.display='block';durum.textContent='💥 LED PATLADI!';uyari('💥 LED’i patlattın!','3.7V üstü çok fazla! Gerçek hayatta da böyle yanar ve bir daha çalışmaz. Çözüm: voltajı düşür + seri direnç kullan (Ders 2).');return;}
+var parlak=(v-1.3)/(3.7-1.3);var alpha=(0.25+parlak*0.75).toFixed(2);
+govde.style.background='rgba(255,'+Math.round(80+parlak*60)+','+Math.round(120+parlak*60)+',1)';
+govde.style.boxShadow='0 0 '+(10+parlak*50)+'px rgba(244,114,182,'+alpha+'),0 0 '+(30+parlak*60)+'px rgba(253,224,71,'+(alpha*0.7)+')';
+durum.textContent=v>=3.5?'LED EN PARLAK! 😎🌟':'LED yanıyor! 🥰 ('+v.toFixed(1)+'V)';
+if(v>=3.5){uyari('🌟 Mükemmel! En parlak hali!','3.7V civarı en parlak yanar ama sınırdasın! Gerçek devrede bunu dirençle güvenli yaparız. Bir sonraki derse hazırsın!');}
+};
+})();
+</script>
+</body>
+</html>
