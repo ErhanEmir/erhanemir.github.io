@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ders 7: SMD Parçalar | Erhan Emir</title><meta name="robots" content="noindex">
+<style>:root{--bg:#0b1220;--card:#0f1a2e;--sari:#fde047;--yesil:#34d399;--cyan:#22d3ee;--turuncu:#fb923c;--kirmizi:#f87171;--mor:#818cf8;--yazi:#e8eef4;--soluk:#8890a0}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:940px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--mor);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--cyan);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--mor);margin-bottom:.5rem}h3{color:var(--cyan);margin:.8rem 0 .4rem;font-size:1rem}p,li{line-height:1.75;color:#cbd5e1}ul,ol{padding-left:1.3rem}.kural{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.35);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.kural b{color:var(--mor)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.88rem}
+th,td{border:1px solid rgba(255,255,255,.12);padding:.5rem .6rem;text-align:left}
+th{background:rgba(255,255,255,.05);color:var(--sari)}
+.kontrol{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:1rem}
+.satir{margin:.7rem 0}label{font-weight:700;font-size:.9rem;display:block;margin-bottom:.3rem}
+select,input{padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:#020617;color:#fff;font-size:.95rem}
+select{width:100%}
+input.kod{width:100%;font-family:Consolas,monospace;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase}
+button.hesap{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1.2rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#e879f9);color:#050a10;margin-top:.5rem}
+.sonuc{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.88rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1);line-height:1.6}
+.paket-sahne{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-top:.6rem}
+.paket-cizim{width:150px;height:110px;background:#0f766e;border-radius:8px;position:relative;flex-shrink:0;border:2px solid #134e4a}
+.paket-parca{position:absolute;background:#1f2937;border:1px solid #6b7280;left:50%;top:50%;transform:translate(-50%,-50%)}
+.paket-bacak{position:absolute;background:#c0c0c0}
+.skor{font-weight:900;color:var(--yesil)}
+.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:#e8eef4;border:1px solid rgba(255,255,255,.1);cursor:pointer;border-radius:10px;padding:.7rem 1rem;font-weight:700}.quiz button.dogru{border-color:#34d399;background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:#f87171;background:rgba(248,113,113,.12)}
+footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}</style>
+<style>@keyframes eeBlink{0%,100%{opacity:1}50%{opacity:.3}}.kilitli-kart{position:relative;}</style>
+<style>#cerezKapi{display:none;position:fixed;inset:0;z-index:200;background:rgba(5,10,16,.94);align-items:center;justify-content:center;padding:1.5rem}#cerezKutu{max-width:400px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.5rem;text-align:center}#cerezKutu p{color:#8890a0;font-size:.88rem;line-height:1.6;margin-bottom:1rem}.cerez-eylem{display:flex;gap:.6rem;justify-content:flex-end}.cerez-eylem button{border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:.85rem;padding:.55rem 1rem}#cerezKabul{background:#22d3ee;color:#050a10}#cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}#cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}@keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}</style>
+</head><body><div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p>Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet">Daha sonra</button><button type="button" id="cerezKabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700">Kabul edilmeden kutuphane kullanilamaz.</p></div></div><div class="kapsayici">
+<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-06-multimetre.html">&larr; Önceki: Multimetre</a>
+<h1>Ders 7: SMD Parçalar ve Kılıf Tipleri</h1>
+<p>SMD (yüzeye monte parça), bacakları karttaki deliklerden geçmeyen, doğrudan bakır yüzeylere lehimlenen parçadır. Telefonunuzun içindeki binlerce minik parça hep SMD'dir. Eskiden bacaklı (THT) parçalar deliklere takılırdı; bugün üretimin neredeyse tamamı SMD'dir.</p>
+<div class="kural"><b>Neden SMD daha çok tercih edilir?</b><br>1. <b>Boyut ve ağırlık:</b> 0402 direnç pirinç tanesinden küçüktür, aynı devre karta sığar.<br>2. <b>Otomatik üretim:</b> Dizgi robotları saatte on binlerce parça yerleştirir, delme işlemi yoktur, maliyet düşer.<br>3. <b>Yüksek frekans:</b> Kısa bağlantı demek düşük parazitik endüktans demektir; hızlı devreler daha kararlı çalışır.<br>4. <b>Çift yüz:</b> Kartın iki tarafına da parça konulabilir.<br>THT ise yüksek güçte, mekanik dayanım gereken konnektörlerde ve elde prototipte hâlâ kullanılır.</div>
+</div>
+<div class="kart"><h2>Kılıf Tipleri</h2>
+<table>
+<tr><th>Kılıf</th><th>Boyut (mm)</th><th>Güç / Kullanım</th></tr>
+<tr><td>0402</td><td>1.0 × 0.5</td><td>1/16 W — en küçük yaygın direnç</td></tr>
+<tr><td>0603</td><td>1.6 × 0.8</td><td>1/10 W — en yaygın genel amaç</td></tr>
+<tr><td>0805</td><td>2.0 × 1.25</td><td>1/8 W — elde lehimlemesi kolay</td></tr>
+<tr><td>1206</td><td>3.2 × 1.6</td><td>1/4 W — güç gerektiren yerler</td></tr>
+<tr><td>SOT-23</td><td>2.9 × 1.3</td><td>3 bacaklı transistör, regülatör</td></tr>
+<tr><td>SOP / SOIC</td><td>genişlik 3.9–7.5</td><td>İki yan bacaklı entegre</td></tr>
+<tr><td>QFP</td><td>4 yandan bacaklı</td><td>Yoğun bacaklı mikrodenetleyici</td></tr>
+<tr><td>QFN</td><td>alttan pedli, bacaksız</td><td>Kompakt, iyi ısı atımı</td></tr>
+<tr><td>2835 / 5050</td><td>2.8×3.5 / 5×5</td><td>SMD LED (5050 içinde 3 çip, RGB)</td></tr>
+</table>
+<p>Not: 4 haneli sayı aslında inç ölçüsüdür (örn. 0603 = 0.06 × 0.03 inç). Metrik karşılığı ayrıca yazılır, karıştırmayın.</p>
+</div>
+<div class="kart"><h2>Deney 1: Kılıf gezgini</h2>
+<p>Listeden bir kılıf seçin, ölçekli çizimini ve bilgisini inceleyin.</p>
+<div class="kontrol"><div class="satir"><label>Kılıf seçin</label><select id="kilifSec"></select></div>
+<div class="paket-sahne"><div class="paket-cizim" id="paketCizim"></div><div class="sonuc" id="kilifBilgi" style="flex:1;min-width:240px">Seçim bekleniyor.</div></div>
+</div>
+</div>
+<div class="kart"><h2>Deney 2: SMD direnç kodu çözücü</h2>
+<p>SMD dirençlerde 3 haneli kod yazılır: ilk iki rakam sayıdır, üçüncü rakam çarpandır (sonuna eklenecek sıfır sayısı). Örnek: <b>103</b> → 10 + 3 sıfır = 10 000 Ω = 10 kΩ. <b>475</b> → 47 + 5 sıfır = 4 700 000 Ω = 4.7 MΩ. <b>0</b> veya <b>000</b> → 0 Ω (sigorta niyetine atlama teli).</p>
+<p><b>Rastgele kod</b> düğmesine basıp değeri yazın. 3 doğru yapınca deney tamamlanır. Ondalık için R harfi kullanılır (4R7 = 4.7 Ω) ama bu derste tam sayı kodlar sorulur.</p>
+<div class="kontrol">
+<div class="satir"><label>Direnç üzerindeki kod</label><div class="sonuc" id="kodGoster" style="font-size:1.6rem;letter-spacing:4px;text-align:center">---</div></div>
+<div class="satir"><label>Değer (Ω, örnek: 10000 veya 10k)</label><input class="kod" id="kodGirdi" placeholder="10000"></div>
+<button class="hesap" id="yeniKod">Rastgele kod</button>
+<button class="hesap" id="kodKontrol" style="background:linear-gradient(135deg,#22c55e,#059669)">Kontrol et</button>
+<div class="sonuc" id="kodSonuc">Kod bekleniyor.</div>
+<div class="sonuc" id="kodSkor">Doğru: 0/3</div>
+</div>
+</div>
+<div class="kart"><h2>Ders Sonu Testi</h2><p>Konu pekişsin diye 3 kısa soru.</p><div class="quiz" id="t1"><b>1. SMD neden yüksek frekanslı devrelerde avantajlıdır?</b><button data-d="1" data-acik="Kısa bağlantı parazitik endüktansı düşürür, devre kararlı çalışır.">Kısa bacaklar parazitik endüktansı düşürür</button><button data-d="0" data-acik="Boyut değil, bağlantı kısalığı belirleyicidir.">Parçalar küçük olduğu için serin çalışır</button><button data-d="0" data-acik="Frekansla maliyetin ilgisi yoktur.">Ucuz olduğu için hızlı çalışır</button><div class="sonuc" style="display:none;background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1)"></div></div><div class="quiz" id="t2"><b>2. Üzerinde 475 yazan SMD direnç kaç ohmdur?</b><button data-d="1" data-acik="47 + 5 sıfır = 4 700 000 Ω.">4.7 MΩ</button><button data-d="0" data-acik="Üçüncü rakam sıfır sayısıdır, 475 ohm değildir.">475 Ω</button><button data-d="0" data-acik="47 + 5 sıfır milyonlar basamağına çıkar.">47.5 kΩ</button><div class="sonuc" style="display:none;background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1)"></div></div><div class="quiz" id="t3"><b>3. QFN kılıfın en belirgin özelliği nedir?</b><button data-d="1" data-acik="Bacaklar alttaki pedlerdedir, ayrıca ısıyı atan termal ped bulunur.">Dışa taşan bacağı yoktur, alttan pedle lehimlenir</button><button data-d="0" data-acik="Bu QFP özelliğidir.">Dört yanında martı kanadı bacaklar vardır</button><button data-d="0" data-acik="Bu BGA özelliğidir.">Altında lehim topları vardır</button><div class="sonuc" style="display:none;background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1)"></div></div></div><div id="kilitPerde" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(5,10,16,.93);align-items:center;justify-content:center;text-align:center;padding:2rem"><div style="max-width:520px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:2rem"><h2 style="margin-bottom:.6rem">Kilitli Ders</h2><p id="kilitMetin" style="color:#8890a0;line-height:1.7"></p><p style="margin-top:1rem"><a href="index.html" style="color:#22d3ee;font-weight:800">Ders listesine don</a></p></div></div><div class="kart" id="gecisKart" style="display:none"><h2>Degerlendirme</h2><div class="sonuc" id="ilerlemeDurum" style="background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1)">Deney ve test durumu burada gorunecek.</div><div style="text-align:center;margin-top:1rem"><a id="gecisBtn" data-href="index.html" href="#" style="display:none;font-weight:900;padding:.9rem 2rem;border-radius:12px;background:linear-gradient(135deg,#34d399,#22d3ee);color:#050a10;text-decoration:none;animation:eeBlink 1s infinite">Ders Listesine Don</a></div><p style="margin-top:.6rem;font-size:.8rem;color:#8890a0">Geçme kuralı: önce deney bölümündeki uygulamayı sonuna kadar tamamlayın, sonra 3 sorunun tamamını yanıtlayın. 3 soru da doğruysa sonraki dersin düğmesi aşağıda belirir. Eksik kalırsa yanıtlar sıfırlanır ve baştan denemeniz istenir; ikinci denemenin sonunda ders tamamlanır.</p></div>
+<footer>by; ERHAN EMİR</footer>
+<div class="kopya" style="font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem">© 2026 Erhan Emir — Tüm hakları saklıdır.</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var K="_ee_kutup", ANA="Erhan2026", LS_P="_ee_kutup_ls";var DEPO=null;
+function depoTuru(){if(DEPO)return DEPO;try{document.cookie="_ee_t=1; path=/; SameSite=Lax";if(document.cookie.indexOf("_ee_t=1")>=0){DEPO="cerez";try{document.cookie="_ee_t=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";}catch(e){}try{if(window.localStorage){window.localStorage.removeItem(LS_P);window.localStorage.removeItem(LS_C);}}catch(e){}return DEPO;}}catch(e){}DEPO="ls";return DEPO;}
+var CK_A="_nx.s7k", KK=[90,60,145,231,43,109,68,168], TOK_Y="k7mQ2p", LS_C="_nx_s7k_ls";
+function cxor(s){var o="",i;for(i=0;i<s.length;i++){o+=String.fromCharCode(s.charCodeAt(i)^KK[i%KK.length]);}return o;}
+function cenc(s){try{return btoa(cxor(s)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}catch(e){return "";}}
+function cdec(s){try{var b=s.replace(/-/g,"+").replace(/_/g,"/");while(b.length%4){b+="=";}return cxor(atob(b));}catch(e){return "";}}
+function getC(n){try{var m=document.cookie.match(new RegExp("(?:^|; )"+n.replace(/\./g,"\\.")+"=([^;]*)"));return m?decodeURIComponent(m[1]):"";}catch(e){return "";}}
+function setC(n,v,gun){try{var d=new Date();d.setTime(d.getTime()+gun*864e5);document.cookie=n+"="+encodeURIComponent(v)+";expires="+d.toUTCString()+";path=/;SameSite=Lax";}catch(e){}}
+function lsGet(k){try{return window.localStorage?window.localStorage.getItem(k):null;}catch(e){return null;}}
+function lsSet(k,v){try{if(window.localStorage)window.localStorage.setItem(k,v);}catch(e){}}
+function cerezOnay(){if(depoTuru()==="ls"){var l=lsGet(LS_C);return !!(l&&cdec(l)===TOK_Y);}return cdec(getC(CK_A))===TOK_Y;}
+function cerezYaz(ok){var v=cenc(ok?TOK_Y:TOK_N);if(depoTuru()==="ls"){lsSet(LS_C,v);}else{setC(CK_A,v,400);}}
+function kapiKur(){var kapi=document.getElementById("cerezKapi");if(!kapi)return true;if(cerezOnay()){kapi.style.display="none";return true;}kapi.style.display="flex";var kb=document.getElementById("cerezKabul"),rt=document.getElementById("cerezRet");if(kb){kb.classList.add("dikkat");kb.addEventListener("click",function(){cerezYaz(true);location.reload();});}if(rt){rt.addEventListener("click",function(){cerezYaz(false);var n=document.getElementById("cerezNot");if(n)n.style.display="block";setTimeout(function(){location.href="../index.html";},800);});}return false;}
+function gizle(o){var s=JSON.stringify(o),x="",i;for(i=0;i<s.length;i++){x+=String.fromCharCode(s.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}try{return btoa(unescape(encodeURIComponent(x))).split("").reverse().join("");}catch(e){return "";}}
+function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var s="",i;for(i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}return JSON.parse(s);}catch(e){return null;}}
+function oku(){if(depoTuru()==="ls"){try{var l=lsGet(LS_P);if(l){var dd=coz(l);if(dd&&dd.tamam)return dd;}}catch(e){}return {tamam:[],deneme:{}};}try{var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}return {tamam:[],deneme:{}};}
+function yaz(d){if(depoTuru()==="ls"){try{lsSet(LS_P,gizle(d));}catch(e){}return;}try{document.cookie=K+"="+encodeURIComponent(gizle(d))+"; max-age=31536000; path=/; SameSite=Lax";}catch(e){}}
+if(!kapiKur())return;
+var EE_DERS_NO=7, EE_SONRAKI="index.html";
+window.eeDeneyOk=false;
+window.eeDeneyOldu=function(){window.eeDeneyOk=true;eeDurum();eeDegerlendir();};
+function tamamMi(n){return oku().tamam.indexOf(n)>=0;}
+var kilitli=(EE_DERS_NO>1)&&!tamamMi(EE_DERS_NO-1);
+if(kilitli){var p0=document.getElementById("kilitPerde");if(p0){p0.style.display="flex";document.getElementById("kilitMetin").textContent="Bu ders kilitli. Once Ders "+(EE_DERS_NO-1)+" tamamlanmalidir.";}}
+function dogruSayisi(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru"))n++;});return n;}
+function cevaplanan(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru,button.yanlis"))n++;});return n;}
+function toplamQuiz(){return document.querySelectorAll(".quiz").length;}
+window.eeDurum=function(){var el=document.getElementById("ilerlemeDurum");if(!el)return;el.textContent="Deney: "+(window.eeDeneyOk?"tamam":"eksik")+" | Test: "+dogruSayisi()+"/"+toplamQuiz()+" dogru ("+cevaplanan()+" yanitlandi)";};
+window.eeDegerlendir=function(){if(kilitli)return;eeDurum();var gk=document.getElementById("gecisKart");if(gk)gk.style.display="block";if(!window.eeDeneyOk||cevaplanan()<toplamQuiz())return;var d=oku(),skor=dogruSayisi(),deneme=d.deneme[EE_DERS_NO]||0;var btn=document.getElementById("gecisBtn");
+function gec(){if(d.tamam.indexOf(EE_DERS_NO)<0){d.tamam.push(EE_DERS_NO);yaz(d);}btn.style.display="inline-block";btn.href=btn.dataset.href;eeDurum();}
+if(skor>=toplamQuiz()){gec();document.getElementById("ilerlemeDurum").textContent+=" - Basarili. Sonraki ders acildi.";}
+else if(deneme<1){d.deneme[EE_DERS_NO]=1;yaz(d);document.getElementById("ilerlemeDurum").textContent+=" - Eksik kaldi ("+skor+"/"+toplamQuiz()+"). Yanitlar ve deney sifirlandi, tekrar deneyin.";eeSifirla();}
+else{gec();document.getElementById("ilerlemeDurum").textContent+=" - Ikinci denemede gecildi. Eksikler icin dersi tekrar edebilirsiniz.";}};
+window.eeSifirla=function(){window.eeDeneyOk=false;document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
+document.addEventListener("click",function(e){if(e.target&&e.target.matches&&e.target.matches(".quiz button")){setTimeout(function(){eeDurum();eeDegerlendir();},60);}});
+var gk0=document.getElementById("gecisKart");if(gk0&&!kilitli)gk0.style.display="block";
+eeDurum();
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+function $(id){return document.getElementById(id);}
+var KILIFLAR=[
+{id:"0402",ad:"0402 — direnç/kondansatör",boyut:"1.0 × 0.5 mm",guc:"1/16 W",not:"En küçük yaygın kılıf, cımbızla bile zor tutulur.",w:26,h:14,bacak:0},
+{id:"0603",ad:"0603 — direnç/kondansatör",boyut:"1.6 × 0.8 mm",guc:"1/10 W",not:"En yaygın genel amaç kılıf.",w:38,h:20,bacak:0},
+{id:"0805",ad:"0805 — direnç/kondansatör",boyut:"2.0 × 1.25 mm",guc:"1/8 W",not:"Elde lehimlemeye uygun başlangıç boyu.",w:48,h:26,bacak:0},
+{id:"1206",ad:"1206 — direnç/kondansatör",boyut:"3.2 × 1.6 mm",guc:"1/4 W",not:"Güç isteyen yerlerde kullanılır.",w:64,h:32,bacak:0},
+{id:"SOT-23",ad:"SOT-23 — transistör",boyut:"2.9 × 1.3 mm",guc:"3 bacak",not:"Tek transistör ve regülatörlerin evi.",w:52,h:30,bacak:3},
+{id:"SOIC-8",ad:"SOIC-8 — entegre",boyut:"5 × 4 mm",guc:"8 bacak, 2 yan",not:"İki yanda martı kanadı bacaklar.",w:70,h:44,bacak:8},
+{id:"QFP-44",ad:"QFP — entegre",boyut:"10 × 10 mm",guc:"4 yanda bacak",not:"Yoğun bacaklı mikrodenetleyiciler.",w:88,h:88,bacak:44},
+{id:"QFN",ad:"QFN — entegre",boyut:"5 × 5 mm",guc:"alttan ped + termal ped",not:"Bacak dışa taşmaz, ısı alta atılır.",w:70,h:70,bacak:0},
+{id:"5050",ad:"5050 — LED",boyut:"5.0 × 5.0 mm",guc:"3 çipli (RGB)",not:"Şerit LED'lerdeki renkli ışık kaynağı.",w:60,h:60,bacak:0}
+];
+var KODLAR=["100","220","330","470","102","103","223","474","475","105","106","0","000","4R7","10R"];
+function kodCoz(kod){
+if(kod==="0"||kod==="000")return 0;
+if(kod.indexOf("R")>=0){var p=kod.split("R");return parseFloat(p[0]+"."+(p[1]||"0"));}
+var d1=+kod.charAt(0),d2=+kod.charAt(1),carp=+kod.charAt(2);
+return (d1*10+d2)*Math.pow(10,carp);
+}
+function fmtR(v){if(v>=1000000)return (v/1000000)+" MΩ";if(v>=1000)return (v/1000)+" kΩ";return v+" Ω";}
+var sel=$("kilifSec");
+KILIFLAR.forEach(function(k){var o=document.createElement("option");o.value=k.id;o.textContent=k.ad;sel.appendChild(o);});
+function kilifCiz(){
+var k=null;for(var i=0;i<KILIFLAR.length;i++){if(KILIFLAR[i].id===sel.value)k=KILIFLAR[i];}
+if(!k)return;
+var c=$("paketCizim");c.innerHTML="";
+var p=document.createElement("div");p.className="paket-parca";
+p.style.width=k.w+"px";p.style.height=k.h+"px";
+p.innerHTML="<div style=\"color:#9ca3af;font-size:.65rem;font-weight:800\">"+k.id+"</div>";
+c.appendChild(p);
+if(k.bacak===3){for(var b=0;b<3;b++){var t=document.createElement("div");t.className="paket-bacak";t.style.cssText="width:10px;height:6px;left:-10px;top:"+(8+b*10)+"px";c.appendChild(t);}}
+if(k.bacak===8){for(var s2=0;s2<2;s2++){for(var b2=0;b2<4;b2++){var u=document.createElement("div");u.className="paket-bacak";u.style.cssText="width:"+(s2?"10px":"10px")+";height:6px;"+(s2?"right:-10px;":"left:-10px;")+"top:"+(10+b2*10)+"px";c.appendChild(u);}}}
+if(k.bacak===44){for(var q=0;q<4;q++){for(var b3=0;b3<5;b3++){var z=document.createElement("div");z.className="paket-bacak";var st="width:6px;height:6px;";if(q===0)st+="left:"+(14+b3*12)+"px;top:-6px;";if(q===1)st+="left:"+(14+b3*12)+"px;bottom:-6px;";if(q===2)st+="left:-6px;top:"+(14+b3*12)+"px;";if(q===3)st+="right:-6px;top:"+(14+b3*12)+"px;";z.style.cssText=st;c.appendChild(z);}}}
+$("kilifBilgi").textContent=k.ad+" | "+k.boyut+" | "+k.guc+". "+k.not;
+}
+sel.addEventListener("change",kilifCiz);kilifCiz();
+var aktifKod=null, dogruSayi=0, deneyBildirildi=false;
+function deneyKontrol(){if(dogruSayi>=3&&!deneyBildirildi){deneyBildirildi=true;if(window.eeDeneyOldu)window.eeDeneyOldu();}}
+function degerYorumla(txt){
+if(!txt)return null;
+var s=txt.toLowerCase().replace(/,/g,".").replace(/\s+/g,"");
+var carp=1;
+if(s.indexOf("mohm")>=0||s.indexOf("mω")>=0){carp=1000000;s=s.replace(/mohm|mω/g,"");}
+else if(s.indexOf("kohm")>=0||s.indexOf("kω")>=0){carp=1000;s=s.replace(/kohm|kω/g,"");}
+else if(s.indexOf("ohm")>=0||s.indexOf("ω")>=0||s.indexOf("Ω")>=0){s=s.replace(/ohm|ω|Ω/g,"");}
+else if(s[s.length-1]==="k"){carp=1000;s=s.slice(0,-1);}
+else if(s[s.length-1]==="m"){carp=1000000;s=s.slice(0,-1);}
+if(s===""||isNaN(Number(s)))return null;
+return Number(s)*carp;
+}
+$("yeniKod").addEventListener("click",function(){
+aktifKod=KODLAR[Math.floor(Math.random()*KODLAR.length)];
+$("kodGoster").textContent=aktifKod;
+$("kodSonuc").textContent="Değeri yazıp kontrol edin.";
+$("kodGirdi").value="";
+});
+$("kodKontrol").addEventListener("click",function(){
+if(!aktifKod){$("kodSonuc").textContent="Önce rastgele kod alın.";return;}
+var beklenen=kodCoz(aktifKod);
+var girilen=degerYorumla($("kodGirdi").value);
+if(girilen===null){$("kodSonuc").textContent="Değer anlaşılmadı. Örnek: 10000 veya 10k.";return;}
+var fark=beklenen===0?(girilen===0?0:1):Math.abs(girilen-beklenen)/beklenen;
+if(fark<=0.02){dogruSayi++;$("kodSonuc").textContent="Doğru. "+aktifKod+" = "+fmtR(beklenen)+".";$("kodSkor").textContent="Doğru: "+dogruSayi+"/3";aktifKod=null;$("kodGoster").textContent="---";deneyKontrol();}
+else{$("kodSonuc").textContent="Yanlış. İpucu: ilk iki rakam sayı, üçüncü rakam sıfır sayısıdır.";}
+});
+window.__smd7={kodCoz:kodCoz,yeniKod:function(){$("yeniKod").click();return $("kodGoster").textContent;},coz:function(v){$("kodGirdi").value=v;$("kodKontrol").click();return $("kodSonuc").textContent;},skor:function(){return dogruSayi;}};
+});
+</script>
+<script>
+document.addEventListener("click",function(e){
+var q=e.target&&e.target.closest?e.target.closest(".quiz button"):null;
+if(!q)return;
+var box=q.closest(".quiz");if(!box)return;
+var btns=box.querySelectorAll("button");var out=box.querySelector(".sonuc");
+btns.forEach(function(x){x.classList.remove("dogru","yanlis");});
+out.style.display="block";
+if(q.dataset.d==="1"){q.classList.add("dogru");out.textContent="Doğru. "+(q.dataset.acik||"");}
+else{q.classList.add("yanlis");out.textContent="Yanlış. "+(q.dataset.acik||"");}
+});
+</script>
+</body></html>
