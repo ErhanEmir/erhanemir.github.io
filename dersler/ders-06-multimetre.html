@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
+<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ders 6: Multimetre | Erhan Emir</title><meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--sari:#fde047;--yesil:#34d399;--cyan:#22d3ee;--turuncu:#fb923c;--kirmizi:#f87171;--mor:#818cf8;--yazi:#e8eef4;--soluk:#8890a0}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:940px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--sari);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--cyan);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--sari);margin-bottom:.5rem}h3{color:var(--cyan);margin:.8rem 0 .4rem;font-size:1rem}p,li{line-height:1.75;color:#cbd5e1}ul,ol{padding-left:1.3rem}.kural{background:rgba(253,224,71,.07);border:1px solid rgba(253,224,71,.3);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0}.kural b{color:var(--sari)}
+.mm-tezgah{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1rem}
+.mm-cihaz{flex:1;min-width:270px;background:#111827;border:2px solid #374151;border-radius:16px;padding:1rem;text-align:center}
+.mm-ekran{background:#052e16;color:#4ade80;font-family:Consolas,monospace;font-size:2rem;font-weight:800;border-radius:8px;padding:.5rem .8rem;margin-bottom:.3rem;min-height:64px;display:flex;align-items:center;justify-content:center}
+.mm-ekran.hata{background:#450a0a;color:#f87171}
+.mm-alt{font-size:.75rem;color:#9ca3af;min-height:20px;margin-bottom:.5rem}
+.mm-kademe{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin:.5rem 0}
+.mm-kademe button{flex:1;min-width:64px;background:#1f2937;color:#e5e7eb;border:2px solid #4b5563;border-radius:8px;padding:.5rem .3rem;font-weight:800;font-size:.85rem;cursor:pointer}
+.mm-kademe button.secili{border-color:var(--sari);background:#374151;color:var(--sari)}
+.mm-btn{width:100%;margin-top:.4rem;background:linear-gradient(135deg,#eab308,#34d399);color:#050a10;border:none;border-radius:10px;padding:.7rem;font-weight:900;cursor:pointer}
+.mm-btn.ghost{background:#1f2937;color:#e5e7eb;border:1px solid #4b5563;margin-top:.4rem}
+.mm-btn:disabled{opacity:.4;cursor:default}
+.tepsi{flex:1.2;min-width:300px;position:relative;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem}
+.bilesen{background:#0b1220;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.6rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.6rem}
+.bilesen .ad{font-weight:800;min-width:86px;font-size:.85rem}
+.bilesen .ad small{display:block;color:var(--soluk);font-weight:400}
+.bacak{flex:1;background:#1e293b;color:#fff;border:2px solid #475569;border-radius:8px;padding:.55rem .3rem;font-weight:800;font-size:.8rem;cursor:pointer}
+.bacak:hover{border-color:var(--cyan)}
+.bacak.takili-k{border-color:#ef4444;background:#451a1a}
+.bacak.takili-s{border-color:#9ca3af;background:#1f293b;outline:2px solid #9ca3af}
+.prob-bar{display:flex;gap:.5rem;margin-bottom:.7rem;flex-wrap:wrap}
+.prob{flex:1;background:#1e293b;color:#fff;border:2px solid #475569;border-radius:10px;padding:.6rem;font-weight:800;cursor:pointer;font-size:.85rem}
+.prob.sec-k{border-color:#ef4444;box-shadow:0 0 10px rgba(239,68,68,.5)}
+.prob.sec-s{border-color:#e5e7eb;box-shadow:0 0 10px rgba(229,231,235,.4)}
+.gorev{background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.3);border-radius:10px;padding:.8rem 1rem;margin-top:.8rem}
+.gorev li.yapildi{color:var(--yesil);text-decoration:line-through}
+.kablo-alet{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.6rem 0}
+.dugme{background:#1e293b;color:#fff;border:2px solid #475569;border-radius:10px;padding:.6rem 1rem;font-weight:800;cursor:pointer}
+.dugme.aktif{border-color:var(--turuncu);color:var(--turuncu);box-shadow:0 0 10px rgba(251,146,60,.4)}
+.dugme.yesil{background:linear-gradient(135deg,#22c55e,#059669);border:none}
+.dugme.kirmizi{background:#3f1d1d;border-color:#7f1d1d;color:#fecaca}
+.dugme:disabled{opacity:.4;cursor:default}
+.dugum{background:#1e293b;color:#fff;border:2px solid #64748b;border-radius:10px;padding:.6rem .5rem;font-weight:800;cursor:pointer;font-size:.82rem;min-width:76px}
+.dugum:hover{border-color:var(--cyan)}
+.devre-alan{position:relative;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:.6rem}
+.devre-izgara{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin:.6rem 0}
+.tel-listesi{font-family:Consolas,monospace;font-size:.8rem;background:#020617;border-radius:8px;padding:.6rem;margin-top:.5rem;min-height:38px;border:1px solid rgba(255,255,255,.1)}
+.tel-listesi button{background:#3f1d1d;color:#fecaca;border:1px solid #7f1d1d;border-radius:6px;margin-left:.4rem;cursor:pointer;padding:.1rem .4rem}
+.led-gosterge{width:54px;height:54px;border-radius:50%;background:#1a0d12;border:3px solid #7a2c2c;margin:.4rem auto;transition:.2s}
+input[type=range]{width:100%;accent-color:var(--turuncu)}
+.uyari{display:none;border-radius:12px;padding:.9rem 1rem;margin-top:.8rem;border:1px solid;font-size:.9rem;line-height:1.6}
+.uyari.goster{display:block}
+.uyari.hata{background:rgba(239,68,68,.1);border-color:var(--kirmizi)}
+.uyari.bilgi{background:rgba(34,211,238,.08);border-color:var(--cyan)}
+.uyari.ok{background:rgba(52,211,153,.1);border-color:var(--yesil)}
+svg.katman{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+svg.katman line{stroke-width:3}
+svg.katman line.tel{stroke:#fb923c}
+svg.katman .etiket{font-size:10px;font-weight:800}
+.quiz{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;margin-top:.8rem}.quiz button{display:block;width:100%;text-align:left;margin:.4rem 0;background:#1e293b;color:#e8eef4;border:1px solid rgba(255,255,255,.1);cursor:pointer;border-radius:10px;padding:.7rem 1rem;font-weight:700}.quiz button.dogru{border-color:#34d399;background:rgba(52,211,153,.15)}.quiz button.yanlis{border-color:#f87171;background:rgba(248,113,113,.12)}
+footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}</style>
+<style>@keyframes eeBlink{0%,100%{opacity:1}50%{opacity:.3}}.kilitli-kart{position:relative;}</style>
+<style>#cerezKapi{display:none;position:fixed;inset:0;z-index:200;background:rgba(5,10,16,.94);align-items:center;justify-content:center;padding:1.5rem}#cerezKutu{max-width:400px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.5rem;text-align:center}#cerezKutu p{color:#8890a0;font-size:.88rem;line-height:1.6;margin-bottom:1rem}.cerez-eylem{display:flex;gap:.6rem;justify-content:flex-end}.cerez-eylem button{border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:.85rem;padding:.55rem 1rem}#cerezKabul{background:#22d3ee;color:#050a10}#cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}#cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}@keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}</style>
+</head><body><div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p>Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet">Daha sonra</button><button type="button" id="cerezKabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700">Kabul edilmeden kutuphane kullanilamaz.</p></div></div><div class="kapsayici">
+<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-05-breadboard.html">&larr; Önceki: Breadboard</a>
+<h1>Ders 6: Multimetre ile Ölçüm</h1>
+<p>Multimetre, elektronikçinin gözüdür. Bu derste sanal bir multimetre ve ayarlanabilir bir güç kaynağı kullanacaksınız. Kırmızı prob <b>VΩ</b> girişine, siyah prob <b>COM</b> girişine bağlıdır. Kural: önce kademeyi seçin, sonra propları takın, sonra ölçün.</p>
+<div class="kural"><b>Önemli:</b> Direnç ölçerken devrede güç olmamalıdır. Akım kademesinde proplar devreye paralel bağlanmaz, aksi halde cihazın sigortası atar. Şüphede kalınca en yüksek kademeden başlayın.</div>
+</div>
+<div class="kart"><h2>Görev: Bu girişte ölçmeniz gereken 3 bileşen</h2>
+<p>Her girişte sistem 5 bileşen arasından 3 tanesini seçer. Hepsini ölçebilirsiniz, ancak dersi tamamlamak için listedeki 3 ölçüm şarttır.</p>
+<div class="gorev"><ol id="gorevListe"></ol><div id="gorevDurum" style="margin-top:.4rem;font-weight:800">0/3 tamamlandı</div></div>
+</div>
+<div class="kart"><h2>Deney 1: Ölçüm masası</h2>
+<div class="mm-tezgah">
+<div class="mm-cihaz">
+<div class="mm-ekran" id="mmEkran">- - - -</div>
+<div class="mm-alt" id="mmAlt">Kademe seçin ve propları takın</div>
+<div class="mm-kademe">
+<button data-mod="V">V⎓</button><button data-mod="mA">mA</button><button data-mod="OHM">Ω</button><button data-mod="DIYOT">Diyot•)))</button>
+</div>
+<button class="mm-btn" id="olcBtn">ÖLÇ</button>
+<button class="mm-btn ghost" id="sigortaBtn" style="display:none">Sigortayı Değiştir</button>
+<div class="mm-alt" id="probDurum" style="margin-top:.4rem">Kırmızı: boş | Siyah: boş</div>
+</div>
+<div class="tepsi" id="tepsi">
+<svg class="katman" id="probSvg"></svg>
+<div class="prob-bar">
+<button class="prob" id="probK" style="border-color:#ef4444">Kırmızı probu seç</button>
+<button class="prob" id="probS">Siyah probu seç</button>
+<button class="prob" id="probBirak">Propları bırak</button>
+</div>
+<div id="bilesenler"></div>
+<div class="mm-alt">İpucu: önce bir probu seçin, sonra bileşen bacağına dokunun. Prob hatta takılıyken başka bacağa dokunmak probu oraya taşır.</div>
+</div>
+</div>
+<div class="uyari" id="mmUyari"><b id="mmUyariBaslik"></b><p id="mmUyariMetin" style="margin-top:.3rem"></p></div>
+</div>
+<div class="kart"><h2>Deney 2: Kablo ile LED devresi kurma</h2>
+<p>Kablo düğmesini açın, iki noktaya dokunarak telleri çekin. Tele dokunmak onu siler. Devre: güç kaynağı, 220Ω direnç ve kırmızı LED. Doğru halka: <b>PSU+ → R → LED+ → LED− → PSU−</b>.</p>
+<div class="kablo-alet">
+<button class="dugme" id="kabloBtn">Kablo: KAPALI</button>
+<button class="dugme kirmizi" id="telTemizle">Telleri temizle</button>
+</div>
+<div class="devre-alan" id="devreAlan">
+<svg class="katman" id="telSvg"></svg>
+<h3>Güç kaynağı (ayarlanabilir 0–9V)</h3>
+<div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
+<input type="range" id="psuVolt" min="0" max="9" step="0.5" value="5" style="flex:1;min-width:180px">
+<b><span id="psuGoster">5.0</span> V</b>
+<button class="dugme yesil" id="gucBtn">Gücü Aç</button>
+</div>
+<h3>Bağlantı noktaları</h3>
+<div class="devre-izgara">
+<button class="dugum" data-dugum="PSUp" style="border-color:#ef4444">PSU +</button>
+<button class="dugum" data-dugum="RA">R_a</button>
+<button class="dugum" data-dugum="RB">R_b</button>
+<button class="dugum" data-dugum="LA" style="border-color:#fde047">LED +</button>
+<button class="dugum" data-dugum="LC">LED −</button>
+<button class="dugum" data-dugum="PSUn" style="border-color:#9ca3af">PSU −</button>
+</div>
+<div class="tel-listesi" id="telListe">Tel yok.</div>
+<div class="led-gosterge" id="devreLed"></div>
+<div id="devreDurum" style="text-align:center;font-weight:800">Güç kapalı</div>
+</div>
+<div class="uyari" id="devreUyari"><b id="devreUyariBaslik"></b><p id="devreUyariMetin" style="margin-top:.3rem"></p></div>
+<p style="margin-top:.6rem">Devre yandığında propları <b>LA</b> ve <b>LC</b> bacaklarına takıp <b>V⎓</b> kademesinde ölçün. Bu ölçüm de deneyin parçasıdır.</p>
+</div>
+<div class="kart"><h2>Ders Sonu Testi</h2><p>Konu pekişsin diye 3 kısa soru.</p><div class="quiz" id="t1"><b>1. Direnç ölçerken güç kaynağı ne olmalıdır?</b><button data-d="1" data-acik="Güç varken direnç ölçülmez, değer yanlış çıkar ve cihaz zarar görebilir.">Kapalı olmalıdır</button><button data-d="0" data-acik="Güç varken ölçüm yapılmaz.">Açık olmalıdır, fark etmez</button><button data-d="0" data-acik="Kademe fark etmez, güç kapalı olmalıdır.">Direnç kademesi yeterli, güç önemli değil</button><div class="sonuc" style="display:none"></div></div><div class="quiz" id="t2"><b>2. Akım kademesinde prob devreye paralel bağlanırsa ne olur?</b><button data-d="1" data-acik="Ampermetre iç direnci çok düşüktür, kısa devre akımı sigortayı attırır.">Sigorta atar</button><button data-d="0" data-acik="Paralel bağlantıda akım ölçülmez.">Normal ölçüm yapılır</button><button data-d="0" data-acik="Cihaz zarar görmez ama değer de alınamaz.">Hiçbir şey olmaz</button><div class="sonuc" style="display:none"></div></div><div class="quiz" id="t3"><b>3. Siyah prob her zaman hangi girişe takılır?</b><button data-d="1" data-acik="COM ortak uçtur, siyah prob hep oradadır.">COM</button><button data-d="0" data-acik="VΩ kırmızı probun girişidir.">VΩ</button><button data-d="0" data-acik="10A girişi yüksek akım içindir.">10A</button><div class="sonuc" style="display:none"></div></div></div><div id="kilitPerde" style="display:none;position:fixed;inset:0;z-index:99;background:rgba(5,10,16,.93);align-items:center;justify-content:center;text-align:center;padding:2rem"><div style="max-width:520px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:2rem"><h2 style="margin-bottom:.6rem">Kilitli Ders</h2><p id="kilitMetin" style="color:#8890a0;line-height:1.7"></p><p style="margin-top:1rem"><a href="index.html" style="color:#22d3ee;font-weight:800">Ders listesine don</a></p></div></div><div class="kart" id="gecisKart" style="display:none"><h2>Degerlendirme</h2><div class="sonuc" id="ilerlemeDurum" style="background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.85rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1)">Deney ve test durumu burada gorunecek.</div><div style="text-align:center;margin-top:1rem"><a id="gecisBtn" data-href="index.html" href="#" style="display:none;font-weight:900;padding:.9rem 2rem;border-radius:12px;background:linear-gradient(135deg,#34d399,#22d3ee);color:#050a10;text-decoration:none;animation:eeBlink 1s infinite">Ders Listesine Don</a></div><p style="margin-top:.6rem;font-size:.8rem;color:#8890a0">Geçme kuralı: önce deney bölümündeki uygulamayı sonuna kadar tamamlayın, sonra 3 sorunun tamamını yanıtlayın. 3 soru da doğruysa sonraki dersin düğmesi aşağıda belirir. Eksik kalırsa yanıtlar sıfırlanır ve baştan denemeniz istenir; ikinci denemenin sonunda ders tamamlanır.</p></div>
+<footer>by; ERHAN EMİR</footer>
+<div class="kopya" style="font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem">© 2026 Erhan Emir — Tüm hakları saklıdır.</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var K="_ee_kutup", ANA="Erhan2026", LS_P="_ee_kutup_ls";var DEPO=null;
+function depoTuru(){if(DEPO)return DEPO;try{document.cookie="_ee_t=1; path=/; SameSite=Lax";if(document.cookie.indexOf("_ee_t=1")>=0){DEPO="cerez";try{document.cookie="_ee_t=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";}catch(e){}try{if(window.localStorage){window.localStorage.removeItem(LS_P);window.localStorage.removeItem(LS_C);}}catch(e){}return DEPO;}}catch(e){}DEPO="ls";return DEPO;}
+var CK_A="_nx.s7k", KK=[90,60,145,231,43,109,68,168], TOK_Y="k7mQ2p", LS_C="_nx_s7k_ls";
+function cxor(s){var o="",i;for(i=0;i<s.length;i++){o+=String.fromCharCode(s.charCodeAt(i)^KK[i%KK.length]);}return o;}
+function cenc(s){try{return btoa(cxor(s)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}catch(e){return "";}}
+function cdec(s){try{var b=s.replace(/-/g,"+").replace(/_/g,"/");while(b.length%4){b+="=";}return cxor(atob(b));}catch(e){return "";}}
+function getC(n){try{var m=document.cookie.match(new RegExp("(?:^|; )"+n.replace(/\./g,"\\.")+"=([^;]*)"));return m?decodeURIComponent(m[1]):"";}catch(e){return "";}}
+function setC(n,v,gun){try{var d=new Date();d.setTime(d.getTime()+gun*864e5);document.cookie=n+"="+encodeURIComponent(v)+";expires="+d.toUTCString()+";path=/;SameSite=Lax";}catch(e){}}
+function lsGet(k){try{return window.localStorage?window.localStorage.getItem(k):null;}catch(e){return null;}}
+function lsSet(k,v){try{if(window.localStorage)window.localStorage.setItem(k,v);}catch(e){}}
+function cerezOnay(){if(depoTuru()==="ls"){var l=lsGet(LS_C);return !!(l&&cdec(l)===TOK_Y);}return cdec(getC(CK_A))===TOK_Y;}
+function cerezYaz(ok){var v=cenc(ok?TOK_Y:TOK_N);if(depoTuru()==="ls"){lsSet(LS_C,v);}else{setC(CK_A,v,400);}}
+function kapiKur(){var kapi=document.getElementById("cerezKapi");if(!kapi)return true;if(cerezOnay()){kapi.style.display="none";return true;}kapi.style.display="flex";var kb=document.getElementById("cerezKabul"),rt=document.getElementById("cerezRet");if(kb){kb.classList.add("dikkat");kb.addEventListener("click",function(){cerezYaz(true);location.reload();});}if(rt){rt.addEventListener("click",function(){cerezYaz(false);var n=document.getElementById("cerezNot");if(n)n.style.display="block";setTimeout(function(){location.href="../index.html";},800);});}return false;}
+function gizle(o){var s=JSON.stringify(o),x="",i;for(i=0;i<s.length;i++){x+=String.fromCharCode(s.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}try{return btoa(unescape(encodeURIComponent(x))).split("").reverse().join("");}catch(e){return "";}}
+function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var s="",i;for(i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}return JSON.parse(s);}catch(e){return null;}}
+function oku(){if(depoTuru()==="ls"){try{var l=lsGet(LS_P);if(l){var dd=coz(l);if(dd&&dd.tamam)return dd;}}catch(e){}return {tamam:[],deneme:{}};}try{var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}return {tamam:[],deneme:{}};}
+function yaz(d){if(depoTuru()==="ls"){try{lsSet(LS_P,gizle(d));}catch(e){}return;}try{document.cookie=K+"="+encodeURIComponent(gizle(d))+"; max-age=31536000; path=/; SameSite=Lax";}catch(e){}}
+if(!kapiKur())return;
+var EE_DERS_NO=6, EE_SONRAKI="index.html";
+window.eeDeneyOk=false;
+window.eeDeneyOldu=function(){window.eeDeneyOk=true;eeDurum();eeDegerlendir();};
+function tamamMi(n){return oku().tamam.indexOf(n)>=0;}
+var kilitli=(EE_DERS_NO>1)&&!tamamMi(EE_DERS_NO-1);
+if(kilitli){var p0=document.getElementById("kilitPerde");if(p0){p0.style.display="flex";document.getElementById("kilitMetin").textContent="Bu ders kilitli. Once Ders "+(EE_DERS_NO-1)+" tamamlanmalidir.";}}
+function dogruSayisi(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru"))n++;});return n;}
+function cevaplanan(){var n=0;document.querySelectorAll(".quiz").forEach(function(b){if(b.querySelector("button.dogru,button.yanlis"))n++;});return n;}
+function toplamQuiz(){return document.querySelectorAll(".quiz").length;}
+window.eeDurum=function(){var el=document.getElementById("ilerlemeDurum");if(!el)return;el.textContent="Deney: "+(window.eeDeneyOk?"tamam":"eksik")+" | Test: "+dogruSayisi()+"/"+toplamQuiz()+" dogru ("+cevaplanan()+" yanitlandi)";};
+window.eeDegerlendir=function(){if(kilitli)return;eeDurum();var gk=document.getElementById("gecisKart");if(gk)gk.style.display="block";if(!window.eeDeneyOk||cevaplanan()<toplamQuiz())return;var d=oku(),skor=dogruSayisi(),deneme=d.deneme[EE_DERS_NO]||0;var btn=document.getElementById("gecisBtn");
+function gec(){if(d.tamam.indexOf(EE_DERS_NO)<0){d.tamam.push(EE_DERS_NO);yaz(d);}btn.style.display="inline-block";btn.href=btn.dataset.href;eeDurum();}
+if(skor>=toplamQuiz()){gec();document.getElementById("ilerlemeDurum").textContent+=" - Basarili. Sonraki ders acildi.";}
+else if(deneme<1){d.deneme[EE_DERS_NO]=1;yaz(d);document.getElementById("ilerlemeDurum").textContent+=" - Eksik kaldi ("+skor+"/"+toplamQuiz()+"). Yanitlar ve deney sifirlandi, tekrar deneyin.";eeSifirla();}
+else{gec();document.getElementById("ilerlemeDurum").textContent+=" - Ikinci denemede gecildi. Eksikler icin dersi tekrar edebilirsiniz.";}};
+window.eeSifirla=function(){window.eeDeneyOk=false;document.querySelectorAll(".quiz button").forEach(function(b){b.classList.remove("dogru","yanlis");});document.querySelectorAll(".quiz .sonuc").forEach(function(o){o.style.display="none";o.textContent="";});};
+document.addEventListener("click",function(e){if(e.target&&e.target.matches&&e.target.matches(".quiz button")){setTimeout(function(){eeDurum();eeDegerlendir();},60);}});
+var gk0=document.getElementById("gecisKart");if(gk0&&!kilitli)gk0.style.display="block";
+eeDurum();
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var E12=[100,220,330,470,1000,4700,10000];
+function karistir(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var BILESEN=[
+{id:"R1",tip:"R",ad:"R1",alt:"direnç",deger:E12[Math.floor(Math.random()*E12.length)]},
+{id:"R2",tip:"R",ad:"R2",alt:"direnç",deger:0},
+{id:"LR",tip:"LED",ad:"LED kırmızı",alt:"kırmızı LED",vf:2.00},
+{id:"LY",tip:"LED",ad:"LED sarı",alt:"sarı LED",vf:2.06},
+{id:"TEL",tip:"TEL",ad:"Tel parçası",alt:"kablo",direnc:0.3}
+];
+if(BILESEN[1].deger===BILESEN[0].deger){BILESEN[1].deger=E12[(E12.indexOf(BILESEN[0].deger)+3)%E12.length];}
+else if(!BILESEN[1].deger){BILESEN[1].deger=E12[Math.floor(Math.random()*E12.length)];if(BILESEN[1].deger===BILESEN[0].deger){BILESEN[1].deger=1000;}}
+var GEREKEN=karistir(["R1","R2","LR","LY","TEL"]).slice(0,3);
+var yapilan={};
+var mod="YOK", seciliProb=null, bag={kirmizi:null,siyah:null}, sigortaAtti=false;
+var kabloModu=false, ilkDugum=null, teller=[];
+var gucAcik=false, devreYandi=false, devreOlcumu=false, deneyBildirildi=false;
+function $(id){return document.getElementById(id);}
+function fmtR(v){if(v>=1000000)return (v/1000000)+" MΩ";if(v>=1000)return (v/1000)+" kΩ";return v+" Ω";}
+function bilesenBul(id){for(var i=0;i<BILESEN.length;i++){if(BILESEN[i].id===id)return BILESEN[i];}return null;}
+function bacakBilesen(leg){if(!leg)return null;for(var i=0;i<BILESEN.length;i++){if(leg===BILESEN[i].id+"a"||leg===BILESEN[i].id+"b")return BILESEN[i];}return null;}
+function bacakKutup(leg){var c=bacakBilesen(leg);if(!c||c.tip!=="LED")return "";return leg===c.id+"a"?"+":"-";}
+function uyari(tip,bas,met){var u=$("mmUyari");u.className="uyari goster "+tip;$("mmUyariBaslik").textContent=bas;$("mmUyariMetin").textContent=met;}
+function dUyari(tip,bas,met){var u=$("devreUyari");u.className="uyari goster "+tip;$("devreUyariBaslik").textContent=bas;$("devreUyariMetin").textContent=met;}
+function ekran(yazi,hata){var e=$("mmEkran");e.textContent=yazi;e.className="mm-ekran"+(hata?" hata":"");}
+function bip(){try{var C=window.AudioContext||window.webkitAudioContext;if(!C)return;var x=new C(),o=x.createOscillator(),g=x.createGain();o.type="sine";o.frequency.value=2200;g.gain.value=0.06;o.connect(g);g.connect(x.destination);o.start();g.gain.exponentialRampToValueAtTime(0.0001,x.currentTime+0.25);setTimeout(function(){try{o.stop();x.close();}catch(e){}},300);}catch(e){}}
+function gorevCiz(){var l=$("gorevListe");l.innerHTML="";for(var i=0;i<GEREKEN.length;i++){var c=bilesenBul(GEREKEN[i]);var li=document.createElement("li");li.textContent=c.ad+" ("+c.alt+") ölçümü"+(yapilan[c.id]?" — tamam":"");if(yapilan[c.id])li.className="yapildi";l.appendChild(li);}var n=Object.keys(yapilan).length;$("gorevDurum").textContent=Math.min(n,3)+"/3 tamamlandı";}
+function bilesenKartlari(){var alan=$("bilesenler");alan.innerHTML="";for(var i=0;i<BILESEN.length;i++){var c=BILESEN[i];var d=document.createElement("div");d.className="bilesen";var goster=c.tip==="R"?"? Ω":(c.tip==="LED"?c.alt:"süreklilik");d.innerHTML="<div class=\"ad\">"+c.ad+"<small>"+goster+"</small></div>";[["a","A"],["b","B"]].forEach(function(h){var b=document.createElement("button");b.className="bacak";b.type="button";b.dataset.leg=c.id+h[0];b.textContent=c.id+"-"+h[1]+(c.tip==="LED"?(h[0]==="a"?" (+)":" (−)"):"");d.appendChild(b);});alan.appendChild(d);}}
+function probCiz(){var k=$("probK"),s=$("probS");k.className="prob"+(seciliProb==="kirmizi"?" sec-k":"");s.className="prob"+(seciliProb==="siyah"?" sec-s":"");k.style.borderColor="#ef4444";$("probDurum").textContent="Kırmızı: "+(bag.kirmizi||"boş")+" | Siyah: "+(bag.siyah||"boş");document.querySelectorAll(".bacak").forEach(function(b){b.classList.remove("takili-k","takili-s");});document.querySelectorAll(".dugum").forEach(function(b){b.classList.remove("takili-k","takili-s");});if(bag.kirmizi){var e1=document.querySelector("[data-leg=\""+bag.kirmizi+"\"]");if(e1)e1.classList.add("takili-k");}if(bag.siyah){var e2=document.querySelector("[data-leg=\""+bag.siyah+"\"]");if(e2)e2.classList.add("takili-s");}cizgileriCiz();}
+function cizgiCiz(svg,x1,y1,x2,y2,renk,etiket){var L=document.createElementNS("http://www.w3.org/2000/svg","line");L.setAttribute("x1",x1);L.setAttribute("y1",y1);L.setAttribute("x2",x2);L.setAttribute("y2",y2);L.setAttribute("stroke",renk);svg.appendChild(L);if(etiket){var T=document.createElementNS("http://www.w3.org/2000/svg","text");T.setAttribute("x",(x1+x2)/2+4);T.setAttribute("y",(y1+y2)/2-4);T.setAttribute("class","etiket");T.setAttribute("fill",renk);T.textContent=etiket;svg.appendChild(T);}}
+function ortaNokta(el,alan){var a=alan.getBoundingClientRect(),b=el.getBoundingClientRect();return [(b.left+b.width/2)-a.left,(b.top+b.height/2)-a.top];}
+function cizgileriCiz(){requestAnimationFrame(function(){
+var tepsi=$("tepsi"),svg=$("probSvg");svg.innerHTML="";var r=tepsi.getBoundingClientRect();svg.setAttribute("viewBox","0 0 "+r.width+" "+r.height);
+[["kirmizi","#ef4444","K"],["siyah","#e5e7eb","S"]].forEach(function(p){var leg=bag[p[0]];if(!leg)return;var el=document.querySelector("[data-leg=\""+leg+"\"]");if(!el)return;var m=ortaNokta(el,tepsi);cizgiCiz(svg,m[0],10,m[0],m[1],p[1],p[2]);});
+var alan=$("devreAlan"),tsvg=$("telSvg");tsvg.innerHTML="";var ar=alan.getBoundingClientRect();tsvg.setAttribute("viewBox","0 0 "+ar.width+" "+ar.height);
+teller.forEach(function(w){var e1=document.querySelector("[data-dugum=\""+w[0]+"\"]"),e2=document.querySelector("[data-dugum=\""+w[1]+"\"]");if(!e1||!e2)return;var m1=ortaNokta(e1,alan),m2=ortaNokta(e2,alan);cizgiCiz(tsvg,m1[0],m1[1],m2[0],m2[1],"#fb923c","");});
+});}
+window.addEventListener("resize",cizgileriCiz);
+$("probK").addEventListener("click",function(){kabloKapat();seciliProb="kirmizi";probCiz();});
+$("probS").addEventListener("click",function(){kabloKapat();seciliProb="siyah";probCiz();});
+$("probBirak").addEventListener("click",function(){seciliProb=null;bag={kirmizi:null,siyah:null};probCiz();});
+document.querySelectorAll(".mm-kademe button").forEach(function(b){b.addEventListener("click",function(){if(sigortaAtti&&(b.dataset.mod==="mA")){$("mmAlt").textContent="Sigorta atık, önce değiştirin";return;}document.querySelectorAll(".mm-kademe button").forEach(function(x){x.classList.remove("secili");});b.classList.add("secili");mod=b.dataset.mod;$("mmAlt").textContent="Kademe: "+b.textContent;});});
+document.addEventListener("click",function(e){
+var legEl=e.target&&e.target.closest?e.target.closest("[data-leg]"):null;
+var dugEl=e.target&&e.target.closest?e.target.closest("[data-dugum]"):null;
+if(kabloModu&&dugEl){dugumTik(dugEl.dataset.dugum);return;}
+if(kabloModu&&legEl){dUyari("bilgi","Kablo hedefi","Kablolar yalnızca devre alanındaki altı noktaya bağlanır.");return;}
+if(!kabloModu&&dugEl&&seciliProb){probTak(dugEl.dataset.dugum);return;}
+if(legEl&&seciliProb&&!kabloModu){probTak(legEl.dataset.leg);return;}
+});
+function probTak(leg){if(!seciliProb)return;bag[seciliProb]=leg;probCiz();}
+function telVar(a,b){for(var i=0;i<teller.length;i++){if((teller[i][0]===a&&teller[i][1]===b)||(teller[i][0]===b&&teller[i][1]===a))return true;}return false;}
+function komsu(n){var k={};k[n]=1;teller.forEach(function(w){if(w[0]===n)k[w[1]]=1;if(w[1]===n)k[w[0]]=1;});if(n==="RA")k["RB"]=1;if(n==="RB")k["RA"]=1;return k;}
+function erisim(baslangic){var g={},kuy=[baslangic];g[baslangic]=1;while(kuy.length){var n=kuy.pop();var k=komsu(n);for(var m in k){if(!g[m]){g[m]=1;kuy.push(m);}}}return g;}
+function erisimYonlu(baslangic){var g={},kuy=[baslangic];g[baslangic]=1;while(kuy.length){var n=kuy.pop();var k={};teller.forEach(function(w){if(w[0]===n)k[w[1]]=1;if(w[1]===n)k[w[0]]=1;});if(n==="RA")k["RB"]=1;if(n==="RB")k["RA"]=1;if(n==="LA")k["LC"]=1;for(var m in k){if(!g[m]){g[m]=1;kuy.push(m);}}}return g;}
+function dugumVolt(n,cozum){if(cozum[n]!==undefined)return cozum[n];return null;}
+function devreCoz(){
+var V=parseFloat($("psuVolt").value);
+var telBag=function(a,b){return telVar(a,b);};
+var kisa=erisim("PSUp")["PSUn"]?true:false;
+var ileri=erisimYonlu("PSUp")["PSUn"]?true:false;
+var geri=erisimYonlu("PSUn")["PSUp"]?true:false;
+var cozum={}, durum="", led="sonuk", akim=0;
+if(kisa){durum="KISA DEVRE: PSU + ve − birbirine bağlı. Güç kesildi, teli kaldırın.";return {kisa:true,durum:durum,cozum:cozum,led:led,akim:akim,ileri:false}; }
+if(!gucAcik){durum="Güç kapalı";return {kisa:false,durum:durum,cozum:cozum,led:led,akim:akim,ileri:false};}
+var gU=erisim("PSUp"), gE=erisim("PSUn");
+["PSUp","RA","RB","LA","LC","PSUn"].forEach(function(n){if(gU[n])cozum[n]=V;else if(gE[n])cozum[n]=0;});
+if(ileri&&telBag("RB","LA")||(ileri&&gU["LA"]&&gU["RB"])){
+if(V<2.1){durum="Devre tamam ama gerilim yetersiz (LED eşiği ~2V). Voltajı artırın.";cozum["RB"]=V;cozum["LA"]=V;}
+else{akim=(V-2.0)/220;led="yanik";durum="LED yanıyor. Akım: "+(akim*1000).toFixed(1)+" mA.";cozum["RB"]=2.0;cozum["LA"]=2.0;if(akim>0.03)durum+=" Dikkat: akım 30 mA üzerinde, uzun süre çalıştırmayın.";}
+return {kisa:false,durum:durum,cozum:cozum,led:led,akim:akim,ileri:true};
+}
+if(geri){durum="LED yanmıyor. Akım yönü ters görünüyor, LED bağlantısını kontrol edin.";return {kisa:false,durum:durum,cozum:cozum,led:led,akim:akim,ileri:false};}
+durum="Devre tamamlanmamış. Halka: PSU+ → R → LED+ → LED− → PSU− olmalıdır.";
+return {kisa:false,durum:durum,cozum:cozum,led:led,akim:akim,ileri:false};
+}
+function devreGuncelle(){
+var c=devreCoz();
+var ledEl=$("devreLed");
+if(c.kisa){ledEl.style.background="#0d0505";ledEl.style.boxShadow="none";if(gucAcik){gucAcik=false;$("gucBtn").textContent="Gücü Aç";}dUyari("hata","Kısa devre",c.durum);$("devreDurum").textContent=c.durum;return;}
+if(c.led==="yanik"){ledEl.style.background="#ff6b6b";ledEl.style.boxShadow="0 0 30px #f87171,0 0 60px #fde047";if(!devreYandi){devreYandi=true;deneyKontrol();}}
+else{ledEl.style.background="#1a0d12";ledEl.style.boxShadow="none";}
+$("devreDurum").textContent=c.durum;
+var u=$("devreUyari");if(c.ileri&&c.led==="yanik"){u.className="uyari";} 
+cizgileriCiz();
+}
+function dugumTik(n){
+if(!ilkDugum){ilkDugum=n;dUyari("bilgi","İlk nokta","İlk nokta: "+n+". Şimdi ikinci noktaya dokunun.");return;}
+if(ilkDugum===n){ilkDugum=null;dUyari("bilgi","İptal","Aynı nokta seçildi, seçim iptal edildi.");return;}
+if(!telVar(ilkDugum,n)){teller.push([ilkDugum,n]);}
+ilkDugum=null;telListeCiz();devreGuncelle();
+}
+function telListeCiz(){var l=$("telListe");l.innerHTML="";if(!teller.length){l.textContent="Tel yok.";return;}teller.forEach(function(w,i){var s=document.createElement("span");s.textContent=w[0]+"—"+w[1];var x=document.createElement("button");x.textContent="sil";x.addEventListener("click",function(){teller.splice(i,1);telListeCiz();devreGuncelle();});s.appendChild(x);s.appendChild(document.createTextNode("  "));l.appendChild(s);});}
+function kabloKapat(){if(!kabloModu)return;kabloModu=false;ilkDugum=null;var b=$("kabloBtn");b.textContent="Kablo: KAPALI";b.className="dugme";}$("kabloBtn").addEventListener("click",function(){kabloModu=!kabloModu;ilkDugum=null;var b=$("kabloBtn");b.textContent="Kablo: "+(kabloModu?"AÇIK":"KAPALI");b.className="dugme"+(kabloModu?" aktif":"");});
+$("telTemizle").addEventListener("click",function(){teller=[];ilkDugum=null;telListeCiz();devreGuncelle();});
+$("psuVolt").addEventListener("input",function(){$("psuGoster").textContent=parseFloat($("psuVolt").value).toFixed(1);devreGuncelle();});
+$("gucBtn").addEventListener("click",function(){gucAcik=!gucAcik;$("gucBtn").textContent=gucAcik?"Gücü Kapat":"Gücü Aç";devreGuncelle();});
+function fmtOlc(v,birim){return v.toFixed(2)+" "+birim;}
+$("olcBtn").addEventListener("click",function(){
+if(sigortaAtti){ekran("FUSE",true);uyari("hata","Sigorta atık","mA kademesi kullanılamaz. Sigortayı değiştirin.");return;}
+if(mod==="YOK"){uyari("bilgi","Kademe seçilmedi","Önce V, mA, Ω veya Diyot kademelerinden birini seçin.");return;}
+var k=bag.kirmizi,s=bag.siyah;
+if(!k||!s){uyari("bilgi","Prob eksik","Önce kırmızı ve siyah probları birer bacağa takın.");return;}
+var devreKumesi={PSUp:1,PSUn:1,RA:1,RB:1,LA:1,LC:1};
+if(devreKumesi[k]||devreKumesi[s]){devreOlc(k,s);return;}
+var ck=bacakBilesen(k),cs=bacakBilesen(s);
+if(!ck||!cs||ck.id!==cs.id){ekran("OL",false);uyari("bilgi","Açık devre","Proplar farklı bileşenlerde, ölçüm yapılamaz (OL).");return;}
+if(mod==="OHM"){
+if(ck.tip==="R"){var tol=(Math.random()<0.5?-1:1)*0.05*Math.random();var v=ck.deger*(1+tol);ekran(fmtOlc(v,"Ω"),false);gorevTamamla(ck.id,"R");$("mmAlt").textContent="Direnç ölçüldü: "+fmtR(ck.deger)+" nominal";}
+else if(ck.tip==="LED"){ekran("OL",false);uyari("bilgi","Yanlış kademe","LED direnç kademesinde ölçülmez. Diyot kademesini kullanın.");}
+else{ekran("0.3 Ω",false);gorevTamamla(ck.id,"TEL");}
+return;}
+if(mod==="DIYOT"){
+if(ck.tip==="LED"){
+if(k===ck.id+"a"&&s===ck.id+"b"){ekran(ck.vf.toFixed(3)+" V",false);gorevTamamla(ck.id,"LED");$("mmAlt").textContent="LED iletim gerilimi okundu";}
+else{ekran("OL",false);uyari("bilgi","Ters kutup","Diyot kademesinde kırmızı prob + bacağa takılmalıdır.");}
+return;}
+if(ck.tip==="R"){ekran((0.001*ck.deger).toFixed(3)+" V",false);$("mmAlt").textContent="Test akımının direnç üzerindeki düşümü";}
+else{bip();ekran("0.001 V",false);uyari("ok","Süreklilik","Bip sesi: hat sürekliliği var.");gorevTamamla(ck.id,"TEL");}
+return;}
+if(mod==="V"){ekran("0.00 V",false);$("mmAlt").textContent="Güçsüz bileşende gerilim olmaz.";return;}
+if(mod==="mA"){ekran("0.00 mA",false);$("mmAlt").textContent="Kapalı çevrim yok, akım akmaz.";return;}
+});
+function devreOlc(k,s){
+var c=devreCoz();
+if(c.kisa){ekran("0.00 V",false);return;}
+if(mod==="V"){
+var vk=dugumVolt(k,c.cozum),vs=dugumVolt(s,c.cozum);
+if(vk===null||vs===null){ekran("--",false);uyari("bilgi","Yüzen nokta","Nokta devreye bağlı değil, gerilim tanımsız.");return;}
+var fark=vk-vs;ekran(fark.toFixed(2)+" V",false);
+if(gucAcik&&c.ileri&&((k==="LA"&&s==="LC")||(k==="LC"&&s==="LA"))){if(!devreOlcumu){devreOlcumu=true;$("mmAlt").textContent="Devre üzerinde LED gerilimi ölçüldü.";deneyKontrol();}}
+return;}
+if(mod==="mA"){
+if((k==="RA"&&s==="RB")||(k==="RB"&&s==="RA")){
+if(!gucAcik||!c.ileri){ekran("0.00 mA",false);return;}
+ekran((c.akim*1000).toFixed(2)+" mA",false);$("mmAlt").textContent="Halka akımı okundu.";return;}
+var vk2=dugumVolt(k,c.cozum),vs2=dugumVolt(s,c.cozum);
+if(gucAcik&&vk2!==null&&vs2!==null&&Math.abs(vk2-vs2)>0.5){sigortaAtti=true;ekran("FUSE",true);$("sigortaBtn").style.display="block";uyari("hata","Sigorta attı","Akım kademesinde paralel ölçüm yapılmaz. Ampermetre neredeyse kısa devredir. Sigortayı değiştirin.");return;}
+ekran("0.00 mA",false);return;}
+if(mod==="OHM"){if(gucAcik){ekran("OL",true);uyari("hata","Güç açık","Güç varken direnç ölçülmez. Önce gücü kapatın.");return;}ekran("OL",false);uyari("bilgi","Devre içi ölçüm","Devre içinde sağlıklı direnç ölçümü için en az bir bacak sökülmelidir.");return;}
+if(mod==="DIYOT"){ekran("OL",false);uyari("bilgi","Devre içi ölçüm","Diyot kademesi devre üzerinde güvenilir sonuç vermez.");return;}
+}
+$("sigortaBtn").addEventListener("click",function(){sigortaAtti=false;ekran("- - - -",false);$("sigortaBtn").style.display="none";$("mmAlt").textContent="Sigorta yenilendi.";});
+function gorevTamamla(id,tip){
+var ok=false;
+if(tip==="R"&&mod==="OHM")ok=true;
+if(tip==="LED"&&mod==="DIYOT")ok=true;
+if(tip==="TEL"&&mod==="DIYOT")ok=true;
+if(!ok)return;
+if(GEREKEN.indexOf(id)>=0&&!yapilan[id]){yapilan[id]=true;gorevCiz();uyari("ok","Görev kaydı","Doğru kademeyle ölçüldü ve listeye işlendi.");}
+else if(!yapilan[id]){yapilan[id]=true;uyari("bilgi","Ekstra ölçüm","Bu bileşen listede yoktu ama ölçüm geçerli.");}
+deneyKontrol();
+}
+function deneyKontrol(){
+var n=0;for(var i=0;i<GEREKEN.length;i++){if(yapilan[GEREKEN[i]])n++;}
+if(n>=3&&devreYandi&&devreOlcumu&&!deneyBildirildi){deneyBildirildi=true;if(window.eeDeneyOldu)window.eeDeneyOldu();}
+}
+bilesenKartlari();gorevCiz();probCiz();telListeCiz();devreGuncelle();
+setTimeout(cizgileriCiz,300);setTimeout(cizgileriCiz,1000);
+});
+</script>
+<script>
+document.addEventListener("click",function(e){
+var q=e.target&&e.target.closest?e.target.closest(".quiz button"):null;
+if(!q)return;
+var box=q.closest(".quiz");if(!box)return;
+var btns=box.querySelectorAll("button");var out=box.querySelector(".sonuc");
+btns.forEach(function(x){x.classList.remove("dogru","yanlis");});
+out.style.display="block";
+if(q.dataset.d==="1"){q.classList.add("dogru");out.textContent="Doğru. "+(q.dataset.acik||"");}
+else{q.classList.add("yanlis");out.textContent="Yanlış. "+(q.dataset.acik||"");}
+});
+</script>
+</body></html>
