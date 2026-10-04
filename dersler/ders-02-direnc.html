@@ -2,37 +2,77 @@
 <!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
 <html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ders 2: Direnç | Erhan Emir</title><meta name="robots" content="noindex">
-<style>:root{--bg:#0b0710;--card:#170d20;--pink:#f472b6;--pink2:#ec4899;--mor:#a78bfa;--yazi:#fff0f6;--soluk:#d8a9c2;--sari:#fde047;--kirmizi:#ef4444;--yesil:#34d399}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:radial-gradient(circle at 80% 10%,rgba(167,139,250,.18),transparent 40%),var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:800px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(244,114,182,.25);border-radius:18px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--pink);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--pink);margin-bottom:.5rem}p,li{line-height:1.75;color:#f5d6e6}ul{padding-left:1.2rem}.kontrol{background:rgba(255,255,255,.04);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.8rem 0}input,select{width:100%;padding:.6rem;border-radius:8px;border:1px solid rgba(244,114,182,.3);background:#0a0510;color:#fff;font-size:1rem}input[type=range]{accent-color:var(--pink2);padding:0}button{cursor:pointer;border:none;border-radius:10px;padding:.7rem 1.2rem;font-weight:800;background:linear-gradient(135deg,var(--pink2),var(--mor));color:#fff;width:100%;margin-top:.5rem}.sonuc{background:#0a0510;border-radius:10px;padding:.8rem;font-family:monospace;margin-top:.8rem;border:1px solid rgba(244,114,182,.2)}.direnc-cizim{display:flex;align-items:center;justify-content:center;gap:.5rem;margin:1rem 0;font-size:1.4rem}.govde-bant{width:140px;height:44px;background:#d9a066;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px}.bant{width:12px;height:44px}.uyari{display:none;background:#3b0a1a;border:2px solid var(--kirmizi);border-radius:12px;padding:1rem;margin-top:1rem}.uyari.goster{display:block}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(244,114,182,.3);padding-top:.8rem;margin-top:1rem}</style>
+<style>:root{--bg:#050a10;--card:#0a1220;--sari:#fde047;--yesil:#34d399;--cyan:#22d3ee;--turuncu:#fb923c;--kirmizi:#f87171;--yazi:#e8eef4;--soluk:#8890a0}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);padding:1.5rem 1rem;min-height:100vh}.kapsayici{max-width:820px;margin:0 auto}.kart{background:var(--card);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--sari);border-radius:14px;padding:1.8rem;margin-bottom:1.2rem}a.link{color:var(--cyan);font-weight:700;text-decoration:none}h1{font-size:1.6rem;margin:.5rem 0}h2{color:var(--sari);margin-bottom:.5rem}p,li{line-height:1.75;color:#cbd5e1}ul{padding-left:1.2rem}.kontrol{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;margin-top:1rem}.satir{margin:.8rem 0}label{font-weight:700;font-size:.9rem;display:block;margin-bottom:.3rem}input,select{padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:#020617;color:#fff;font-size:.95rem}input[type=range]{width:100%;accent-color:var(--sari);padding:0;border:none}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.grid2 select,.grid2 input{width:100%}@media(max-width:600px){.grid2{grid-template-columns:1fr}}button.hesap{cursor:pointer;border:none;border-radius:10px;padding:.7rem;font-weight:800;background:linear-gradient(135deg,#eab308,#34d399);color:#050a10;width:100%;margin-top:.5rem}.sonuc{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.88rem;margin-top:.8rem;border:1px solid rgba(255,255,255,.1);line-height:1.6}.direnc-cizim{display:flex;align-items:center;justify-content:center;gap:.4rem;margin:1rem 0;font-size:1.4rem;color:var(--soluk)}.govde-bant{min-width:170px;height:46px;background:#d9a066;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:7px;padding:0 10px}.bant{width:13px;height:46px;border-radius:2px;background:#333}.uyari{display:none;border-radius:12px;padding:1rem;margin-top:1rem;border:1px solid var(--kirmizi);background:rgba(239,68,68,.1)}.uyari.goster{display:block}footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{font-size:.75rem;color:var(--soluk);text-align:center;border-top:1px dashed rgba(255,255,255,.15);padding-top:.8rem;margin-top:1rem}.secrow{display:flex;gap:.5rem;flex-wrap:wrap}.secrow select{flex:1;min-width:120px}</style>
 </head><body><div class="kapsayici">
 <div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-01-led.html">&larr; Önceki: LED</a>
-<h1>Ders 2: Direnç — LED'in koruması 🛡️💖</h1>
-<p>Selam yine ben! Geçen derste LED patlattın mı? 😄 İşte direnç tam bunun için var: akımı frenler, LED'i korur. Musluğun ucuna taktığın küçük aparat gibi düşün, suyu kısar.</p>
-<ul><li>🔌 Birimi <b>Ohm (Ω)</b>. Ne kadar büyük, o kadar çok fren.</li><li>🌈 Üstündeki renkli çizgiler değerini söyler. Ezberleme, aşağıda hesaplayıcı var!</li><li>🧮 Altın kural: <b>V = I × R</b> (Ohm kanunu). 5V pile LED + direnç bağlayacaksan direnç şart!</li><li>💡 Pratik: 5V + kırmızı LED için genelde <b>220Ω</b> mis gibi olur.</li></ul></div>
-<div class="kart"><h2>🎮 Deney 1: Ohm kanunu oyna</h2>
-<div class="kontrol"><div class="satir"><label>Voltaj (V): <span id="vg">5</span>V</label><input type="range" id="v" min="1" max="12" step="0.5" value="5"></div>
-<div class="satir"><label>Direnç (Ω)</label><select id="r"><option>100</option><option selected>220</option><option>330</option><option>1000</option><option>10000</option></select></div>
-<button id="hesapla">Hesapla ⚡</button><div class="sonuc" id="sonuc">Akım bekleniyor...</div>
-<div class="uyari" id="b1"><b id="b1t"></b><p id="b1m"></p></div></div></div>
-<div class="kart"><h2>🎨 Deney 2: Renkleri oku</h2>
-<p>4 bantlı direnç seç, değerini görelim:</p>
-<div class="kontrol"><div class="satir"><label>Bant 1-2-3 (sayı), Bant 4 (çarpan)</label></div>
-<div style="display:flex;gap:.5rem"><select id="b1s"></select><select id="b2s"></select><select id="cm"></select></div>
-<div class="direnc-cizim">—<div class="govde-bant"><div class="bant" id="g1"></div><div class="bant" id="g2"></div><div class="bant" id="g3"></div></div>—</div>
-<div class="sonuc" id="renkSonuc">...</div></div>
-<p style="margin-top:.6rem">Süpersin! Sıradaki: <a class="link" href="ders-03-buton.html">Ders 3: Buton →</a></p>
-<div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır. Kopyalama yasaktır.</div></div>
-<footer>by; ERHAN EMİR 💖</footer></div>
+<h1>Ders 2: Direnç ve Ohm Kanunu</h1>
+<p>Direnç, akımı sınırlayan devre elemanıdır. Birimi <b>Ohm (Ω)</b> ile gösterilir. LED'in seri dirençsiz sürülmesi, Ders 1'de görüldüğü gibi aşırı akıma ve kalıcı hasara yol açar.</p>
+<ul><li><b>Ohm Kanunu:</b> I = V / R. Akım, gerilimle doğru, dirençle ters orantılıdır.</li><li><b>Örnek:</b> 5V kaynak, kırmızı LED (yaklaşık 2V düşürür), kalan 3V direnç üzerinde düşer. 15 mA hedeflenirse R = 3V / 0.015A = 200Ω. Standart değer olarak <b>220Ω</b> seçilir.</li><li><b>Güç:</b> direnç üzerinde harcanan güç P = V × I ile hesaplanır. Küçük sinyal devrelerinde 1/4W dirençler yeterlidir.</li></ul></div>
+<div class="kart"><h2>Deney 1: Akım hesabı</h2>
+<div class="kontrol"><div class="satir"><label>Kaynak gerilimi: <span id="vg">5.0</span> V</label><input type="range" id="v" min="1" max="12" step="0.5" value="5"></div>
+<div class="satir"><label>LED gerilim düşümü (kırmızı için 2.0V varsayılan)</label><input type="number" id="vled" value="2.0" step="0.1" min="0" max="4" style="width:100%"></div>
+<div class="satir"><label>Seri direnç (Ω)</label><select id="r" style="width:100%"><option>100</option><option selected>220</option><option>330</option><option>470</option><option>1000</option><option>10000</option></select></div>
+<button class="hesap" id="hesapla">Akımı Hesapla</button><div class="sonuc" id="sonuc">Değerler girilip hesaplanmayı bekliyor.</div>
+<div class="uyari" id="b1"><b id="b1t"></b><p id="b1m" style="margin-top:.3rem;line-height:1.6"></p></div></div></div>
+<div class="kart"><h2>Deney 2: Renk kodundan değer okuma (4 / 5 / 6 bant)</h2>
+<p>Gerçek dirençlerde 4, 5 veya 6 bant bulunur. Bant sayısını seçin, renkleri girin. Tolerans ve sıcaklık katsayısı girilmezse yalnızca nominal değer hesaplanır.</p>
+<div class="kontrol">
+<div class="satir"><label>Bant sayısı</label><div class="secrow"><select id="bantSayi"><option value="4" selected>4 bant (2 rakam + çarpan + tolerans)</option><option value="5">5 bant (3 rakam + çarpan + tolerans)</option><option value="6">6 bant (3 rakam + çarpan + tolerans + sıcaklık katsayısı)</option></select></div></div>
+<div class="satir"><label>Rakam bantları</label><div class="secrow" id="rakamlar"></div></div>
+<div class="satir"><label>Çarpan</label><select id="carpan" style="width:100%"></select></div>
+<div class="satir"><div class="grid2"><div><label>Tolerans (isteğe bağlı)</label><select id="tol"><option value="">Seçilmedi</option></select></div><div><label>Sıcaklık katsayısı — yalnızca 6 bant</label><select id="ppm"><option value="">Seçilmedi</option></select></div></div></div>
+<div class="direnc-cizim">—<div class="govde-bant" id="govde"></div>—</div>
+<div class="sonuc" id="renkSonuc">Renk seçimi bekleniyor.</div>
+</div>
+<p style="margin-top:.6rem">Sonraki adım: <a class="link" href="ders-03-buton.html">Ders 3: Buton ve Pull Dirençleri →</a></p>
+<div class="kopya">© 2026 Erhan Emir — Tüm hakları saklıdır.</div></div>
+<footer>by; ERHAN EMİR</footer></div>
 <script>
 (function(){
-var renkler=['siyah','kahverengi','kırmızı','turuncu','sarı','yeşil','mavi','mor','gri','beyaz'];
-var hex=['#000','#6b3f1d','#d00','#f60','#ff0','#0a0','#00d','#90c','#888','#fff'];
-function doldur(s){renkler.forEach(function(r,i){var o=document.createElement('option');o.value=i;o.textContent=i+' - '+r;s.appendChild(o);});}
-doldur(document.getElementById('b1s'));doldur(document.getElementById('b2s'));
-var cm=document.getElementById('cm');[['1 Ω','siyah',1,'#000'],['10 Ω','kahve',10,'#6b3f1d'],['100 Ω','kırmızı',100,'#d00'],['1k Ω','turuncu',1000,'#f60']].forEach(function(x,i){var o=document.createElement('option');o.value=x[2];o.textContent=x[0];cm.appendChild(o);});
-function guncelle(){var a=+document.getElementById('b1s').value,b=+document.getElementById('b2s').value,c=+cm.value;document.getElementById('g1').style.background=hex[a];document.getElementById('g2').style.background=hex[b];document.getElementById('g3').style.background='#d4af37';document.getElementById('renkSonuc').textContent='Değer: '+(a*10+b)*c+' Ω (~'+((a*10+b)*c/1000)+'kΩ)'; }
-['b1s','b2s','cm'].forEach(function(id){document.getElementById(id).onchange=guncelle;});
-document.getElementById('b1s').value=2;document.getElementById('b2s').value=2;guncelle();
-var v=document.getElementById('v');v.oninput=function(){document.getElementById('vg').textContent=v.value;};
-document.getElementById('hesapla').onclick=function(){var V=parseFloat(v.value),R=parseFloat(document.getElementById('r').value);var I=V/R;var mA=(I*1000).toFixed(1);var s=document.getElementById('sonuc');var u=document.getElementById('b1');s.textContent='I = V/R = '+V+'V / '+R+'Ω = '+mA+' mA';u.classList.remove('goster');if(mA>25){u.classList.add('goster');document.getElementById('b1t').textContent='💥 Çok akım!';document.getElementById('b1m').textContent='LED için 20mA üstü tehlikeli. Direnci büyüt ya da voltajı düşür canım!';}else if(mA<5){u.classList.add('goster');document.getElementById('b1t').textContent='😴 Çok sönük kalır';document.getElementById('b1m').textContent='Akım çok düşük, LED zor görünür. Direnci küçültmeyi dene!';}};
+var rakamRenk=[['Siyah',0,'#111'],['Kahverengi',1,'#6b3f1d'],['Kırmızı',2,'#d00'],['Turuncu',3,'#f60'],['Sarı',4,'#cc0'],['Yeşil',5,'#0a0'],['Mavi',6,'#00d'],['Mor',7,'#90c'],['Gri',8,'#888'],['Beyaz',9,'#eee']];
+var carpanRenk=[['Siyah ×1',1,'#111'],['Kahverengi ×10',10,'#6b3f1d'],['Kırmızı ×100',100,'#d00'],['Turuncu ×1k',1000,'#f60'],['Sarı ×10k',10000,'#cc0'],['Yeşil ×100k',100000,'#0a0'],['Mavi ×1M',1000000,'#00d'],['Mor ×10M',10000000,'#90c'],['Gri ×100M',100000000,'#888'],['Beyaz ×1G',1000000000,'#eee'],['Altın ×0.1',0.1,'#c9a227'],['Gümüş ×0.01',0.01,'#c0c0c0']];
+var tolRenk=[['Kahverengi ±%1','#6b3f1d','±%1'],['Kırmızı ±%2','#d00','±%2'],['Yeşil ±%0.5','#0a0','±%0.5'],['Mavi ±%0.25','#00d','±%0.25'],['Mor ±%0.1','#90c','±%0.1'],['Gri ±%0.05','#888','±%0.05'],['Altın ±%5','#c9a227','±%5'],['Gümüş ±%10','#c0c0c0','±%10']];
+var ppmRenk=[['Kahverengi 100 ppm/K','#6b3f1d','100 ppm/K'],['Kırmızı 50 ppm/K','#d00','50 ppm/K'],['Turuncu 15 ppm/K','#f60','15 ppm/K'],['Sarı 25 ppm/K','#cc0','25 ppm/K'],['Mavi 10 ppm/K','#00d','10 ppm/K'],['Mor 5 ppm/K','#90c','5 ppm/K']];
+function opt(s,t,v){var o=document.createElement('option');o.textContent=t;o.value=v;return o;}
+var cS=document.getElementById('carpan');carpanRenk.forEach(function(c,i){cS.appendChild(opt(0,c[0],i));});cS.value=2;
+var tS=document.getElementById('tol');tolRenk.forEach(function(c,i){tS.appendChild(opt(0,c[0],i));});
+var pS=document.getElementById('ppm');ppmRenk.forEach(function(c,i){pS.appendChild(opt(0,c[0],i));});
+var rakamDiv=document.getElementById('rakamlar'),govde=document.getElementById('govde');
+function fmtR(r){if(r>=1000000)return (r/1000000)+' MΩ';if(r>=1000)return (r/1000)+' kΩ';return r+' Ω';}
+function kur(){
+var n=+document.getElementById('bantSayi').value;var adet=n===4?2:3;
+rakamDiv.innerHTML='';govde.innerHTML='';
+for(var i=0;i<adet;i++){var s=document.createElement('select');rakamRenk.forEach(function(c){s.appendChild(opt(0,c[1]+' - '+c[0],c[1]));});s.dataset.i=i;s.onchange=hesaplaRenk;rakamDiv.appendChild(s);}
+if(n===4){rakamDiv.children[0].value=2;rakamDiv.children[1].value=2;}
+else{rakamDiv.children[0].value=2;rakamDiv.children[1].value=2;rakamDiv.children[2].value=0;}
+hesaplaRenk();
+}
+function hesaplaRenk(){
+var n=+document.getElementById('bantSayi').value;var adet=n===4?2:3;var rakam='';
+for(var i=0;i<adet;i++){rakam+=rakamDiv.children[i].value;}
+var ci=+cS.value;var mult=carpanRenk[ci][1];
+var deger=parseInt(rakam,10)*mult;
+govde.innerHTML='';
+for(var j=0;j<adet;j++){var d=document.createElement('div');d.className='bant';d.style.background=rakamRenk[+rakamDiv.children[j].value][2];govde.appendChild(d);}
+var m=document.createElement('div');m.className='bant';m.style.background=carpanRenk[ci][2];govde.appendChild(m);
+var t=document.createElement('div');t.className='bant';
+var txt='Değer: '+fmtR(deger);
+if(tS.value!==''){t.style.background=tolRenk[+tS.value][1];txt+=' '+tolRenk[+tS.value][2];}else{t.style.background='repeating-linear-gradient(45deg,#333,#333 3px,#555 3px,#555 6px)';txt+=' (tolerans girilmedi)';}
+govde.appendChild(t);
+if(n===6){var p=document.createElement('div');p.className='bant';if(pS.value!==''){p.style.background=ppmRenk[+pS.value][1];txt+=' '+ppmRenk[+pS.value][2];}else{p.style.background='repeating-linear-gradient(45deg,#333,#333 3px,#555 3px,#555 6px)';txt+=' (sıcaklık katsayısı girilmedi)';}govde.appendChild(p);}
+document.getElementById('renkSonuc').textContent=txt;
+}
+document.getElementById('bantSayi').onchange=kur;cS.onchange=hesaplaRenk;tS.onchange=hesaplaRenk;pS.onchange=hesaplaRenk;kur();
+var v=document.getElementById('v');v.oninput=function(){document.getElementById('vg').textContent=parseFloat(v.value).toFixed(1);};
+document.getElementById('hesapla').onclick=function(){
+var V=parseFloat(v.value),Vl=parseFloat(document.getElementById('vled').value),R=parseFloat(document.getElementById('r').value);
+var s=document.getElementById('sonuc'),u=document.getElementById('b1');
+if(Vl>=V){s.textContent='Hata: kaynak gerilimi LED düşümünden büyük olmalıdır.';return;}
+var Vr=V-Vl,I=Vr/R,mA=I*1000,P=Vr*I;
+s.textContent='Direnç üzeri gerilim: '+Vr.toFixed(2)+'V | Akım: '+mA.toFixed(1)+' mA | Direnç gücü: '+P.toFixed(3)+'W';
+u.classList.remove('goster');
+if(mA>20){u.classList.add('goster');document.getElementById('b1t').textContent='Akım 20 mA üzerinde.';document.getElementById('b1m').textContent='Kırmızı LED için güvenli sınır aşılıyor. Direnci büyütün (ör. 330Ω veya 470Ω deneyin).';}
+else if(mA<5){u.classList.add('goster');document.getElementById('b1t').textContent='Akım düşük (5 mA altı).';document.getElementById('b1m').textContent='LED sönük kalacaktır. Direnci küçültün veya kaynak gerilimini artırın.';}
+};
 })();
 </script></body></html>
