@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Bilgin Modu Sınavı | Erhan Emir</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Bilgin Modu Sınavı | Erhan Emir">
+<meta property="og:description" content="Her dersten rastgele sorular, 30 saniye süre. Hepsini bil, tüm kilitleri aç.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://erhanemir.github.io/dersler/og-kutuphane.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://erhanemir.github.io/dersler/og-kutuphane.png">
+<style>
+:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--yesil:#34d399;--kirmizi:#f87171;--sari:#fde047;--mor:#818cf8;--cerceve:rgba(255,255,255,.08)}
+[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--yesil:#059669;--kirmizi:#dc2626;--sari:#a16207;--mor:#4f46e5;--cerceve:rgba(15,23,42,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh;transition:background .3s}
+.kapsayici{max-width:760px;margin:0 auto;padding:2rem 1rem}
+.ustbar{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:1.2rem}
+a.don{color:var(--cyan);text-decoration:none;font-weight:700}
+.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer;font-size:.85rem}
+.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:16px;padding:2rem;margin-bottom:1.2rem;text-align:center}
+.kart h1{font-size:1.7rem;margin-bottom:.5rem}
+.kart h1 span{color:var(--sari)}
+.kart p{color:var(--soluk);line-height:1.7;margin-bottom:.4rem}
+.kart ol{text-align:left;color:var(--soluk);line-height:1.8;margin:.8rem 0 .8rem 1.2rem}
+.btn-buyuk{display:inline-block;margin:.4rem .3rem 0;background:linear-gradient(135deg,var(--sari),var(--mor));color:#050a10;border:none;border-radius:12px;padding:.9rem 2.2rem;font-weight:900;font-size:1.05rem;cursor:pointer}
+.btn-ghost{display:inline-block;margin:.4rem .3rem 0;background:transparent;color:var(--yazi);border:1px solid var(--cerceve);border-radius:12px;padding:.9rem 1.6rem;font-weight:800;cursor:pointer}
+.etiket{display:inline-block;font-size:.75rem;font-weight:800;background:var(--card);border:1px solid var(--cerceve);border-radius:20px;padding:.25rem .8rem;color:var(--cyan);margin-bottom:.6rem}
+.soru{font-size:1.15rem;font-weight:700;line-height:1.6;margin:.6rem 0 1rem}
+.siklar{display:flex;flex-direction:column;gap:.6rem;text-align:left}
+.siklar button{background:var(--bg);color:var(--yazi);border:1px solid var(--cerceve);border-radius:10px;padding:.8rem 1rem;font-weight:600;cursor:pointer;font-size:.95rem;text-align:left;transition:.15s}
+.siklar button:hover:not(:disabled){border-color:var(--cyan);transform:translateY(-1px)}
+.siklar button.dogru{border-color:var(--yesil);background:rgba(52,211,153,.15)}
+.siklar button.yanlis{border-color:var(--kirmizi);background:rgba(239,68,68,.12)}
+.siklar button:disabled{cursor:default;opacity:.85}
+.sure-cubuk{height:10px;border-radius:6px;background:var(--cerceve);overflow:hidden;margin:.8rem 0 .3rem}
+.sure-cubuk i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--yesil),var(--cyan));transition:width .25s linear}
+.sure-cubuk.kritik i{background:linear-gradient(90deg,var(--kirmizi),var(--sari))}
+.sure-yazi{font-family:Consolas,monospace;font-size:.85rem;color:var(--soluk)}
+.sure-yazi.kritik{color:var(--kirmizi);font-weight:800}
+.geribildirim{margin-top:1rem;padding:.8rem 1rem;border-radius:10px;font-size:.9rem;line-height:1.6;display:none}
+.geribildirim.goster{display:block}
+.geribildirim.ok{background:rgba(52,211,153,.12);border:1px solid var(--yesil)}
+.geribildirim.no{background:rgba(239,68,68,.10);border:1px solid var(--kirmizi)}
+.ilerleme{font-size:.82rem;color:var(--soluk);margin-top:1rem}
+footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}
+#cerezKapi{display:none;position:fixed;inset:0;z-index:200;background:rgba(5,10,16,.94);align-items:center;justify-content:center;padding:1.5rem}
+#cerezKutu{max-width:400px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.5rem;text-align:center;color:#e8eef4}
+#cerezKutu p{color:#8890a0;font-size:.88rem;line-height:1.6;margin-bottom:1rem}
+.cerez-eylem{display:flex;gap:.6rem;justify-content:flex-end}
+.cerez-eylem button{border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:.85rem;padding:.55rem 1rem}
+#cerezKabul{background:#22d3ee;color:#050a10}
+#cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}
+#cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}
+@keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}
+</style>
+</head>
+<body>
+<div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p>Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet">Daha sonra</button><button type="button" id="cerezKabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700">Kabul edilmeden kutuphane kullanilamaz.</p></div></div>
+<div class="kapsayici">
+<div class="ustbar">
+<a class="don" href="index.html">← Ders listesi</a>
+<button class="dugme" id="temaBtn">☾</button>
+</div>
+<div id="ekran"></div>
+</div>
+<footer>by; ERHAN EMİR</footer>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygulaTema(){document.documentElement.setAttribute("data-theme",TEMA);document.getElementById("temaBtn").textContent=(TEMA==="dark")?"\u263e":"\u2600";}
+uygulaTema();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygulaTema();});
+var CK_A="_nx.s7k", KK=[90,60,145,231,43,109,68,168], TOK_Y="k7mQ2p", LS_C="_nx_s7k_ls";
+function cxor(s){var o="",i;for(i=0;i<s.length;i++){o+=String.fromCharCode(s.charCodeAt(i)^KK[i%KK.length]);}return o;}
+function cenc(s){try{return btoa(cxor(s)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}catch(e){return "";}}
+function cdec(s){try{var b=s.replace(/-/g,"+").replace(/_/g,"/");while(b.length%4){b+="=";}return cxor(atob(b));}catch(e){return "";}}
+function getC(n){try{var m=document.cookie.match(new RegExp("(?:^|; )"+n.replace(/\./g,"\\.")+"=([^;]*)"));return m?decodeURIComponent(m[1]):"";}catch(e){return "";}}
+function setC(n,v,gun){try{var d=new Date();d.setTime(d.getTime()+gun*864e5);document.cookie=n+"="+encodeURIComponent(v)+";expires="+d.toUTCString()+";path=/;SameSite=Lax";}catch(e){}}
+function lsGet(k){try{return window.localStorage?window.localStorage.getItem(k):null;}catch(e){return null;}}
+function lsSet(k,v){try{if(window.localStorage)window.localStorage.setItem(k,v);}catch(e){}}
+function depo(){try{document.cookie="_ee_t=1; path=/; SameSite=Lax";if(document.cookie.indexOf("_ee_t=1")>=0){try{document.cookie="_ee_t=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";}catch(e){}return "cerez";}}catch(e){}return "ls";}
+function onay(){if(depo()==="ls"){var l=lsGet(LS_C);return !!(l&&cdec(l)===TOK_Y);}return cdec(getC(CK_A))===TOK_Y;}
+function yazOnay(ok){var v=cenc(ok?TOK_Y:"r4wL9x");if(depo()==="ls"){lsSet(LS_C,v);}else{setC(CK_A,v,400);}}
+var kapi=document.getElementById("cerezKapi");
+if(kapi&&!onay()){
+kapi.style.display="flex";
+var kb=document.getElementById("cerezKabul"),rt=document.getElementById("cerezRet");
+if(kb){kb.classList.add("dikkat");kb.addEventListener("click",function(){yazOnay(true);location.reload();});}
+if(rt){rt.addEventListener("click",function(){yazOnay(false);var n=document.getElementById("cerezNot");if(n)n.style.display="block";setTimeout(function(){location.href="index.html";},800);});}
+return;
+}else if(kapi){kapi.style.display="none";}
+var DERSLER=[
+{n:1,dosya:"ders-01-led.html",ad:"Ders 1: LED"},
+{n:2,dosya:"ders-02-direnc.html",ad:"Ders 2: Direnç"},
+{n:3,dosya:"ders-03-kondansator.html",ad:"Ders 3: Kondansatör"},
+{n:4,dosya:"ders-04-buton.html",ad:"Ders 4: Buton"},
+{n:5,dosya:"ders-05-buzzer.html",ad:"Ders 5: Buzzer"},
+{n:6,dosya:"ders-06-breadboard.html",ad:"Ders 6: Breadboard"},
+{n:7,dosya:"ders-07-multimetre.html",ad:"Ders 7: Multimetre"},
+{n:8,dosya:"ders-08-smd.html",ad:"Ders 8: SMD"},
+{n:9,dosya:"ders-09-transistor.html",ad:"Ders 9: Transistör"},
+{n:10,dosya:"ders-10-555.html",ad:"Ders 10: 555"}];
+var SURE=30, LS_SINAV="_ee_snv", K="Erhan2026", ANA=K;
+function gizle(o){var s=JSON.stringify(o),x="",i;for(i=0;i<s.length;i++){x+=String.fromCharCode(s.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}try{return btoa(unescape(encodeURIComponent(x))).split("").reverse().join("");}catch(e){return "";}}
+function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var s="",i;for(i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}return JSON.parse(s);}catch(e){return null;}}
+function okuIlerleme(){try{var m=document.cookie.match(/(?:^|; )_ee_kutup=([^;]*)/);if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}try{var l=lsGet("_ee_kutup_ls");if(l){var d2=coz(l);if(d2&&d2.tamam)return d2;}}catch(e){}return {tamam:[],deneme:{}};}
+function yazIlerleme(d){try{document.cookie="_ee_kutup="+encodeURIComponent(gizle(d))+"; max-age=31536000; path=/; SameSite=Lax";}catch(e){}lsSet("_ee_kutup_ls",gizle(d));}
+function snvOku(){try{var l=lsGet(LS_SINAV);if(!l)return null;var d=coz(l);return (d&&d.v===DERSLER.length)?d:null;}catch(e){return null;}}
+function snvYaz(d){lsSet(LS_SINAV,gizle(d));}
+function snvSil(){try{if(window.localStorage)window.localStorage.removeItem(LS_SINAV);}catch(e){}}
+var ekran=document.getElementById("ekran");
+var soruBankasi=null, durum=null, zamanlayici=null, kalan=0;
+function secim(a){return a[Math.floor(Math.random()*a.length)];}
+async function bankayiYukle(){
+ekran.innerHTML="<div class=\"kart\"><h1>Sorular hazırlanıyor…</h1><p>Ders dosyaları okunuyor.</p></div>";
+soruBankasi={};
+for(var i=0;i<DERSLER.length;i++){
+var D=DERSLER[i], sorular=[];
+try{
+var r=await fetch(D.dosya,{cache:"no-store"});
+if(!r.ok)throw 0;
+var t=await r.text();
+var doc=new DOMParser().parseFromString(t,"text/html");
+var kutular=doc.querySelectorAll(".quiz");
+kutular.forEach(function(k,qi){
+var b=k.querySelector("b");
+var secimler=[];
+k.querySelectorAll("button").forEach(function(btn){
+secimler.push({metin:btn.textContent, dogru:btn.dataset.d==="1", acik:btn.dataset.acik||""});
+});
+if(b&&secimler.length>=2&&secimler.some(function(s){return s.dogru;}))sorular.push({soru:b.textContent, secimler:secimler});
+});
+}catch(e){sorular=[];}
+soruBankasi[D.n]=sorular;
+}
+var eksik=DERSLER.filter(function(D){return !(soruBankasi[D.n]&&soruBankasi[D.n].length);});
+if(eksik.length){
+ekran.innerHTML="<div class=\"kart\"><h1>Sınav Başlamadı</h1><p>Şu derslerden soru alınamadı: "+eksik.map(function(D){return D.ad;}).join(", ")+" Lütfen daha sonra tekrar deneyin.</p><p><a class=\"btn-ghost\" style=\"text-decoration:none\" href=\"index.html\">Ders listesine dön</a></p></div>";
+return false;
+}
+return true;
+}
+function cozulduMu(n){
+if(durum.ok.indexOf(n)>=0)return true;
+return okuIlerleme().tamam.indexOf(n)>=0;
+}
+function sonrakiDers(){
+for(var i=0;i<DERSLER.length;i++){if(!cozulduMu(DERSLER[i].n))return i;}
+return -1;
+}
+function girisEkrani(devamVar){
+ekran.innerHTML="<div class=\"kart\"><h1>Bilgin Modu <span>Sınavı</span></h1>"
++"<p>Her dersten rastgele <b>1 soru</b> gelir ("+DERSLER.length+" soru). Her soru için <b>"+SURE+" saniyen</b> var.</p>"
++"<ol><li>Doğru bilirsen sonraki derse geçersin.</li><li>Yanlış yaparsan (veya süre dolarsa) aynı dersten <b>farklı bir soru</b> daha gelir.</li><li>O da yanlışsa o derse yönlendirilirsin; dersi bitirince sınava kaldığın yerden dönersin.</li><li>Hepsini çözersen <b>tüm kilitler açılır</b>.</li></ol>"
++"<button class=\"btn-buyuk\" id=\"baslaBtn\">Sınavı Başlat</button>"
++(devamVar?"<button class=\"btn-ghost\" id=\"devamBtn\">Kaldığın Yerden Devam Et</button><button class=\"btn-ghost\" id=\"sifirlaBtn\">Baştan Başla</button>":"")
++"</div>";
+document.getElementById("baslaBtn").addEventListener("click",function(){durum=yeniDurum();snvYaz(durum);soruSor();});
+var dv=document.getElementById("devamBtn");
+if(dv)dv.addEventListener("click",function(){soruSor();});
+var sf=document.getElementById("sifirlaBtn");
+if(sf)sf.addEventListener("click",function(){durum=yeniDurum();snvYaz(durum);soruSor();});
+}
+function yeniDurum(){return {v:DERSLER.length, ok:[], kullanilan:{}, ikinci:{}};}
+function soruSor(){
+var idx=sonrakiDers();
+if(idx<0){bitir();return;}
+var D=DERSLER[idx];
+var havuz=soruBankasi[D.n].map(function(s,i){return i;}).filter(function(i){return (durum.kullanilan[D.n]||[]).indexOf(i)<0;});
+if(!havuz.length)havuz=soruBankasi[D.n].map(function(s,i){return i;});
+var qi=secim(havuz);
+durum.kullanilan[D.n]=durum.kullanilan[D.n]||[];
+durum.kullanilan[D.n].push(qi);
+durum.soru={ders:D.n, qi:qi};
+snvYaz(durum);
+soruCiz(D, soruBankasi[D.n][qi], !!durum.ikinci[D.n]);
+}
+function soruCiz(D, S, ikinciHak){
+var sira=DERSLER.indexOf(D);
+ekran.innerHTML="<div class=\"kart\"><div class=\"etiket\">"+D.ad+(ikinciHak?" • 2. hak":"")+"</div>"
++"<div class=\"ilerleme\">Soru "+(durum.ok.length+1)+" / "+DERSLER.length+"</div>"
++"<div class=\"soru\">"+S.soru+"</div>"
++"<div class=\"sure-cubuk\" id=\"sureCubuk\"><i id=\"sureBar\"></i></div>"
++"<div class=\"sure-yazi\" id=\"sureYazi\">"+SURE+" sn</div>"
++"<div class=\"siklar\" id=\"siklar\"></div>"
++"<div class=\"geribildirim\" id=\"geri\"></div></div>";
+var kutu=document.getElementById("siklar");
+S.secimler.forEach(function(sec, i){
+var b=document.createElement("button");b.textContent=sec.metin;
+b.addEventListener("click",function(){cevapla(i);});
+kutu.appendChild(b);
+});
+sureBaslat();
+}
+function sureBaslat(){
+sureDurdur();
+kalan=SURE;
+var bar=document.getElementById("sureBar"), yaz=document.getElementById("sureYazi"), cub=document.getElementById("sureCubuk");
+function tik(){
+kalan-=0.25;
+if(kalan<=0){yanlisYolu(true);return;}
+if(bar)bar.style.width=(kalan/SURE*100)+"%";
+if(yaz)yaz.textContent=Math.ceil(kalan)+" sn";
+if(kalan<=5){if(cub)cub.classList.add("kritik");if(yaz)yaz.classList.add("kritik");}
+zamanlayici=setTimeout(tik,250);
+}
+tik();
+}
+function sureDurdur(){if(zamanlayici){clearTimeout(zamanlayici);zamanlayici=null;}}
+function kilitleSiklar(){document.querySelectorAll("#siklar button").forEach(function(b){b.disabled=true;});}
+function cevapla(i){
+sureDurdur();
+var D=DERSLER.filter(function(x){return x.n===durum.soru.ders;})[0];
+var S=soruBankasi[D.n][durum.soru.qi];
+var dogru=S.secimler[i].dogru;
+var btns=document.querySelectorAll("#siklar button");
+btns.forEach(function(b,bi){if(S.secimler[bi].dogru)b.classList.add("dogru");});
+kilitleSiklar();
+if(dogru){
+if(durum.ok.indexOf(D.n)<0)durum.ok.push(D.n);
+snvYaz(durum);
+geriGoster(true,"Doğru. "+(S.secimler[i].acik||""));
+setTimeout(soruSor,1400);
+}else{
+btns[i].classList.add("yanlis");
+yanlisYolu(false, S.secimler[i].acik);
+}
+}
+function yanlisYolu(sureBitti, acik){
+sureDurdur();
+kilitleSiklar();
+var D=DERSLER.filter(function(x){return x.n===durum.soru.ders;})[0];
+if(!durum.ikinci[D.n]){
+durum.ikinci[D.n]=true;
+snvYaz(durum);
+geriGoster(false,(sureBitti?"Süre doldu. ":"Yanlış. ")+"Aynı dersten farklı bir soru geliyor.");
+setTimeout(soruSor,1800);
+}else{
+snvYaz(durum);
+var dosya=D.dosya;
+geriGoster(false,"Bu dersten iki soru da olmadı. <b>"+D.ad.replace(/^Ders \d+: /,"")+"</b> dersine yönlendiriliyorsun; dersi bitirince sınava geri dönüp kaldığın yerden devam edebilirsin.");
+setTimeout(function(){location.href=dosya+"?kaynak=sinav";},2200);
+}
+}
+function geriGoster(ok, metin){
+var g=document.getElementById("geri");
+if(!g)return;
+g.className="geribildirim goster "+(ok?"ok":"no");
+g.innerHTML=metin;
+}
+function bitir(){
+sureDurdur();
+var prog=okuIlerleme();
+DERSLER.forEach(function(D){if(prog.tamam.indexOf(D.n)<0)prog.tamam.push(D.n);});
+prog.sinavV=DERSLER.length;
+try{document.cookie="_ee_kutup="+encodeURIComponent(gizle(prog))+"; max-age=31536000; path=/; SameSite=Lax";}catch(e){}
+try{if(window.localStorage)window.localStorage.setItem("_ee_kutup_ls",gizle(prog));}catch(e){}
+snvSil();
+ekran.innerHTML="<div class=\"kart\"><h1>Tebrikler, <span>bilgin oldun</span></h1><p>"+DERSLER.length+" dersin tamamı açıldı. Artık listeden istediğin derse girebilir, tamamlananları tekrar edebilirsin.</p><p><a class=\"btn-buyuk\" style=\"text-decoration:none\" href=\"index.html\">Ders Listesine Dön</a></p></div>";
+}
+async function baslat(){
+var devamDurumu=snvOku();
+if(devamDurumu){durum=devamDurumu;}
+var ok=await bankayiYukle();
+if(!ok)return;
+if(!durum){
+var kayit=snvOku();
+if(kayit){durum=kayit;girisEkrani(true);}else{girisEkrani(false);}
+}else{
+girisEkrani(true);
+}
+}
+window.__sinav={durum:function(){return durum;},banka:function(){return soruBankasi;},sureBitir:function(){yanlisYolu(true);},cevapla:cevapla,dersSayisi:function(){return DERSLER.length;}};
+baslat();
+});
+</script>
+</body></html>
