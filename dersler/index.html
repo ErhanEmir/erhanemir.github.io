@@ -60,11 +60,15 @@ a.don{color:var(--cyan);text-decoration:none;font-weight:700}
 .ders:hover{transform:translateY(-3px);box-shadow:var(--golge);border-color:var(--cyan)}
 .numara{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#050a10;flex-shrink:0;font-size:1.05rem}
 .ders b{font-size:.95rem;display:block}
+.ders .govde{min-width:0;flex:1}
+.ders small{overflow-wrap:anywhere}
+.rozetler{display:flex;gap:.4rem;margin-top:.35rem;flex-wrap:wrap}
+.rozetler .roz,.rozetler .bitti{margin-left:0}
 .ders small{color:var(--soluk);font-size:.76rem;line-height:1.4;display:block;margin-top:.15rem}
-.roz{font-size:.65rem;background:var(--kart2);border:1px solid var(--cerceve);padding:.2rem .55rem;border-radius:20px;margin-left:auto;white-space:nowrap;color:var(--soluk);flex-shrink:0}
+.roz{font-size:.65rem;background:var(--kart2);border:1px solid var(--cerceve);padding:.2rem .55rem;border-radius:20px;white-space:nowrap;color:var(--soluk);flex-shrink:0}
 .ders .kilit{position:absolute;inset:0;background:rgba(100,116,139,.85);backdrop-filter:grayscale(1);display:none;align-items:center;justify-content:center;font-weight:900;color:#0f172a;font-size:.82rem;padding:.5rem;text-align:center}
 .ders.kapali .kilit{display:flex}
-.ders .bitti{display:none;font-size:.65rem;background:var(--yesil);color:#050a10;padding:.2rem .55rem;border-radius:20px;margin-left:auto;white-space:nowrap;font-weight:800;flex-shrink:0}
+.ders .bitti{display:none;font-size:.65rem;background:var(--yesil);color:#050a10;padding:.2rem .55rem;border-radius:20px;white-space:nowrap;font-weight:800;flex-shrink:0}
 .ders.tamam .bitti{display:inline-block}
 .ders.tamam{border-color:var(--yesil)}
 .uyari{margin-top:1.2rem;font-size:.78rem;color:var(--soluk);text-align:center;line-height:1.6}
@@ -160,14 +164,15 @@ var liste=document.createElement("div");liste.className="dersliste";
 uyeler.forEach(function(n){
 var bilgi=S.dersler[n];
 var a=document.createElement("a");a.className="ders";a.href=DOSYALAR[n];
-a.innerHTML="<div class=\"numara\" style=\"background:"+RENK[n]+"\">"+(n<10?"0"+n:n)+"</div><div><b></b></div>";
+a.innerHTML="<div class=\"numara\" style=\"background:"+RENK[n]+"\">"+(n<10?"0"+n:n)+"</div><div class=\"govde\"><b></b></div>";
 a.querySelector("b").textContent="Ders "+n+": "+bilgi[0];
 var sm=document.createElement("small");sm.style.color="var(--soluk)";sm.style.fontSize=".76rem";sm.textContent=bilgi[1];
-a.querySelector("div:nth-child(2)").appendChild(sm);
-var roz=document.createElement("span");roz.className="roz";roz.textContent=ROZET[n];a.appendChild(roz);
+a.querySelector(".govde").appendChild(sm);
+var rz=document.createElement("div");rz.className="rozetler";a.querySelector(".govde").appendChild(rz);
+var roz=document.createElement("span");roz.className="roz";roz.textContent=ROZET[n];a.querySelector(".rozetler").appendChild(roz);
 var kilit=n>1&&d.tamam.indexOf(n-1)<0;
 var bitti=d.tamam.indexOf(n)>=0;
-if(bitti){a.classList.add("tamam");toplam++;var s=document.createElement("span");s.className="bitti";s.textContent=S.bitti;a.appendChild(s);}
+if(bitti){a.classList.add("tamam");toplam++;var s=document.createElement("span");s.className="bitti";s.textContent=S.bitti;a.querySelector(".rozetler").appendChild(s);}
 if(kilit){a.classList.add("kapali");a.setAttribute("aria-disabled","true");var kp=document.createElement("span");kp.className="kilit";kp.textContent="Ders "+n+S.kilit+(n-1);a.appendChild(kp);a.addEventListener("click",function(e){e.preventDefault();alert(S.kilitUyari+"Ders "+(n-1)+S.kilitUyari2);});}
 liste.appendChild(a);
 });
