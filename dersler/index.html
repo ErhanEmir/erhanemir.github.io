@@ -78,9 +78,16 @@ footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}
 #cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}
 #cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}
 @keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}
+#yukleme{position:fixed;inset:0;z-index:400;background:#070b14;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;transition:opacity .5s}
+#yukleme.gitti{opacity:0;pointer-events:none}
+#yukleme img{width:min(420px,80vw);border-radius:14px;box-shadow:0 0 60px rgba(52,211,153,.25);margin-top:-8vh}
+#yukleme .cubuk{width:min(280px,60vw);height:10px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden;border:1px solid rgba(52,211,153,.4)}
+#yukleme .cubuk i{display:block;height:100%;width:0;background:linear-gradient(90deg,#059669,#34d399);border-radius:6px}
+#yukleme small{color:#8890a0;font-size:.8rem;letter-spacing:2px}
 </style>
 </head>
 <body>
+<div id="yukleme"><img src="og-kutuphane.png" alt="Temel Elektronik Dersleri"><div class="cubuk"><i id="yuklemeCubuk"></i></div><small data-i18n="yukleniyor">YÜKLENİYOR</small></div>
 <div class="fon"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p data-i18n="cerez_metin">Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet" data-i18n="cerez_sonra">Daha sonra</button><button type="button" id="cerezKabul" data-i18n="cerez_kabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700" data-i18n="cerez_not">Kabul edilmeden kutuphane kullanilamaz.</p></div></div>
 <div class="kapsayici">
@@ -173,6 +180,19 @@ document.getElementById("dilBtn").addEventListener("click",function(){DIL=(DIL==
 document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygulaTema();});
 uygulaTema();uygulaDil();
 window.__ktp={dil:function(l){DIL=l;uygulaDil();},tema:function(t){TEMA=t;uygulaTema();},oku:oku};
+(function(){
+var cubuk=document.getElementById("yuklemeCubuk"),katman=document.getElementById("yukleme");
+if(!cubuk||!katman)return;
+var baslangic=Date.now();
+var iv=setInterval(function(){
+var gecen=Date.now()-baslangic;
+var oran=Math.min(100,Math.round(gecen/11));
+cubuk.style.width=oran+"%";
+if(oran>=100){clearInterval(iv);setTimeout(kapat,250);}
+},30);
+function kapat(){katman.classList.add("gitti");setTimeout(function(){katman.style.display="none";},550);}
+setTimeout(function(){if(katman.style.display!=="none"){clearInterval(iv);kapat();}},4000);
+})();
 })();
 </script>
 <script>
