@@ -23,8 +23,8 @@ footer{text-align:center;color:var(--soluk);font-size:.85rem;margin:1rem}.kopya{
 <style>@keyframes eeBlink{0%,100%{opacity:1}50%{opacity:.3}}.kilitli-kart{position:relative;}</style>
 <style>#cerezKapi{display:none;position:fixed;inset:0;z-index:200;background:rgba(5,10,16,.94);align-items:center;justify-content:center;padding:1.5rem}#cerezKutu{max-width:400px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.5rem;text-align:center}#cerezKutu p{color:#8890a0;font-size:.88rem;line-height:1.6;margin-bottom:1rem}.cerez-eylem{display:flex;gap:.6rem;justify-content:flex-end}.cerez-eylem button{border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:.85rem;padding:.55rem 1rem}#cerezKabul{background:#22d3ee;color:#050a10}#cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}#cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}@keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}</style>
 </head><body><div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p>Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet">Daha sonra</button><button type="button" id="cerezKabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700">Kabul edilmeden kutuphane kullanilamaz.</p></div></div><div class="kapsayici">
-<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-06-multimetre.html">&larr; Önceki: Multimetre</a>
-<h1>Ders 7: SMD Parçalar ve Kılıf Tipleri</h1>
+<div class="kart"><a class="link" href="index.html">&larr; Ders listesi</a> | <a class="link" href="ders-07-multimetre.html">&larr; Önceki: Multimetre</a>
+<h1>Ders 8: SMD Parçalar ve Kılıf Tipleri</h1>
 <p>SMD (yüzeye monte parça), bacakları karttaki deliklerden geçmeyen, doğrudan bakır yüzeylere lehimlenen parçadır. Telefonunuzun içindeki binlerce minik parça hep SMD'dir. Eskiden bacaklı (THT) parçalar deliklere takılırdı; bugün üretimin neredeyse tamamı SMD'dir.</p>
 <div class="kural"><b>Neden SMD daha çok tercih edilir?</b><br>1. <b>Boyut ve ağırlık:</b> 0402 direnç pirinç tanesinden küçüktür, aynı devre karta sığar.<br>2. <b>Otomatik üretim:</b> Dizgi robotları saatte on binlerce parça yerleştirir, delme işlemi yoktur, maliyet düşer.<br>3. <b>Yüksek frekans:</b> Kısa bağlantı demek düşük parazitik endüktans demektir; hızlı devreler daha kararlı çalışır.<br>4. <b>Çift yüz:</b> Kartın iki tarafına da parça konulabilir.<br>THT ise yüksek güçte, mekanik dayanım gereken konnektörlerde ve elde prototipte hâlâ kullanılır.</div>
 </div>
@@ -85,7 +85,7 @@ function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponen
 function oku(){if(depoTuru()==="ls"){try{var l=lsGet(LS_P);if(l){var dd=coz(l);if(dd&&dd.tamam)return dd;}}catch(e){}return {tamam:[],deneme:{}};}try{var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}return {tamam:[],deneme:{}};}
 function yaz(d){if(depoTuru()==="ls"){try{lsSet(LS_P,gizle(d));}catch(e){}return;}try{document.cookie=K+"="+encodeURIComponent(gizle(d))+"; max-age=31536000; path=/; SameSite=Lax";}catch(e){}}
 if(!kapiKur())return;
-var EE_DERS_NO=7, EE_SONRAKI="index.html";
+var EE_DERS_NO=8, EE_SONRAKI="index.html";
 window.eeDeneyOk=false;
 window.eeDeneyOldu=function(){window.eeDeneyOk=true;eeDurum();eeDegerlendir();};
 function tamamMi(n){return oku().tamam.indexOf(n)>=0;}
