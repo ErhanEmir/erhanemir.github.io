@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!-- Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır. Bkz: ../LICENSE -->
-<html lang="tr">
+<html lang="tr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Temel Elektronik Dersleri | Erhan Emir</title>
+<title data-i18n="sayfa_baslik">Temel Elektronik Dersleri | Erhan Emir</title>
 <meta name="robots" content="noindex">
 <meta property="og:title" content="Temel Elektronik Dersleri | Erhan Emir">
 <meta property="og:description" content="Sıfırdan interaktif elektronik dersleri: LED, direnç, breadboard, multimetre, SMD.">
@@ -17,82 +17,184 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://erhanemir.github.io/dersler/og-kutuphane.png">
 <style>
-:root{--bg:#050a10;--card:#0a1220;--cyan:#22d3ee;--yesil:#34d399;--turuncu:#fb923c;--mor:#818cf8;--sari:#fde047;--yazi:#e8eef4;--soluk:#8890a0;--cerceve:rgba(255,255,255,.08)}
+:root{
+--bg:#050a10;--card:#0a1220;--kart2:rgba(255,255,255,.03);--yazi:#e8eef4;--soluk:#8890a0;
+--cyan:#22d3ee;--yesil:#34d399;--turuncu:#fb923c;--mor:#818cf8;--pembe:#f472b6;--sari:#fde047;
+--cerceve:rgba(255,255,255,.08);--golge:0 0 40px rgba(34,211,238,.10);
+}
+[data-theme="light"]{
+--bg:#eef3f8;--card:#ffffff;--kart2:rgba(15,23,42,.03);--yazi:#0f172a;--soluk:#526075;
+--cyan:#0891b2;--yesil:#059669;--turuncu:#ea580c;--mor:#4f46e5;--pembe:#db2777;--sari:#a16207;
+--cerceve:rgba(15,23,42,.12);--golge:0 8px 30px rgba(15,23,42,.10);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh;padding:2rem 1rem}
-.kapsayici{max-width:900px;margin:0 auto}
-.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:16px;padding:2rem}
-h1{font-size:1.9rem;margin-bottom:.4rem}h1 span{color:var(--cyan)}
-p.aciklama{color:var(--soluk);margin-bottom:1.5rem;line-height:1.7}
-.yol{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
-.asama{background:rgba(255,255,255,.03);border:1px solid var(--cerceve);border-radius:12px;padding:1rem;border-top:3px solid var(--cyan)}
-.asama:nth-child(2){border-top-color:var(--yesil)}.asama:nth-child(3){border-top-color:var(--mor)}.asama:nth-child(4){border-top-color:var(--turuncu)}
-.asama b{display:block;margin-bottom:.2rem}.asama small{color:var(--soluk);line-height:1.5}
-.dersliste{display:flex;flex-direction:column;gap:.8rem;margin-top:1rem}
-.ders{display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.03);border:1px solid var(--cerceve);border-radius:12px;padding:1rem 1.2rem;text-decoration:none;color:var(--yazi);transition:.2s}
-.ders:hover{transform:translateY(-2px);border-color:var(--cyan)}
-.numara{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#050a10;flex-shrink:0}
-.d1{background:linear-gradient(135deg,#f87171,#fb923c)}.d2{background:linear-gradient(135deg,#fde047,#34d399)}.d3{background:linear-gradient(135deg,#22d3ee,#818cf8)}.d4{background:linear-gradient(135deg,#818cf8,#e879f9)}
-.ders.kilitli{opacity:.45}.roz{font-size:.7rem;background:#1e293b;border:1px solid var(--cerceve);padding:.2rem .6rem;border-radius:20px;margin-left:auto;white-space:nowrap;color:var(--soluk)}
-.uyari{margin-top:1.5rem;font-size:.8rem;color:var(--soluk);border-top:1px dashed var(--cerceve);padding-top:1rem;line-height:1.6}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
+.fon{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.35;animation:suruklen 14s ease-in-out infinite alternate}
+.blob.b1{width:480px;height:480px;background:var(--cyan);top:-140px;left:-120px}
+.blob.b2{width:420px;height:420px;background:var(--mor);bottom:-140px;right:-100px;animation-delay:-5s}
+.blob.b3{width:300px;height:300px;background:var(--pembe);top:40%;left:60%;animation-delay:-9s;opacity:.22}
+@keyframes suruklen{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.12)}}
+.kapsayici{max-width:960px;margin:0 auto;padding:2rem 1rem}
+.ustbar{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.ustbar .sag{display:flex;gap:.5rem}
 a.don{color:var(--cyan);text-decoration:none;font-weight:700}
+.dugme{background:var(--kart2);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer;font-size:.85rem;transition:.2s}
+.dugme:hover{border-color:var(--cyan);transform:translateY(-1px)}
+.kahraman{background:var(--card);border:1px solid var(--cerceve);border-radius:20px;padding:2.2rem 2rem;box-shadow:var(--golge);position:relative;overflow:hidden;margin-bottom:1.2rem}
+.kahraman::before{content:'';position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--cyan),var(--yesil),var(--sari),var(--turuncu),var(--pembe),var(--mor))}
+.kahraman h1{font-size:clamp(1.7rem,4.5vw,2.6rem);margin-bottom:.4rem}
+.kahraman h1 span{background:linear-gradient(90deg,var(--cyan),var(--pembe));-webkit-background-clip:text;background-clip:text;color:transparent}
+.kahraman p{color:var(--soluk);line-height:1.7;max-width:640px}
+.ilerleme{background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.4rem}
+.ilerleme .satir{display:flex;justify-content:space-between;font-size:.85rem;color:var(--soluk);margin-bottom:.4rem}
+.cubuk{height:10px;border-radius:6px;background:var(--kart2);border:1px solid var(--cerceve);overflow:hidden}
+.cubuk i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--yesil));border-radius:6px;transition:width .5s}
+.kategori{margin-bottom:1.4rem}
+.kategori-baslik{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem}
+.kategori-baslik .nokta{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.kategori-baslik h2{font-size:1.15rem}
+.kategori-baslik small{color:var(--soluk);font-size:.8rem}
+.dersliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.8rem}
+.ders{display:flex;align-items:center;gap:.9rem;background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1rem 1.1rem;text-decoration:none;color:var(--yazi);transition:transform .2s,box-shadow .2s,border-color .2s;position:relative;overflow:hidden}
+.ders:hover{transform:translateY(-3px);box-shadow:var(--golge);border-color:var(--cyan)}
+.numara{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#050a10;flex-shrink:0;font-size:1.05rem}
+.ders b{font-size:.95rem;display:block}
+.ders small{color:var(--soluk);font-size:.76rem;line-height:1.4;display:block;margin-top:.15rem}
+.roz{font-size:.65rem;background:var(--kart2);border:1px solid var(--cerceve);padding:.2rem .55rem;border-radius:20px;margin-left:auto;white-space:nowrap;color:var(--soluk);flex-shrink:0}
+.ders .kilit{position:absolute;inset:0;background:rgba(100,116,139,.85);backdrop-filter:grayscale(1);display:none;align-items:center;justify-content:center;font-weight:900;color:#0f172a;font-size:.82rem;padding:.5rem;text-align:center}
+.ders.kapali .kilit{display:flex}
+.ders .bitti{display:none;font-size:.65rem;background:var(--yesil);color:#050a10;padding:.2rem .55rem;border-radius:20px;margin-left:auto;white-space:nowrap;font-weight:800;flex-shrink:0}
+.ders.tamam .bitti{display:inline-block}
+.ders.tamam{border-color:var(--yesil)}
+.uyari{margin-top:1.2rem;font-size:.78rem;color:var(--soluk);text-align:center;line-height:1.6}
 footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}
-.ders{position:relative;overflow:hidden}.ders .kilit{position:absolute;inset:0;background:rgba(100,116,139,.82);backdrop-filter:grayscale(1);display:none;align-items:center;justify-content:center;font-weight:900;color:#0f172a;font-size:.9rem}.ders.kapali .kilit{display:flex}.ders .bitti{display:none;font-size:.7rem;background:#34d399;color:#050a10;padding:.2rem .6rem;border-radius:20px;margin-left:auto;white-space:nowrap;font-weight:800}.ders.tamam .bitti{display:inline-block}</style><style>#cerezKapi{display:none;position:fixed;inset:0;z-index:200;background:rgba(5,10,16,.94);align-items:center;justify-content:center;padding:1.5rem}#cerezKutu{max-width:400px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.5rem;text-align:center}#cerezKutu p{color:#8890a0;font-size:.88rem;line-height:1.6;margin-bottom:1rem}.cerez-eylem{display:flex;gap:.6rem;justify-content:flex-end}.cerez-eylem button{border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:.85rem;padding:.55rem 1rem}#cerezKabul{background:#22d3ee;color:#050a10}#cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}#cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}@keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}</style>
+#cerezKapi{display:none;position:fixed;inset:0;z-index:200;background:rgba(5,10,16,.94);align-items:center;justify-content:center;padding:1.5rem}
+#cerezKutu{max-width:400px;background:#0a1220;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.5rem;text-align:center;color:#e8eef4}
+#cerezKutu p{color:#8890a0;font-size:.88rem;line-height:1.6;margin-bottom:1rem}
+.cerez-eylem{display:flex;gap:.6rem;justify-content:flex-end}
+.cerez-eylem button{border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:.85rem;padding:.55rem 1rem}
+#cerezKabul{background:#22d3ee;color:#050a10}
+#cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}
+#cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}
+@keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}
+</style>
 </head>
-<body><div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p>Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet">Daha sonra</button><button type="button" id="cerezKabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700">Kabul edilmeden kutuphane kullanilamaz.</p></div></div>
+<body>
+<div class="fon"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div id="cerezKapi"><div id="cerezKutu"><h2 style="margin-bottom:.6rem">Cerez Onayi Gerekli</h2><p data-i18n="cerez_metin">Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.</p><div class="cerez-eylem"><button type="button" id="cerezRet" data-i18n="cerez_sonra">Daha sonra</button><button type="button" id="cerezKabul" data-i18n="cerez_kabul">Kabul Et</button></div><p id="cerezNot" style="display:none;margin-top:.8rem;color:#f87171;font-weight:700" data-i18n="cerez_not">Kabul edilmeden kutuphane kullanilamaz.</p></div></div>
 <div class="kapsayici">
-<div class="kart">
-<a class="don" href="../index.html">&larr; Ana siteye dön</a>
-<h1>Temel Elektronik <span>Dersleri</span></h1>
-<p class="aciklama">Sıfırdan başlayanlar için uygulamalı elektronik. Her ders kısa bir konu anlatımı ve ardından interaktif bir deney içerir. Sırayla ilerleyin: önce temel bileşenleri tanıyın, sonra entegrelere ve mikrodenetleyicilere geçin.</p>
-<div class="yol">
-<div class="asama"><b>1. Bileşenler</b><small>LED, direnç, kondansatör, buton, buzzer. Temel kavramlar.</small></div>
-<div class="asama"><b>2. SMD ve Entegreler</b><small>Kılıf tipleri, kod okuma, modern üretim.</small></div>
-<div class="asama"><b>3. Mikrodenetleyiciler</b><small>Arduino, ESP32. Kod ile donanım kontrolü.</small></div>
-<div class="asama"><b>4. Kendi projen</b><small>Öğrendiklerinizle bağımsız bir proje geliştirme.</small></div>
+<div class="ustbar">
+<a class="don" href="../index.html" data-i18n="ana_site">← Ana siteye dön</a>
+<div class="sag">
+<button class="dugme" id="dilBtn">EN</button>
+<button class="dugme" id="temaBtn">☾</button>
 </div>
-<div class="dersliste">
-<a class="ders" href="ders-01-led.html" data-ders="1"><div class="numara d1">01</div><div><b>Ders 1: LED ve Doğru Kutuplama</b><br><small style="color:var(--soluk)">Kırmızı LED: 1.8V – 2.2V. Kutuplama ve güvenli sürme.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-02-direnc.html" data-ders="2"><div class="numara d2">02</div><div><b>Ders 2: Direnç ve Ohm Kanunu</b><br><small style="color:var(--soluk)">4/5/6 bant okuma, akım hesabı, LED koruma.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-03-kondansator.html" data-ders="3"><div class="numara" style="background:linear-gradient(135deg,#818cf8,#22d3ee)">03</div><div><b>Ders 3: Kondansatör</b><br><small style="color:var(--soluk)">Şarj, deşarj, zaman sabiti RC.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-04-buton.html" data-ders="4"><div class="numara d3">04</div><div><b>Ders 4: Buton ve Pull Dirençleri</b><br><small style="color:var(--soluk)">Pull-up / pull-down, temas sıçraması (bounce).</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-05-buzzer.html" data-ders="5"><div class="numara d4">05</div><div><b>Ders 5: Aktif ve Pasif Buzzer</b><br><small style="color:var(--soluk)">Tek ton ve frekans kontrollü ses üretimi.</small></div><span class="roz">SESLİ</span></a>
-<a class="ders" href="ders-06-breadboard.html" data-ders="6"><div class="numara" style="background:linear-gradient(135deg,#34d399,#22d3ee)">06</div><div><b>Ders 6: Breadboard — Lehimlemeden Devre Kurma</b><br><small style="color:var(--soluk)">Rail, satır, hendek. Bağlantı test cihazı ve mini sınav.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-07-multimetre.html" data-ders="7"><div class="numara" style="background:linear-gradient(135deg,#fde047,#fb923c)">07</div><div><b>Ders 7: Multimetre ile Ölçüm</b><br><small style="color:var(--soluk)">Güç kaynağı doğrulama, gizli değerli dirençler.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-08-smd.html" data-ders="8"><div class="numara" style="background:linear-gradient(135deg,#818cf8,#e879f9)">08</div><div><b>Ders 8: SMD Parçalar ve Kılıf Tipleri</b><br><small style="color:var(--soluk)">0402–1206, SOT-23, QFN, kod okuma.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-09-transistor.html" data-ders="9"><div class="numara" style="background:linear-gradient(135deg,#34d399,#a78bfa)">09</div><div><b>Ders 9: Transistör ile Anahtarlama</b><br><small style="color:var(--soluk)">Baz direnci, doyum kuralı Ib ≥ Ic/10.</small></div><span class="roz">İNTERAKTİF</span></a>
-<a class="ders" href="ders-10-555.html" data-ders="10"><div class="numara" style="background:linear-gradient(135deg,#fb923c,#f43f5e)">10</div><div><b>Ders 10: 555 Zamanlayıcı</b><br><small style="color:var(--soluk)">Kare dalga, frekans hesabı, hedef tutturma.</small></div><span class="roz">İNTERAKTİF</span></a>
 </div>
-<div class="uyari">© 2026 Erhan Emir — Tüm hakları saklıdır. İçerik izinsiz kopyalanamaz ve başka sitelerde yayınlanamaz. Ayrıntı: <b>../LICENSE</b>.</div>
+<div class="kahraman">
+<h1 data-i18n="baslik">Temel Elektronik <span>Dersleri</span></h1>
+<p data-i18n="aciklama">Sıfırdan başlayanlar için uygulamalı elektronik. Deneyi yap, testi çöz, sonraki dersi aç. İlerlemen bu cihazda saklanır.</p>
+</div>
+<div class="ilerleme">
+<div class="satir"><span data-i18n="ilerleme">İlerleme</span><span id="ilerlemeYazi">0/10</span></div>
+<div class="cubuk"><i id="ilerlemeCubuk"></i></div>
+</div>
+<div id="kategoriler"></div>
+<div class="uyari" data-i18n="telif">© 2026 Erhan Emir — Tüm hakları saklıdır. İçerik izinsiz kopyalanamaz. Ayrıntı için LICENSE dosyasına bakın.</div>
 </div>
 <footer>by; ERHAN EMİR</footer>
-</div>
+<script>
+(function(){
+var DIL=(function(){try{return localStorage.getItem("portfolioLang")||"tr";}catch(e){return "tr";}})();
+var TEMA=(function(){try{return localStorage.getItem("portfolioTheme")||"dark";}catch(e){return "dark";}})();
+var CEVIRI={
+tr:{sayfa_baslik:"Temel Elektronik Dersleri | Erhan Emir",ana_site:"← Ana siteye dön",baslik:'Temel Elektronik <span>Dersleri</span>',aciklama:"Sıfırdan başlayanlar için uygulamalı elektronik. Deneyi yap, testi çöz, sonraki dersi aç. İlerlemen bu cihazda saklanır.",ilerleme:"İlerleme",telif:"© 2026 Erhan Emir — Tüm hakları saklıdır. İçerik izinsiz kopyalanamaz. Ayrıntı için LICENSE dosyasına bakın.",cerez_metin:"Kutuphaneyi kullanmak icin once cerezleri kabul edin. Kabul etmeden dersler acilmaz.",cerez_sonra:"Daha sonra",cerez_kabul:"Kabul Et",cerez_not:"Kabul edilmeden kutuphane kullanilamaz.",kilit:" kilitli. Önce dersi tamamlayın.",kilitUyari:"Bu ders kilitli. Önce ",kilitUyari2:" tamamlayın.",bitti:"Tamamlandı",kategoriler:[
+{ad:"Temeller",acik:"Önce parçaları tanı",renk:"#22d3ee"},
+{ad:"Giriş ve Çıkış",acik:"Düğmeler ve sesler",renk:"#34d399"},
+{ad:"Tezgah",acik:"Ölç ve kur",renk:"#fb923c"},
+{ad:"İleri",acik:"Gerçek dünya parçaları",renk:"#818cf8"}],
+dersler:{1:["LED ve Doğru Kutuplama","Kırmızı LED: 1.8V – 2.2V."],2:["Direnç ve Ohm Kanunu","4/5/6 bant okuma, akım hesabı."],3:["Kondansatör","Şarj, deşarj, zaman sabiti RC."],4:["Buton ve Pull Dirençleri","Pull-up / pull-down, bounce."],5:["Aktif ve Pasif Buzzer","Tek ton ve frekans kontrolü."],6:["Breadboard","Rail, satır, hendek."],7:["Multimetre ile Ölçüm","Güç kaynağı, gizli dirençler."],8:["SMD Parçalar","0402–1206, kod okuma."],9:["Transistör ile Anahtarlama","Baz direnci, doyum kuralı."],10:["555 Zamanlayıcı","Kare dalga, hedef frekans."]}},
+en:{sayfa_baslik:"Basic Electronics Lessons | Erhan Emir",ana_site:"← Back to main site",baslik:'Basic <span>Electronics</span> Lessons',aciklama:"Hands-on electronics for absolute beginners. Do the experiment, pass the quiz, unlock the next lesson. Progress is stored on this device.",ilerleme:"Progress",telif:"© 2026 Erhan Emir — All rights reserved. No copying without permission. See the LICENSE file.",cerez_metin:"Accept cookies to use the library. Lessons stay locked otherwise.",cerez_sonra:"Later",cerez_kabul:"Accept",cerez_not:"The library cannot be used without acceptance.",kilit:" locked. Complete lesson first.",kilitUyari:"This lesson is locked. Complete ",kilitUyari2:" first.",bitti:"Done",kategoriler:[
+{ad:"Basics",acik:"Meet the parts first",renk:"#22d3ee"},
+{ad:"Input & Output",acik:"Buttons and sounds",renk:"#34d399"},
+{ad:"Workbench",acik:"Measure and build",renk:"#fb923c"},
+{ad:"Advanced",acik:"Real-world parts",renk:"#818cf8"}],
+dersler:{1:["LED and Correct Polarity","Red LED: 1.8V – 2.2V."],2:["Resistor and Ohm's Law","4/5/6 band reading, current math."],3:["Capacitor","Charge, discharge, RC time constant."],4:["Button and Pull Resistors","Pull-up / pull-down, bounce."],5:["Active and Passive Buzzer","Single tone and frequency control."],6:["Breadboard","Rails, rows, center gap."],7:["Measuring with a Multimeter","Supply check, hidden resistors."],8:["SMD Parts","0402–1206, code reading."],9:["Switching with a Transistor","Base resistor, saturation rule."],10:["555 Timer","Square wave, target frequency."]}}
+};
+var DOSYALAR={1:"ders-01-led.html",2:"ders-02-direnc.html",3:"ders-03-kondansator.html",4:"ders-04-buton.html",5:"ders-05-buzzer.html",6:"ders-06-breadboard.html",7:"ders-07-multimetre.html",8:"ders-08-smd.html",9:"ders-09-transistor.html",10:"ders-10-555.html"};
+var KATEGORI_DERS=[[1,2,3],[4,5],[6,7],[8,9,10]];
+var ROZET={1:"İNTERAKTİF",2:"İNTERAKTİF",3:"İNTERAKTİF",4:"İNTERAKTİF",5:"SESLİ",6:"İNTERAKTİF",7:"İNTERAKTİF",8:"İNTERAKTİF",9:"İNTERAKTİF",10:"İNTERAKTİF"};
+var RENK={1:"#f87171",2:"#fde047",3:"#818cf8",4:"#22d3ee",5:"#e879f9",6:"#34d399",7:"#fb923c",8:"#a78bfa",9:"#34d399",10:"#fb923c"};
+function oku(){try{var K="_ee_kutup";var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var v=decodeURIComponent(m[1]);var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var k="Erhan2026",s="";for(var i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^k.charCodeAt(i%k.length));}var d=JSON.parse(s);if(d&&d.tamam)return d;}}catch(e){}try{var l=localStorage.getItem("_ee_kutup_ls");if(l){var r2=l.split("").reverse().join("");var x2=decodeURIComponent(escape(atob(r2)));var k2="Erhan2026",s2="";for(var j=0;j<x2.length;j++){s2+=String.fromCharCode(x2.charCodeAt(j)^k2.charCodeAt(j%k2.length));}var d2=JSON.parse(s2);if(d2&&d2.tamam)return d2;}}catch(e){}return {tamam:[],deneme:{}};}
+function uygulaDil(){
+var S=CEVIRI[DIL]||CEVIRI.tr;
+document.documentElement.lang=DIL;
+document.querySelectorAll("[data-i18n]").forEach(function(el){
+var k=el.getAttribute("data-i18n");
+if(k==="baslik"){el.innerHTML=S.baslik;return;}
+if(S[k]!==undefined)el.textContent=S[k];
+});
+document.getElementById("dilBtn").textContent=(DIL==="tr")?"EN":"TR";
+cizListe(S);
+}
+function uygulaTema(){
+document.documentElement.setAttribute("data-theme",TEMA);
+document.getElementById("temaBtn").textContent=(TEMA==="dark")?"☾":"☀";
+}
+function cizListe(S){
+var d=oku();
+var kat=document.getElementById("kategoriler");kat.innerHTML="";
+var toplam=0;
+KATEGORI_DERS.forEach(function(uyeler,ki){
+var k=S.kategoriler[ki];
+var sec=document.createElement("div");sec.className="kategori";
+sec.innerHTML="<div class=\"kategori-baslik\"><span class=\"nokta\" style=\"background:"+k.renk+"\"></span><h2>"+k.ad+"</h2><small>"+k.acik+"</small></div>";
+var liste=document.createElement("div");liste.className="dersliste";
+uyeler.forEach(function(n){
+var bilgi=S.dersler[n];
+var a=document.createElement("a");a.className="ders";a.href=DOSYALAR[n];
+a.innerHTML="<div class=\"numara\" style=\"background:"+RENK[n]+"\">"+(n<10?"0"+n:n)+"</div><div><b></b></div>";
+a.querySelector("b").textContent="Ders "+n+": "+bilgi[0];
+var sm=document.createElement("small");sm.style.color="var(--soluk)";sm.style.fontSize=".76rem";sm.textContent=bilgi[1];
+a.querySelector("div:nth-child(2)").appendChild(sm);
+var roz=document.createElement("span");roz.className="roz";roz.textContent=ROZET[n];a.appendChild(roz);
+var kilit=n>1&&d.tamam.indexOf(n-1)<0;
+var bitti=d.tamam.indexOf(n)>=0;
+if(bitti){a.classList.add("tamam");toplam++;var s=document.createElement("span");s.className="bitti";s.textContent=S.bitti;a.appendChild(s);}
+if(kilit){a.classList.add("kapali");a.setAttribute("aria-disabled","true");var kp=document.createElement("span");kp.className="kilit";kp.textContent="Ders "+n+S.kilit+(n-1);a.appendChild(kp);a.addEventListener("click",function(e){e.preventDefault();alert(S.kilitUyari+"Ders "+(n-1)+S.kilitUyari2);});}
+liste.appendChild(a);
+});
+sec.appendChild(liste);kat.appendChild(sec);
+});
+document.getElementById("ilerlemeYazi").textContent=toplam+"/10";
+document.getElementById("ilerlemeCubuk").style.width=(toplam*10)+"%";
+}
+document.getElementById("dilBtn").addEventListener("click",function(){DIL=(DIL==="tr")?"en":"tr";try{localStorage.setItem("portfolioLang",DIL);}catch(e){}uygulaDil();});
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygulaTema();});
+uygulaTema();uygulaDil();
+window.__ktp={dil:function(l){DIL=l;uygulaDil();},tema:function(t){TEMA=t;uygulaTema();},oku:oku};
+})();
+</script>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
-var K="_ee_kutup", ANA="Erhan2026", LS_P="_ee_kutup_ls";
 var CK_A="_nx.s7k", KK=[90,60,145,231,43,109,68,168], TOK_Y="k7mQ2p", LS_C="_nx_s7k_ls";
 function cxor(s){var o="",i;for(i=0;i<s.length;i++){o+=String.fromCharCode(s.charCodeAt(i)^KK[i%KK.length]);}return o;}
 function cenc(s){try{return btoa(cxor(s)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}catch(e){return "";}}
 function cdec(s){try{var b=s.replace(/-/g,"+").replace(/_/g,"/");while(b.length%4){b+="=";}return cxor(atob(b));}catch(e){return "";}}
-function getC(n){try{var m=document.cookie.match(new RegExp("(?:^|; )"+n.replace(/\./g,"\\.")+"=([^;]*)"));return m?decodeURIComponent(m[1]):"";}catch(e){return "";}}
+function getC(n){try{var m=document.cookie.match(new RegExp("(?:^|; )"+n.replace(/\./g,"\\.")+"=([^;]*)"));return m?decodeURIComponent(m[1]):"";}catch(e){return "";}
 function setC(n,v,gun){try{var d=new Date();d.setTime(d.getTime()+gun*864e5);document.cookie=n+"="+encodeURIComponent(v)+";expires="+d.toUTCString()+";path=/;SameSite=Lax";}catch(e){}}
 function lsGet(k){try{return window.localStorage?window.localStorage.getItem(k):null;}catch(e){return null;}}
 function lsSet(k,v){try{if(window.localStorage)window.localStorage.setItem(k,v);}catch(e){}}
-var DEPO=null;function depoTuru(){if(DEPO)return DEPO;try{document.cookie="_ee_t=1; path=/; SameSite=Lax";if(document.cookie.indexOf("_ee_t=1")>=0){DEPO="cerez";try{document.cookie="_ee_t=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";}catch(e){}try{if(window.localStorage){window.localStorage.removeItem(LS_P);window.localStorage.removeItem(LS_C);}}catch(e){}return DEPO;}}catch(e){}DEPO="ls";return DEPO;}function cerezOnay(){if(depoTuru()==="ls"){var l=lsGet(LS_C);return !!(l&&cdec(l)===TOK_Y);}return cdec(getC(CK_A))===TOK_Y;}
-function cerezYaz(ok){var v=cenc(ok?TOK_Y:TOK_N);setC(CK_A,v,400);lsSet(LS_C,v);}
-function kapiKur(){var kapi=document.getElementById("cerezKapi");if(!kapi)return true;if(cerezOnay()){kapi.style.display="none";return true;}kapi.style.display="flex";var kb=document.getElementById("cerezKabul"),rt=document.getElementById("cerezRet");if(kb){kb.classList.add("dikkat");kb.addEventListener("click",function(){cerezYaz(true);location.reload();});}if(rt){rt.addEventListener("click",function(){cerezYaz(false);var n=document.getElementById("cerezNot");if(n)n.style.display="block";setTimeout(function(){location.href="../index.html";},800);});}return false;}
-
-function coz(v){try{var r=v.split("").reverse().join("");var x=decodeURIComponent(escape(atob(r)));var s="",i;for(i=0;i<x.length;i++){s+=String.fromCharCode(x.charCodeAt(i)^ANA.charCodeAt(i%ANA.length));}return JSON.parse(s);}catch(e){return null;}}
-function oku(){if(depoTuru()==="ls"){try{var l=lsGet(LS_P);if(l){var dd=coz(l);if(dd&&dd.tamam)return dd;}}catch(e){}return {tamam:[],deneme:{}};}try{var m=document.cookie.match(new RegExp("(?:^|; )"+K+"=([^;]*)"));if(m){var d=coz(decodeURIComponent(m[1]));if(d&&d.tamam)return d;}}catch(e){}return {tamam:[],deneme:{}};}
-if(!kapiKur())return;
-var d=oku();
-document.querySelectorAll(".ders[data-ders]").forEach(function(a){
-var n=+a.dataset.ders;
-var kilit=n>1&&d.tamam.indexOf(n-1)<0;
-var bitti=d.tamam.indexOf(n)>=0;
-if(bitti){a.classList.add("tamam");var s=document.createElement("span");s.className="bitti";s.textContent="Tamamlandi";a.appendChild(s);}
-if(kilit){a.classList.add("kapali");a.setAttribute("aria-disabled","true");var k=document.createElement("span");k.className="kilit";k.textContent="Once Ders "+(n-1)+" tamamlanmalidir";a.appendChild(k);a.addEventListener("click",function(e){e.preventDefault();alert("Bu ders kilitli. Once Ders "+(n-1)+" tamamlayin.");});}
+function depo(){try{document.cookie="_ee_t=1; path=/; SameSite=Lax";if(document.cookie.indexOf("_ee_t=1")>=0){try{document.cookie="_ee_t=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";}catch(e){}return "cerez";}}catch(e){}return "ls";}
+function onay(){if(depo()==="ls"){var l=lsGet(LS_C);return !!(l&&cdec(l)===TOK_Y);}return cdec(getC(CK_A))===TOK_Y;}
+function yazOnay(ok){var v=cenc(ok?TOK_Y:"r4wL9x");if(depo()==="ls"){lsSet(LS_C,v);}else{setC(CK_A,v,400);}}
+var kapi=document.getElementById("cerezKapi");
+if(kapi&&!onay()){
+kapi.style.display="flex";
+var kb=document.getElementById("cerezKabul"),rt=document.getElementById("cerezRet");
+if(kb){kb.classList.add("dikkat");kb.addEventListener("click",function(){yazOnay(true);location.reload();});}
+if(rt){rt.addEventListener("click",function(){yazOnay(false);var n=document.getElementById("cerezNot");if(n)n.style.display="block";setTimeout(function(){location.href="../index.html";},800);});}
+}else if(kapi){kapi.style.display="none";}}
 });
-});
-</script></body>
-</html>
+</script>
+</body></html>
