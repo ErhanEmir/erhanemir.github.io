@@ -2609,9 +2609,9 @@
         }
         function helpText() {
             if (lang === "en") {
-                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - message           : Send a live message\n  - fast message      : Quick message (max 100 chars)\n  - collab            : Open collaboration form\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - licence           : Download LICENSE as PDF\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
+                return "Commands:\n  - skills            : Core software & maker skills\n  - projects          : Jump to GitHub projects\n  - whoami            : Developer identity\n  - instagram         : Open Instagram profile\n  - github            : Open GitHub profile\n  - mail              : Open email client\n  - message           : Send a live message\n  - fast message      : Quick message (max 100 chars)\n  - collab            : Open collaboration form\n  - hardware          : Workshop printers & boards\n  - matrix            : Matrix rain effect\n  - social            : GitHub, Instagram, Email\n  - licence           : Download LICENSE as PDF\n  - library           : Open lesson library\n  - clear             : Clear screen\n\n  (↑↓) Arrow keys for command history";
             }
-                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - message           : Canlı mesaj gönder\n  - fast message      : Hızlı mesaj gönder (max 100 karakter)\n  - collab            : İş birliği formunu aç\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - licence           : LİSANS dosyasını PDF indir\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
+                return "Komutlar:\n  - skills            : Temel yazılım & maker yetenekleri\n  - projects          : GitHub projeleri bölümüne git\n  - whoami            : Geliştirici kimlik bilgisi\n  - instagram         : Instagram profilini aç\n  - github            : GitHub profilini aç\n  - mail              : E-posta uygulamasını aç\n  - message           : Canlı mesaj gönder\n  - fast message      : Hızlı mesaj gönder (max 100 karakter)\n  - collab            : İş birliği formunu aç\n  - hardware          : Atölye yazıcıları ve kartları\n  - matrix            : Matrix yağmur efekti\n  - social            : GitHub, Instagram, E-posta\n  - licence           : LİSANS dosyasını PDF indir\n  - library           : Ders kütüphanesini aç\n  - clear             : Ekranı temizle\n\n  (↑↓) Ok tuşlarıyla komut geçmişinde gezin";
         }
 
         function startMsgFlow() {
@@ -2900,6 +2900,9 @@
                     termPrint(lang === "en" ? "Opening email client..." : "E-posta uygulaması açılıyor...", "#22d3ee");
                 } else if (cmd === "licence" || cmd === "license" || cmd === "lisans") {
                     downloadLicence();
+                } else if (cmd === "library" || cmd === "kutuphane" || cmd === "kütüphane") {
+                    termPrint(lang === "en" ? "Opening library..." : "Kütüphane açılıyor...", "#22d3ee");
+                    window.open("dersler/index.html", "_blank");
                 } else if (cmd === "clear") {
                     terminalBody.innerHTML = "";
                 } else if (cmd === "test") {
