@@ -2574,13 +2574,38 @@
             }
             if (!text.trim()) { licenceFallback(); return; }
             try {
-                var esc = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 var w = window.open("", "_blank");
                 if (!w) { licenceFallback(); return; }
-                w.document.write("<!DOCTYPE html><html lang='tr'><head><meta charset='utf-8'><title>LISANS - Erhan Emir</title><style>body{font-family:monospace;white-space:pre-wrap;padding:2rem;line-height:1.6}h1{font-family:sans-serif;font-size:1.2rem}@media print{.noprint{display:none}}</style></head><body><h1>erhanemir.github.io — LISANS</h1><button class='noprint' onclick='window.print()'>PDF olarak kaydet / Yazdır</button><pre>" + esc + "</pre><script>window.onload=function(){window.print();}<\/script></body></html>");
+                w.document.write(licenceBelgesi(text));
                 w.document.close();
                 termPrint(lang === "en" ? "LICENSE opened, use print dialog to save as PDF." : "LİSANS açıldı, yazdırma penceresinden PDF olarak kaydedin.", "#34d399");
             } catch (e3) { licenceFallback(); }
+        }
+        function licenceBelgesi(text) {
+            var esc = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var satirlar = esc.split("\n");
+            var govde = "", enModu = false;
+            for (var i = 0; i < satirlar.length; i++) {
+                var s = satirlar[i].replace(/^\s+|\s+$/g, "");
+                if (!s) continue;
+                if (s.indexOf("Sürüm 2.0") === 0 || s.indexOf("ERHAN EMİR") === 0) continue;
+                if (s.indexOf("ENGLISH SUMMARY") === 0) { enModu = true; govde += "<h2>English Summary</h2>"; continue; }
+                if (s.indexOf("Madde ") === 0) { govde += "<h2>" + s + "</h2>"; continue; }
+                govde += enModu ? "<p class=\"en\">" + s + "</p>" : "<p>" + s + "</p>";
+            }
+            return "<!DOCTYPE html><html lang='tr'><head><meta charset='utf-8'><title>Lisans Sözleşmesi - Erhan Emir</title>"
+                + "<style>@page{size:A4;margin:18mm}body{font-family:Georgia,'Times New Roman',serif;color:#111;line-height:1.65;margin:0;padding:2rem;max-width:820px}"
+                + ".baslik{display:flex;align-items:center;gap:1rem;border-bottom:3px double #111;padding-bottom:1rem;margin-bottom:1.2rem}"
+                + ".baslik img{height:72px}.baslik h1{font-family:Arial,Helvetica,sans-serif;font-size:1.3rem;margin:0}"
+                + ".baslik small{font-family:Arial,Helvetica,sans-serif;color:#444}.altbilgi{margin-top:2rem;border-top:1px solid #999;padding-top:.6rem;font-family:Arial,Helvetica,sans-serif;font-size:.8rem;color:#444;display:flex;justify-content:space-between}"
+                + "h2{font-family:Arial,Helvetica,sans-serif;font-size:1.02rem;margin:1.4rem 0 .4rem}p{margin:.35rem 0}p.en{color:#333;font-size:.92rem}"
+                + "@media print{.noprint{display:none}body{padding:0}}"
+                + "</style></head><body>"
+                + "<div class=\"baslik\"><img src=\"https://erhanemir.github.io/i.png\" alt=\"EE LAB\" onerror=\"this.style.display='none'\"><div><h1>KULLANIM KOŞULLARI VE LİSANS SÖZLEŞMESİ</h1><small>erhanemir.github.io &nbsp;•&nbsp; Sürüm 2.0 &nbsp;•&nbsp; Yürürlük: 5 Ekim 2026</small></div></div>"
+                + govde
+                + "<div class=\"altbilgi\"><span>© 2026 Erhan Emir — Tüm hakları saklıdır.</span><span>https://erhanemir.github.io</span></div>"
+                + "<p class=\"noprint\" style=\"margin-top:1.5rem\"><button onclick=\"window.print()\" style=\"padding:.6rem 1.4rem;font-weight:700;cursor:pointer\">PDF olarak kaydet / Yazdır</button></p>"
+                + "<script>window.onload=function(){window.print();}<\/script></body></html>";
         }
         function helpText() {
             if (lang === "en") {

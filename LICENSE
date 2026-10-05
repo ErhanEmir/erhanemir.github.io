@@ -1,24 +1,51 @@
-ERHAN EMİR — TÜM HAKLARI SAKLIDIR / ALL RIGHTS RESERVED
-Telif Hakkı (c) 2026 Erhan Emir. Tüm hakları saklıdır.
+ERHAN EMİR — KULLANIM KOŞULLARI VE LİSANS SÖZLEŞMESİ
+Sürüm 2.0 — Yürürlük tarihi: 5 Ekim 2026
 
-1. Bu depo ve içeriği (ana site, dersler/, tüm HTML/CSS/JS, metin,
-   görsel, animasyon ve öğretici materyaller) Erhan Emir'e aittir.
-2. Yazılı izin olmadan kopyalanamaz, çoğaltılamaz, dağıtılamaz,
-   başka sitelerde yayınlanamaz, türetilemez, değiştirilemez,
-   ticari veya ticari olmayan hiçbir şekilde kullanılamaz.
-3. GitHub'da herkese açık olması, kullanım izni anlamına gelmez.
-   Açıklık yalnızca inceleme ve şeffaflık amaçlıdır.
-4. Ders içerikleri ayrıca Creative Commons BY-NC-ND 4.0 ilkelerine
-   tabidir: atıf zorunlu, ticari kullanım yasak, türetme yasak.
-   https://creativecommons.org/licenses/by-nc-nd/4.0/deed.tr
-5. İzinsiz kullanımda 5846 sayılı FSEK ve ilgili mevzuat kapsamında
-   hukuki işlem başlatılır.
-6. İzin talepleri için: https://erhanemir.github.io üzerinden iletişim.
+Madde 1 — Tanımlar
+1.1. "İçerik": Bu depodaki tüm ders metinleri, öğretici materyaller, görseller, animasyonlar ve açıklamalardır.
+1.2. "Kod": Bu depodaki tüm HTML, CSS ve JavaScript dosyaları ile site altyapısıdır.
+1.3. "Marka": "EE LAB" adı, logosu ve ayırt edici görsel öğelerdir.
+1.4. "Sahip": Erhan Emir.
 
-ENGLISH SUMMARY (legally binding Turkish text above prevails):
-Copyright (c) 2026 Erhan Emir. All rights reserved. No copying,
-redistribution, republication, modification, derivative works, or
-any commercial/non-commercial use without prior written permission.
-Public visibility on GitHub grants no license to reuse. Educational
-content additionally follows CC BY-NC-ND 4.0 principles.
-Unauthorized use will be pursued under applicable law.
+Madde 2 — Hak Sahipliği
+2.1. İçerik, Kod ve Marka üzerindeki tüm fikri ve sınai haklar Sahibe aittir.
+2.2. Tüm hakları saklıdır. Bu metinde açıkça verilmeyen hiçbir hak devredilmiş veya lisanslanmış sayılmaz.
+
+Madde 3 — Verilen Sınırlı Hak
+3.1. Kullanıcıya yalnızca şu hak verilir: Siteyi bir internet tarayıcısında görüntüleme ve dersleri kişisel öğrenme amacıyla ekranda takip etme.
+3.2. Bu hak münhasır değildir, devredilemez ve alt lisans verilemez.
+
+Madde 4 — Yasaklanan Kullanımlar
+4.1. Sahibin önceden alınmış yazılı izni olmaksızın İçerik veya Kod; kopyalanamaz, çoğaltılamaz, dağıtılamaz, umuma iletilemez, başka sitelerde veya platformlarda yayınlanamaz, değiştirilemez ve türev çalışmalar üretilemez.
+4.2. Ticari veya ticari olmayan her türlü yeniden kullanım yasaktır. Buna kurslarda, eğitim setlerinde, kitaplarda ve video içeriklerde kullanım dahildir.
+4.3. Ders içeriklerinin tamamı bu Sözleşme kapsamındadır; bunlar için ayrıca gevşek bir lisans uygulanmaz.
+4.4. Depoya GitHub üzerinden herkese açık erişim sağlanması, yukarıdaki yasakların herhangi birinden feragat anlamına gelmez. Açıklık yalnızca inceleme ve şeffaflık amaçlıdır.
+
+Madde 5 — Yapay Zeka ve Veri Madenciliği Yasağı
+5.1. İçerik ve Kod; makine öğrenmesi ve yapay zeka modellerinin eğitimi, ince ayarı, değerlendirilmesi veya veri kümesi oluşturulması amacıyla kullanılamaz, kopyalanamaz ve bu amaçla üçüncü kişilere aktarılamaz.
+5.2. Otomatik tarama ve toplu indirme (scraping) yasaktır.
+
+Madde 6 — Marka Koruması
+6.1. EE LAB adı ve logosu Sahibe aittir.
+6.2. Marka; Sahibin yazılı izni olmadan ürün, hizmet, site veya içeriklerde kullanılamaz, taklit edilemez ve benzerleriyle karıştırılacak şekilde sunulamaz.
+
+Madde 7 — İhlal Bildirimi ve Yaptırım
+7.1. Bu Sözleşmenin ihlali hâlinde Sahip; içeriğin kaldırılması için bildirimde bulunma, 5846 sayılı Fikir ve Sanat Eserleri Kanunu ile ilgili mevzuat kapsamında hukuki ve cezai yollara başvurma hakkını saklı tutar.
+7.2. İhlal bildirimleri Madde 8'deki iletişim kanalından yapılır.
+
+Madde 8 — İletişim ve İzin Talepleri
+8.1. İzin talepleri ve bildirimler için: https://erhanemir.github.io üzerinden iletişim.
+8.2. Yazılı izin, yalnızca açıkça belirtilen kapsam ve süre için geçerlidir.
+
+Madde 9 — Yürürlük
+9.1. Bu Sözleşme 5 Ekim 2026 tarihinde yürürlüğe girmiştir ve önceki lisans metinlerinin yerini alır.
+9.2. Türkçe metin esastır; aşağıdaki İngilizce özet yalnızca bilgilendirme amaçlıdır.
+
+ENGLISH SUMMARY (informational only; the Turkish text above prevails):
+Copyright (c) 2026 Erhan Emir. All rights reserved. No copying, redistribution,
+republication, modification, derivative works, or any commercial or
+non-commercial reuse without prior written permission. Public visibility on
+GitHub grants no license. Use for machine-learning training, fine-tuning,
+evaluation, or dataset creation is prohibited. The "EE LAB" name and logo are
+protected marks of the owner. Unauthorized use will be pursued under
+applicable law, including Law No. 5846. Contact via https://erhanemir.github.io.
