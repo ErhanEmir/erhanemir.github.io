@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- (c) 2026 Erhan Emir. Tüm hakları saklıdır. / All rights reserved. Bkz: LICENSE (kök dizin) ve NOTICE. -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/i.png">
+<link rel="apple-touch-icon" href="/i.png">
+<title>Voltaj Bölücü | Araçlar</title>
+<meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--yesil:#34d399;--kirmizi:#f87171;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--yesil:#059669;--kirmizi:#dc2626;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:560px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1.4rem;position:relative;overflow:hidden}.kart::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--cyan),var(--yesil))}label{font-weight:700;font-size:.88rem;display:block;margin:.8rem 0 .3rem}input{width:100%;padding:.6rem;border-radius:8px;border:1px solid var(--cerceve);background:#020617;color:#fff;font-size:.95rem}[data-theme="light"] input{background:#f1f5f9;color:#0f172a}.satir{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.sonuc{background:#020617;border-radius:10px;padding:.9rem;font-family:Consolas,monospace;font-size:.92rem;margin-top:.9rem;border:1px solid var(--cerceve);line-height:1.8}[data-theme="light"] .sonuc{background:#f1f5f9;color:#0f172a}.uyari{display:none;border-radius:10px;padding:.8rem 1rem;margin-top:.8rem;border:1px solid;font-size:.88rem;line-height:1.6}.uyari.goster{display:block}.uyari.hata{background:rgba(239,68,68,.1);border-color:var(--kirmizi)}.uyari.ok{background:rgba(52,211,153,.1);border-color:var(--yesil)}#temaBtn{position:fixed;top:12px;right:12px;z-index:300;width:66px;height:34px;border-radius:20px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(34,211,238,.5);cursor:pointer;box-shadow:0 0 14px rgba(34,211,238,.25);transition:.25s;padding:0}#temaBtn .top{position:absolute;top:3px;left:4px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#fde047,#fb923c);display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:left .25s;color:#050a10}[data-theme="light"] #temaBtn .top{left:34px;background:linear-gradient(135deg,#38bdf8,#0369a1);color:#fff}</style>
+</head><body>
+<button id="temaBtn" title="Tema / Theme" aria-label="Tema değiştir"><span class="top">☾</span></button>
+<div class="kapsayici">
+<div class="ustbar"><a class="don" href="index.html">← Araçlar</a></div>
+<div class="kart"><h2>Voltaj Bölücü</h2>
+<p style="color:var(--soluk);font-size:.88rem">Vin → R1 → (Vout) → R2 → GND. Yük bağlanırsa R2'ye paralel biner.</p>
+<div class="satir">
+<div><label>Giriş Vin (V)</label><input id="inVin" inputmode="decimal" value="12"></div>
+<div><label>Yük RL (Ω, boş = yüksüz)</label><input id="inRL" inputmode="decimal" placeholder="örn: 1000"></div>
+</div>
+<div class="satir">
+<div><label>R1 (Ω)</label><input id="inR1" inputmode="decimal" value="2000"></div>
+<div><label>R2 (Ω)</label><input id="inR2" inputmode="decimal" value="1000"></div>
+</div>
+<div class="sonuc" id="sonuc">Değer girin.</div>
+<div class="uyari" id="uyari"><b id="uyariBaslik"></b><p id="uyariMetin" style="margin-top:.3rem"></p></div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygula(){document.documentElement.setAttribute("data-theme",TEMA);var s=document.querySelector("#temaBtn .top");if(s)s.textContent=(TEMA==="dark")?"☾":"☀";}
+uygula();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygula();});
+function $(id){return document.getElementById(id);}
+function sayi(id){var v=parseFloat(($(id).value||"").replace(",","."));return isNaN(v)?null:v;}
+function coz(){
+var Vin=sayi("inVin"),R1=sayi("inR1"),R2=sayi("inR2"),RL=sayi("inRL");
+var u=$("uyari");u.className="uyari";
+if(Vin===null||R1===null||R2===null||R1<=0||R2<=0){$("sonuc").textContent="Vin, R1 ve R2 pozitif girilmelidir.";return null;}
+var vBosta=Vin*R2/(R1+R2);
+var metin="Yüksüz Vout = "+vBosta.toFixed(3)+" V";
+var vYuklu=null;
+if(RL!==null&&RL>0){
+var R2e=(R2*RL)/(R2+RL);
+vYuklu=Vin*R2e/(R1+R2e);
+metin+="<br>Yüklü Vout = "+vYuklu.toFixed(3)+" V (RL="+RL+" Ω)";
+var dusus=(vBosta-vYuklu)/vBosta*100;
+metin+="<br>Çökme = %"+dusus.toFixed(1);
+if(dusus>5){u.className="uyari goster hata";$("uyariBaslik").textContent="Yük etkisi büyük";$("uyariMetin").textContent="Bölücü yükü besleyemez, regülatör kullanın (Ders 11).";}
+else{u.className="uyari goster ok";$("uyariBaslik").textContent="Kabul edilebilir";$("uyariMetin").textContent="Çökme %5 altında.";}
+}
+$("sonuc").innerHTML=metin;
+return {bosta:vBosta,yuklu:vYuklu};
+}
+["inVin","inR1","inR2","inRL"].forEach(function(id){$(id).addEventListener("input",coz);});
+coz();
+window.__bolucu={coz:coz,koy:function(v,r1,r2,rl){$("inVin").value=v;$("inR1").value=r1;$("inR2").value=r2;$("inRL").value=rl;return coz();},sonuc:function(){return $("sonuc").textContent;}};
+});
+</script>
+</body></html>
