@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- (c) 2026 Erhan Emir. Tüm hakları saklıdır. / All rights reserved. Bkz: LICENSE (kök dizin) ve NOTICE. -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/i.png">
+<link rel="apple-touch-icon" href="/i.png">
+<title>Ohm Kanunu | Araçlar</title>
+<meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--yesil:#34d399;--kirmizi:#f87171;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--yesil:#059669;--kirmizi:#dc2626;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:560px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer}#temaBtn{position:fixed;top:12px;right:12px;z-index:300}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1.4rem}.kart h2{margin-bottom:.4rem}.kart p{color:var(--soluk);font-size:.88rem;line-height:1.6}label{font-weight:700;font-size:.88rem;display:block;margin:.8rem 0 .3rem}input,select{width:100%;padding:.6rem;border-radius:8px;border:1px solid var(--cerceve);background:#020617;color:#fff;font-size:.95rem}[data-theme="light"] input,[data-theme="light"] select{background:#f1f5f9;color:#0f172a}.satir{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.sonuc{background:#020617;border-radius:10px;padding:.9rem;font-family:Consolas,monospace;font-size:.92rem;margin-top:.9rem;border:1px solid var(--cerceve);line-height:1.8}[data-theme="light"] .sonuc{background:#f1f5f9;color:#0f172a}.uyari{display:none;border-radius:10px;padding:.8rem 1rem;margin-top:.8rem;border:1px solid;font-size:.88rem;line-height:1.6}.uyari.goster{display:block}.uyari.hata{background:rgba(239,68,68,.1);border-color:var(--kirmizi)}.uyari.ok{background:rgba(52,211,153,.1);border-color:var(--yesil)}</style>
+</head><body>
+<button id="temaBtn">☾</button>
+<div class="kapsayici">
+<div class="ustbar"><a class="don" href="index.html">← Araçlar</a></div>
+<div class="kart"><h2>Ohm Kanunu: V / I / R / P</h2>
+<p>Bildiğiniz <b>iki değeri</b> girin, diğer ikisi hesaplansın. Boş bırakılan kutular hesaplanır; üçü de doluysa ilk ikisi kullanılır.</p>
+<div class="satir">
+<div><label>Gerilim V (volt)</label><input id="inV" inputmode="decimal" placeholder="örn: 12"></div>
+<div><label>Akım I (amper)</label><input id="inI" inputmode="decimal" placeholder="örn: 0.5"></div>
+</div>
+<div class="satir">
+<div><label>Direnç R (ohm)</label><input id="inR" inputmode="decimal" placeholder="örn: 24"></div>
+<div><label>Güç P (watt)</label><input id="inP" inputmode="decimal" placeholder="örn: 6"></div>
+</div>
+<label>Direnç güç dayanımı (W, uyarı için — isteğe bağlı)</label><input id="inPr" inputmode="decimal" placeholder="örn: 0.25">
+<div class="sonuc" id="sonuc">Değer girin.</div>
+<div class="uyari" id="uyari"><b id="uyariBaslik"></b><p id="uyariMetin" style="margin-top:.3rem"></p></div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygula(){document.documentElement.setAttribute("data-theme",TEMA);document.getElementById("temaBtn").textContent=(TEMA==="dark")?"☾":"☀";}
+uygula();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygula();});
+function $(id){return document.getElementById(id);}
+function sayi(id){var v=parseFloat(($(id).value||"").replace(",","."));return isNaN(v)?null:v;}
+function fmt(x,u){if(!isFinite(x))return "—";if(Math.abs(x)>=1000000)return (x/1000000).toFixed(3)+" M"+u;if(Math.abs(x)>=1000)return (x/1000).toFixed(3)+" k"+u;if(Math.abs(x)>0&&Math.abs(x)<0.01)return (x*1000).toFixed(3)+" m"+u;return (Math.round(x*1000)/1000)+" "+u;}
+function coz(){
+var V=sayi("inV"),I=sayi("inI"),R=sayi("inR"),P=sayi("inP"),Pr=sayi("inPr");
+var u=$("uyari");u.className="uyari";
+var bilinen=[V,I,R,P].filter(function(x){return x!==null;}).length;
+if(bilinen<2){$("sonuc").textContent="Hesap için en az iki değer girin.";return null;}
+if(V!==null&&I!==null){R=V/I;P=V*I;}
+else if(V!==null&&R!==null){if(R===0){hata("Direnç sıfır olamaz.");return null;}I=V/R;P=V*I;}
+else if(V!==null&&P!==null){if(V===0){hata("Gerilim sıfırsa akım ve direnç tanımsız.");return null;}I=P/V;R=V/I;}
+else if(I!==null&&R!==null){V=I*R;P=V*I;}
+else if(I!==null&&P!==null){if(I===0){hata("Akım sıfırsa gerilim ve direnç tanımsız.");return null;}V=P/I;R=V/I;}
+else if(R!==null&&P!==null){if(R<=0){hata("Direnç pozitif olmalıdır.");return null;}V=Math.sqrt(P*R);I=V/R;}
+$("sonuc").innerHTML="V = "+fmt(V,"V")+"<br>I = "+fmt(I,"A")+"<br>R = "+fmt(R,"Ω")+"<br>P = "+fmt(P,"W");
+if(Pr!==null&&P>Pr){
+u.className="uyari goster hata";$("uyariBaslik").textContent="Güç aşımı";
+$("uyariMetin").textContent="Dirençte "+fmt(P,"W")+" harcanıyor, dayanımı "+fmt(Pr,"W")+". Daha yüksek güçlü direnç seçin.";
+}else if(Pr!==null){
+u.className="uyari goster ok";$("uyariBaslik").textContent="Güvenli";
+$("uyariMetin").textContent="Harcanan güç dayanımın altında.";
+}
+return {V:V,I:I,R:R,P:P};
+}
+function hata(m){$("sonuc").textContent=m;}
+["inV","inI","inR","inP","inPr"].forEach(function(id){$(id).addEventListener("input",coz);});
+coz();
+window.__ohm={coz:coz,koy:function(v,i,r,p){$("inV").value=v;$("inI").value=i;$("inR").value=r;$("inP").value=p;return coz();},sonuc:function(){return $("sonuc").textContent;}};
+});
+</script>
+</body></html>

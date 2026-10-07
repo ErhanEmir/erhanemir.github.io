@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!-- (c) 2026 Erhan Emir. Tüm hakları saklıdır. / All rights reserved. Bkz: LICENSE (kök dizin) ve NOTICE. -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/i.png">
+<link rel="apple-touch-icon" href="/i.png">
+<title>Direnç Renk Kodu | Araçlar</title>
+<meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--yesil:#34d399;--kirmizi:#f87171;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--yesil:#059669;--kirmizi:#dc2626;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:640px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer}#temaBtn{position:fixed;top:12px;right:12px;z-index:300}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1.4rem;margin-bottom:1rem}.kart h2{margin-bottom:.5rem}label{font-weight:700;font-size:.88rem;display:block;margin:.7rem 0 .3rem}select,input{width:100%;padding:.6rem;border-radius:8px;border:1px solid var(--cerceve);background:#020617;color:#fff;font-size:.95rem}[data-theme="light"] select,[data-theme="light"] input{background:#f1f5f9;color:#0f172a}.secrow{display:flex;gap:.5rem}.secrow select{flex:1}.direnc-cizim{display:flex;align-items:center;justify-content:center;gap:.4rem;margin:1rem 0;font-size:1.3rem;color:var(--soluk)}.govde-bant{min-width:190px;height:48px;background:#d9a066;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:7px;padding:0 10px}.bant{width:13px;height:48px;border-radius:2px;background:#333}.sonuc{background:#020617;border-radius:10px;padding:.8rem;font-family:Consolas,monospace;font-size:.9rem;margin-top:.8rem;border:1px solid var(--cerceve);line-height:1.6}[data-theme="light"] .sonuc{background:#f1f5f9;color:#0f172a}</style>
+</head><body>
+<button id="temaBtn">☾</button>
+<div class="kapsayici">
+<div class="ustbar"><a class="don" href="index.html">← Araçlar</a></div>
+<div class="kart"><h2>1. Renkten değere (4 / 5 / 6 bant)</h2>
+<label>Bant sayısı</label>
+<select id="bantSayi"><option value="4" selected>4 bant (2 rakam + çarpan + tolerans)</option><option value="5">5 bant (3 rakam + çarpan + tolerans)</option><option value="6">6 bant (3 rakam + çarpan + tolerans + sıcaklık katsayısı)</option></select>
+<label>Rakam bantları</label><div class="secrow" id="rakamlar"></div>
+<label>Çarpan</label><select id="carpan"></select>
+<div class="secrow"><div style="flex:1"><label>Tolerans (isteğe bağlı)</label><select id="tol"><option value="">Seçilmedi</option></select></div><div style="flex:1"><label>Sıcaklık katsayısı (6 bant)</label><select id="ppm"><option value="">Seçilmedi</option></select></div></div>
+<div class="direnc-cizim">—<div class="govde-bant" id="govde"></div>—</div>
+<div class="sonuc" id="renkSonuc">Renk seçimi bekleniyor.</div>
+</div>
+<div class="kart"><h2>2. Değerden renge + en yakın standart</h2>
+<label>İstenen değer (Ω, örnek: 4700 veya 4.7k)</label><input id="istenen" placeholder="4700">
+<div class="sonuc" id="standartSonuc">Değer girin.</div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygula(){document.documentElement.setAttribute("data-theme",TEMA);document.getElementById("temaBtn").textContent=(TEMA==="dark")?"☾":"☀";}
+uygula();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygula();});
+function $(id){return document.getElementById(id);}
+var RAKAM=[["Siyah",0,"#111111"],["Kahverengi",1,"#6b3f1d"],["Kırmızı",2,"#cc0000"],["Turuncu",3,"#f46600"],["Sarı",4,"#cccc00"],["Yeşil",5,"#00aa00"],["Mavi",6,"#0000dd"],["Mor",7,"#8800cc"],["Gri",8,"#888888"],["Beyaz",9,"#eeeeee"]];
+var CARPAN=[["Siyah ×1",1,"#111111"],["Kahverengi ×10",10,"#6b3f1d"],["Kırmızı ×100",100,"#cc0000"],["Turuncu ×1k",1000,"#f46600"],["Sarı ×10k",10000,"#cccc00"],["Yeşil ×100k",100000,"#00aa00"],["Mavi ×1M",1000000,"#0000dd"],["Mor ×10M",10000000,"#8800cc"],["Gri ×100M",100000000,"#888888"],["Beyaz ×1G",1000000000,"#eeeeee"],["Altın ×0.1",0.1,"#c9a227"],["Gümüş ×0.01",0.01,"#c0c0c0"]];
+var TOL=[["Kahverengi ±%1","#6b3f1d","±%1"],["Kırmızı ±%2","#cc0000","±%2"],["Yeşil ±%0.5","#00aa00","±%0.5"],["Mavi ±%0.25","#0000dd","±%0.25"],["Mor ±%0.1","#8800cc","±%0.1"],["Gri ±%0.05","#888888","±%0.05"],["Altın ±%5","#c9a227","±%5"],["Gümüş ±%10","#c0c0c0","±%10"]];
+var PPM=[["Kahverengi 100 ppm/K","#6b3f1d","100 ppm/K"],["Kırmızı 50 ppm/K","#cc0000","50 ppm/K"],["Turuncu 15 ppm/K","#f46600","15 ppm/K"],["Sarı 25 ppm/K","#cccc00","25 ppm/K"],["Mavi 10 ppm/K","#0000dd","10 ppm/K"],["Mor 5 ppm/K","#8800cc","5 ppm/K"]];
+var E12=[10,12,15,18,22,27,33,39,47,56,68,82];
+function fmtR(r){if(r>=1000000)return (Math.round(r/10000)/100)+" MΩ";if(r>=1000)return (Math.round(r/100)/10)+" kΩ";return (Math.round(r*100)/100)+" Ω";}
+function opt(t,v){var o=document.createElement("option");o.textContent=t;o.value=v;return o;}
+var cS=$("carpan");CARPAN.forEach(function(c,i){cS.appendChild(opt(c[0],i));});cS.value=2;
+var tS=$("tol");TOL.forEach(function(c,i){tS.appendChild(opt(c[0],i));});
+var pS=$("ppm");PPM.forEach(function(c,i){pS.appendChild(opt(c[0],i));});
+var rakamDiv=$("rakamlar"),govde=$("govde");
+function kur(){
+var n=+$("bantSayi").value,adet=(n===4)?2:3;
+rakamDiv.innerHTML="";govde.innerHTML="";
+for(var i=0;i<adet;i++){var s=document.createElement("select");RAKAM.forEach(function(c){s.appendChild(opt(c[1]+" - "+c[0],c[1]));});s.addEventListener("change",hesaplaRenk);rakamDiv.appendChild(s);}
+if(n===4){rakamDiv.children[0].value=2;rakamDiv.children[1].value=2;}
+else{rakamDiv.children[0].value=2;rakamDiv.children[1].value=2;rakamDiv.children[2].value=0;}
+hesaplaRenk();
+}
+function hesaplaRenk(){
+var n=+$("bantSayi").value,adet=(n===4)?2:3,rakam="";
+for(var i=0;i<adet;i++){rakam+=rakamDiv.children[i].value;}
+var ci=+cS.value,mult=CARPAN[ci][1];
+var deger=parseInt(rakam,10)*mult;
+govde.innerHTML="";
+for(var j=0;j<adet;j++){var d=document.createElement("div");d.className="bant";d.style.background=RAKAM[+rakamDiv.children[j].value][2];govde.appendChild(d);}
+var m=document.createElement("div");m.className="bant";m.style.background=CARPAN[ci][2];govde.appendChild(m);
+var t=document.createElement("div");t.className="bant";
+var txt="Değer: "+fmtR(deger);
+if(tS.value!==""){t.style.background=TOL[+tS.value][1];txt+=" "+TOL[+tS.value][2];}
+else{t.style.background="repeating-linear-gradient(45deg,#333,#333 3px,#555 3px,#555 6px)";txt+=" (tolerans girilmedi)";}
+govde.appendChild(t);
+if(n===6){var p=document.createElement("div");p.className="bant";if(pS.value!==""){p.style.background=PPM[+pS.value][1];txt+=" "+PPM[+pS.value][2];}else{p.style.background="repeating-linear-gradient(45deg,#333,#333 3px,#555 3px,#555 6px)";txt+=" (sıcaklık katsayısı girilmedi)";}govde.appendChild(p);}
+$("renkSonuc").textContent=txt;
+}
+$("bantSayi").addEventListener("change",kur);cS.addEventListener("change",hesaplaRenk);tS.addEventListener("change",hesaplaRenk);pS.addEventListener("change",hesaplaRenk);kur();
+function degerOku(txt){
+var s=txt.toLowerCase().replace(/,/g,".").replace(/\s+/g,"");
+var carp=1;
+if(s.indexOf("mohm")>=0||s.indexOf("mω")>=0){carp=1000000;s=s.replace(/mohm|mω/g,"");}
+else if(s.indexOf("kohm")>=0||s.indexOf("kω")>=0){carp=1000;s=s.replace(/kohm|kω/g,"");}
+else if(s.indexOf("ohm")>=0||s.indexOf("ω")>=0||s.indexOf("Ω")>=0){s=s.replace(/ohm|ω|Ω/g,"");}
+else if(s[s.length-1]==="k"){carp=1000;s=s.slice(0,-1);}
+else if(s[s.length-1]==="m"){carp=1000000;s=s.slice(0,-1);}
+if(s===""||isNaN(Number(s)))return null;
+return Number(s)*carp;
+}
+function enYakinE12(v){
+var exp=Math.floor(Math.log10(v))-1, enIyi=null, enFark=1e18;
+for(var e=-1;e<=2;e++){
+for(var i=0;i<E12.length;i++){
+var aday=E12[i]*Math.pow(10,exp+e);
+var f=Math.abs(aday-v)/v;
+if(f<enFark){enFark=f;enIyi=aday;}
+}
+}
+return {deger:enIyi, sapma:enFark};
+}
+$("istenen").addEventListener("input",function(){
+var v=degerOku($("istenen").value);
+if(v===null||v<=0){$("standartSonuc").textContent="Geçerli bir değer girin (örn: 4700, 4.7k).";return;}
+var s=enYakinE12(v);
+$("standartSonuc").textContent="İstenen: "+fmtR(v)+" → en yakın E12: "+fmtR(s.deger)+" (sapma %"+(s.sapma*100).toFixed(1)+")";
+});
+window.__direnc={hesaplaRenk:hesaplaRenk,deger:function(){return $("renkSonuc").textContent;},standart:function(v){$("istenen").value=v;$("istenen").dispatchEvent(new Event("input"));return $("standartSonuc").textContent;},fmtR:fmtR,enYakinE12:enYakinE12};
+});
+</script>
+</body></html>

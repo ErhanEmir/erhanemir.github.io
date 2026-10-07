@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- (c) 2026 Erhan Emir. Tüm hakları saklıdır. / All rights reserved. Bkz: LICENSE (kök dizin) ve NOTICE. -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/i.png">
+<link rel="apple-touch-icon" href="/i.png">
+<title>Hesap Makinesi | Araçlar</title>
+<meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:480px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer}#temaBtn{position:fixed;top:12px;right:12px;z-index:300}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:16px;padding:1.2rem}.ekran{background:#020617;color:#4ade80;font-family:Consolas,monospace;border-radius:10px;padding:.8rem;min-height:86px;text-align:right;overflow-x:auto}.ekran .ifade{font-size:1rem;color:#9ca3af;min-height:22px;word-break:break-all}.ekran .sonuc{font-size:1.9rem;font-weight:800;word-break:break-all}.ekran.hata{color:#f87171}.tus{display:grid;grid-template-columns:repeat(5,1fr);gap:.45rem;margin-top:.8rem}.tus button{background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.75rem .2rem;font-weight:800;font-size:.92rem;cursor:pointer}[data-theme="light"] .tus button{background:#e2e8f0;color:#0f172a;border-color:rgba(15,23,42,.12)}.tus button:hover{border-color:var(--cyan)}.tus button.op{background:rgba(34,211,238,.15);color:var(--cyan)}.tus button.esit{background:linear-gradient(135deg,#22d3ee,#34d399);color:#050a10;grid-column:span 2}.tus button.temiz{background:rgba(239,68,68,.15);color:#f87171}.gecmis{font-family:Consolas,monospace;font-size:.78rem;color:var(--soluk);margin-top:.7rem;max-height:110px;overflow-y:auto;line-height:1.7}</style>
+</head><body>
+<button id="temaBtn">☾</button>
+<div class="kapsayici">
+<div class="ustbar"><a class="don" href="index.html">← Araçlar</a></div>
+<div class="kart">
+<div class="ekran" id="ekran"><div class="ifade" id="ifade"></div><div class="sonuc" id="sonucDeger">0</div></div>
+<div class="tus" id="tusTakimi"></div>
+<div class="gecmis" id="gecmis">Geçmiş burada görünür.</div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygula(){document.documentElement.setAttribute("data-theme",TEMA);document.getElementById("temaBtn").textContent=(TEMA==="dark")?"☾":"☀";}
+uygula();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygula();});
+function $(id){return document.getElementById(id);}
+var ifade="";
+var SABIT={pi:Math.PI,e:Math.E};
+var FNK={sqrt:Math.sqrt,sin:function(x){return Math.sin(x*Math.PI/180);},cos:function(x){return Math.cos(x*Math.PI/180);},tan:function(x){return Math.tan(x*Math.PI/180);},log:function(x){return Math.log10(x);},ln:Math.log};
+function jetonla(s){
+var out=[],i=0;
+while(i<s.length){
+var c=s[i];
+if(c===" "){i++;continue;}
+if(/[0-9.]/.test(c)){var n="";while(i<s.length&&/[0-9.]/.test(s[i])){n+=s[i];i++;}if(n.split(".").length>2)throw "sayı";out.push({t:"s",v:parseFloat(n)});continue;}
+if(/[a-z]/.test(c)){var w="";while(i<s.length&&/[a-z]/.test(s[i])){w+=s[i];i++;}if(w==="pi"||w==="e"){out.push({t:"s",v:SABIT[w]});}else if(FNK[w]){out.push({t:"f",v:w});}else{throw "bilinmeyen: "+w;}continue;}
+if("+-*/%^(),".indexOf(c)>=0){out.push({t:"o",v:c});i++;continue;}
+throw "karakter: "+c;
+}
+return out;
+}
+function hesapla(s){
+var tk=jetonla(s);
+var deger=[],op=[];
+var oncelik={"+":1,"-":1,"*":2,"/":2,"%":2,"^":3,"u-":4};
+var sagdan={"^":1,"u-":1};
+function uygula(){
+var o=op.pop();
+if(o.v==="u-"){var a=deger.pop();if(a===undefined)throw "eksik";deger.push(-a);return;}
+if(FNK[o.v]!==undefined){var x=deger.pop();if(x===undefined)throw "eksik";var r=FNK[o.v](x);if(!isFinite(r)||isNaN(r))throw "tanımsız";deger.push(r);return;}
+var b=deger.pop(),a=deger.pop();
+if(a===undefined||b===undefined)throw "eksik";
+var r=0;
+if(o.v==="+")r=a+b;else if(o.v==="-")r=a-b;else if(o.v==="*")r=a*b;
+else if(o.v==="/"){if(b===0)throw "sıfıra bölme";r=a/b;}
+else if(o.v==="%"){if(b===0)throw "sıfıra bölme";r=a%b;}
+else if(o.v==="^")r=Math.pow(a,b);
+if(!isFinite(r)||isNaN(r))throw "tanımsız";
+deger.push(r);
+}
+var onceOp=true;
+for(var i=0;i<tk.length;i++){
+var t=tk[i];
+if(t.t==="s"){deger.push(t.v);onceOp=false;}
+else if(t.t==="f"){op.push(t);onceOp=true;}
+else if(t.v==="("){op.push(t);onceOp=true;}
+else if(t.v===")"){while(op.length&&op[op.length-1].v!=="(")uygula();if(!op.length)throw "parantez";op.pop();if(op.length&&op[op.length-1].t==="f")uygula();onceOp=false;}
+else if(t.v===","){while(op.length&&op[op.length-1].v!=="(")uygula();onceOp=true;}
+else{
+var oo=t.v;
+if(oo==="-"&&onceOp)oo="u-";
+if(oo==="+"&&onceOp)continue;
+while(op.length&&op[op.length-1].v!=="("){
+var ust=op[op.length-1].v;
+var po=oncelik[oo]||0, pu=oncelik[ust]||0;
+if(pu>po||(pu===po&&!sagdan[oo]))uygula();else break;
+}
+op.push({t:"o",v:oo});onceOp=true;
+}
+}
+while(op.length){if(op[op.length-1].v==="(")throw "parantez";uygula();}
+if(deger.length!==1)throw "eksik";
+var snc=deger[0];
+if(Math.abs(snc)<1e-12)snc=0;
+return snc;
+}
+function goster(){
+$("ifade").textContent=ifade||" ";
+var e=$("ekran");e.classList.remove("hata");
+try{
+if(!ifade.trim()){$("sonucDeger").textContent="0";return;}
+var v=hesapla(ifade);
+$("sonucDeger").textContent=(Math.round(v*1e10)/1e10).toString();
+}catch(err){$("sonucDeger").textContent="Hata: "+err;e.classList.add("hata");}
+}
+function bas(k){
+if(k==="C"){ifade="";}
+else if(k==="⌫"){ifade=ifade.slice(0,-1);}
+else if(k==="="){
+try{
+var v=hesapla(ifade);
+var g=$("gecmis");
+if(g.dataset.bos!=="1"){g.dataset.bos="1";g.innerHTML="";}
+var d=document.createElement("div");d.textContent=ifade+" = "+(Math.round(v*1e10)/1e10);
+g.insertBefore(d,g.firstChild);
+ifade=String(Math.round(v*1e10)/1e10);
+}catch(err){$("sonucDeger").textContent="Hata: "+err;$("ekran").classList.add("hata");return;}
+}
+else{ifade+=k;}
+goster();
+}
+var TUSLAR=["C","(",")","%","⌫","sin","cos","tan","log","ln","sqrt","^","pi","e","/","7","8","9","*","-","4","5","6","+","=","1","2","3",".","0"];
+(function(){
+var alan=$("tusTakimi");
+TUSLAR.forEach(function(k){
+var b=document.createElement("button");b.textContent=k;b.type="button";
+if("+-*/%^".indexOf(k)>=0)b.className="op";
+if(k==="=")b.className="esit";
+if(k==="C"||k==="⌫")b.className="temiz";
+b.addEventListener("click",function(){bas(k);});
+alan.appendChild(b);
+});
+document.addEventListener("keydown",function(e){
+if(e.key>="0"&&e.key<="9")bas(e.key);
+else if("+-*/%^().".indexOf(e.key)>=0)bas(e.key);
+else if(e.key==="Enter"){e.preventDefault();bas("=");}
+else if(e.key==="Backspace"){e.preventDefault();bas("⌫");}
+else if(e.key==="Escape")bas("C");
+});
+goster();
+})();
+window.__hesap={hesapla:hesapla,bas:bas,deger:function(){return $("sonucDeger").textContent;},ifade:function(){return ifade;}};
+});
+</script>
+</body></html>

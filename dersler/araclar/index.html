@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- (c) 2026 Erhan Emir. Tüm hakları saklıdır. / All rights reserved. Bkz: LICENSE (kök dizin) ve NOTICE. -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/i.png">
+<link rel="apple-touch-icon" href="/i.png">
+<title>Elektronik Araçlar | Erhan Emir</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Elektronik Araçlar | Erhan Emir">
+<meta property="og:description" content="Hesap makinesi, direnç okuma, Ohm kanunu, LED ve 555 hesaplayıcıları.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://erhanemir.github.io/dersler/og-kutuphane.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://erhanemir.github.io/dersler/og-kutuphane.png">
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--yesil:#34d399;--turuncu:#fb923c;--mor:#818cf8;--pembe:#f472b6;--sari:#fde047;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--yesil:#059669;--turuncu:#ea580c;--mor:#4f46e5;--pembe:#db2777;--sari:#a16207;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh;transition:background .3s}.kapsayici{max-width:960px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-bottom:1.2rem;flex-wrap:wrap}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer;font-size:.85rem}#temaBtn{position:fixed;top:12px;right:12px;z-index:300}.kahraman{background:var(--card);border:1px solid var(--cerceve);border-radius:20px;padding:2rem;position:relative;overflow:hidden;margin-bottom:1.2rem}.kahraman::before{content:'';position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--turuncu),var(--sari),var(--yesil),var(--cyan),var(--mor))}.kahraman h1{font-size:clamp(1.6rem,4vw,2.3rem)}.kahraman h1 span{color:var(--turuncu)}.kahraman p{color:var(--soluk);margin-top:.4rem;line-height:1.7}.araclar{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem}.arac{display:flex;gap:.9rem;align-items:flex-start;background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1.1rem;text-decoration:none;color:var(--yazi);transition:.2s}.arac:hover{transform:translateY(-3px);border-color:var(--turuncu)}.simge{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:#050a10;flex-shrink:0}.arac b{display:block;font-size:.95rem}.arac small{color:var(--soluk);font-size:.76rem;line-height:1.5}footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}</style>
+</head><body>
+<button id="temaBtn" title="Tema / Theme">☾</button>
+<div class="kapsayici">
+<div class="ustbar"><a class="don" href="../index.html">← Kütüphane</a></div>
+<div class="kahraman"><h1>Elektronik <span>Araçları</span></h1><p>Devre kurarken elinizin altında olması gereken hesaplayıcılar. Her biri ayrı sayfadır, internet olmadan da çalışır.</p></div>
+<div class="araclar">
+<a class="arac" href="hesap-makinesi.html"><div class="simge" style="background:linear-gradient(135deg,#22d3ee,#818cf8)">∑</div><div><b>Bilimsel Hesap Makinesi</b><small>Temel + parantez, üs, kök, trig, log. Klavye destekli.</small></div></a>
+<a class="arac" href="direnc-hesaplama.html"><div class="simge" style="background:linear-gradient(135deg,#fde047,#34d399)">Ω</div><div><b>Direnç Renk Kodu</b><small>Renkten değere, değerden renge. 4/5/6 bant.</small></div></a>
+<a class="arac" href="ohm-kanunu.html"><div class="simge" style="background:linear-gradient(135deg,#fb923c,#f43f5e)">V=IR</div><div><b>Ohm Kanunu</b><small>İki değer girin, V/I/R/P hesaplansın. Güç uyarılı.</small></div></a>
+<a class="arac" href="led-hesabi.html"><div class="simge" style="background:linear-gradient(135deg,#f87171,#fb923c)">LED</div><div><b>LED Direnci</b><small>Besleme + LED değerinden seri direnç ve güç.</small></div></a>
+<a class="arac" href="zamanlayici-555.html"><div class="simge" style="background:linear-gradient(135deg,#818cf8,#e879f9)">555</div><div><b>555 Hesaplayıcı</b><small>Kararsız ve tek kararlı kip: frekans, görev, süre.</small></div></a>
+</div>
+</div>
+<footer>by; ERHAN EMİR</footer>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygula(){document.documentElement.setAttribute("data-theme",TEMA);document.getElementById("temaBtn").textContent=(TEMA==="dark")?"☾":"☀";}
+uygula();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygula();});
+});
+</script>
+</body></html>

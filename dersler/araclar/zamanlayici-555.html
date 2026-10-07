@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- (c) 2026 Erhan Emir. Tüm hakları saklıdır. / All rights reserved. Bkz: LICENSE (kök dizin) ve NOTICE. -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/i.png">
+<link rel="apple-touch-icon" href="/i.png">
+<title>555 Hesaplayıcı | Araçlar</title>
+<meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--mor:#818cf8;--yesil:#34d399;--kirmizi:#f87171;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--mor:#4f46e5;--yesil:#059669;--kirmizi:#dc2626;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:600px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer}#temaBtn{position:fixed;top:12px;right:12px;z-index:300}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1.4rem;margin-bottom:1rem}.kart h2{margin-bottom:.4rem}.kart p{color:var(--soluk);font-size:.88rem;line-height:1.6}.sekme{display:flex;gap:.5rem;margin:.8rem 0}.sekme button{flex:1;background:var(--bg);color:var(--yazi);border:1px solid var(--cerceve);border-radius:10px;padding:.6rem;font-weight:800;cursor:pointer}.sekme button.secili{border-color:var(--mor);color:var(--mor)}label{font-weight:700;font-size:.88rem;display:block;margin:.8rem 0 .3rem}input,select{width:100%;padding:.6rem;border-radius:8px;border:1px solid var(--cerceve);background:#020617;color:#fff;font-size:.95rem}[data-theme="light"] input,[data-theme="light"] select{background:#f1f5f9;color:#0f172a}.satir{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem}.sonuc{background:#020617;border-radius:10px;padding:.9rem;font-family:Consolas,monospace;font-size:.92rem;margin-top:.9rem;border:1px solid var(--cerceve);line-height:1.8}[data-theme="light"] .sonuc{background:#f1f5f9;color:#0f172a}</style>
+</head><body>
+<button id="temaBtn">☾</button>
+<div class="kapsayici">
+<div class="ustbar"><a class="don" href="index.html">← Araçlar</a></div>
+<div class="kart"><h2>555 Zamanlayıcı</h2>
+<p>Kip seçin, değerleri girin. Kararsız: f = 1.44 / ((R1 + 2×R2) × C). Tek kararlı: T = 1.1 × R × C.</p>
+<div class="sekme"><button id="sekKararsiz" class="secili">Kararsız (astable)</button><button id="sekTek">Tek kararlı (monostable)</button></div>
+<div id="panelKararsiz">
+<div class="satir">
+<div><label>R1 (Ω)</label><input id="inR1" inputmode="decimal" value="1000"></div>
+<div><label>R2 (Ω)</label><input id="inR2" inputmode="decimal" value="10000"></div>
+<div><label>C (µF)</label><input id="inC" inputmode="decimal" value="10"></div>
+</div>
+<div class="sonuc" id="sonucA">Değer girin.</div>
+</div>
+<div id="panelTek" style="display:none">
+<div class="satir" style="grid-template-columns:1fr 1fr">
+<div><label>R (Ω)</label><input id="inRm" inputmode="decimal" value="10000"></div>
+<div><label>C (µF)</label><input id="inCm" inputmode="decimal" value="100"></div>
+</div>
+<div class="sonuc" id="sonucM">Değer girin.</div>
+</div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygula(){document.documentElement.setAttribute("data-theme",TEMA);document.getElementById("temaBtn").textContent=(TEMA==="dark")?"☾":"☀";}
+uygula();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygula();});
+function $(id){return document.getElementById(id);}
+var kip="kararsiz";
+function sayi(id){var v=parseFloat(($(id).value||"").replace(",","."));return isNaN(v)||v<=0?null:v;}
+function fmtF(f){if(f>=1000000)return (f/1000000).toFixed(3)+" MHz";if(f>=1000)return (f/1000).toFixed(3)+" kHz";return f.toFixed(3)+" Hz";}
+function fmtT(t){if(t>=60)return (t/60).toFixed(2)+" dk";if(t>=1)return t.toFixed(3)+" sn";if(t>=0.001)return (t*1000).toFixed(2)+" ms";return (t*1000000).toFixed(1)+" µs";}
+function cozA(){
+var R1=sayi("inR1"),R2=sayi("inR2"),Cu=sayi("inC");
+if(R1===null||R2===null||Cu===null){$("sonucA").textContent="Pozitif değerler girin.";return null;}
+var C=Cu*1e-6;
+var f=1.44/((R1+2*R2)*C), T=1/f, duty=(R1+R2)/(R1+2*R2)*100;
+$("sonucA").innerHTML="f = "+fmtF(f)+"<br>T = "+fmtT(T)+"<br>Görev oranı = %"+duty.toFixed(1)+"<br>Yüksek süre = "+fmtT(T*duty/100)+" | Alçak süre = "+fmtT(T*(1-duty/100));
+return {f:f,T:T,duty:duty};
+}
+function cozM(){
+var R=sayi("inRm"),Cu=sayi("inCm");
+if(R===null||Cu===null){$("sonucM").textContent="Pozitif değerler girin.";return null;}
+var T=1.1*R*(Cu*1e-6);
+$("sonucM").textContent="Çıkış darbe süresi T = "+fmtT(T);
+return {T:T};
+}
+$("sekKararsiz").addEventListener("click",function(){kip="kararsiz";$("sekKararsiz").className="secili";$("sekTek").className="";$("panelKararsiz").style.display="block";$("panelTek").style.display="none";});
+$("sekTek").addEventListener("click",function(){kip="tek";$("sekTek").className="secili";$("sekKararsiz").className="";$("panelTek").style.display="block";$("panelKararsiz").style.display="none";});
+["inR1","inR2","inC","inRm","inCm"].forEach(function(id){$(id).addEventListener("input",function(){cozA();cozM();});});
+cozA();cozM();
+window.__555t={cozA:cozA,cozM:cozM,koyA:function(r1,r2,c){$("inR1").value=r1;$("inR2").value=r2;$("inC").value=c;return cozA();},sonucA:function(){return $("sonucA").textContent;}};
+});
+</script>
+</body></html>
