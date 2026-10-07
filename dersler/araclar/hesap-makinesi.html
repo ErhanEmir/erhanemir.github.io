@@ -8,14 +8,14 @@
 <link rel="apple-touch-icon" href="/i.png">
 <title>Hesap Makinesi | Araçlar</title>
 <meta name="robots" content="noindex">
-<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:480px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer}#temaBtn{position:fixed;top:12px;right:12px;z-index:300}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:16px;padding:1.2rem}.ekran{background:#020617;color:#4ade80;font-family:Consolas,monospace;border-radius:10px;padding:.8rem;min-height:86px;text-align:right;overflow-x:auto}.ekran .ifade{font-size:1rem;color:#9ca3af;min-height:22px;word-break:break-all}.ekran .sonuc{font-size:1.9rem;font-weight:800;word-break:break-all}.ekran.hata{color:#f87171}.tus{display:grid;grid-template-columns:repeat(5,1fr);gap:.45rem;margin-top:.8rem}.tus button{background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.75rem .2rem;font-weight:800;font-size:.92rem;cursor:pointer}[data-theme="light"] .tus button{background:#e2e8f0;color:#0f172a;border-color:rgba(15,23,42,.12)}.tus button:hover{border-color:var(--cyan)}.tus button.op{background:rgba(34,211,238,.15);color:var(--cyan)}.tus button.esit{background:linear-gradient(135deg,#22d3ee,#34d399);color:#050a10;grid-column:span 2}.tus button.temiz{background:rgba(239,68,68,.15);color:#f87171}.gecmis{font-family:Consolas,monospace;font-size:.78rem;color:var(--soluk);margin-top:.7rem;max-height:110px;overflow-y:auto;line-height:1.7}</style>
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:480px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.dugme{background:var(--card);color:var(--yazi);border:1px solid var(--cerceve);border-radius:20px;padding:.45rem .95rem;font-weight:800;cursor:pointer}#temaBtn{position:fixed;top:12px;right:12px;z-index:300}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:16px;padding:1.2rem}.ekran{background:#020617;color:#4ade80;font-family:Consolas,monospace;border-radius:10px;padding:.8rem;min-height:86px;text-align:right;overflow-x:auto}.ekran .ifade{font-size:1rem;color:#9ca3af;min-height:22px;word-break:break-all}.ekran .sonuc{font-size:1.9rem;font-weight:800;word-break:break-all}.ekran.hata{color:#f87171}.tus{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin-top:.8rem}.tus.sci{grid-template-columns:repeat(5,1fr)}.tus.sci button{font-size:.8rem;padding:.6rem .2rem}.tus button{background:#1e293b;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.75rem .2rem;font-weight:800;font-size:.92rem;cursor:pointer}[data-theme="light"] .tus button{background:#e2e8f0;color:#0f172a;border-color:rgba(15,23,42,.12)}.tus button:hover{border-color:var(--cyan)}.tus button.op{background:rgba(34,211,238,.15);color:var(--cyan)}.tus button.esit{background:linear-gradient(135deg,#22d3ee,#34d399);color:#050a10;grid-column:span 2}.tus button.temiz{background:rgba(239,68,68,.15);color:#f87171}.gecmis{font-family:Consolas,monospace;font-size:.78rem;color:var(--soluk);margin-top:.7rem;max-height:110px;overflow-y:auto;line-height:1.7}</style><style>.kart{position:relative;overflow:hidden}.kart::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--cyan,#22d3ee),var(--yesil,#34d399))}.dugme,.tus button,.quiz button,.secrow select{transition:transform .15s,box-shadow .15s,border-color .15s}.dugme:hover,.tus button:hover{transform:translateY(-2px)}.mm-ekran,.ekran{box-shadow:inset 0 0 24px rgba(0,0,0,.5),0 0 18px rgba(52,211,153,.12)}a.don:hover{text-decoration:underline}</style>
 </head><body>
 <button id="temaBtn">☾</button>
 <div class="kapsayici">
 <div class="ustbar"><a class="don" href="index.html">← Araçlar</a></div>
 <div class="kart">
 <div class="ekran" id="ekran"><div class="ifade" id="ifade"></div><div class="sonuc" id="sonucDeger">0</div></div>
-<div class="tus" id="tusTakimi"></div>
+<div class="tus sci" id="sciTakimi"></div><div class="tus" id="tusTakimi"></div>
 <div class="gecmis" id="gecmis">Geçmiş burada görünür.</div>
 </div>
 </div>
@@ -35,7 +35,7 @@ while(i<s.length){
 var c=s[i];
 if(c===" "){i++;continue;}
 if(/[0-9.]/.test(c)){var n="";while(i<s.length&&/[0-9.]/.test(s[i])){n+=s[i];i++;}if(n.split(".").length>2)throw "sayı";out.push({t:"s",v:parseFloat(n)});continue;}
-if(/[a-z]/.test(c)){var w="";while(i<s.length&&/[a-z]/.test(s[i])){w+=s[i];i++;}if(w==="pi"||w==="e"){out.push({t:"s",v:SABIT[w]});}else if(FNK[w]){out.push({t:"f",v:w});}else{throw "bilinmeyen: "+w;}continue;}
+if(/[a-zA-Z]/.test(c)){var w="";while(i<s.length&&/[a-zA-Z]/.test(s[i])){w+=s[i];i++;}if(w==="pi"||w==="e"){out.push({t:"s",v:SABIT[w]});}else if(w==="Ans"){out.push({t:"s",v:SONUC});}else if(FNK[w]){out.push({t:"f",v:w});}else{throw "bilinmeyen: "+w;}continue;}
 if("+-*/%^(),".indexOf(c)>=0){out.push({t:"o",v:c});i++;continue;}
 throw "karakter: "+c;
 }
@@ -93,35 +93,52 @@ try{
 if(!ifade.trim()){$("sonucDeger").textContent="0";return;}
 var v=hesapla(ifade);
 $("sonucDeger").textContent=(Math.round(v*1e10)/1e10).toString();
-}catch(err){$("sonucDeger").textContent="Hata: "+err;e.classList.add("hata");}
+}catch(err){$("sonucDeger").textContent="…";}
 }
+var sonEsitti=false;
 function bas(k){
-if(k==="C"){ifade="";}
-else if(k==="⌫"){ifade=ifade.slice(0,-1);}
+if(k==="C"){ifade="";sonEsitti=false;}
+else if(k==="⌫"){ifade=ifade.slice(0,-1);sonEsitti=false;}
 else if(k==="="){
+if(!ifade.trim())return;
 try{
-var v=hesapla(ifade);
+var v=hesapla(ifade);SONUC=v;
 var g=$("gecmis");
 if(g.dataset.bos!=="1"){g.dataset.bos="1";g.innerHTML="";}
 var d=document.createElement("div");d.textContent=ifade+" = "+(Math.round(v*1e10)/1e10);
 g.insertBefore(d,g.firstChild);
-ifade=String(Math.round(v*1e10)/1e10);
+ifade=String(Math.round(v*1e10)/1e10);sonEsitti=true;
 }catch(err){$("sonucDeger").textContent="Hata: "+err;$("ekran").classList.add("hata");return;}
 }
-else{ifade+=k;}
+else{
+if(sonEsitti&&(/^[0-9.(]/.test(k))){ifade="";}
+if(/^[a-zA-Z(]/.test(k)&&/[0-9)]$/.test(ifade)){ifade+="*";}
+ifade+=k;sonEsitti=false;
+}
 goster();
 }
-var TUSLAR=["C","(",")","%","⌫","sin","cos","tan","log","ln","sqrt","^","pi","e","/","7","8","9","*","-","4","5","6","+","=","1","2","3",".","0"];
+var SCI=["sin","cos","tan","log","ln","sqrt","^","pi","e","Ans"];
+var TUSLAR=["C","⌫","%","/","7","8","9","*","4","5","6","-","1","2","3","+","0",".","(",")"];
+var SONUC=0;
 (function(){
+var sci=$("sciTakimi");
+SCI.forEach(function(k){
+var b=document.createElement("button");b.textContent=k;b.type="button";b.className="op";
+b.addEventListener("click",function(){bas(k);});
+sci.appendChild(b);
+});
 var alan=$("tusTakimi");
 TUSLAR.forEach(function(k){
 var b=document.createElement("button");b.textContent=k;b.type="button";
-if("+-*/%^".indexOf(k)>=0)b.className="op";
-if(k==="=")b.className="esit";
+if("+-*/%".indexOf(k)>=0)b.className="op";
+if(k==="/"||k==="*")b.className="op";
 if(k==="C"||k==="⌫")b.className="temiz";
 b.addEventListener("click",function(){bas(k);});
 alan.appendChild(b);
 });
+var es=document.createElement("button");es.textContent="=";es.type="button";es.className="esit";es.style.gridColumn="span 4";
+es.addEventListener("click",function(){bas("=");});
+alan.appendChild(es);
 document.addEventListener("keydown",function(e){
 if(e.key>="0"&&e.key<="9")bas(e.key);
 else if("+-*/%^().".indexOf(e.key)>=0)bas(e.key);
