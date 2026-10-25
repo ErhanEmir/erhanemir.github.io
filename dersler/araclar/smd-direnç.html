@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!-- (c) 2026 Erhan Emir. Tüm hakları saklıdır. / All rights reserved. Bkz: LICENSE (kök dizin) ve NOTICE. -->
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/i.png">
+<link rel="apple-touch-icon" href="/i.png">
+<title>SMD Direnç Hesaplama | Araçlar</title>
+<meta name="robots" content="noindex">
+<style>:root{--bg:#050a10;--card:#0a1220;--yazi:#e8eef4;--soluk:#8890a0;--cyan:#22d3ee;--yesil:#34d399;--kirmizi:#f87171;--turuncu:#fb923c;--cerceve:rgba(255,255,255,.08)}[data-theme="light"]{--bg:#eef3f8;--card:#ffffff;--yazi:#0f172a;--soluk:#526075;--cyan:#0891b2;--yesil:#059669;--kirmizi:#dc2626;--cerceve:rgba(15,23,42,.12)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--yazi);min-height:100vh}.kapsayici{max-width:640px;margin:0 auto;padding:2rem 1rem}.ustbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}a.don{color:var(--cyan);text-decoration:none;font-weight:700}.kart{background:var(--card);border:1px solid var(--cerceve);border-radius:14px;padding:1.4rem;position:relative;overflow:hidden}.kart::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--cyan),var(--yesil))}label{font-weight:700;font-size:.88rem;display:block;margin:.8rem 0 .3rem}input{width:100%;padding:.6rem;border-radius:8px;border:1px solid var(--cerceve);background:#020617;color:#fff;font-size:1rem;font-family:Consolas,monospace;letter-spacing:2px;text-transform:uppercase}[data-theme="light"] input{background:#f1f5f9;color:#0f172a}table{width:100%;border-collapse:collapse;margin-top:.8rem;font-size:.82rem}th,td{border:1px solid var(--cerceve);padding:.4rem .5rem;text-align:left}th{color:var(--cyan)}.sonuc{background:#020617;border-radius:10px;padding:.9rem;font-family:Consolas,monospace;font-size:.95rem;margin-top:.9rem;border:1px solid var(--cerceve);line-height:1.8}[data-theme="light"] .sonuc{background:#f1f5f9;color:#0f172a}#temaBtn{position:fixed;top:12px;right:12px;z-index:300;width:66px;height:34px;border-radius:20px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(34,211,238,.5);cursor:pointer;box-shadow:0 0 14px rgba(34,211,238,.25);transition:.25s;padding:0}#temaBtn .top{position:absolute;top:3px;left:4px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#fde047,#fb923c);display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:left .25s;color:#050a10}[data-theme="light"] #temaBtn .top{left:34px;background:linear-gradient(135deg,#38bdf8,#0369a1);color:#fff}</style>
+</head><body>
+<button id="temaBtn" title="Tema / Theme" aria-label="Tema değiştir"><span class="top">☾</span></button>
+<div class="kapsayici">
+<div class="ustbar"><a class="don" href="index.html">← Araçlar</a></div>
+<div class="kart"><h2>SMD Direnç Kodu Çözücü</h2>
+<p style="color:var(--soluk);font-size:.88rem">3 haneli (standart), 4 haneli (hassas) ve EIA-96 (1 harf + 1 rakam) kodları desteklenir. Örnek: 104 → 100 nF, 103 → 10 kΩ, 01C → 10 kΩ.</</div>
+<div class="kart"><h2>Kod Girin</h2>
+<label>Kod (3/4 haneli veya EIA-96)</label><input id="inKod" placeholder="örn: 104, 473, 01C" maxlength="4" style="letter-spacing:2px;font-family:Consolas,monospace">
+<div class="sonuc" id="sonuc">Kod girin.</div>
+<table>
+<tr><th>Kod</th><th>Değer</th></tr>
+<tr><td>100</td><td>10 Ω</td></tr>
+<tr><td>101</td><td>100 Ω</td></tr>
+<tr><td>102</td><td>100 Ω</td></tr>
+<tr><td>103</td><td>10 kΩ</td></tr>
+<tr><td>104</td><td>100 nF</td></tr>
+<tr><td>105</td><td>1 µF</td></tr>
+<tr><td>473</td><td>47 kΩ</td></tr>
+<tr><td>474</td><td>470 nF</td></tr>
+<tr><td>01C</td><td>10 kΩ (EIA-96)</td></tr>
+<tr><td>02B</td><td>10.2 kΩ (EIA-96)</td></tr>
+</table>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+var TEMA="dark";try{TEMA=localStorage.getItem("portfolioTheme")||"dark";}catch(e){}
+function uygula(){document.documentElement.setAttribute("data-theme",TEMA);var s=document.querySelector("#temaBtn .top");if(s)s.textContent=(TEMA==="dark")?"☾":"☀";}
+uygula();
+document.getElementById("temaBtn").addEventListener("click",function(){TEMA=(TEMA==="dark")?"light":"dark";try{localStorage.setItem("portfolioTheme",TEMA);}catch(e){}uygula();});
+function $(id){return document.getElementById(id);}
+function fmtC(pf){
+if(pf>=1000000)return (Math.round(pf/10000)/100)+" µF";
+if(pf>=1000)return (Math.round(pf/100)/10)+" nF";
+return Math.round(pf)+" pF";
+}
+function coz(kod){
+kod=(kod||"").trim().toUpperCase();
+if(kod.length===3){
+if(!/^[0-9]{3}$/.test(kod))return null;
+var v=(parseInt(kod[0])*10+parseInt(kod[1]))*Math.pow(10,parseInt(kod[2]));
+return {pf:v, metin:fmtC(v)};
+}
+if(kod.length===4){
+if(!/^[0-9]{4}$/.test(kod))return null;
+var v=(parseInt(kod[0])*100+parseInt(kod[1])*10+parseInt(kod[2]))*Math.pow(10,parseInt(kod[3]));
+return {pf:v, metin:fmtC(v)};
+}
+if(kod.length===3&&/^[0-9]{2}[A-Z]$/.test(kod)){
+var eia96={10:100,11:102,12:105,13:107,14:110,15:113,16:115,17:118,18:121,19:124,20:127,21:130,22:133,23:137,24:140,25:143,26:147,27:150,28:154,29:158,30:162,31:165,32:169,33:174,34:178,35:182,36:187,37:191,38:196,39:200,40:205,41:210,42:215,43:221,44:226,45:232,46:237,47:243,48:249,49:255,50:261,51:267,52:274,53:280,54:287,55:294,56:301,57:309,58:316,59:324,60:332,61:340,62:348,63:357,64:365,65:374,66:383,67:392,68:399,69:412,70:422,71:432,72:442,73:453,74:464,75:475,76:487,77:499,78:511,79:523,80:536,81:549,82:562,83:576,84:590,85:604,86:619,87:634,88:649,89:665,90:681,91:698,92:715,93:732,94:750,95:768,96:787,97:806,98:825,99:845,01:100,02:102,03:105,04:107,05:110,06:113,07:115,08:118,09:121,10:124,11:127,12:130,13:133,14:137,15:140,16:143,17:147,18:150,19:154,20:158,21:162,22:165,23:169,24:174,25:178,26:182,27:187,28:191,29:196,30:200,31:205,32:210,33:215,34:221,35:226,36:232,37:237,38:243,39:249,40:255,41:261,42:267,43:274,44:280,45:287,46:294,47:301,48:309,50:316,51:324,52:332,53:340,54:348,55:357,56:365,57:374,58:383,59:392,60:402,61:412,62:422,63:432,64:442,65:453,66:464,67:475,66:487,67:499,68:511,70:523,71:536,72:549,73:562,74:576,75:590,76:604,77:619,78:634,79:649,80:665,81:681,82:698,83:715,84:732,85:750,86:768,87:787,88:806,89:825,90:845,91:866,92:887,93:909,94:931,95:953,96:976};
+var kod2=kod.slice(0,2),harf=kod[2];
+var sayi=parseInt(kod2);
+if(!eia96[sayi])return null;
+var carp={A:1,B:10,C:100,D:1000,E:10000,F:100000,G:1000000,H:10000000}[harf];
+if(!carp)return null;
+var v=eia96[sayi]*carp;
+return {pf:v, metin:fmtC(v)};
+}
+return null;
+}
+function fmtC(pf){
+if(pf>=1000000)return (Math.round(pf/10000)/100)+" µF";
+if(pf>=1000)return (Math.round(pf/100)/10)+" nF";
+return Math.round(pf)+" pF";
+}
+function guncelle(){
+var r=coz($("inKod").value);
+if(!r){$("sonuc").textContent="Geçerli 3/4 haneli kod veya EIA-96 (örn: 01C) girin.";return null;}
+$("sonuc").textContent=$("inKod").value.trim().toUpperCase()+" → "+r.metin+" ("+r.pf+" pF)";
+return r;}
+$("inKod").addEventListener("input",guncelle);
+guncelle();
+window.__smdkod={coz:coz,koy:function(k){$("inKod").value=k;return guncelle();},sonuc:function(){return $("sonuc").textContent;}};
+});
+</script>
+</body></html>
