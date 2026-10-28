@@ -3126,9 +3126,17 @@
                     return;
                 }
                 if (!QE.canSend("n")) {
-                    // Silently return without showing error - button already disabled by paint()
+                    // Quota exhausted - show message in formSuccess
+                    formSuccess.style.display = "block";
+                    formSuccess.style.background = "rgba(142, 197, 230, 0.9)";
+                    formSuccess.style.color = "#2c3e50";
+                    formSuccess.style.padding = "1.5rem";
+                    formSuccess.style.borderRadius = "8px";
+                    formSuccess.style.marginTop = "1rem";
+                    formSuccess.innerHTML = "<strong>✻</strong> Bugün gönderebileceğiniz mesaj hakkınız doldu. <br>Lütfen yarın tekrar deneyin.";
                     return;
                 }
+                // QE.consume("n") called after successful submission below
                 const formData = new FormData(contactForm);
                 formData.set("_captcha", "false");
                 formData.set("_template", "table");
@@ -3145,12 +3153,24 @@
                     } catch (e) { /* JSON yoksa HTTP durumuna güven */ }
                     if (ok) {
                         QE.consume("n");
+                        // Show success overlay
+                        var overlay = document.getElementById("quotaN");
+                        if (overlay) {
+                            overlay.style.background = "rgba(46, 204, 113, 0.9)";
+                            overlay.style.color = "#fff";
+                            overlay.style.padding = "1rem";
+                            overlay.style.borderRadius = "8px";
+                            overlay.style.marginTop = "1rem";
+                            overlay.innerHTML = "<strong>✓</strong> Mesajınız alındı!";
+                        }
                         formSuccess.style.display = "block";
                         formSuccess.style.background = "";
                         formSuccess.style.color = "";
                         formSuccess.innerHTML = translations[lang].form_success;
                         contactForm.reset();
                         setTimeout(() => { formSuccess.style.display = "none"; }, 5000);
+                        // Hide quota hint after successful send
+                        if (overlay) overlay.style.display = "block";
                     } else {
                         formSuccess.style.display = "block";
                         formSuccess.style.background = "rgba(255, 92, 92, 0.12)";
@@ -3164,6 +3184,7 @@
                     formSuccess.style.color = "#ff5c5c";
                     formSuccess.textContent = translations[lang].q_conn_error;
                 }
+            });
             });
         }
 
@@ -3312,7 +3333,8 @@
                     return;
                 }
                 if (!QE.canSend("q")) {
-                    // Silently return - button disabled by paint()
+                    // Quota exhausted - show feedback
+                    showFeedback("error", "Bugün gönderebileceğiniz kısa mesaj hakkınız doldu. Lütfen yarın tekrar deneyin.");
                     return;
                 }
 
