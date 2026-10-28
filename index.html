@@ -2327,8 +2327,8 @@
                 if (!locked) {
                     var cBtn = document.getElementById("contactSendBtn");
                     var qBtn = document.getElementById("qSendBtn");
-                    if (cBtn) cBtn.disabled = nLeft === 0;
-                    if (qBtn) qBtn.disabled = qLeft === 0;
+                    if (cBtn) { cBtn.disabled = nLeft === 0; cBtn.style.opacity = nLeft === 0 ? "0.5" : ""; cBtn.style.pointerEvents = nLeft === 0 ? "none" : ""; }
+                    if (qBtn) { qBtn.disabled = qLeft === 0; qBtn.style.opacity = qLeft === 0 ? "0.5" : ""; qBtn.style.pointerEvents = qLeft === 0 ? "none" : ""; }
                     var box = document.getElementById("prefNudge");
                     var okBtn = document.getElementById("prefNudgeOk");
                     if (okBtn) okBtn.classList.remove("attention");
@@ -3126,10 +3126,7 @@
                     return;
                 }
                 if (!QE.canSend("n")) {
-                    formSuccess.style.display = "block";
-                    formSuccess.style.background = "rgba(255, 92, 92, 0.12)";
-                    formSuccess.style.color = "#ff5c5c";
-                    formSuccess.textContent = QE.limitMsg();
+                    // Silently return without showing error - button already disabled by paint()
                     return;
                 }
                 const formData = new FormData(contactForm);
@@ -3315,7 +3312,7 @@
                     return;
                 }
                 if (!QE.canSend("q")) {
-                    showFeedback("error", QE.limitMsg());
+                    // Silently return - button disabled by paint()
                     return;
                 }
 
@@ -4201,8 +4198,8 @@
                 }
                 if (!emailOk) { err("collabErr5", T("collab_err_email")); return; }
                 if (!QE.hasConsent()) { err("collabErr5", QE.consentMsg()); QE.demandConsent(); return; }
-                if (!QE.canSend("n")) { err("collabErr5", QE.limitMsg()); return; }
-                err("collabErr5", null);
+                // Note: canSend check is handled by button disabled state via paint()
+                // Silently proceed - button state managed by QE.paint()
                 var btn = $("collabSend");
                 btn.disabled = true;
                 var oldTxt = btn.textContent;
