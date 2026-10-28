@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+    <script>document.documentElement.classList.add("js");</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Erhan Emir — Maker & Developer</title>
@@ -1026,6 +1027,7 @@
         }
 
         .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+        html:not(.js) .fade-up, html:not(.js) .section-title, html:not(.js) .glass-card { opacity: 1 !important; transform: none !important; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 768px) {
@@ -3184,7 +3186,6 @@
                     formSuccess.style.color = "#ff5c5c";
                     formSuccess.textContent = translations[lang].q_conn_error;
                 }
-            });
             });
         }
 
