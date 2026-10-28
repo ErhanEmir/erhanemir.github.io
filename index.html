@@ -2214,17 +2214,45 @@
             }
             function parseSlot(raw) {
                 var parts = dec(raw).split("|");
-                var d = 0, c = 0;
+                var d = 0, c = 0, m = "";
                 for (var i = 0; i < parts.length; i++) {
                     var kv = parts[i].split("=");
                     if (kv[0] === "d") d = parseInt(kv[1], 10) || 0;
                     if (kv[0] === "c") c = parseInt(kv[1], 10) || 0;
+                    if (kv[0] === "m") m = kv[1] || "";
                 }
-                if (d !== today()) return { d: today(), c: 0 };
-                return { d: d, c: c };
+                if (d !== today()) return { d: today(), c: 0, m: "" };
+                return { d: d, c: c, m: m };
             }
             function writeSlot(key, slot) {
-                setC(key, enc("d=" + slot.d + "|c=" + slot.c + "|x=" + ((slot.d ^ 0xA5C3) & 0xFFFF).toString(16)), 2);
+                var checksum = ((slot.d ^ 0xA5C3) & 0xFFFF).toString(16);
+                setC(key, enc("d=" + slot.d + "|c=" + slot.c + "|m=" + slot.m + "|x=" + checksum), 2);
+            }
+            function trimInput(kind) {
+                var msgEl = document.getElementById(kind === "n" ? "message" : kind === "q" ? "qMsg" : "");
+                return msgEl ? msgEl.value.trim() : "";
+            }
+            function getLastMessage(kind) {
+                var slot = parseSlot(getC(CK[kind]));
+                return slot.m || "";
+            }
+            function setLastMessage(kind, msg) {
+                var slot = parseSlot(getC(CK[kind]));
+                slot.m = msg.substring(0, 100); // store up to 100 chars
+                writeSlot(CK[kind], slot);
+            }
+            function minChangeRequired(newMsg, oldMsg, minLen) {
+                if (!oldMsg) return true;
+                var n = newMsg.trim();
+                var o = oldMsg.trim();
+                if (n.length < minLen || o.length < minLen) return true;
+                var diff = 0;
+                var len = Math.min(n.length, o.length);
+                for (var i = 0; i < len; i++) {
+                    if (n.charCodeAt(i) !== o.charCodeAt(i)) diff++;
+                }
+                diff += Math.abs(n.length - o.length);
+                return diff >= minLen;
             }
             function remaining(kind) {
                 if (!hasConsent()) return 0;
@@ -2232,13 +2260,23 @@
             }
             function canSend(kind) {
                 if (!hasConsent()) return false;
-                return remaining(kind) > 0;
+                if (remaining(kind) <= 0) return false;
+                // Prevent sending the exact same message consecutively
+                var last = getLastMessage(kind);
+                if (last && last.trim() === trimInput(kind).trim()) return false;
+                // Minimum 3 character change requirement
+                var newMsg = trimInput(kind);
+                if (!minChangeRequired(newMsg, last, 3)) return false;
+                return true;
             }
             function consume(kind) {
                 if (!hasConsent()) { paint(); return false; }
                 var slot = parseSlot(getC(CK[kind]));
                 if (slot.c >= MX[kind]) { paint(); return false; }
                 slot.c += 1;
+                // Store the current message as the last sent message
+                var currentInput = trimInput(kind);
+                slot.m = currentInput.substring(0, 100);
                 writeSlot(CK[kind], slot);
                 paint();
                 return true;
@@ -4163,6 +4201,7 @@
                 }
                 if (!emailOk) { err("collabErr5", T("collab_err_email")); return; }
                 if (!QE.hasConsent()) { err("collabErr5", QE.consentMsg()); QE.demandConsent(); return; }
+                if (!QE.canSend("n")) { err("collabErr5", QE.limitMsg()); return; }
                 err("collabErr5", null);
                 var btn = $("collabSend");
                 btn.disabled = true;
@@ -4274,6 +4313,7 @@
                             if (sT) sT.textContent = T("collab_success_other_t");
                             if (sD) sD.textContent = T("collab_success_other_d");
                         }
+                        QE.consume("n");
                         justSent = true;
                         go(6);
                         setTimeout(function () {
