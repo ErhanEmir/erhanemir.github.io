@@ -66,8 +66,9 @@ a.don{color:var(--cyan);text-decoration:none;font-weight:700}
 .rozetler .roz,.rozetler .bitti{margin-left:0}
 .ders small{color:var(--soluk);font-size:.76rem;line-height:1.4;display:block;margin-top:.15rem}
 .roz{font-size:.65rem;background:var(--kart2);border:1px solid var(--cerceve);padding:.2rem .55rem;border-radius:20px;white-space:nowrap;color:var(--soluk);flex-shrink:0}
-.ders .kilit{position:absolute;inset:0;background:rgba(100,116,139,.85);backdrop-filter:grayscale(1);display:none;align-items:center;justify-content:center;font-weight:900;color:#0f172a;font-size:.82rem;padding:.5rem;text-align:center}
+.ders .kilit{position:absolute;inset:0;background:rgba(100,116,139,.94);backdrop-filter:grayscale(1);display:none;align-items:center;justify-content:center;font-weight:900;color:#0f172a;font-size:.82rem;padding:.5rem;text-align:center;z-index:2}
 .ders.kapali .kilit{display:flex}
+.ders.kapali .numara,.ders.kapali .govde,.ders.kapali .rozetler{visibility:hidden}
 .ders .bitti{display:none;font-size:.65rem;background:var(--yesil);color:#050a10;padding:.2rem .55rem;border-radius:20px;white-space:nowrap;font-weight:800;flex-shrink:0}
 .ders.tamam .bitti{display:inline-block}
 .ders.tamam{border-color:var(--yesil)}
@@ -82,7 +83,8 @@ footer{margin-top:1rem;text-align:center;color:var(--soluk);font-size:.85rem}
 #cerezRet{background:transparent;color:#8890a0;border:1px solid rgba(255,255,255,.2)}
 #cerezKabul.dikkat{animation:kabulPulse .9s ease-in-out infinite;border:2px solid #ef4444}
 @keyframes kabulPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.7)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0),0 0 18px 4px rgba(239,68,68,.8)}}
-#yukleme{position:fixed;inset:0;z-index:400;background:#070b14;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;transition:opacity .5s}
+#yukleme{position:fixed;inset:0;z-index:400;background:#070b14;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;transition:opacity .5s;animation:yuklemeGuven .6s ease 5s forwards}
+@keyframes yuklemeGuven{to{opacity:0;visibility:hidden;pointer-events:none}}
 #yukleme.gitti{opacity:0;pointer-events:none}
 #yukleme img{width:min(420px,80vw);border-radius:14px;box-shadow:0 0 60px rgba(52,211,153,.25);margin-top:-8vh}
 #yukleme .cubuk{width:min(280px,60vw);height:10px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden;border:1px solid rgba(52,211,153,.4)}
@@ -175,7 +177,7 @@ var roz=document.createElement("span");roz.className="roz";roz.textContent=ROZET
 var kilit=n>1&&d.tamam.indexOf(n-1)<0;
 var bitti=d.tamam.indexOf(n)>=0;
 if(bitti){a.classList.add("tamam");toplam++;var s=document.createElement("span");s.className="bitti";s.textContent=S.bitti;a.querySelector(".rozetler").appendChild(s);}
-if(kilit){a.classList.add("kapali");a.setAttribute("aria-disabled","true");var kp=document.createElement("span");kp.className="kilit";kp.textContent="Ders "+n+S.kilit+(n-1);a.appendChild(kp);a.addEventListener("click",function(e){e.preventDefault();alert(S.kilitUyari+"Ders "+(n-1)+S.kilitUyari2);});}
+if(kilit){a.classList.add("kapali");a.setAttribute("aria-disabled","true");var kp=document.createElement("span");kp.className="kilit";kp.textContent="Ders "+n+S.kilit;a.appendChild(kp);a.addEventListener("click",function(e){e.preventDefault();alert(S.kilitUyari+"Ders "+(n-1)+S.kilitUyari2);});}
 liste.appendChild(a);
 });
 sec.appendChild(liste);kat.appendChild(sec);

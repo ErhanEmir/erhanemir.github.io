@@ -3155,24 +3155,12 @@
                     } catch (e) { /* JSON yoksa HTTP durumuna güven */ }
                     if (ok) {
                         QE.consume("n");
-                        // Show success overlay
-                        var overlay = document.getElementById("quotaN");
-                        if (overlay) {
-                            overlay.style.background = "rgba(46, 204, 113, 0.9)";
-                            overlay.style.color = "#fff";
-                            overlay.style.padding = "1rem";
-                            overlay.style.borderRadius = "8px";
-                            overlay.style.marginTop = "1rem";
-                            overlay.innerHTML = "<strong>✓</strong> Mesajınız alındı!";
-                        }
                         formSuccess.style.display = "block";
                         formSuccess.style.background = "";
                         formSuccess.style.color = "";
                         formSuccess.innerHTML = translations[lang].form_success;
                         contactForm.reset();
                         setTimeout(() => { formSuccess.style.display = "none"; }, 5000);
-                        // Hide quota hint after successful send
-                        if (overlay) overlay.style.display = "block";
                     } else {
                         formSuccess.style.display = "block";
                         formSuccess.style.background = "rgba(255, 92, 92, 0.12)";
